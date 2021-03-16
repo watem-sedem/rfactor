@@ -6,6 +6,18 @@ import numpy as np
 import pandas as pd
 
 
+def load_data_completeness_file(txt_completeness):
+
+    df_completeness = pd.read_csv(txt_completeness)
+    df_completeness["year"] = [i.split("_")[2] for i in
+                               df_completeness["datafile"]]
+    df_completeness["station"] = [i.split("_")[0] + "_" + i.split("_")[1] for i
+                                  in df_completeness["datafile"]]
+
+    df_completeness.index = df_completeness["datafile"]
+
+    return df_completeness
+
 def load_input_data(fmap, df_completeness):
     """
     Load input data used for running matlab file marco.m
@@ -53,7 +65,7 @@ def load_input_data(fmap, df_completeness):
 
     return dict_inputdata
 
-def compute_statistics_inputdata(dict_inputdata,resmap):
+def compute_statistics_inputdata(dict_inputdata,resmap,df_stations):
     """
     Compute the statistics for each station
 
@@ -72,13 +84,10 @@ def compute_statistics_inputdata(dict_inputdata,resmap):
         condition = dict_inputdata[i]["completeness"] > 0.95
         dict_stat[i] = dict_inputdata[i][condition].describe().transpose()
     dict_stat = pd.concat(dict_stat).reset_index()
-    fmap_geo = Path(__file__).parent.absolute() / "geodata"
-    stations_KMI_meta = pd.read_csv(fmap_geo / "geoinfo_KMI.csv", delimiter=";")
-    stations_VMM_meta = pd.read_csv(fmap_geo / "geoinfo_VMM.csv", delimiter=",")
-    stations_meta = stations_KMI_meta.append(stations_VMM_meta)
+
     dict_stat = dict_stat[dict_stat["level_1"] == "value"]
     dict_stat["station"] = dict_stat["level_0"]
-    dict_stat = dict_stat.merge(stations_meta, on="station")
+    dict_stat = dict_stat.merge(df_stations, on="station")
     dict_stat.to_csv(resmap / "rainfall_data_statistics_filtered_data.csv")
 
     """pd.concat(dict_inputdata)[["station", "year"]].drop_duplicates().sort_values(
@@ -121,17 +130,17 @@ def get_files_rfactor_script(fmap,dict_inputdata,df_completeness, threshold=0.95
                 dict_output_files[station].iloc[i] = [fnames[i][0:index],
                                        os.path.join(fmap, fnames[i])]
             else:
-                dict_output_files[station].iloc[i] = [fnames[i][0:index], None]
+                dict_output_files[station].iloc[i] = [fnames[i][0:index], ""]
 
     return dict_output_files
 
-def load_cumulative_erosivity(dict_output_files):
+def load_cumulative_erosivity(dict_df_output_files):
     """
     Load the cumulative erosivity for each year/station
 
     Parameters
     ----------
-    dict_output_files: see get_files_rfactor_script
+    dict_df_output_files: see get_files_rfactor_script
 
     Returns
     -------
@@ -141,48 +150,73 @@ def load_cumulative_erosivity(dict_output_files):
     """
     dict_df_output = {}
 
-    for station in list(dict_output_files.keys()):
-    
-        ind = 0
-        fnames = dict_output_files[station]["tag"].unique()
-    
-        for i in range(len(fnames)):
-
-            if isinstance(dict_output_files[station]["fname"].iloc[i],str):
-                temp3 = np.genfromtxt(dict_output_files[station]["fname"].iloc[i], delimiter=' ',
-                                      skip_header=1, invalid_raise=False,
-                                      filling_values=np.nan)
-    
-                temp = pd.DataFrame(np.zeros([len(temp3), 4]),
-                                    columns=["fname", "cumEI30", "day", "year"])
-                temp["cumEI30"] = temp3[:, 2].tolist()
-                temp["day"] = temp3[:, 1].tolist()
-                temp["fname"] = fnames[i]
-    
-                year = fnames[i];
-                year = year.replace(station, "")
-                year = year.replace("_", "")
-                year = "".join([x for x in year if x.isdigit()])
-    
-                startdate = datetime.strptime("01/01/" + year, "%d/%m/%Y")
-                temp["date"] = [startdate + timedelta(days=i) for i in temp['day']]
-                temp.index = temp["date"]
-                temp = temp[["cumEI30"]].resample("SM", closed="right").ffill()
-                temp["doy"] = temp.index.dayofyear
-                cond = temp.index.year == int(year) + 1
-                if np.sum(cond) > 0:
-                    temp["cumEI30"].iloc[-2] = temp["cumEI30"].iloc[-1]
-                    temp = temp.iloc[:-1]
-    
-                if ind == 0:
-                    dict_df_output[station] = temp.copy();
-                    ind = 1
-                else:
-                    dict_df_output[station] = dict_df_output[station].append(temp)
-                    
+    for station in dict_df_output_files.keys():
+        dict_df_output[station] = process_output_station(dict_df_output_files[station], station)
     return dict_df_output
 
-def reformat_half_montlhy_analysis(dict_df_output):
+def process_output_station(df_output_files,station):
+
+    lst_output = []
+    for i in df_output_files.index:
+        fname = df_output_files["fname"].loc[i]
+        if (fname != ""):
+            df = process_output_file(fname, station)
+            lst_output.append(df)
+
+    return pd.concat(lst_output)
+
+def process_output_file(fname,station):
+
+    df = load_output_file(fname)
+    year = get_year_fname(fname, station)
+    df = assign_datetime_df_output(df.copy(), year)
+    df = clip_output_df(df.copy(), year)
+
+    return df
+
+def load_output_file(fname):
+
+    arr = np.loadtxt(fname)
+    df = pd.DataFrame(np.zeros([len(arr), 5]),
+                      columns=["fname", "cumEI30", "day", "year","date"])
+    df.loc[:,"cumEI30"] = arr[:, 1]
+    df.loc[:,"day"] = arr[:, 0]
+    df.loc[:,"fname"] = fname
+
+    return df
+
+def get_year_fname(fname,station):
+
+    year = fname.replace(station, "")
+    year = year.replace("_", "")
+    year = "".join([x for x in year if x.isdigit()])
+
+    return year
+
+def assign_datetime_df_output(df,year,resample=True):
+
+    startdate = datetime.strptime("01/01/" + year, "%d/%m/%Y")
+    df.loc[:,"date"] = [startdate + timedelta(days=i) for i in df['day']]
+    df.index = df["date"]
+    if resample:
+        df_resample = df[["cumEI30"]].resample("SM", closed="right").ffill()
+        df_resample["doy"] = df_resample.index.dayofyear
+        return df_resample
+    else:
+        df["doy"] =  df.index.dayofyear
+        return df
+
+def clip_output_df(df,year):
+
+    # if R-value goes out of bound, than map the last value in the year
+    cond = df.index.year == int(year) + 1
+    if np.sum(cond) > 0:
+        maxR  = df["cumEI30"].iloc[-1]
+        df.loc[df.index[-2],"cumEI30"] = maxR
+        df = df.drop(df.index[len(df)-1])
+    return df
+
+def reformat_resolution(dict_df_output,resolution="hm"):
     """
     Reformat the dictionary of the dataframe 'output' to a half-montlhy basis
 
@@ -198,26 +232,38 @@ def reformat_half_montlhy_analysis(dict_df_output):
     """
     dict_df_output_hm = {}
 
-    for station in list(dict_df_output.keys()):
-        df_ = dict_df_output[station].copy()
-        cond = df_["cumEI30"].isnull()
-        df_[cond] = 0.
-        df_["year"] = df_.index.year
-        df_["month"] = ["0" + i if len(i) == 1 else i for i in
-                        dict_df_output[station].index.month.astype(str)]
-        df_["day"] = ["0" + i if len(i) == 1 else i for i in
-                      dict_df_output[station].index.day.astype(str)]
-        # 29th of fe
-        cond = (df_["day"] == "29") & (df_["month"] == "02")
-        df_["day"].loc[cond] = "28"
-        df_['md'] = df_["month"] + df_["day"]
-        dict_df_output_hm[station] = df_.pivot(index="md", values="cumEI30", columns="year")
-        for i in dict_df_output_hm[station].columns:
-            if np.sum(dict_df_output_hm[station][i].isnull()) > 0:
-                indices = dict_df_output_hm[station][i].index
-                for ind, item in enumerate(indices):
-                    if (np.isnan(dict_df_output_hm[station][i].loc[item])) & (ind != 0):
-                        dict_df_output_hm[station][i].loc[item] = dict_df_output_hm[station][i].iloc[
-                            ind - 1]
+    for station in dict_df_output.keys():
+        if resolution=="hm":
+            dict_df_output_hm[station] = reformat_half_montlhy_analysis(dict_df_output[station])
 
     return dict_df_output_hm
+
+def reformat_half_montlhy_analysis(df_):
+
+    cond = df_["cumEI30"].isnull()
+    df_[cond] = 0.
+    df_["year"] = df_.index.year
+    df_["month"] = ["0" + i if len(i) == 1 else i for i in
+                    df_.index.month.astype(str)]
+    df_["day"] = ["0" + i if len(i) == 1 else i for i in
+                  df_.index.day.astype(str)]
+    cond = (df_["day"] == "29") & (df_["month"] == "02")
+    df_["day"].loc[cond] = "28"
+    df_['md'] = df_["month"] + df_["day"]
+    df_ = df_.pivot(index="md", values="cumEI30",
+                                           columns="year")
+
+    df_ = fill_cumulative_EI30(df_)
+
+    return df_
+
+def fill_cumulative_EI30(df_):
+
+    for i in df_.columns:
+        if np.sum(df_[i].isnull()) > 0:
+            indices = df_[i].index
+            for ind, item in enumerate(indices):
+                if (np.isnan(df_[i].loc[item])) & (ind != 0):
+                    df_[i].loc[item] = df_[i].iloc[ind - 1]
+
+    return df_
