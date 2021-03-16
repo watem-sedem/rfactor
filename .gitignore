@@ -1,0 +1,18 @@
+*.pyc
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Sphinx documentation
+docs/_build/
+
+.idea
+
+__pycache__
+
+#  environment variables containing files
+.env
+
+# benchmark folder
+rfactor/src/rfactor/results
+rfactor/src/flanders/results
