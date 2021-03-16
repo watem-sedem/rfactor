@@ -20,9 +20,9 @@ Example
 
 ### Run scripts (Matlab)
 
-The matlab R-factor script of KULeuven can be run by navigating to the src (for example, *C:\Users\\$USERNAME\GitHub\rfactor\src\rfactor*) directory and running the script:
+The matlab R-factor script of KULeuven can be run by navigating to the src (for example, *C:\Users\\$USERNAME\GitHub\rfactor\rfactor\src\rfactor*) directory and running the script:
 
-    matlab -nodisplay -r "main('C:\Users\$USERNAME\GitHub\rfactor\docs\data\example_inputdata')"
+    matlab -nodisplay -r "main('C:\Users\$USERNAME\GitHub\rfactor\rfactor\docs\data\example_inputdata')"
 
 The results of the calculations will be located in the results folder (*C:\Users\\$USERNAME\GitHub\rfactor\src\rfactor\results*)
 
@@ -40,6 +40,7 @@ Explain steps jupyter notebook
 
 ## Authors
 
-Gert Verstraeten (KULeuven)
-Johan Van de Wauw (Fluves)
-Sacha Gobeyn (Fluves)
+Gert Verstraeten (KULeuven)  
+Johan Van de Wauw (Fluves)  
+Sacha Gobeyn (Fluves)  
+  
