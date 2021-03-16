@@ -1,5 +1,5 @@
 
-function []=script(path)
+function []=main(path)
 
     %% Prepare
     mkdir("results")
@@ -22,7 +22,7 @@ function []=script(path)
        % Import inputdata
        inputdata=importdata(filename);
        % Calculate R
-       [R, cumEI]=Calculate_R(year,inputdata);
+       [R, cumEI]=core(year,inputdata);
        table(i,:)=R;
        % Prepare write
        fid = fopen(fullfile('results',[name,'new cumdistr salles.txt']),'wt');

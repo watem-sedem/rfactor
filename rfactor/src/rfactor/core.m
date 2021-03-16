@@ -17,8 +17,16 @@
 %%                                                                    %%
 %%                          Rfactor 2.m                               %%
 %%                           16-5-2001                                %%
+%%								      %%
+%%            edited by Johan Van de Wauw, Sacha Gobeyn	              %%
+%%           			Fluves			              %%
+%%           	Kerkstraat 108, Gentbrugge,Belgium                    %%
+%%              	sacha@fluves.com			      %%
+%%                                                                    %%
+%%                            core.m                                  %%
+%%                           16-03-2021                               %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [R, cumEI]=Calculate_R(year,rain)
+function [R, cumEI]=core(year,rain)
 
 r=1;
 
