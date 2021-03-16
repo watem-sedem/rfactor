@@ -18,7 +18,7 @@
 %%                          Rfactor 2.m                               %%
 %%                           16-5-2001                                %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [R]=Calculate_R(year,rain)
+function [R, cumEI]=Calculate_R(year,rain)
 
 r=1;
 
@@ -263,7 +263,7 @@ cumD14(26)=sum(EI(2,:));
 cumP14(26)=P(r);
 D14(r,26)=cumD14(26)-cumD14(25);
 P14(r,26)=cumP14(26)-cumP14(25);
-
+ 
 R(1)=year;
 R(2)=sum(EI(2,:)); %jaarlijkse neerslagerosiviteit Mj*mm/(ha*h)
 R(3)=P(r); %jaarlijkse neerslag (mm)
