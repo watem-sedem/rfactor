@@ -20,7 +20,7 @@
 %%								      %%
 %%            edited by Johan Van de Wauw, Sacha Gobeyn	              %%
 %%           			Fluves			              %%
-%%           	Kerkstraat 108, Gentbrugge,Belgium                    %%
+%%           	Kerkstraat 106, Gentbrugge,Belgium                    %%
 %%              	sacha@fluves.com			      %%
 %%                                                                    %%
 %%                            core.m                                  %%
