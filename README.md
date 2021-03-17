@@ -38,7 +38,7 @@ Example
 
 The matlab R-factor script of KULeuven can be run by navigating to the src (for example, *C:\Users\\$USERNAME\GitHub\rfactor\rfactor\src\rfactor*) directory and running the script:
 
-    matlab -nodisplay -r "main('C:\Users\$USERNAME\GitHub\rfactor\rfactor\docs\data\example_inputdata')"
+    matlab -nodesktop -r "main('C:\Users\$USERNAME\GitHub\rfactor\rfactor\docs\data\example_inputdata')"
 
 The results of the calculations will be located in the results folder (*C:\Users\\$USERNAME\GitHub\rfactor\src\rfactor\results*)
 
