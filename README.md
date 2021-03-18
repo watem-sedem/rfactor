@@ -14,19 +14,16 @@ over all years. For the formula's, we refer to the [CN-WS Pascal model documenta
 ## Install
 
 Pick-up the latest version of [Matlab](https://nl.mathworks.com/products/matlab.html?requestedDomain=)
-to run the R-factor scripts. Make sure you have Python installed with the 
-latest version of [Numpy](https://numpy.org/) and [Pandas](https://pandas.pydata.org/). 
-It is advised to install Python via [Anaconda](https://www.anaconda.com/products/individual) 
-or [Miniconda](https://docs.conda.io/en/latest/miniconda.html). 
-If you make use of Miniconda, make sure to install numpy (in terminal 
-``conda install -c anaconda numpy``), pandas (``conda install pandas``) and 
-jupyter lab (``conda install -c conda-forge jupyterlab``).  
+to run the R-factor scripts. For Python, setup/update the environment: the dependencies are handled in the conda environment.yml file, so anybody can recreate the required environment using:
 
-Finally, to make sure the Python rfactor scripts can be used in the analysis 
-notebooks (*docs/notebooks/analysis.ipybn*), run following command in the main 
-folder of this package:
+    conda env create -f environment.yml
+    conda activate rfactor
 
-    python setup.py install
+Install the code developed specifically for the project in the environment (in -e edit mode):
+
+    conda activate rfactor
+    pip install -e .
+
     
 ## Get started
 
