@@ -40,15 +40,9 @@ class ErosivityData():
         return df_files
 
     def check_df_files(self,txt_files):
-        df_files = pd.read_csv(txt_files)
-        df_files["year"] = [i.split("_")[2] for i in
-                                   df_files["datafile"]]
-        df_files["station"] = [i.split("_")[0] + "_" + i.split("_")[1]
-                                      for i
-                                      in df_files["datafile"]]
-        df_files.index = df_files["datafile"]
-        df_files["fname_rainfall"]=""
-        df_files["fname_erosivity"]=""
+
+        df_files = load_df_files(txt_files)
+
         for file in self.lst_txt_rainfall:
             datafile = file.stem
             if file.stem not in df_files.index:
@@ -76,6 +70,32 @@ class ErosivityData():
     def load_R(self,stations=[],years=[]):
 
         return load_R(self.dict_erosivity_data,stations,years)
+
+def load_df_files(txt_files):
+
+    df_files = pd.read_csv(txt_files)
+    df_files = check_duplicates_df_files(df_files,txt_files)
+    df_files["year"] = [i.split("_")[2] for i in
+                        df_files["datafile"]]
+    df_files["station"] = [i.split("_")[0] + "_" + i.split("_")[1]
+                           for i
+                           in df_files["datafile"]]
+    df_files.index = df_files["datafile"]
+    df_files["fname_rainfall"] = ""
+    df_files["fname_erosivity"] = ""
+
+    return df_files
+
+def check_duplicates_df_files(df_files,txt_files):
+
+    df_files = df_files.drop_duplicates(['datafile','consider'])
+    lst_datafiles = df_files["datafile"].to_list()
+    for datafile in lst_datafiles:
+        c = lst_datafiles.count(datafile)
+        if c>1:
+            msg = f"Check duplicate and remove for {datafile} in {txt_files}"
+            raise IOError(msg)
+    return df_files
 
 def load_R(dict_erosivity_data,stations=[],years=[]):
 
@@ -223,6 +243,20 @@ def compute_statistics_inputdata(dict_inputdata,resmap,df_stations):
     dict_stat["station"] = dict_stat["level_0"]
     dict_stat = dict_stat.merge(df_stations, on="station")
     dict_stat.to_csv(resmap / "rainfall_data_statistics_filtered_data.csv")
+
+    """pd.concat(dict_inputdata)[["station", "year"]].drop_duplicates().sort_values(
+        "station").groupby("station").aggregate(
+        {"year": [np.min, np.max]}).reset_index().to_csv(resmap / "year.csv")"""
+
+def load_output_file(fname):
+    arr = np.loadtxt(fname)
+    df = pd.DataFrame(np.zeros([len(arr), 5]),
+                      columns=["fname", "cumEI30", "day", "year", "date"])
+    df.loc[:, "cumEI30"] = arr[:, 1]
+    df.loc[:, "day"] = arr[:, 0]
+    df.loc[:, "fname"] = fname
+
+    return df
 
 def reformat_resolution(dict_df_output,resolution="hm"):
     """
