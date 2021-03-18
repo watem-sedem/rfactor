@@ -1,12 +1,10 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 
 setup(
-    name='rfactor',
-    version='',
-    packages=['rfactor', 'rfactor.src', 'rfactor.src.flanders'],
-    url='',
+    name='src',
+    packages=find_packages(),
+    version='0.1.0',
+    description='Compute and analyse R-factor',
+    author='sgobeyn',
     license='',
-    author='Sacha Gobeyn',
-    author_email='sacha@fluves.com',
-    description=''
 )
