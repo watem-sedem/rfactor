@@ -15,6 +15,7 @@ function []=main(path)
     for i = 1:N
        % Prepare filename
        filename = fullfile(path,files(i).name);
+       disp(filename)
        [pathstr,name,ext]=fileparts(filename);
        year = split(name,"_");
        year = year(length(year));
