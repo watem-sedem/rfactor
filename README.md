@@ -36,15 +36,46 @@ Example
 
 ### Run scripts (Matlab)
 
-The matlab R-factor script of KULeuven can be run by navigating to the src (for example, *C:\Users\\$USERNAME\GitHub\rfactor\rfactor\src\rfactor*) directory and running the script:
+The matlab R-factor script of KULeuven can be run by navigating to the src (for example, ``C:\Users\\$USERNAME\GitHub\rfactor\rfactor\src\rfactor``) directory and running the script:
 
     matlab -nodesktop -r "main('C:\Users\$USERNAME\GitHub\rfactor\rfactor\docs\data\example_inputdata')"
 
-The results of the calculations will be located in the results folder (*C:\Users\\$USERNAME\GitHub\rfactor\src\rfactor\results*)
+The results of the calculations will be located in the results folder (``C:\Users\\$USERNAME\GitHub\rfactor\src\rfactor\results``)
 
-### Run analysis (Jupyter notebooks and Python)
+### Run analysis (Python)
 
-Explain steps jupyter notebook
+A python script is developed (``rfactor/src/flanders/data_processing.py``) to help analyse the computed erosivity values. In order to analyse the erosivity values, one needs to:
+
+- Define the folder where the seperate (station,year) non-zero rainfall input data are located.
+- Define the folder where the matlab results are located (cfr. ``C:\Users\\$USERNAME\GitHub\rfactor\src\rfactor\results``).  
+- Define a ``consider.csv file`` that looks like:
+
+  | source        | datafile      | consider  |
+  | ------------- |:-------------:| ---------:|
+  | KMI	          | KMI_6414_2003 | 0         |
+  | KMI	          | KMI_6414_2004 | 1         |
+  | KMI	          | KMI_6414_2005 | 1         |
+  | ...           | ...           | ...       |
+
+  Make sure the ``datafile`` holds the same names as the rainfall data files used input for the matlab calculations. If a rainfall data file is present in the rainfall input data folder, but is not defined in the ``consider.csv``, the code will exit.
+
+  (Note: the code will also exit if the number of files in the rainfall input data folder are different from the erosivity data folder).   
+
+In Python, define the folders and the ``consider.csv`` file:
+
+    fmap_rainfall=  Path(r'C:\Users\$USERNAME\GitHub\rfactor\rfactor\docs\data\example_inputdata')
+    fmap_erosivity = Path(r"C:\Users\\$USERNAME\GitHub\rfactor\src\rfactor\results")
+    txt_files= Path(r'C:\Users\$USERNAME\GitHub\rfactor\flanders\data\datafiles_completeness.csv')
+
+Load the data:  
+
+    data = ErosivityData(fmap_rainfall,fmap_erosivity)
+    df_files = data.build_data_set(txt_files)
+    data.load_data(df_files)
+
+Get the R-value for 2018 based on two station:
+
+    df_R=data.load_R(["KMI_6447","KMI_FS3"], 2018)
 
 ## Powered by
 
