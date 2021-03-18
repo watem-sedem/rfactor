@@ -16,3 +16,4 @@ __pycache__
 # benchmark folder
 rfactor/src/rfactor/results
 rfactor/src/flanders/results
+rfactor/docs/notebooks/results
