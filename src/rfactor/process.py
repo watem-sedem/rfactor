@@ -30,12 +30,9 @@ class ErosivityData():
     Example
     -------
     >>> # Define input folders
-    >>> fmap_rainfall=  Path(
-    r'C:\Users\$USERNAME\GitHub\rfactor\rfactor\docs\data\example_inputdata')
-    >>> fmap_erosivity = Path(
-    r"C:\Users\\$USERNAME\GitHub\rfactor\src\rfactor\results")
-    >>> txt_files= Path(r'C:\Users\$USERNAME\GitHub\rfactor\flanders\data
-    \datafiles_completeness.csv')
+    >>> fmap_rainfall=  Path(r"docs/example_data")
+    >>> fmap_erosivity = Path(r"rfactor/results")
+    >>> txt_files= Path(r"docs/example_data/datafiles_completeness.csv")
     >>> # Compile and load data
     >>> data = ErosivityData(fmap_rainfall,fmap_erosivity)
     >>> df_files = data.build_data_set(txt_files)
