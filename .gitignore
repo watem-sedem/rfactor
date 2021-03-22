@@ -52,9 +52,6 @@ MANIFEST
 .venv*/
 .conda*/
 
-# Environment file
-environment.yml
-
 # Results
 src/rfactor/results
 docs/notebooks/results
