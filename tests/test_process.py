@@ -1,7 +1,6 @@
 import pytest
 import numpy as np
-from pathlib import Path
-from rfactor.src.flanders.data_processing import ErosivityData
+from .conftest import erosivitydata
 
 
 @pytest.mark.parametrize(
@@ -11,16 +10,8 @@ from rfactor.src.flanders.data_processing import ErosivityData
 )
 def test_flanders(exclude_stations,rfactor):
 
-    fmap= Path(__file__).parent / "data"
-    fmap_rainfall=  fmap / "test_rainfalldata"
-    fmap_erosivity = fmap / "test_erosivitydata"
-    txt_files=  fmap / "datafiles_completeness.csv"
-
-    data = ErosivityData(fmap_rainfall,fmap_erosivity)
-    df_files = data.build_data_set(txt_files)
-    data.load_data(df_files)
-    stations = [station for station in data.stations if station not in exclude_stations]
-    df_R=data.load_R(stations)
+    stations = [station for station in erosivitydata.stations if station not in exclude_stations]
+    df_R=erosivitydata.load_R(stations)
 
     np.testing.assert_allclose(np.mean(df_R["value"]),rfactor,atol=1e-2)
 
@@ -35,14 +26,6 @@ def test_flanders(exclude_stations,rfactor):
 )
 def test_ukkel(timeseries,rfactor):
 
-    fmap= Path(__file__).parent / "data"
-    fmap_rainfall=  fmap / "test_rainfalldata"
-    fmap_erosivity = fmap / "test_erosivitydata"
-    txt_files=  fmap / "datafiles_completeness.csv"
-
-    data = ErosivityData(fmap_rainfall,fmap_erosivity)
-    df_files = data.build_data_set(txt_files)
-    data.load_data(df_files)
-    df_R=data.load_R(["KMI_6447","KMI_FS3"], timeseries)
+    df_R=erosivitydata.load_R(["KMI_6447","KMI_FS3"], timeseries)
 
     np.testing.assert_allclose(np.mean(df_R["value"]),rfactor,atol=1e-2)
