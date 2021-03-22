@@ -19,12 +19,10 @@ to run the R-factor scripts. For Python, setup/update the environment: the depen
     conda env create -f environment.yml
     conda activate rfactor
 
-Install the code developed specifically for the project in the environment (in -e edit mode):
+For development purposes of this package, also run following code to install developer dependencies (using pip):
 
-    conda activate rfactor
-    pip install -e .
-
-
+	pip install -e .[develop]
+	
 ## Get started
 
 ### Prepare input files
@@ -58,6 +56,44 @@ Get the R-value for 2018 based on two station:
 
   (Note: the code will also exit if the number of files in the rainfall input data folder are different from the erosivity data folder).   
 
+
+## Development
+
+When developing this package, following tools are used:
+
+### syntax formatting with black
+
+To ensure a more common code formatting and limit the git diff, make sure to use the black pre-commit hook:
+
+- install [black](https://black.readthedocs.io/en/stable/installation_and_usage.html) (should be ok as part of the develop installation, see earlier)
+- install [pre-commit](https://pre-commit.com/#install) (should be ok as part of the develop installation, see earlier)
+
+Install the pre-commit hook:
+
+```
+pre-commit install
+```
+
+on the main level of the package (location where the file .pre-commit-config.yaml is located)
+
+### unit testing with pytest
+
+Run the test suite using the `pytest` package, from within the main package folder):
+
+```
+python setup.py test
+```
+
+### documentation with sphinx
+
+Build the documentation locally with sphinx:
+
+```
+python setup.py build_sphinx
+```
+
+which will create the docs in the `build` folder. This directory is left out of version control.
+
 ## Powered by
 
 - KU Leuven
@@ -70,4 +106,5 @@ Get the R-value for 2018 based on two station:
 
 Gert Verstraeten (KULeuven)  
 Johan Van de Wauw (Fluves)  
+Stijn Van Hoey (Fluves)
 Sacha Gobeyn (Fluves)  
