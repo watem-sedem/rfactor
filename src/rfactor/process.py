@@ -40,14 +40,14 @@ class ErosivityData:
     >>> df_R=data.load_R(["KMI_6447","KMI_FS3"], 2018)
     """
 
-    fmap_rainfall_data: Path
-    fmap_erosivity_data: Path
+    fmap_rainfall: Path
+    fmap_erosivity: Path
 
     def __post_init__(self):
         """Check if folders exist and number of files are equal
         """
-        check_if_folder_exists(self.fmap_rainfall_data)
-        check_if_folder_exists(self.fmap_erosivity_data)
+        check_if_folder_exists(self.fmap_rainfall)
+        check_if_folder_exists(self.fmap_erosivity)
         self.lst_txt_rainfall = list(self.fmap_rainfall.glob("*.txt*"))
         self.lst_txt_erosivity = list(self.fmap_erosivity.glob("*.txt*"))
         self.check_number_of_files()
@@ -58,12 +58,8 @@ class ErosivityData:
         """
         lst_rainfall = [txt.stem for txt in self.lst_txt_rainfall]
         lst_erosivity = [txt.stem.split("new")[0] for txt in self.lst_txt_erosivity]
-        flag1 = check_missing_files(
-            lst_rainfall, lst_erosivity, self.fmap_erosivity_data
-        )
-        flag2 = check_missing_files(
-            lst_erosivity, lst_rainfall, self.fmap_rainfall_data
-        )
+        flag1 = check_missing_files(lst_rainfall, lst_erosivity, self.fmap_erosivity)
+        flag2 = check_missing_files(lst_erosivity, lst_rainfall, self.fmap_rainfall)
 
         if flag1 or flag2:
             msg = (
