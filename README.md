@@ -189,8 +189,8 @@ which will create the docs in the `build` folder. This directory is left out of 
 
 ## Authors
 
-Niels De Vleeschouwer (Fluves)
-Sacha Gobeyn (Fluves)  
-Johan Van de Wauw (Fluves)  
-Stijn Van Hoey (Fluves)
-Gert Verstraeten (KULeuven)  
+Niels De Vleeschouwer (Fluves)  
+Sacha Gobeyn (Fluves)    
+Johan Van de Wauw (Fluves)    
+Stijn Van Hoey (Fluves)  
+Gert Verstraeten (KULeuven)    
