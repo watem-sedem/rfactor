@@ -55,3 +55,4 @@ MANIFEST
 # Results
 src/rfactor/results
 docs/notebooks/results
+src/rfactor/output.csv
