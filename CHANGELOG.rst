@@ -5,6 +5,9 @@ Changelog
 Version 0.1
 ===========
 
-- Feature A added
-- FIX: nasty bug #1729 fixed
-- add your changes here!
+- Implemented R-factor Python processing functions.
+- Implemented Python wrapper for KULeuven `compute R-factor` Matlab script.
+- Set-up package.
+- Added examples and test data.
+- Added tests
+
