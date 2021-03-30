@@ -104,28 +104,28 @@ order to do so, consider following steps (in the main folder):
 and load the necessary packages:
     
     
-    from pathlib import Path
-    from rfactor.process import ErosivityData
+        from pathlib import Path
+        from rfactor.process import ErosivityData
 
  - Define the folder path of the rainfall input and erosivity output data:
 
 
-    fmap_rainfall = Path(r"./tests/data/test_rainfalldata")
-    fmap_erosivty = = Path(r"./tests/data/test_erosivitydata")
-    
+        fmap_rainfall = Path(r"./tests/data/test_rainfalldata")
+        fmap_erosivty = = Path(r"./tests/data/test_erosivitydata")
+        
  - Create a erosivitydata object, build the data set with the *files.csv* 
 file and load the data:  
 
 
-    erosivitydata = ErosivityData(fmap_rainfall, fmap_erosivity)
-    df_files = erosivitydata.build_data_set(txt_files)
-    erosivitydata.load_data(df_files)
+        erosivitydata = ErosivityData(fmap_rainfall, fmap_erosivity)
+        df_files = erosivitydata.build_data_set(txt_files)
+        erosivitydata.load_data(df_files)
 
 
  - Get the R-value for 2018 based on two Ukkel station ("KMI_6447","KMI_FS3"):
 
     
-    df_R=data.load_R(["KMI_6447","KMI_FS3"], 2018)
+        df_R=data.load_R(["KMI_6447","KMI_FS3"], 2018)
 
  - The dataframe ``df_R`` holds the R-values for each station and year (for
  which data are available). From this, basic numpy or pandas operators can be 
