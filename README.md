@@ -25,37 +25,111 @@ For development purposes of this package, also run following code to install dev
 	
 ## Get started
 
+The R-factor scripts can be used to:
+
+1. Compute the EI30 values for a number of stations and years.
+2. Use the computed EI30 values to compute an R-value.
+
+The EI30 values are computed by using a matlab script* that requires a folder 
+as input. In this folder, non-zero rainfall timeseries are stored in separate 
+text files (extension: `.txt`) files per station and year. The processing of 
+the EI30 is done with Python
+
+__Note__: (*) A Python script to compute the EI30 values is in the making to avoid 
+the need to install matlab.
+
 ### Prepare input files
 
-Example
+The input files are defined by text files (extension: `.txt`) that hold 
+non-zero rainfall timeseries. The data are split per station and per year with 
+a specific datafile tag:
 
-### Run scripts (Matlab)
+ - KMI_6414_2004.txt
+ - KMI_6414_2005.txt
+ - ...
+ - KMI_6434_2003.txt
+ - KMI_6434_2004.txt
+ - ...
+ 
+The content of each of this file is a **non-zero** rainfall timeseries
+(no header, space delimited, see *./tests/data/test_rainfalldata*):
 
-The matlab R-factor script of KULeuven can be run by navigating to the src (for example, ``C:\Users\\$USERNAME\GitHub\rfactor\rfactor\src\rfactor``) directory and running the script:
+     9390 1.00
+     9470 0.20
+     9480 0.50
+     10770 0.10
+     ... ...  
 
-    matlab -nodesktop -r "main('C:\Users\$USERNAME\GitHub\rfactor\rfactor\docs\data\example_inputdata')"
+with the first column being the timestamp from the start of the year (minutes)
+, and second the rainfall depth (in mm). An overview of the present datafiles 
+for the analysis is saved in a  `files.csv` file 
+(example in *./tests/data*). This file can be used to remove specific 
+files from the analysis (column `consider`):
 
-The results of the calculations will be located in the results folder (``C:\Users\\$USERNAME\GitHub\rfactor\src\rfactor\results``)
 
-Get the R-value for 2018 based on two station:
-
-    df_R=data.load_R(["KMI_6447","KMI_FS3"], 2018)
-
-- Define the folder where the seperate (station,year) non-zero rainfall input data are located.
-- Define the folder where the matlab results are located (cfr. ``C:\Users\\$USERNAME\GitHub\rfactor\src\rfactor\results``).  
-- Define a ``consider.csv file`` that looks like:
-
-  | source        | datafile      | consider  |
+   | source        | datafile      | consider  |
   | ------------- |:-------------:| ---------:|
-  | KMI	          | KMI_6414_2003 | 0         |
-  | KMI	          | KMI_6414_2004 | 1         |
+  | KMI	          | KMI_6414_2004 | 0         |
   | KMI	          | KMI_6414_2005 | 1         |
+  | KMI	          | KMI_6414_2006 | 1         |
   | ...           | ...           | ...       |
 
-  Make sure the ``datafile`` holds the same names as the rainfall data files used input for the matlab calculations. If a rainfall data file is present in the rainfall input data folder, but is not defined in the ``consider.csv``, the code will exit.
 
-  (Note: the code will also exit if the number of files in the rainfall input data folder are different from the erosivity data folder).   
+### Compute erosivity: EI30
 
+The erosvity (EI30-values) can be computed by navigating to the 
+*./src/rfactor* folder (make sure to activating the rfactor environment, 
+``conda activate rfactor``). In Python, import:
+
+    from rfactor import compute_rfactor
+    from pathlib import Path
+    
+And run code:
+
+    rainfall_inputdata_folder = Path(r"../../tests/data/test_rainfalldata")
+    compute_rfactor(rainfall_inputdata_folder,"matlab")
+    
+The current implemenation makes use of a Matlab engine, which requires Matlab
+to be installed. Future versions of this package will use Python. Results are 
+written to the *./src/rfactor/results*-folder.
+
+### Analyse R-values
+
+The R-value is determined by the number of years and stations the users wishes
+to consider to compute the R value. For example, consider one wants to 
+compute the R-value for 2018, for Ukkel (stations: KMI_6447 and KMI_FS3). In 
+order to do so, consider following steps (in the main folder):
+
+ - Activate the rfactor environment (``conda activate rfactor``), open Python 
+and load the necessary packages:
+    
+    
+    from pathlib import Path
+    from rfactor.process import ErosivityData
+
+ - Define the folder path of the rainfall input and erosivity output data:
+
+
+    fmap_rainfall = Path(r"./tests/data/test_rainfalldata")
+    fmap_erosivty = = Path(r"./tests/data/test_erosivitydata")
+    
+ - Create a erosivitydata object, build the data set with the *files.csv* 
+file and load the data:  
+
+
+    erosivitydata = ErosivityData(fmap_rainfall, fmap_erosivity)
+    df_files = erosivitydata.build_data_set(txt_files)
+    erosivitydata.load_data(df_files)
+
+
+ - Get the R-value for 2018 based on two Ukkel station ("KMI_6447","KMI_FS3"):
+
+    
+    df_R=data.load_R(["KMI_6447","KMI_FS3"], 2018)
+
+ - The dataframe ``df_R`` holds the R-values for each station and year (for
+ which data are available). From this, basic numpy or pandas operators can be 
+ used to compute statistics. 
 
 ## Development
 
