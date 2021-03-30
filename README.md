@@ -112,6 +112,11 @@ and load the necessary packages:
 
         fmap_rainfall = Path(r"./tests/data/test_rainfalldata")
         fmap_erosivty = = Path(r"./tests/data/test_erosivitydata")
+ 
+ - Define the path for the `files.csv`-file:
+ 
+ 
+        txt_files = Path(r"./test/data/files.csv")
         
  - Create a erosivitydata object, build the data set with the *files.csv* 
 file and load the data:  
@@ -170,15 +175,22 @@ which will create the docs in the `build` folder. This directory is left out of 
 
 ## Powered by
 
-- KU Leuven
-- VMM
-- VPO
+
+![alt text](docs/_static/png/DepartementOmgeving_logo.png "Title")
+
+![alt text](docs/_static/png/KULeuven_logo.png "Title")
+
+![alt text](docs/_static/png/VMM_logo.png "Title")
+
+![alt text](docs/_static/png/fluves_logo.png "Title")
+
 
 ## License
 
 ## Authors
 
-Gert Verstraeten (KULeuven)  
+Niels De Vleeschouwer (Fluves)
+Sacha Gobeyn (Fluves)  
 Johan Van de Wauw (Fluves)  
 Stijn Van Hoey (Fluves)
-Sacha Gobeyn (Fluves)  
+Gert Verstraeten (KULeuven)  
