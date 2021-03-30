@@ -1,24 +1,45 @@
-import subprocess
+from subprocess import check_call
 import os
 from pathlib import Path
 
 
 def compute_rfactor(rainfall_inputdata_folder, engine="matlab"):
+    """Compute the R-factor
 
+    Parameters
+    ----------
+    rainfall_inputdata_folder: pathlib.Path
+        Folder path to directory holding rainfall data. Rainfall data are
+        stored in separate *.txt files per station and year. For the format of
+        the `txt`-files, see :func:`rfactor.rfactor.load_rainfall_data`
+    engine: 'matlab' or 'python'
+        Engine used to compute rfactor.
+    """
     if engine not in ["matlab", "python"]:
         msg = f"Either select 'matlab' or 'python' as calculation engine for the rfactor scripts."
         raise IOError(msg)
     if engine == "matlab":
         os.chdir(Path(__file__).parent)
-        cmd = ["matlab", "-nodesktop", "-r", f"main('{rainfall_inputdata_folder}')"]
-        import pdb
-
-        pdb.set_trace()
-        subprocess.call(cmd)
+        cmd = [
+            "matlab",
+            "-nodesktop",
+            "-r",
+            f"main('{rainfall_inputdata_folder}');exit;",
+        ]
+        check_call(cmd)
     else:
         rfactor_python(rainfall_inputdata_folder)
 
 
 def rfactor_python(rainfall_inputdata_folder):
+    """Compute the R-factor with Python (>3.0.0)
+
+    Parameters
+    ----------
+    rainfall_inputdata_folder: pathlib.Path
+        Folder path to directory holding rainfall data. Rainfall data are
+        stored in separate *.txt files per station and year. For the format of
+        the `txt`-files, see :func:`rfactor.rfactor.load_rainfall_data`
+    """
 
     print("TO DO")

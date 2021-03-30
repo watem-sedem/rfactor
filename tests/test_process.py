@@ -1,13 +1,32 @@
 import pytest
 import numpy as np
-from .conftest import erosivitydata, fmap_rainfall
+import pandas as pd
+from pathlib import Path
+from .conftest import erosivitydata, fmap_rainfall_one_file, fmap_erosivity_one_file
 from rfactor.rfactor import compute_rfactor
+from rfactor.process import load_erosivity_data
 
 
 @pytest.mark.matlabbased
 def test_rfactor():
+    """test computation of r-factor
 
-    compute_rfactor(fmap_rainfall, "matlab")
+    Test the computation of the R-factor with as inputdata a non-zero rainfall
+    time series.
+    """
+    fname = "KMI_6414_2004"
+
+    compute_rfactor(fmap_rainfall_one_file, "matlab")
+
+    f_test = Path("results") / (fname + "new cumdistr salles.txt")
+    df_test = load_erosivity_data(f_test, 2004)
+    f_val = fmap_erosivity_one_file / (fname + "new cumdistr salles.txt")
+    df_val = load_erosivity_data(f_val, 2004)
+
+    np.testing.assert_allclose(
+        df_val["cumEI30"], df_test["cumEI30"], rtol=1e-03, atol=1e-03
+    )
+    np.testing.assert_allclose(df_val["day"], df_test["day"], rtol=1e-03, atol=1e-03)
 
 
 @pytest.mark.parametrize(
@@ -29,7 +48,18 @@ def test_rfactor():
     ],
 )
 def test_flanders(exclude_stations, rfactor):
+    """Test the aggregation functions of EI30 to compute an R-value. Pull all
+    EI30 data from all years and stations, except the stations defined in the
+    test function parameters.
 
+    Parameters
+    ----------
+    exclude_stations: list
+        List of stations (strings) to exclude from analysis.
+    rfactor: float
+        Aggregated R-value computed for all years and all stations, except the
+        ones listed in 'exlude_stations'
+    """
     stations = [
         station for station in erosivitydata.stations if station not in exclude_stations
     ]
@@ -51,7 +81,18 @@ def test_flanders(exclude_stations, rfactor):
     ],
 )
 def test_ukkel(timeseries, rfactor):
+    """Test the aggregation functions of EI30 to compute an R-value for the
+    station in Ukkel (Brussels, KMI_6447 and KMI_FS3). Pull all
+    EI30 data from the years defined in timeseries,
 
+    Parameters
+    ----------
+    timeseries: list
+        List of years (int) to include in the analysis.
+    rfactor: float
+        Aggregated R-value computed for all years and all stations, except the
+        ones listed in 'exlude_stations'
+    """
     df_R = erosivitydata.load_R(["KMI_6447", "KMI_FS3"], timeseries)
 
     np.testing.assert_allclose(np.mean(df_R["value"]), rfactor, atol=1e-2)
