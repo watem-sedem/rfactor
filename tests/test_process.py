@@ -4,6 +4,7 @@ from .conftest import erosivitydata, fmap_rainfall
 from rfactor.rfactor import compute_rfactor
 
 
+@pytest.mark.matlabbased
 def test_rfactor():
 
     compute_rfactor(fmap_rainfall, "matlab")

@@ -1,156 +1,34 @@
 ---
 kind: pipeline
 type: docker
-name: python3.7
+name: rfactor
 
 environment:
   CONDA_ACTIVATE: /opt/conda/bin/activate
-
 steps:
+
   - name: environment
     image: continuumio/miniconda3
     commands:
       - conda env create -p ./env -f environment.yml
       - . $CONDA_ACTIVATE
-      - conda activate /src/package/env
-      - cd pycnws
+      - conda activate /src/rfactor/env
       - pip install -e .[develop]
 
   - name: install
     image: continuumio/miniconda3
     commands:
       - . $CONDA_ACTIVATE
-      - conda activate /src/package/env
-      - python pycnws/setup.py develop --no-deps
-
-  - name: lint
-    image: continuumio/miniconda3
-    failure: ignore
-    commands:
-      - . $CONDA_ACTIVATE
-      - conda activate /src/package/env
-      - cd pycnws
-      - flake8
+      - conda activate /src/rfactor/env
+      - python setup.py develop --no-deps
 
   - name: unit-tests
     image: continuumio/miniconda3
     commands:
       - . $CONDA_ACTIVATE
-      - conda activate /src/package/env
-      - pytest pycnws/tests/ -m "not nasbased"
-
-  - name: documentation
-    image: continuumio/miniconda3
-    commands:
-      - . $CONDA_ACTIVATE
-      - conda activate /src/package/env
-      - python pycnws/setup.py build_sphinx -s pycnws/docs
-
-  - name: rsync-docs
-    image: drillster/drone-rsync
-    environment:
-      RSYNC_KEY:
-        from_secret: rsync_key
-    settings:
-      hosts:
-        - 10.28.0.24
-      user: docs
-      key:
-          from_secret: ssh-key
-      source: build/sphinx/html/
-      recursive: true
-      target: /appdata/static/docs/cnws
-    when:
-      branch:
-        - master
-      event:
-        exclude:
-          - pull_request
-
+      - conda activate /src/rfactor/env
+      - pytest tests/ -m "not matlabbased"
 
 workspace:
   base: /src
-  path: package
-
----
-kind: pipeline
-type: docker
-name: build package
-
-steps:
-  - name: fetch tags
-    image: alpine/git
-    commands:
-    - git fetch --tags
-
-  - name: build binary python package
-    image: continuumio/miniconda3
-    commands:
-      - cd pycnws && python setup.py bdist_wheel
-
-  - name: build debian package
-    image: registry.fluves.net/lazarus-build
-    environment:
-      GPG_KEY:
-         from_secret: gpg-key
-      DEBFULLNAME: "Fluves Drone CI"
-      DEBEMAIL: donotreply@fluves.net
-    commands:
-      - gbp dch --ignore-branch --snapshot --snapshot-number=$DRONE_BUILD_NUMBER
-      - debuild -b
-      - mkdir package
-      - mv ../cnws-processing-scripts*deb package
-    when:
-      branch:
-        - master
-      event:
-        exclude:
-          - pull_request
-
-  - name: rsync-apt
-    image: drillster/drone-rsync
-    environment:
-      RSYNC_KEY:
-        from_secret: rsync_key
-    settings:
-      hosts:
-        - ijzer
-      user: docs
-      key:
-         from_secret: rsync_key
-      source: package/*.deb
-      target: /appdata/static/apt/amd64
-    when:
-      branch:
-        - master
-      event:
-        exclude:
-          - pull_request
-
-  # copy all packages from repo and rebuild index
-  - name: Update repo
-    image: registry.fluves.net/lazarus-build
-    environment:
-      GPG_KEY:
-         from_secret: gpg-key
-      SSH_KEY:
-          from_secret: rsync_key
-      DEBFULLNAME: "Fluves Drone CI"
-      DEBEMAIL: donotreply@fluves.net
-    commands:
-      - mkdir -p ~/.ssh && echo "$SSH_KEY" > ~/.ssh/id_rsa && chmod og-rwx ~/.ssh/id_rsa
-      - echo "$GPG_KEY" | gpg --import
-      - mkdir apt-repo && cd apt-repo
-      - rsync -az -e "ssh -p 22 -o StrictHostKeyChecking=no" docs@ijzer:/appdata/static/apt/amd64 .
-      - apt-ftparchive packages amd64 > Packages
-      - gzip -c Packages > Packages.gz
-      - apt-ftparchive release . > Release
-      - gpg --clearsign -o InRelease Release
-      - gpg -abs -o Release.gpg Release
-      - rsync -av . docs@ijzer:/appdata/static/apt/
-    when:
-      branch:
-        - master
-      event:
-        exclude:
-          - pull_request
+  path: rfactor
