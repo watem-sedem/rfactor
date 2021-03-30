@@ -528,7 +528,7 @@ def load_erosivity_data(fname, year):
         See :func:`rfactor.flanders.data_processing.load_erosivity_file`
     """
     df = load_erosivity_file(fname)
-    df = assign_datetime_df_erosivity(df.copy(), year)
+    df = assign_datetime_df_erosivity(df.copy(), str(year))
     df = clip_erosivity_data(df.copy(), year)
 
     return df
