@@ -188,7 +188,7 @@ class ErosivityData:
         """
         return load_dict_format(self.dict_erosivity_data, "R", stations, years)
 
-    def load_EI30(self, stations=[], years=[], frequency="SM"):
+    def load_EI30(self, stations=[], years=[], frequency="M"):
         """Load EI30 timeseries values
 
         The timeseries has a frequency defined by the frequency input
@@ -418,6 +418,7 @@ def load_df_station(dict_data, variable, years=[], frequency=""):
         for year in lst_years:
             if year in dict_data.keys():
                 dict_output[year] = get_EI30(dict_data, year, frequency=frequency)
+        df = pd.concat(dict_output.values())
     return df[["year", "value"]]
 
 
@@ -463,6 +464,7 @@ def get_EI30(dict_df_erosivity, year, frequency):
     df = dict_df_erosivity[year].resample(frequency, closed="right").ffill()
     df["value"] = df["cumEI30"].diff()
     df.loc[df.index[0], "value"] = df.loc[df.index[0], "cumEI30"]
+    df.loc[df["value"].isnull(), "value"] = 0.0
 
     return df[["year", "value"]]
 
