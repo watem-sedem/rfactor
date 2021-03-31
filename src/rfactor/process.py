@@ -677,11 +677,16 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
     df_statistics: pandas.DataFrame
 
     """
+    df_rainfall["year"] = df_rainfall["year"].astype(int)
+    df_rainfall = df_rainfall.sort_values(by="year")
     df_statistics = (
         df_rainfall[["year", "station", "value"]]
         .groupby("station")
         .aggregate(
-            {"year": lambda x: set(x), "value": [np.min, np.max, np.median, np.shape]}
+            {
+                "year": lambda x: sorted(set(x)),
+                "value": [np.min, np.max, np.median, lambda x: np.shape(x)[0]],
+            }
         )
     )
     if df_station_metadata is not None:
@@ -689,4 +694,12 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
             df_station_metadata, on="station", how="left"
         )
 
-    return df_statistics
+    df_statistics["years"] = df_statistics[("year", "<lambda>")]
+    df_statistics["min"] = df_statistics[("value", "amin")]
+    df_statistics["median"] = df_statistics[("value", "median")]
+    df_statistics["max"] = df_statistics[("value", "amax")]
+    df_statistics["records"] = df_statistics[("value", "<lambda_0>")]
+
+    return df_statistics[
+        ["station", "years", "location", "x", "y", "records", "min", "median", "max"]
+    ]
