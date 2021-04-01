@@ -132,9 +132,13 @@ file and load the data:
     
         df_R=data.load_R(["KMI_6447","KMI_FS3"], 2018)
 
- - The dataframe ``df_R`` holds the R-values for each station and year (for
- which data are available). From this, basic numpy or pandas operators can be 
- used to compute statistics. 
+ - Get the EI30-values for 2018 based on two Ukkel station ("KMI_6447","KMI_FS3"):
+
+        df_R=data.load_EI30(["KMI_6447","KMI_FS3"], 2018)
+
+ - The dataframe ``df_R`` holds the R-values or EI30-values for each station and
+  year (for which data are available). From this, basic numpy or pandas operators 
+  can be used to compute statistics. 
 
 ## Development
 
