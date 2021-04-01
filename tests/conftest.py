@@ -5,7 +5,7 @@ folder_data = Path("tests/data")
 folder_example = Path("docs/example_data/")
 
 # references to input data
-txt_files = (folder_data / "files.csv").absolute()
+txt_files = (folder_data / "files_tests.csv").absolute()
 fmap_rainfall = (folder_data / "test_rainfalldata").absolute()
 fmap_erosivity = (folder_data / "test_erosivitydata").absolute()
 
