@@ -275,7 +275,6 @@ class StationData:
                     dict_erosivity[int(year)] = load_erosivity_data(
                         fname_erosivity, year
                     )
-
         return dict_rainfall, dict_erosivity
 
 
@@ -410,6 +409,8 @@ def load_df_station(dict_data, variable, years=[], frequency=""):
         for year in lst_years:
             if year in dict_data.keys():
                 dict_output[year] = get_R_year(dict_data, year)
+            else:
+                dict_output[year] = np.nan
         df = pd.DataFrame.from_dict(dict_output, orient="index", columns=["value"])
         df = df.reset_index().rename(columns={"index": "year"})
     elif variable == "N":
@@ -418,6 +419,8 @@ def load_df_station(dict_data, variable, years=[], frequency=""):
         for year in lst_years:
             if year in dict_data.keys():
                 dict_output[year] = get_EI30(dict_data, year, frequency=frequency)
+            else:
+                dict_output[year] = pd.DataFrame(columns=["year","value"])
         df = pd.concat(dict_output.values())
     return df[["year", "value"]]
 
