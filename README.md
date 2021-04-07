@@ -146,6 +146,10 @@ file and load the data:
   year (for which data are available). From this, basic numpy or pandas operators 
   can be used to compute statistics. 
 
+  __Note__: If no values are reported for EI30 in ``df_EI30`` for a specific year for a station,
+  this implies no calculations were done for that year. In ``df_R`` a ``nan`` value will be reported
+  when no calculations were done for that specific year.  
+
 ## Development
 
 When developing this package, following tools are used:
