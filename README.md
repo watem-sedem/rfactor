@@ -21,7 +21,7 @@ to run the R-factor scripts. For Python, setup/update the environment: the depen
 
 To install the package use:
 
-       pip install -e
+       pip install -e .
 
 Or for development purposes of this package, run following code to install developer dependencies (using pip):
 
