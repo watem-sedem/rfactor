@@ -14,7 +14,7 @@ over all years. For the formula's, we refer to the [CN-WS Pascal model documenta
 ## Install
 
 Pick-up the latest version of [Matlab](https://nl.mathworks.com/products/matlab.html?requestedDomain=)
-to run the R-factor scripts. For Python, setup/update the environment: the dependencies are handled in the conda environment.yml file, so anybody can recreate the required environment using:
+to run the R-factor scripts (make sure you can run Matlab under administrator account). For Python, setup/update the environment: the dependencies are handled in the conda environment.yml file, so anybody can recreate the required environment using:
 
     conda env create -f environment.yml
     conda activate rfactor
@@ -132,18 +132,23 @@ file and load the data:
         erosivitydata.load_data(df_files)
 
 
- - Get the R-value for 2018 based on two Ukkel station ("KMI_6447","KMI_FS3"):
+ - Get the R-value for 2017 and 2018 based on two Ukkel station ("KMI_6447","KMI_FS3"):
 
     
-        df_R=data.load_R(["KMI_6447","KMI_FS3"], 2018)
+        df_R=erosivitydata.load_R(["KMI_6447","KMI_FS3"], [2017,2018])
 
  - Get the EI30-values for 2018 based on two Ukkel station ("KMI_6447","KMI_FS3"):
 
-        df_R=data.load_EI30(["KMI_6447","KMI_FS3"], 2018)
 
- - The dataframe ``df_R`` holds the R-values or EI30-values for each station and
+        df_EI30=erosivitydata.load_EI30(["KMI_6447","KMI_FS3"], [2017,2018])
+
+ - The dataframe ``df_R`` and ``df_EI30`` holds the R-values and EI30-values for each station and
   year (for which data are available). From this, basic numpy or pandas operators 
   can be used to compute statistics. 
+
+  __Note__: If no values are reported for EI30 in ``df_EI30`` for a specific year for a station,
+  this implies no calculations were done for that year. In ``df_R`` a ``nan`` value will be reported
+  when no calculations were done for that specific year.  
 
 ## Development
 
