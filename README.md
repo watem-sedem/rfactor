@@ -19,7 +19,11 @@ to run the R-factor scripts. For Python, setup/update the environment: the depen
     conda env create -f environment.yml
     conda activate rfactor
 
-For development purposes of this package, also run following code to install developer dependencies (using pip):
+To install the package use:
+
+	pip install -e .
+
+Or for development purposes of this package, also run following code to install developer dependencies (using pip):
 
 	pip install -e .[develop]
 	
