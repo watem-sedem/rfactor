@@ -23,7 +23,7 @@ function []=main(path,path_results)
        [R, cumEI]=core(year,inputdata);
        table(i,:)=R;
        % Prepare write
-       fid = fopen(fullfile('results',strcat(name,'new cumdistr salles.txt')),'wt');
+       fid = fopen(fullfile(path_results,strcat(name,'new cumdistr salles.txt')),'wt');
        % write the matrix
        if fid > 0
            fprintf(fid,'%.3f %.2f %.1f\n',cumEI);
