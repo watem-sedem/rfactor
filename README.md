@@ -132,16 +132,17 @@ file and load the data:
         erosivitydata.load_data(df_files)
 
 
- - Get the R-value for 2018 based on two Ukkel station ("KMI_6447","KMI_FS3"):
+ - Get the R-value for 2017 and 2018 based on two Ukkel station ("KMI_6447","KMI_FS3"):
 
     
-        df_R=data.load_R(["KMI_6447","KMI_FS3"], 2018)
+        df_R=erosivitydata.load_R(["KMI_6447","KMI_FS3"], [2017,2018])
 
  - Get the EI30-values for 2018 based on two Ukkel station ("KMI_6447","KMI_FS3"):
 
-        df_R=data.load_EI30(["KMI_6447","KMI_FS3"], 2018)
 
- - The dataframe ``df_R`` holds the R-values or EI30-values for each station and
+        df_EI30=erosivitydata.load_EI30(["KMI_6447","KMI_FS3"], [2017,2018])
+
+ - The dataframe ``df_R`` and ``df_EI30`` holds the R-values and EI30-values for each station and
   year (for which data are available). From this, basic numpy or pandas operators 
   can be used to compute statistics. 
 
