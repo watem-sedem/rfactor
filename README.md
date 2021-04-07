@@ -14,7 +14,7 @@ over all years. For the formula's, we refer to the [CN-WS Pascal model documenta
 ## Install
 
 Pick-up the latest version of [Matlab](https://nl.mathworks.com/products/matlab.html?requestedDomain=)
-to run the R-factor scripts. For Python, setup/update the environment: the dependencies are handled in the conda environment.yml file, so anybody can recreate the required environment using:
+to run the R-factor scripts (make sure you can run Matlab under administrator account). For Python, setup/update the environment: the dependencies are handled in the conda environment.yml file, so anybody can recreate the required environment using:
 
     conda env create -f environment.yml
     conda activate rfactor
