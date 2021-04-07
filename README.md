@@ -19,9 +19,13 @@ to run the R-factor scripts. For Python, setup/update the environment: the depen
     conda env create -f environment.yml
     conda activate rfactor
 
-For development purposes of this package, also run following code to install developer dependencies (using pip):
+To install the package use:
 
-	pip install -e .[develop]
+    pip install -e .
+
+Or for development purposes of this package, run following code to install developer dependencies (using pip):
+
+    pip install -e .[develop]
 	
 ## Get started
 
@@ -67,11 +71,11 @@ for the analysis is saved in a  `files.csv` file
 files from the analysis (column `consider`):
 
 
-   | source        | datafile      | consider  |
+   | source       | datafile      | consider  |
   | ------------- |:-------------:| ---------:|
-  | KMI	          | KMI_6414_2004 | 0         |
-  | KMI	          | KMI_6414_2005 | 1         |
-  | KMI	          | KMI_6414_2006 | 1         |
+  | KMI	    | KMI_6414_2004 | 0         |
+  | KMI	    | KMI_6414_2005 | 1         |
+  | KMI	    | KMI_6414_2006 | 1         |
   | ...           | ...           | ...       |
 
 
@@ -81,17 +85,18 @@ The erosvity (EI30-values) can be computed by navigating to the
 *./src/rfactor* folder (make sure to activating the rfactor environment, 
 ``conda activate rfactor``). In Python, import:
 
-    from rfactor import compute_rfactor
+    from rfactor.rfactor import compute_rfactor
     from pathlib import Path
     
 And run code:
 
     rainfall_inputdata_folder = Path(r"../../tests/data/test_rainfalldata")
-    compute_rfactor(rainfall_inputdata_folder,"matlab")
+    results_folder = Path(r"results")
+    compute_rfactor(rainfall_inputdata_folder,results_folder,"matlab")
     
 The current implemenation makes use of a Matlab engine, which requires Matlab
 to be installed. Future versions of this package will use Python. Results are 
-written to the *./src/rfactor/results*-folder.
+written to the *results_folder*-folder.
 
 ### Analyse R-values
 
@@ -111,7 +116,7 @@ and load the necessary packages:
 
 
         fmap_rainfall = Path(r"./tests/data/test_rainfalldata")
-        fmap_erosivty = = Path(r"./tests/data/test_erosivitydata")
+        fmap_erosivty = = Path(r"results") # Folder path where results are written to (see above).
  
  - Define the path for the `files.csv`-file:
  
