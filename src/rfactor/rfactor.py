@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 
-def compute_rfactor(rainfall_inputdata_folder, engine="matlab"):
+def compute_rfactor(rainfall_inputdata_folder, results_folder, engine="matlab"):
     """Compute the R-factor
 
     Parameters
@@ -12,9 +12,14 @@ def compute_rfactor(rainfall_inputdata_folder, engine="matlab"):
         Folder path to directory holding rainfall data. Rainfall data are
         stored in separate *.txt files per station and year. For the format of
         the `txt`-files, see :func:`rfactor.rfactor.load_rainfall_data`
+    results_folder: str or pathlib.path
+        Folder path to write results to.
     engine: 'matlab' or 'python'
         Engine used to compute rfactor.
     """
+    results_folder = Path(results_folder)
+    if not results_folder.exists():
+        results_folder.mkdir()
     if engine not in ["matlab", "python"]:
         msg = f"Either select 'matlab' or 'python' as calculation engine for the rfactor scripts."
         raise IOError(msg)
@@ -24,7 +29,7 @@ def compute_rfactor(rainfall_inputdata_folder, engine="matlab"):
             "matlab",
             "-nodesktop",
             "-r",
-            f"main('{rainfall_inputdata_folder}');exit;",
+            f"main('{str(rainfall_inputdata_folder.resolve())}','{str(results_folder)}');exit;",
         ]
         check_call(cmd)
     else:

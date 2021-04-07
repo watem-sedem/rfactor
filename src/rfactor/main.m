@@ -1,8 +1,5 @@
 
-function []=main(path)
-
-    %% Prepare
-    mkdir("results")
+function []=main(path,path_results)
 
     %% Check if directory exists
     if ~exist(path, 'dir')
@@ -50,7 +47,7 @@ function []=main(path)
     commaHeader = commaHeader(:)';
     textHeader = cell2mat(commaHeader); %cHeader in text with commas
     %write header to file
-    fid = fopen(fullfile('results','output.csv'),'w'); 
+    fid = fopen(fullfile(path_results,'output.csv'),'w'); 
     fprintf(fid,'%s\n',textHeader)
     fclose(fid)
     %write data to end of file
