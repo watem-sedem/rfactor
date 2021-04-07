@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 
-def compute_rfactor(rainfall_inputdata_folder, results_folder, engine="matlab"):
+def compute_rfactor(rainfall_inputdata_folder, results_folder, engine="matlab", debug=False):
     """Compute the R-factor
 
     Parameters
@@ -16,6 +16,8 @@ def compute_rfactor(rainfall_inputdata_folder, results_folder, engine="matlab"):
         Folder path to write results to.
     engine: 'matlab' or 'python'
         Engine used to compute rfactor.
+    debug: optional, default False
+        Debug flag to leave matlab open.
     """
     results_folder = Path(results_folder)
     if not results_folder.exists():
@@ -25,11 +27,14 @@ def compute_rfactor(rainfall_inputdata_folder, results_folder, engine="matlab"):
         raise IOError(msg)
     if engine == "matlab":
         os.chdir(Path(__file__).parent)
+
+        exitcode="exit;" if debug else ""
+
         cmd = [
             "matlab",
             "-nodesktop",
             "-r",
-            f"main('{str(rainfall_inputdata_folder.resolve())}','{str(results_folder)}');exit;",
+            f"main('{str(rainfall_inputdata_folder.resolve())}','{str(results_folder)}');"+exitcode,
         ]
         check_call(cmd)
     else:
