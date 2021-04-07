@@ -21,9 +21,9 @@ to run the R-factor scripts. For Python, setup/update the environment: the depen
 
 To install the package use:
 
-	pip install -e .
+       pip install -e
 
-Or for development purposes of this package, also run following code to install developer dependencies (using pip):
+Or for development purposes of this package, run following code to install developer dependencies (using pip):
 
 	pip install -e .[develop]
 	
@@ -71,11 +71,11 @@ for the analysis is saved in a  `files.csv` file
 files from the analysis (column `consider`):
 
 
-   | source        | datafile      | consider  |
+   | source       | datafile      | consider  |
   | ------------- |:-------------:| ---------:|
-  | KMI	          | KMI_6414_2004 | 0         |
-  | KMI	          | KMI_6414_2005 | 1         |
-  | KMI	          | KMI_6414_2006 | 1         |
+  | KMI	    | KMI_6414_2004 | 0         |
+  | KMI	    | KMI_6414_2005 | 1         |
+  | KMI	    | KMI_6414_2006 | 1         |
   | ...           | ...           | ...       |
 
 
@@ -85,7 +85,7 @@ The erosvity (EI30-values) can be computed by navigating to the
 *./src/rfactor* folder (make sure to activating the rfactor environment, 
 ``conda activate rfactor``). In Python, import:
 
-    from rfactor import compute_rfactor
+    from rfactor.rfactor import compute_rfactor
     from pathlib import Path
     
 And run code:
