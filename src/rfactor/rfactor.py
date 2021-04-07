@@ -22,6 +22,8 @@ def compute_rfactor(rainfall_inputdata_folder, results_folder, engine="matlab", 
     results_folder = Path(results_folder)
     if not results_folder.exists():
         results_folder.mkdir()
+    if not Path(rainfall_inputdata_folder).exists():
+        raise IOError(f"Input {rainfall_inputdata_folder}folder does not exist")
     if engine not in ["matlab", "python"]:
         msg = f"Either select 'matlab' or 'python' as calculation engine for the rfactor scripts."
         raise IOError(msg)
