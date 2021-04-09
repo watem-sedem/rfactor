@@ -33,7 +33,7 @@ steps:
     image: continuumio/miniconda3
     commands:
       - . $CONDA_ACTIVATE
-      - conda activate /src/refactor/env
+      - conda activate /src/rfactor/env
       - python setup.py build_sphinx -s docs
 
 workspace:
