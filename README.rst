@@ -239,22 +239,14 @@ left out of version control.
 Powered by
 ----------
 
-.. figure:: docs/_static/png/DepartementOmgeving_logo.png
+.. image:: /docs/_static/png/DepartementOmgeving_logo.png
 
-.. figure:: docs/_static/png/KULeuven_logo.png
 
-.. figure:: docs/_static/png/VMM_logo.png
+.. image:: /docs/_static/png/KULeuven_logo.png
 
-.. figure:: docs/_static/png/fluves_logo.png
 
-License
--------
+.. image:: /docs/_static/png/VMM_logo.png
 
-Authors
--------
 
-| Niels De Vleeschouwer (Fluves)
-| Sacha Gobeyn (Fluves)
-| Daan Renders (Fluves) Johan Van de Wauw (Fluves)
-| Stijn Van Hoey (Fluves)
-| Gert Verstraeten (KULeuven)
+.. image:: /docs/_static/png/fluves_logo.png
+
