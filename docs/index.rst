@@ -8,7 +8,7 @@ Contents
    :caption: User guide
    :maxdepth: 1
 
-   Module Reference <api/reference>
+   Module Reference <api/modules>
 
 .. toctree::
    :caption: Developer guide
