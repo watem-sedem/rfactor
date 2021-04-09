@@ -11,6 +11,7 @@ import os
 import sys
 import inspect
 import shutil
+import sphinx_rtd_theme
 
 # -- Path setup --------------------------------------------------------------
 
@@ -37,7 +38,7 @@ except ImportError:
     from sphinx import apidoc
 
 output_dir = os.path.join(__location__, "api")
-module_dir = os.path.join(__location__, "../src/example_project")
+module_dir = os.path.join(__location__, "../src/rfactor")
 try:
     shutil.rmtree(output_dir)
 except FileNotFoundError:
@@ -93,8 +94,8 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = "example_project"
-copyright = "2021, Sacha"
+project = "rfactor"
+copyright = "2021, Sacha Gobeyn"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -147,15 +148,12 @@ pygments_style = "sphinx"
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = "alabaster"
+html_theme = "sphinx_rtd_theme"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-html_theme_options = {
-    "sidebar_width": "300px",
-    "page_width": "1200px"
-}
+# html_theme_options = {}
 
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
@@ -163,7 +161,7 @@ html_theme_options = {
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
 try:
-    from example_project import __version__ as version
+    from rfactor import __version__ as version
 except ImportError:
     pass
 else:
@@ -184,7 +182,7 @@ else:
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
+html_static_path = [sphinx_rtd_theme.get_html_theme_path()]
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
