@@ -10,8 +10,8 @@ def compute_rfactor(rainfall_inputdata_folder, results_folder, engine="matlab", 
     ----------
     rainfall_inputdata_folder: pathlib.Path
         Folder path to directory holding rainfall data. Rainfall data are
-        stored in separate *.txt files per station and year. For the format of
-        the `txt`-files, see :func:`rfactor.rfactor.load_rainfall_data`
+        stored in separate .txt files per station and year. For the format of
+        the `txt`-files, see :func:`rfactor.process.load_rainfall_data`
     results_folder: str or pathlib.path
         Folder path to write results to.
     engine: 'matlab' or 'python'
@@ -50,8 +50,8 @@ def rfactor_python(rainfall_inputdata_folder):
     ----------
     rainfall_inputdata_folder: pathlib.Path
         Folder path to directory holding rainfall data. Rainfall data are
-        stored in separate *.txt files per station and year. For the format of
-        the `txt`-files, see :func:`rfactor.rfactor.load_rainfall_data`
+        stored in separate .txt files per station and year. For the format of
+        the `txt`-files, see :func:`rfactor.process.load_rainfall_data`
     """
 
     print("TO DO")

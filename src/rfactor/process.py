@@ -19,7 +19,7 @@ class ErosivityData:
     fmap_rainfall: pathlib.Path
         Folder path to directory holding rainfall data. Rainfall data are
         stored in separate *.txt files per station and year. For the format of
-        the `txt`-files, see :func:`rfactor.rfactor.load_rainfall_data`
+        the `txt`-files, see :func:`rfactor.process.load_rainfall_data`
 
     fmap_erosivity_data: pathlib.Path
         Folder path to directory holding erosivity data. Erosvity data are
@@ -251,12 +251,12 @@ class StationData:
         dict_rainfall: dict of {str: pandas.DataFrame}
             Holding rainfall data (in pandas.DataFrame) for every year, i.e.
             {*year*: *rainfall_data*}. For structure *rainfall_data*, see
-            :func:`rfactor.rfactor.load_rainfall_data`.
+            :func:`rfactor.process.load_rainfall_data`.
 
         dict_erosivity: dict of {str: pandas.DataFrame}
             Holding erosivity data (in pandas.DataFrame) for every year, i.e.
             {*year*: *erosivity_data*}. For structure *rainfall_data*, see
-            :func:`rfactor.rfactor.load_rainfall_data`.
+            :func:`rfactor.process.load_rainfall_data`.
 
         """
         dict_rainfall = {}
