@@ -18,12 +18,12 @@ class ErosivityData:
     ----------
     fmap_rainfall: pathlib.Path
         Folder path to directory holding rainfall data. Rainfall data are
-        stored in separate *.txt files per station and year. For the format of
+        stored in separate .txt files per station and year. For the format of
         the `txt`-files, see :func:`rfactor.process.load_rainfall_data`
 
     fmap_erosivity_data: pathlib.Path
         Folder path to directory holding erosivity data. Erosvity data are
-        stored in separate *.txt files per station and year. For the format of
+        stored in separate .txt files per station and year. For the format of
         the `txt`-files, see :func:`rfactor.rfactor.load_erosivity_data`
 
     Example
@@ -293,13 +293,14 @@ def load_df_files(txt_files):
         loaded txt_files data with columns:
 
         - *datafile* (str): unique tag referring to rainfall and erosivity
-        filename (format "%STATION_%YEAR" without suffix).
+          filename (format "%STATION_%YEAR" without suffix).
         - *year*: Year of registration.
         - *station*: Name or code of the measurement station.
         - *consider* (int): Consider file for year and station for
-        analysis (0/1).
+          analysis (0/1).
         - *fname_rainfall* (str): full path to rainfall input data file.
         - *fname_erosivity* (str): full path to erosivity data file.
+
     """
     df_files = pd.read_csv(txt_files)
     check_duplicates_df_files(df_files, txt_files)
@@ -433,7 +434,7 @@ def get_R_year(dict_df_erosivity, year):
     dict_df_erosivity: dict of {str: pandas.DataFrame}
         Dictionary format of erosivity data (key: year, value: dataframe). For
         the format of the dataframe,
-        see func:`rfactor.rfactor.assign_datetime_df_erosivity
+        see func:`rfactor.rfactor.assign_datetime_df_erosivity`
     year: int
         Year of registration.
 
