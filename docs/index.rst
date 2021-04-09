@@ -9,6 +9,7 @@ Contents
    :maxdepth: 1
 
    Module Reference <api/modules>
+   Tutorial <notebooks/analysis_flanders>
 
 .. toctree::
    :caption: Developer guide
