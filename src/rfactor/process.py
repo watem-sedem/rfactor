@@ -75,12 +75,12 @@ class ErosivityData:
         ----------
         txt_files: pathlib.Path
             File path of rainfall and erosivity overview file, see
-            `:func:rfactor.rfactor.load_df_files`.
+            `:func:rfactor.process.load_df_files`.
 
         Returns
         -------
         df_files: pandas.DataFrame
-            Loaded txt_files data, see `:func:rfactor.rfactor.load_df_files`.
+            Loaded txt_files data, see `:func:rfactor.process.load_df_files`.
         """
         df_files = self.check_df_files(txt_files)
 
@@ -94,12 +94,12 @@ class ErosivityData:
         ----------
         txt_files: pathlib.Path
             File path of rainfall and erosivity overview file, see
-            `:func:rfactor.rfactor.load_df_files`.
+            `:func:rfactor.process.load_df_files`.
 
         Returns
         -------
         df_files: pandas.DataFrame
-            Loaded txt_files data, see `:func:rfactor.rfactor.load_df_files`.
+            Loaded txt_files data, see `:func:rfactor.process.load_df_files`.
         """
         df_files = load_df_files(txt_files)
 
@@ -133,7 +133,7 @@ class ErosivityData:
         ----------
         df_files: pandas.DataFrame
             Input file overview file, see
-            `:func:rfactor.rfactor.load_df_files`.
+            `:func:rfactor.process.load_df_files`.
         """
 
         self.dict_erosivity_data = {}
@@ -228,7 +228,7 @@ class StationData:
     station: str
         Name or code of the measurement station.
     df_files: pandas.DataFrame
-        See `:func:rfactor.rfactor.load_df_files`.
+        See `:func:rfactor.process.load_df_files`.
 
     """
 
