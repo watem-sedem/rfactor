@@ -233,7 +233,7 @@ class StationData:
     """
 
     station: str
-    df_files: pd.DataFrame()
+    df_files: pd.DataFrame
 
     def __post_init__(self):
 
