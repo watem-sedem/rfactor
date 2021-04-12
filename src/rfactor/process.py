@@ -166,7 +166,7 @@ class ErosivityData:
         Returns
         -------
         pandas.DataFrame
-            See `:func:rfactor.proces.load_dict_format`
+            See :func:`rfactor.proces.load_dict_format`
         """
         return load_dict_format(self.dict_rainfall_data, "N", stations, years)
 
@@ -184,7 +184,7 @@ class ErosivityData:
         Returns
         -------
         pandas.DataFrame
-            See `:func:rfactor.proces.load_dict_format`
+            See :func:`rfactor.proces.load_dict_format`
         """
         return load_dict_format(self.dict_erosivity_data, "R", stations, years)
 
@@ -206,7 +206,7 @@ class ErosivityData:
         Returns
         -------
         pandas.DataFrame
-            See `:func:rfactor.proces.load_dict_format`
+            See :func:`rfactor.proces.load_dict_format`
         """
         if frequency not in ["SM", "M"]:
             msg = (
@@ -294,8 +294,8 @@ def load_df_files(txt_files):
 
         - *datafile* (str): unique tag referring to rainfall and erosivity
           filename (format "%STATION_%YEAR" without suffix).
-        - *year*: Year of registration.
-        - *station*: Name or code of the measurement station.
+        - *year* (int): Year of registration.
+        - *station* (str): Name or code of the measurement station.
         - *consider* (int): Consider file for year and station for
           analysis (0/1).
         - *fname_rainfall* (str): full path to rainfall input data file.
@@ -369,6 +369,7 @@ def load_dict_format(dict_data, variable, stations=[], years=[], frequency=""):
     ------
     pandas.DataFrame
         Dataframe of R-value, EI30 or rainfall data.
+
         - *year* (int): Year of registration.
         - *value* (float): R-, EI30- or rainfall value.
         - *station* (str): Name or code of the measurement station.
@@ -401,6 +402,7 @@ def load_df_station(dict_data, variable, years=[], frequency=""):
     -------
     df: pandas.DataFrame
         Dataframe of R-value, EI30 or rainfall data.
+
         - *year* (int): Year of registration.
         - *value* (float): R-, EI30- or rainfall value
     """
@@ -434,7 +436,7 @@ def get_R_year(dict_df_erosivity, year):
     dict_df_erosivity: dict of {str: pandas.DataFrame}
         Dictionary format of erosivity data (key: year, value: dataframe). For
         the format of the dataframe,
-        see func:`rfactor.rfactor.assign_datetime_df_erosivity`
+        see :func:`rfactor.process.assign_datetime_df_erosivity`
     year: int
         Year of registration.
 
@@ -494,16 +496,19 @@ def load_rainfall_data(fname, station, year):
     ------
     df: pandas.DataFrame
         Holds non-zero rainfall time series for one year, one station
+
         - *timestamp* (int): number of passed minutes since start of the year.
         - *value* (float): amount of rainfal (mm) fallen during past x minutes.
 
     Notes
     -----
+
     1. The content of fname should be a non-zero timeseries:
-        10  1.00
-        20  0.20
-        50  0.50
-        60  0.30
+
+        10  \t 1.00 \n
+        20  \t 0.20 \n
+        50  \t 0.50 \n
+        60  \t 0.30 \n
         ... ...
     2. The rainfall datafile can only hold data for one year: maximum value
        for column one is 525600 (365 days) minutes (527040, leap year).
@@ -531,7 +536,7 @@ def load_erosivity_data(fname, year):
     Returns
     -------
     df: pandas.DataFrame
-        See :func:`rfactor.flanders.data_processing.load_erosivity_file`
+        See :func:`rfactor.process.load_erosivity_file`
     """
     df = load_erosivity_file(fname)
     df = assign_datetime_df_erosivity(df.copy(), str(year))
@@ -553,7 +558,8 @@ def load_erosivity_file(fname):
     Returns
     -------
     df: pandas.DataFrame
-        Cumulative erosivity (cumulative EI30) for day-of-the-year. Columns:
+        Cumulative erosivity (cumulative EI30) for day-of-the-year.
+
         - *day* (float): day of the year.
         - *cumEI30* (float): cumulative erosivity (MJ mm ha-1 h-1).
         - *fname* (pathlib.Path): file path of data source.
@@ -575,15 +581,17 @@ def assign_datetime_df_erosivity(df, year):
     Parameters
     ----------
     df: pandas.DataFrame
-        See :func:`rfactor.flanders.load_erosivity_file`
+        See :func:`rfactor.process.load_erosivity_file`
     year: int
         Year of registration.
 
     Returns
     -------
     df: pandas.DataFrame
+
         Updated dataframe with datetime index added.
-        - *index* (pd.datetime64 series).
+
+        - *index* (pandas.datetime64 series).
         - *day* (float): day of the year.
         - *cumEI30* (float): cumulative erosivity (MJ mm ha-1 h-1).
         - *fname* (pathlib.Path): file path of data source.
@@ -601,7 +609,7 @@ def clip_erosivity_data(df, year):
     Parameters
     ----------
     df: pandas.DataFrame
-        See :func:`rfactor.rfactor.assign_datetime_df_erosivity`
+        See :func:`rfactor.process.assign_datetime_df_erosivity`
     year: int
         Year of registration.
 
@@ -646,12 +654,12 @@ def check_missing_files(lst_target, lst_reference, fmap_reference):
 
     Returns
     -------
-    flag: boolean
+    flag: bool
         Difference between two folders is zero (True), else False
 
     Notes
     -----
-    The files in both the erosivity and rianfall input folder have
+    The files in both the erosivity and rainfall input folder have
     to be exactly the same (same number of files, same tags).
     """
     diff = set(lst_target) - set(lst_reference)
@@ -676,6 +684,7 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
     df_station_metadata: pandas.DataFrame
         Dataframe holding station metadata. This dataframe has one mandatory
         column:
+
         - *station* (str): Name or code of the measurement station
 
     Returns
