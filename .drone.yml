@@ -29,6 +29,13 @@ steps:
       - conda activate /src/rfactor/env
       - pytest tests/ -m "not matlabbased"
 
+  - name: documentation
+    image: continuumio/miniconda3
+    commands:
+      - . $CONDA_ACTIVATE
+      - conda activate /src/rfactor/env
+      - python setup.py build_sphinx -s docs
+
 workspace:
   base: /src
   path: rfactor
