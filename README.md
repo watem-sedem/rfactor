@@ -197,15 +197,4 @@ which will create the docs in the `build` folder. This directory is left out of 
 ![alt text](docs/_static/png/VMM_logo.png "Title")
 
 ![alt text](docs/_static/png/fluves_logo.png "Title")
-
-
-## License
-
-## Authors
-
-Niels De Vleeschouwer (Fluves)  
-Sacha Gobeyn (Fluves)    
-Daan Renders (Fluves)
-Johan Van de Wauw (Fluves)    
-Stijn Van Hoey (Fluves)  
-Gert Verstraeten (KULeuven)    
+ 
