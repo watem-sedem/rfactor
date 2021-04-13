@@ -37,7 +37,7 @@ class ErosivityData:
     >>> df_files = data.build_data_set(txt_files)
     >>> data.load_data(df_files)
     >>> # Get dataframe with R for year 2018 and station KMI_6447 and KMI_FS3
-    >>> df_R=data.load_R(["KMI_6447","KMI_FS3"], 2018)
+    >>> df_R=data.load_R(["KMI_6447","KMI_FS3"], [2018])
     """
 
     fmap_rainfall: Path
