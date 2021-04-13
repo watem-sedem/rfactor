@@ -75,17 +75,18 @@ on the main level of the package (location where the file
 unit testing with pytest
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Run the test suite using the ``pytest`` package, from within the main
-package folder):
+Run the test suite using the ``pytest`` package (from within the main
+package folder, in the ``rfactor`` environment!):
 
 ::
 
-    python setup.py test
+    pytest tests/
 
 documentation with sphinx
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Build the documentation locally with sphinx:
+Build the documentation locally with sphinx (from within the main
+package folder, in the ``rfactor`` environment!):
 
 ::
 

@@ -49,13 +49,15 @@ function []=main(path,path_results)
     commaHeader = commaHeader(:)';
     textHeader = cell2mat(commaHeader); %cHeader in text with commas
     %write header to file
-    fid = fopen(fullfile(path_results,'output.csv'),'w'); 
-    fprintf(fid,'%s\n',textHeader)
-    fclose(fid)
-    %write data to end of file
-    table;
-    dlmwrite('output.csv',table,'-append');
-
+    filename_out = fullfile(path_results,'output.csv');
+    fid = fopen(filename_out,'wt');
+    if fid>0
+        fprintf(fid,'%s\n',textHeader);
+        fclose(fid);
+        %write data to end of file
+        table;
+        dlmwrite('output.csv',table,'-append');
+    end
 
 
 
