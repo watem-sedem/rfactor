@@ -34,6 +34,11 @@ Rainfall and erosivity data
 
 **TODO**
 
+License
+-------
+This project is licensed under the GNU General Public License v3.0, see
+:ref:`here <license>` for more information.
+
 Contact
 -------
 We encourage user to submit question, suggestions and bug reports via the

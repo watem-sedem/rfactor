@@ -43,6 +43,10 @@ We encourage user to submit question, suggestions and bug reports via
 the issues platform on GitHub **TO DO**. In case of other questions, one
 mail to **TODO**.
 
+License
+-------
+This project is licensed under the GNU General Public License v3.0.
+
 Powered by
 ----------
 
