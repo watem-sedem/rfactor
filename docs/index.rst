@@ -6,10 +6,16 @@ Contents
 
 .. toctree::
    :caption: User guide
-   :maxdepth: 1
+   :titlesonly:
+   :glob:
+   :hidden:
+   :maxdepth: 2
 
+   R-factor <rfactor.rst>
+   Installation <installation.rst>
+   Tutorial <get-started.rst>
    Module Reference <api/modules>
-   Tutorial <notebooks/analysis_flanders>
+   Flanders <notebooks/analysis_flanders>
 
 .. toctree::
    :caption: Developer guide
