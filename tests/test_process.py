@@ -16,7 +16,7 @@ def test_rfactor():
     """
     fname = "KMI_6414_2004"
 
-    compute_rfactor(fmap_rainfall_one_file, "matlab")
+    compute_rfactor(fmap_rainfall_one_file, "result","matlab")
 
     f_test = Path("results") / (fname + "new cumdistr salles.txt")
     df_test = load_erosivity_data(f_test, 2004)
