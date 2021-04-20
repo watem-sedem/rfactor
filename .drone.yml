@@ -1,0 +1,41 @@
+---
+kind: pipeline
+type: docker
+name: rfactor
+
+environment:
+  CONDA_ACTIVATE: /opt/conda/bin/activate
+steps:
+
+  - name: environment
+    image: continuumio/miniconda3
+    commands:
+      - conda env create -p ./env -f environment.yml
+      - . $CONDA_ACTIVATE
+      - conda activate /src/rfactor/env
+      - pip install -e .[develop]
+
+  - name: install
+    image: continuumio/miniconda3
+    commands:
+      - . $CONDA_ACTIVATE
+      - conda activate /src/rfactor/env
+      - python setup.py develop --no-deps
+
+  - name: unit-tests
+    image: continuumio/miniconda3
+    commands:
+      - . $CONDA_ACTIVATE
+      - conda activate /src/rfactor/env
+      - pytest tests/ -m "not matlabbased"
+
+  - name: documentation
+    image: continuumio/miniconda3
+    commands:
+      - . $CONDA_ACTIVATE
+      - conda activate /src/rfactor/env
+      - python setup.py build_sphinx -s docs
+
+workspace:
+  base: /src
+  path: rfactor
