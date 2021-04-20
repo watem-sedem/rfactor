@@ -1,73 +1,65 @@
+R-factor
+========
 
+The $R$-factor is a measure used in erosion and (overland) sediment
+modelling to quantify the effect of rainfall on soil erosion. It is
+typically defined in the context of the RUSLE equation, in which gross
+erosion for an agricultural parcel is estimated (see, for example,
+[here](https://docs.fluves.net/cnws-pascal//)).
 
-# R-factor
+Specifically, the $R$-factor is a measure for the total erosivity of a
+number of rainfall events within a defined timeframe (year, month,
+number of days). The factor is computed by calculating the erosivity for
+every rainfall event in a timeseries, and taking the sum of the
+erosivity of all events in one year. These yearly values can be used to
+compute an average value, the R-factor, presenting the rainfall
+erosivity for a given period. An in-depth explanation of the formula's
+is given here \<rfactor\>.
 
-## Aim
+Get started
+-----------
 
-Scripts to compute and analyse the R-factor of the RUSLE-equation. The
-R-factor is a measure for the total erosivity of a number of rainfall events
-within a defined timeframe (year, month, number of days). The factor is
-computed by calculating the yearly sum of -for every rainfall event- the sum
-of the depth of rainfall (mm) and the kinetic energy, and taking the mean
-over all years. For the formula's, we refer to the [CN-WS Pascal model documentation](https://docs.fluves.net/cnws-pascal/watem-sedem.html#rusle-factors)
+This package makes use of `Python` (and a limited number of dependencies
+such as Pandas and Numpy) and `Matlab`. The installation (see
+here \<installation\>) is managed by making use of `Miniconda`:
+<https://docs.conda.io/en/latest/miniconda.html>. Make sure to check out
+the installation instructions, and follow the example in the
+Get started \<getstarted\> page.
 
-## Install
+> **note**
+>
+> A Python version of the Matlab code is being developed, and is expected to
+> :   be released in the next version of this code.
+>
+Rainfall and erosivity data
+---------------------------
 
-Pick-up the latest version of [Matlab](https://nl.mathworks.com/products/matlab.html?requestedDomain=)
-to run the R-factor scripts. For Python, setup/update the environment: the dependencies are handled in the conda environment.yml file, so anybody can recreate the required environment using:
+**TODO**
 
-    conda env create -f environment.yml
-    conda activate rfactor
+Contact
+-------
 
-Install the code developed specifically for the project in the environment (in -e edit mode):
+We encourage user to submit question, suggestions and bug reports via
+the issues platform on GitHub **TO DO**. In case of other questions, one
+mail to **TODO**.
 
-    conda activate rfactor
-    pip install -e .
+License
+-------
+This project is licensed under the GNU General Public License v3.0.
 
+Powered by
+----------
 
-## Get started
+![image](../docs/_static/png/DepartementOmgeving_logo.png)
 
-### Prepare input files
+![image](../docs/_static/png/KULeuven_logo.png)
 
-Example
+![image](../docs/_static/png/VMM_logo.png)
 
-### Run scripts (Matlab)
+![image](../docs/_static/png/fluves_logo.png)
 
-The matlab R-factor script of KULeuven can be run by navigating to the src (for example, ``C:\Users\\$USERNAME\GitHub\rfactor\rfactor\src\rfactor``) directory and running the script:
+Note
+----
 
-    matlab -nodesktop -r "main('C:\Users\$USERNAME\GitHub\rfactor\rfactor\docs\data\example_inputdata')"
-
-The results of the calculations will be located in the results folder (``C:\Users\\$USERNAME\GitHub\rfactor\src\rfactor\results``)
-
-Get the R-value for 2018 based on two station:
-
-    df_R=data.load_R(["KMI_6447","KMI_FS3"], 2018)
-
-- Define the folder where the seperate (station,year) non-zero rainfall input data are located.
-- Define the folder where the matlab results are located (cfr. ``C:\Users\\$USERNAME\GitHub\rfactor\src\rfactor\results``).  
-- Define a ``consider.csv file`` that looks like:
-
-  | source        | datafile      | consider  |
-  | ------------- |:-------------:| ---------:|
-  | KMI	          | KMI_6414_2003 | 0         |
-  | KMI	          | KMI_6414_2004 | 1         |
-  | KMI	          | KMI_6414_2005 | 1         |
-  | ...           | ...           | ...       |
-
-  Make sure the ``datafile`` holds the same names as the rainfall data files used input for the matlab calculations. If a rainfall data file is present in the rainfall input data folder, but is not defined in the ``consider.csv``, the code will exit.
-
-  (Note: the code will also exit if the number of files in the rainfall input data folder are different from the erosivity data folder).   
-
-## Powered by
-
-- KU Leuven
-- VMM
-- VPO
-
-## License
-
-## Authors
-
-Gert Verstraeten (KULeuven)  
-Johan Van de Wauw (Fluves)  
-Sacha Gobeyn (Fluves)  
+This project has been set up using PyScaffold 3.2.3. For details and
+usage information on PyScaffold see <https://pyscaffold.org/>.

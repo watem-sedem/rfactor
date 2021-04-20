@@ -1,19 +1,58 @@
-*.pyc
+# Temporary and binary files
+*~
+*.py[cod]
+*.so
+*.cfg
+!.isort.cfg
+!setup.cfg
+*.orig
+*.log
+*.pot
+__pycache__/*
+.cache/*
+.*.swp
+*/.ipynb_checkpoints/*
+.DS_Store
 
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# Sphinx documentation
-docs/_build/
-
+# Project files
+.ropeproject
+.project
+.pydevproject
+.settings
 .idea
+.vscode
+tags
 
-__pycache__
+# Package files
+*.egg
+*.eggs/
+.installed.cfg
+*.egg-info
 
-#  environment variables containing files
-.env
+# Unittest and coverage
+htmlcov/*
+.coverage
+.coverage.*
+.tox
+junit*.xml
+coverage.xml
+.pytest_cache/
 
-# benchmark folder
-rfactor/src/rfactor/results
-rfactor/src/flanders/results
-rfactor/docs/notebooks/results
+# Build and docs folder/files
+build/*
+dist/*
+sdist/*
+docs/api/*
+docs/_rst/*
+docs/_build/*
+cover/*
+MANIFEST
+
+# Per-project virtualenvs
+.venv*/
+.conda*/
+
+# Results
+src/rfactor/results
+docs/notebooks/results
+src/rfactor/output.csv
