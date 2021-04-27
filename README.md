@@ -24,16 +24,17 @@ such as Pandas and Numpy) and `Matlab` or `Octave`. Python is used to
 implemented the functionalities in this package, whereas Matlab or
 Octave is used to run the core code. The installation (see
 here \<installation\>) is managed by making use of
-`Miniconda`:<https://docs.conda.io/en/latest/miniconda.html>. Make sure
+[Miniconda](https://docs.conda.io/en/latest/miniconda.html). Make sure
 to check out the installation instructions, and follow the example in
 the Get started \<getstarted\> page.
 
-> **note**
->
-> An license-free solution with Octave has been implemented if you are
-> :   unable to use Matlab. Note that Octave is much slower than Matlab.
->     It is planned to translate the core code from Matlab to Python.
->
+
+> A license-free solution with Octave is available in this package if you
+> are unable to acquire a license for Matlab. Note that Octave is much
+> slower than Matlab. It is planned to translate the core code from Matlab
+> to Python.
+
+
 Rainfall and erosivity data
 ---------------------------
 
