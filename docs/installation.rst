@@ -10,10 +10,10 @@ free, but slower than the Matlab solution.
 Install
 -------
 
-Make sure you have Python (via Miniconda) installed:
-https://docs.conda.io/en/latest/miniconda.html. The Python dependencies are
-handled in the conda environment.yml file, so anybody can recreate the
-required environment using:
+Make sure you have Python, via
+`Miniconda <https://docs.conda.io/en/latest/miniconda.html>`_, is installed.
+The Python dependencies are handled in the ``environment.yml`` file, so
+anybody can recreate the required environment:
 
 ::
 
@@ -57,28 +57,28 @@ Make sure to pick-up the
 latest version of
 `Matlab <https://nl.mathworks.com/products/matlab.html?requestedDomain=>`__
 
-Octave
-~~~~~~
+License-free alternative: Octave
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Pick up the latest version of Octave from the
-`website <https://www.gnu.org/software/octave/index>`__. Install ``oct2py``
-via conda
+`website <https://www.gnu.org/software/octave/index>`__. After installing
+Octave, install ``oct2py`` via conda
 
 ::
 
     conda install -c conda-forge oct2py
 
-And make sure to define the path to your the ``Octave Executable`` in a
+And make sure to define the path to your the ``OCTAVE_EXECUTABLE`` in a
 ``.env``-file. The latter you can do by creating a ``.env``-file in the main
 location of the rfactor repository, and defining the executable location,
-e.g. (local installation)
+e.g. (local installation):
 
 ::
 
     OCTAVE_EXECUTABLE=C://Users//YOURUSERNAME//AppData//Local//Programs//GNU Octave//Octave-6.2.0//mingw64//bin//octave-cli-6.2.0.exe
 
 for a windows-based system. Make sure to check where Octave is installed on
-your computer! The ```python-dotenv``-package installed with the installation
-of the rfactor package will use the ``.env``-file to check your installation.
+your computer! The ```python-dotenv``-package (installed with the installation
+of the rfactor package) will use the ``.env``-file to check your installation.
 
 
 Development
