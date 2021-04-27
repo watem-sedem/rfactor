@@ -5,6 +5,7 @@ import multiprocessing as mp
 from pathlib import Path
 from dotenv import load_dotenv, find_dotenv
 from tqdm.contrib.concurrent import process_map
+from tqdm import tqdm
 
 import numpy as np
 
@@ -77,7 +78,8 @@ def rfactor_octave(rainfall_inputdata_folder, results_folder, debug=False,
         msg = f"Input folder '{rainfall_inputdata_folder}' does not exist"
         raise IOError(msg)
     if debug:
-        for file in rainfall_inputdata_folder.iterdir():
+        files = [file for file in rainfall_inputdata_folder.iterdir()]
+        for file in tqdm(files,total=len(files)):
             single_file([file, results_folder])
     else:
         lst_input = [[file, results_folder] for file in
