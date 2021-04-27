@@ -40,8 +40,6 @@ install developer dependencies (using pip):
 
     pip install -e .[develop]
 
-.. note::
-
 Core
 ----
 
