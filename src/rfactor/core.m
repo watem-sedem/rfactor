@@ -26,7 +26,7 @@
 %%                            core.m                                  %%
 %%                           16-03-2021                               %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function [R, cumEI]=core(year,rain)
+function cumEI=core(year,rain)
 
 r=1;
 
@@ -255,7 +255,7 @@ D14(r,1)=cumD14(1);
 P14(r,1)=cumP14(1);
 for p=2:25
    dag=dag+14;
-   if (p==25) & (cumEI(1,k-1)<351)
+   if (p==25) && (cumEI(1,k-1)<351)
       cumD14(p)=sum(EI(2,:));
       cumP14(p)=P(r);
       D14(r,25)=cumD14(25)-cumD14(24);
@@ -271,10 +271,5 @@ cumD14(26)=sum(EI(2,:));
 cumP14(26)=P(r);
 D14(r,26)=cumD14(26)-cumD14(25);
 P14(r,26)=cumP14(26)-cumP14(25);
- 
-R(1)=year;
-R(2)=sum(EI(2,:)); %jaarlijkse neerslagerosiviteit Mj*mm/(ha*h)
-R(3)=P(r); %jaarlijkse neerslag (mm)
-R(4)=m; % aantal regenbuien
-R(5)=k-2; %aantal erosieve regenbuien (P>=1.27 mm)
+
 end

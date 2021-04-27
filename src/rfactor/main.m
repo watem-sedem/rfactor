@@ -14,14 +14,13 @@ function []=main(path,path_results)
        filename = fullfile(path,files(i).name);
        disp(filename)
        [pathstr,name,ext]=fileparts(filename);
-       year = split(name,"_");
+       year = strsplit(name,"_");
        year = year(length(year));
        year = str2double(year{1});
        % Import inputdata
        inputdata=importdata(filename);
        % Calculate R
-       [R, cumEI]=core(year,inputdata);
-       table(i,:)=R;
+       cumEI=core(year,inputdata);
        % Prepare write
        filename_out=fullfile(path_results,strcat(name,'new cumdistr salles.txt'));
        fid = fopen(filename_out,'wt');
@@ -32,32 +31,5 @@ function []=main(path,path_results)
            fclose(fid);
        end
     end
-
-    %% Calculate R
-    %for i=1:length(years)
-    %    i
-    %    if years(i)<2003 % FS3 series
-    %        dummy=importdata(['time_series/KMI_FS3_' int2str(years(i)) '.txt']);
-    %    else % 6447 series
-    %        dummy=importdata(['time_series/KMI_6447_' int2str(years(i)) '.txt']);
-    %    end
-    %    table(i,:)=Calculate_R(years(i),dummy);
-    %
-    %% Output file
-    cHeader = {'jaar' 'erosiviteit' 'neerslagsom' '# regenbuien' '# erosieve regenbuien'}; %dummy header
-    commaHeader = [cHeader;repmat({','},1,numel(cHeader))]; %insert commas
-    commaHeader = commaHeader(:)';
-    textHeader = cell2mat(commaHeader); %cHeader in text with commas
-    %write header to file
-    filename_out = fullfile(path_results,'output.csv');
-    fid = fopen(filename_out,'wt');
-    if fid>0
-        fprintf(fid,'%s\n',textHeader);
-        fclose(fid);
-        %write data to end of file
-        table;
-        dlmwrite('output.csv',table,'-append');
-    end
-
 
 
