@@ -12,9 +12,9 @@ fmap_erosivity = (folder_data / "test_erosivitydata").absolute()
 fmap_rainfall_one_file = (folder_example / "rainfall").absolute()
 fmap_erosivity_one_file = (folder_example / "erosivity").absolute()
 
-
 def create_data_instance_with_test_data():
-    """Compile database with test rainfall and erosivity data
+    """
+    Compile database with test rainfall and erosivity data
 
     The aim of this function is to create a data instance with the given test
     data. This data instance will be used in the test functions to compute

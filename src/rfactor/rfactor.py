@@ -9,7 +9,6 @@ from tqdm import tqdm
 
 import numpy as np
 
-
 def compute_rfactor(rainfall_inputdata_folder, results_folder, engine="matlab",
                     debug=False, ncpu=-1):
     """Compute the R-factor
@@ -25,7 +24,8 @@ def compute_rfactor(rainfall_inputdata_folder, results_folder, engine="matlab",
     engine: 'matlab' or 'octave'
         Engine used to compute rfactor.
     debug: bool, default False
-        Debug flag to leave matlab open.
+        Debug flag to leave matlab open (Matlab engine) / run single core
+        (Octave).
     ncpu: int, default -1
         Number of processors to use.
 
@@ -36,7 +36,7 @@ def compute_rfactor(rainfall_inputdata_folder, results_folder, engine="matlab",
     if not Path(rainfall_inputdata_folder).exists():
         raise IOError(
             f"Input {rainfall_inputdata_folder}folder does not exist")
-    if engine not in ["matlab", "python"]:
+    if engine not in ["matlab", "octave"]:
         msg = f"Either select 'matlab' or 'python' as calculation engine for the rfactor scripts."
         raise IOError(msg)
     if engine == "matlab":
@@ -70,7 +70,7 @@ def rfactor_octave(rainfall_inputdata_folder, results_folder, debug=False,
     results_folder: str or pathlib.path
         See :func:`rfactor.rfactor.compute_rfactor`
     debug: bool, default False
-        See :func:`rfactor.rfactor.compute_rfactor`
+        Run single cores
     ncpu: int, default -1
         See :func:`rfactor.rfactor.compute_rfactor`
     """
@@ -80,6 +80,7 @@ def rfactor_octave(rainfall_inputdata_folder, results_folder, debug=False,
     if debug:
         files = [file for file in rainfall_inputdata_folder.iterdir()]
         for file in tqdm(files,total=len(files)):
+            print(file)
             single_file([file, results_folder])
     else:
         lst_input = [[file, results_folder] for file in
@@ -108,6 +109,7 @@ def single_file(lst_inputs):
     year = filename.stem.split("_")[1]
     inputdata = np.loadtxt(str(filename.resolve()))
     oc = Oct2Py()
+    oc.addpath(str(Path(__file__).parent.resolve()))
     cumEI = oc.core(year, inputdata)
     filename_out = path_results / (filename.stem + 'new cumdistr salles.txt')
     np.savetxt(filename_out, cumEI.T, "%.3f %.2f %.1f")
