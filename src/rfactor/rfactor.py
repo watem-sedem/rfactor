@@ -105,15 +105,20 @@ def single_file(lst_inputs):
     path_results = lst_inputs[1]
 
     check_oct()
-    from oct2py import Oct2Py
+    from oct2py import Oct2Py,Oct2PyError
     year = filename.stem.split("_")[1]
     inputdata = np.loadtxt(str(filename.resolve()))
-    oc = Oct2Py()
-    oc.addpath(str(Path(__file__).parent.resolve()))
-    cumEI = oc.core(year, inputdata)
-    filename_out = path_results / (filename.stem + 'new cumdistr salles.txt')
-    np.savetxt(filename_out, cumEI.T, "%.3f %.2f %.1f")
 
+    with Oct2Py() as oc:
+        try:
+            oc.addpath(str(Path(__file__).parent.resolve()))
+            cumEI = oc.core(year, inputdata)
+            filename_out = path_results / (
+                        filename.stem + 'new cumdistr salles.txt')
+            np.savetxt(filename_out, cumEI.T, "%.3f %.2f %.1f")
+            oc.exit()
+        except Oct2PyError as e:
+            raise SystemError(e)
 
 def check_oct():
     """Check octave installation
