@@ -6,19 +6,30 @@ from .conftest import erosivitydata, fmap_rainfall_one_file, fmap_erosivity_one_
 from rfactor.rfactor import compute_rfactor
 from rfactor.process import load_erosivity_data
 
-
+@pytest.mark.parametrize(
+    "debug,engine",
+    [(True,"octave"),
+     (False,"octave")],
+)
 @pytest.mark.matlabbased
-def test_rfactor():
+def test_rfactor(debug,engine):
     """test computation of r-factor
 
     Test the computation of the R-factor with as inputdata a non-zero rainfall
     time series.
+
+    Parameters
+    ----------
+    debug: bool
+        See :func:`rfactor.rfactor.compute_rfactor`
+    engine: str
+        See :func:`rfactor.rfactor.compute_rfactor`
+
     """
+
     fname = "KMI_6414_2004"
-
-    compute_rfactor(fmap_rainfall_one_file, "result","matlab")
-
-    f_test = Path("results") / (fname + "new cumdistr salles.txt")
+    compute_rfactor(fmap_rainfall_one_file, "results", engine=engine,debug=debug)
+    f_test = Path(__file__).parent /".." / "src"/ "rfactor" / Path("results") / (fname + "new cumdistr salles.txt")
     df_test = load_erosivity_data(f_test, 2004)
     f_val = fmap_erosivity_one_file / (fname + "new cumdistr salles.txt")
     df_val = load_erosivity_data(f_val, 2004)

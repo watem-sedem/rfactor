@@ -142,7 +142,7 @@ for i=1:m
          end
          precip30min=eindprecip-beginprecip;
       else
-         % write('false i=',i,'and j=',j)
+         % test
       end
       
       % veronderstel uniforme vulling van bakje
