@@ -103,12 +103,12 @@ class ErosivityData:
         """
         df_files = load_df_files(txt_files)
 
-        for file in self.lst_txt_rainfall:
-            datafile = file.stem
-            if file.stem not in df_files.index:
+        for file in self.lst_txt_erosivity:
+            datafile = file.stem.split("new")[0]
+            if datafile not in df_files.index:
                 msg = (
-                    f"'{file.stem}' not liste"
-                    f"d in '{Path(txt_files).absolute()}', please add the "
+                    f"'{file.stem}' not listed"
+                    f" in '{Path(txt_files).absolute()}', please add the "
                     f"file datafile record and indicate if you want to "
                     f"consider it for analysis."
                 )
@@ -269,9 +269,10 @@ class StationData:
                 fname_erosivity = self.df_files.loc[index, "fname_erosivity"]
                 fname_rainfall = self.df_files.loc[index, "fname_rainfall"]
                 if (consider == 1) & (fname_rainfall != ""):
-                    dict_rainfall[int(year)] = load_rainfall_data(
-                        fname_rainfall, self.station, year
-                    )
+                    if fname_rainfall.exists():
+                        dict_rainfall[int(year)] = load_rainfall_data(
+                            fname_rainfall, self.station, year
+                        )
                     dict_erosivity[int(year)] = load_erosivity_data(
                         fname_erosivity, year
                     )
@@ -417,7 +418,10 @@ def load_df_station(dict_data, variable, years=[], frequency=""):
         df = pd.DataFrame.from_dict(dict_output, orient="index", columns=["value"])
         df = df.reset_index().rename(columns={"index": "year"})
     elif variable == "N":
-        df = pd.concat(dict_data.values())
+        if len(dict_data)>0:
+            df = pd.concat(dict_data.values())
+        else:
+            df = pd.DataFrame(columns=["year","value"])
     elif variable == "EI30":
         for year in lst_years:
             if year in dict_data.keys():
