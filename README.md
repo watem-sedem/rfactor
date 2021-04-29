@@ -52,8 +52,8 @@ Contact
 -------
 
 We encourage user to submit question, suggestions and bug reports via
-the issues platform on GitHub **TO DO**. In case of other questions, one
-mail to **TODO**.
+the issues platform on GitHub. In case of other questions, one can mail to
+cn-ws@omgeving.vlaanderen.be.
 
 Powered by
 ----------
