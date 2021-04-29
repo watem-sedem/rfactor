@@ -17,7 +17,6 @@ explanation of the formula's is given :ref:`here <rfactor>`.
 
 Get started
 -----------
-
 This package makes use of ``Python`` (and a limited number of
 dependencies such as Pandas and Numpy) and ``Matlab`` or ``Octave``. Python is
 used to implemented the functionalities in this package, whereas Matlab or
@@ -28,14 +27,12 @@ check out the installation instructions, and follow the example in the
 :ref:`Get started <getstarted>` page.
 
 .. note::
-    A license-free solution with Octave is available in this package if you
+    Octave is used in this package as a free alternative available if you
     are unable to acquire a license for Matlab. Note that Octave is much
-    slower than Matlab. It is planned to translate the core code from Matlab
-    to Python.
+    slower than Matlab.
 
 Rainfall and erosivity data
 ---------------------------
-
 The input rainfall and erosivity data are available in this repository in the
 test data, with an exception of the KMI input data. If you require the KMI
 input data, please contact KMI.

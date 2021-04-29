@@ -44,7 +44,7 @@ Core
 ----
 
 The core code makes use Matlab files. You can choose to either use Matlab (1)
-or Octave (2) to run the core code. Do note that the use of  Matlab requires a
+or Octave (2) to run the core code. Do note that the use of Matlab requires a
 license (free trail/student edition available) whereas the use of Octave is
 free. Yet, a big downside of the use of Octave is that it is much slower in
 code execution.
@@ -55,7 +55,7 @@ Make sure to pick-up the
 latest version of
 `Matlab <https://nl.mathworks.com/products/matlab.html?requestedDomain=>`__
 
-License-free alternative: Octave
+Free software: Octave
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Pick up the latest version of Octave from the
 `website <https://www.gnu.org/software/octave/index>`__. After installing
