@@ -5,10 +5,11 @@ Contributing to rfactor
 =======================
 The R-factor project is a project made possible by the Flemish Government
 (Department Environment), the Flemish Environment Agency, K.U. Leuven and
-Fluves. A special thank you for Flemish Environment Agency for providing the
-input data, and K.U.Leuven for releasing their source code.
+Fluves. A special thank you to the Flemish Environment Agency for providing the
+input data, and K.U.Leuven for providing and releasing their source code.
 
-Thank you to all partners that decided to provide this code as open source.
+Thank you to all partners that decided to host this code and the data as open
+source.
 
 How can you contribute?
 -----------------------
@@ -41,29 +42,8 @@ The .gitattributes-file in the root folder contains the file extensions which
 are stored under lfs. For now, only files within the test folder are stored
 under lfs.
 
-Naming things
+Documentation
 -------------
-
-To provide structure in the naming of methods, functions, classes,... we
-propose to conform the following guidelines.
-
-Class, function/methods names follow the standard naming conventions as
-defined in the `PEP8`_ guidelines. Additionally, methods/functions start -
-whenever possible - with an active verb on the action they perform
-(``does_something()``), e.g. ``load_data()``
-
-Variable names follow the `PEP8`_ guidelines, but provide additional context:
-
-- raw textfiles (txt): ``txt_variable``
-- dictionary: ``dict_variable``
-- list: ``lst_variable``
-- numpy array: ``arr_variable``
-- pandas: ``df_variable``
-
-.. _PEP8: https://www.python.org/dev/peps/pep-0008/#naming-conventions
-
-Python Documentation
---------------------
 `Numpy docstring <https://numpydoc.readthedocs.io/en/latest/format.html>`_
 formatting is used to define the format of the python docstrings. As Numpy
 docstring does not provide default rules on describing a parameter or returned
@@ -107,6 +87,26 @@ Similar for a dictionary:
        list.
     2. Detail alert: the format *variable: type* is used as constructor for
        every variable in the documentation (and not *variable : type*).
+
+Naming things
+-------------
+To provide structure in the naming of methods, functions, classes,... we
+propose to conform the following guidelines.
+
+Class, function/methods names follow the standard naming conventions as
+defined in the `PEP8`_ guidelines. Additionally, methods/functions start -
+whenever possible - with an active verb on the action they perform
+(``does_something()``), e.g. ``load_data()``
+
+Variable names follow the `PEP8`_ guidelines, but provide additional context:
+
+- raw textfiles (txt): ``txt_variable``
+- dictionary: ``dict_variable``
+- list: ``lst_variable``
+- numpy array: ``arr_variable``
+- pandas: ``df_variable``
+
+.. _PEP8: https://www.python.org/dev/peps/pep-0008/#naming-conventions
 
 Unit testing
 ------------
