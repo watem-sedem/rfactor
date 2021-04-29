@@ -34,10 +34,12 @@ the Get started \<getstarted\> page.
 
 Rainfall and erosivity data
 ---------------------------
-
-The input rainfall and erosivity data are available in this repository
-in the test data, with an exception of the KMI input data. If you
-require the KMI input data, please contact KMI.
+On the one hand, input rainfall data are provided by the Flemish Environment
+Agency (VMM), whereas the output erosivity data calculated with the VMM and
+Royal Meteorological Institute of Belgium (RMI) rainfall input data are
+provided by the partners of this project. The erosivity data can be found
+within this project (see tests-folder). Please contact the RMI if you would
+like to obtain the a copy of the rainfall input data.
 
 License
 -------
