@@ -79,7 +79,7 @@ def test_flanders(lst_exclude_stations, rfactor):
 
 
 @pytest.mark.parametrize(
-    "timeseries,rfactor",
+    "lst_timeseries,rfactor",
     [
         (range(1898, 2003, 1), 958.1058095238096),
         (range(2003, 2021, 1), 1277.1105882352942),
