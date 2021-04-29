@@ -39,7 +39,7 @@ Agency (VMM), whereas the output erosivity data calculated with the VMM and
 Royal Meteorological Institute of Belgium (RMI) rainfall input data are
 provided by the partners of this project. The erosivity data can be found
 within this project (see tests-folder). Please contact the RMI if you would
-like to obtain the a copy of the rainfall input data.
+like to obtain the a copy of the RMI rainfall input data.
 
 License
 -------
