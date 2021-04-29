@@ -4,8 +4,8 @@ Installation
 ============
 
 Python is used to implemented the functionalities in this package, whereas
-Matlab or Octave is used to run the core code. Do note the Octave solution is
-free, but slower than the Matlab solution.
+Matlab or Octave is used to run the core code. Do note the use of Octave is
+free of charge, but slower than the Matlab solution.
 
 Install
 -------
@@ -55,8 +55,8 @@ Make sure to pick-up the
 latest version of
 `Matlab <https://nl.mathworks.com/products/matlab.html?requestedDomain=>`__
 
-Free software: Octave
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Alternative: Octave
+~~~~~~~~~~~~~~~~~~~
 Pick up the latest version of Octave from the
 `website <https://www.gnu.org/software/octave/index>`__. After installing
 Octave, install ``oct2py`` via conda
