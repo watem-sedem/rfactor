@@ -27,9 +27,10 @@ check out the installation instructions, and follow the example in the
 :ref:`Get started <getstarted>` page.
 
 .. note::
-    Octave is used in this package as a free alternative available if you
-    are unable to acquire a license for Matlab. Note that Octave is much
-    slower than Matlab.
+
+    Octave is used in this package as a free alternative if you are unable to
+    acquire a license for Matlab. Note that running the rfactor core scripts
+    is slower with Octave than with Matlab.
 
 Rainfall and erosivity data
 ---------------------------
