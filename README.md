@@ -18,7 +18,6 @@ is given here \<rfactor\>.
 
 Get started
 -----------
-
 This package makes use of `Python` (and a limited number of dependencies
 such as Pandas and Numpy) and `Matlab` or `Octave`. Python is used to
 implemented the functionalities in this package, whereas Matlab or
@@ -28,11 +27,9 @@ here \<installation\>) is managed by making use of
 to check out the installation instructions, and follow the example in
 the Get started \<getstarted\> page.
 
-
-> A license-free solution with Octave is available in this package if you
-> are unable to acquire a license for Matlab. Note that Octave is much
-> slower than Matlab. It is planned to translate the core code from Matlab
-> to Python.
+> Octave is used in this package as a free alternative if you are unable to
+> acquire a license for Matlab. Note that running the rfactor core scripts
+> is slower with Octave than with Matlab.
 
 
 Rainfall and erosivity data
@@ -52,8 +49,8 @@ Contact
 -------
 
 We encourage user to submit question, suggestions and bug reports via
-the issues platform on GitHub **TO DO**. In case of other questions, one
-mail to **TODO**.
+the issues platform on GitHub. In case of other questions, one can mail to
+cn-ws@omgeving.vlaanderen.be.
 
 Powered by
 ----------
