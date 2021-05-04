@@ -34,10 +34,15 @@ the Get started \<getstarted\> page.
 
 Rainfall and erosivity data
 ---------------------------
+Input rainfall data are provided by the Flemish Environment Agency (VMM),
+which are also available via [waterinfo](https://www.waterinfo.be). The
+input rainfall data from the Royal Meteorological Institute
+(RMI) are not shared in this project. Please contact the RMI if you would like
+to obtain the a copy of the RMI rainfall input data.
 
-The input rainfall and erosivity data are available in this repository
-in the test data, with an exception of the KMI input data. If you
-require the KMI input data, please contact KMI.
+The erosivity data calculated with the rainfall input data are provided by the
+partners of this project, and are used as test data for analysing the R-factor
+for Flanders.
 
 License
 -------
