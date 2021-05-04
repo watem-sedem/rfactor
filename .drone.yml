@@ -27,7 +27,7 @@ steps:
     commands:
       - . $CONDA_ACTIVATE
       - conda activate /src/rfactor/env
-      - pytest tests/ -m "not matlabbased"
+      - pytest tests/ -m "not externaldepedent"
 
   - name: documentation
     image: continuumio/miniconda3
