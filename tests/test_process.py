@@ -1,6 +1,5 @@
 import pytest
 import numpy as np
-import pandas as pd
 from pathlib import Path
 from .conftest import erosivitydata, fmap_rainfall_one_file, fmap_erosivity_one_file
 from rfactor.rfactor import compute_rfactor
@@ -11,7 +10,7 @@ from rfactor.process import load_erosivity_data
     [(True,"octave"),
      (False,"octave")],
 )
-@pytest.mark.matlabbased
+@pytest.mark.externaldepedent
 def test_rfactor(debug,engine):
     """test computation of r-factor
 
@@ -41,7 +40,7 @@ def test_rfactor(debug,engine):
 
 
 @pytest.mark.parametrize(
-    "exclude_stations,rfactor",
+    "lst_exclude_stations,rfactor",
     [
         (["KMI_6447", "KMI_FS3"], 1171.538046511628),
         (
@@ -58,29 +57,29 @@ def test_rfactor(debug,engine):
         ),
     ],
 )
-def test_flanders(exclude_stations, rfactor):
+def test_flanders(lst_exclude_stations, rfactor):
     """Test the aggregation functions of EI30 to compute an R-value. Pull all
-    EI30 data from all years and stations, except the stations defined in the
+    EI30 data from all years and stations, except the lst_stations defined in the
     test function parameters.
 
     Parameters
     ----------
-    exclude_stations: list
+    lst_exclude_stations: list
         List of stations (strings) to exclude from analysis.
     rfactor: float
-        Aggregated R-value computed for all years and all stations, except the
-        ones listed in 'exlude_stations'
+        Aggregated R-value computed for all years and all lst_stations, except the
+        ones listed in 'lst_exclude_stations'
     """
-    stations = [
-        station for station in erosivitydata.stations if station not in exclude_stations
+    lst_stations = [
+        station for station in erosivitydata.stations if station not in lst_exclude_stations
     ]
-    df_R = erosivitydata.load_R(stations)
+    df_R = erosivitydata.load_R(lst_stations)
 
     np.testing.assert_allclose(np.mean(df_R["value"]), rfactor, atol=1e-2)
 
 
 @pytest.mark.parametrize(
-    "timeseries,rfactor",
+    "lst_timeseries,rfactor",
     [
         (range(1898, 2003, 1), 958.1058095238096),
         (range(2003, 2021, 1), 1277.1105882352942),
@@ -91,19 +90,19 @@ def test_flanders(exclude_stations, rfactor):
         (range(2000, 2021, 1), 1272.774),
     ],
 )
-def test_ukkel(timeseries, rfactor):
+def test_ukkel(lst_timeseries, rfactor):
     """Test the aggregation functions of EI30 to compute an R-value for the
     station in Ukkel (Brussels, KMI_6447 and KMI_FS3). Pull all
     EI30 data from the years defined in timeseries,
 
     Parameters
     ----------
-    timeseries: list
+    lst_timeseries: list
         List of years (int) to include in the analysis.
     rfactor: float
         Aggregated R-value computed for all years and all stations, except the
         ones listed in 'exlude_stations'
     """
-    df_R = erosivitydata.load_R(["KMI_6447", "KMI_FS3"], timeseries)
+    df_R = erosivitydata.load_R(["KMI_6447", "KMI_FS3"], lst_timeseries)
 
     np.testing.assert_allclose(np.mean(df_R["value"]), rfactor, atol=1e-2)

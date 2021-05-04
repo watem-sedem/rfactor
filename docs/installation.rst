@@ -55,6 +55,7 @@ Make sure to pick-up the
 latest version of
 `Matlab <https://nl.mathworks.com/products/matlab.html?requestedDomain=>`__
 
+.. _octave:
 Alternative: Octave
 ~~~~~~~~~~~~~~~~~~~
 Pick up the latest version of Octave from the

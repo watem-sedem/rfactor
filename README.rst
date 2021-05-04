@@ -32,11 +32,17 @@ check out the installation instructions, and follow the example in the
     acquire a license for Matlab. Note that running the rfactor core scripts
     is slower with Octave than with Matlab.
 
-Rainfall and erosivity data
----------------------------
-The input rainfall and erosivity data are available in this repository in the
-test data, with an exception of the KMI input data. If you require the KMI
-input data, please contact KMI.
+Data & application to Flanders
+------------------------------
+Input rainfall data are provided by the Flemish Environment Agency (VMM),
+which are also available via `waterinfo <https://www.waterinfo.be>`_. The
+input rainfall data from the Royal Meteorological Institute
+(RMI) are not shared in this project. Please contact the RMI if you would like
+to obtain the a copy of the RMI rainfall input data.
+
+The erosivity data calculated with the rainfall input data are provided by the
+partners of this project, and are used as test data for analysing the R-factor
+for Flanders.
 
 License
 -------
