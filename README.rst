@@ -42,7 +42,7 @@ to obtain the a copy of the RMI rainfall input data.
 
 The erosivity data calculated with the rainfall input data are provided by the
 partners of this project, and are used as test data for analysing the R-factor
-for Flanders. These data are shared under [LICENSE].
+for Flanders.
 
 License
 -------
