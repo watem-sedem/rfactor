@@ -36,18 +36,16 @@ steps:
       - conda activate /src/rfactor/env
       - python setup.py build_sphinx -s docs
 
-  - name: push documentation to github pages
-    kind: pipeline
+  - name: publish
+    image: plugins/gh-pages
+    settings:
+      username: johanvdw
+      password:
+        from_secret: gh-pages-release
+      pages_directory: build/sphinx/html
+
 name: default
 
-steps:
-- name: publish
-  image: plugins/gh-pages
-  settings:
-    username: johanvdw
-    password:
-      from_secret: gh-pages-release
-    pages_directory: build/sphinx/html
 
 workspace:
   base: /src
