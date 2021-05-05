@@ -1,0 +1,877 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>rfactor namespace &mdash; rfactor  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorial" href="../notebooks/analysis_flanders.html" />
+    <link rel="prev" title="rfactor" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> rfactor
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../rfactor.html">R-factor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get-started.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Module Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">rfactor namespace</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/analysis_flanders.html">Flanders</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">rfactor</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">rfactor</a> &raquo;</li>
+        
+      <li>rfactor namespace</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/cn-ws/rfactor/blob/master/docs/api/rfactor.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="rfactor-namespace">
+<h1>rfactor namespace<a class="headerlink" href="#rfactor-namespace" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-rfactor.process">
+<span id="rfactor-process-module"></span><h2>rfactor.process module<a class="headerlink" href="#module-rfactor.process" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="rfactor.process.ErosivityData">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">ErosivityData</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmap_rainfall</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmap_erosivity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Build and load erosivity and rainfall data</p>
+<p>Data class containing references to all rainfall input data files (.txt)
+and computed erosivity data files (.txt).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fmap_rainfall</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – Folder path to directory holding rainfall data. Rainfall data are
+stored in separate .txt files per station and year. For the format of
+the <cite>txt</cite>-files, see <a class="reference internal" href="#rfactor.process.load_rainfall_data" title="rfactor.process.load_rainfall_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_rainfall_data()</span></code></a></p></li>
+<li><p><strong>fmap_erosivity_data</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – Folder path to directory holding erosivity data. Erosvity data are
+stored in separate .txt files per station and year. For the format of
+the <cite>txt</cite>-files, see <code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.rfactor.load_erosivity_data()</span></code></p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define input folders</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fmap_rainfall</span><span class="o">=</span>  <span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;docs/example_data&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fmap_erosivity</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;rfactor/results&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">txt_files</span><span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;docs/example_data/datafiles_completeness.csv&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Compile and load data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">ErosivityData</span><span class="p">(</span><span class="n">fmap_rainfall</span><span class="p">,</span><span class="n">fmap_erosivity</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_files</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">build_data_set</span><span class="p">(</span><span class="n">txt_files</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">df_files</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get dataframe with R for year 2018 and station KMI_6447 and KMI_FS3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_R</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">load_R</span><span class="p">([</span><span class="s2">&quot;KMI_6447&quot;</span><span class="p">,</span><span class="s2">&quot;KMI_FS3&quot;</span><span class="p">],</span> <span class="p">[</span><span class="mi">2018</span><span class="p">])</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="rfactor.process.ErosivityData.build_data_set">
+<code class="sig-name descname"><span class="pre">build_data_set</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">txt_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.build_data_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.build_data_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build data set with the help of a text file, containing an overview
+of the to use rainfall and erosivity files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>txt_files</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – File path of rainfall and erosivity overview file, see
+<a class="reference internal" href="#rfactor.process.load_df_files" title="rfactor.process.load_df_files"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_df_files()</span></code></a>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>df_files</strong> – Loaded txt_files data, see <a class="reference internal" href="#rfactor.process.load_df_files" title="rfactor.process.load_df_files"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_df_files()</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rfactor.process.ErosivityData.check_df_files">
+<code class="sig-name descname"><span class="pre">check_df_files</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">txt_files</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.check_df_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.check_df_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load and check if rainfall/erosivity datafile is tabulated the
+datafile overview file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>txt_files</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – File path of rainfall and erosivity overview file, see
+<a class="reference internal" href="#rfactor.process.load_df_files" title="rfactor.process.load_df_files"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_df_files()</span></code></a>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>df_files</strong> – Loaded txt_files data, see <a class="reference internal" href="#rfactor.process.load_df_files" title="rfactor.process.load_df_files"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_df_files()</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rfactor.process.ErosivityData.check_number_of_files">
+<code class="sig-name descname"><span class="pre">check_number_of_files</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.check_number_of_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.check_number_of_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the number of files in the rainfall and erosivity data
+folder are equal.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="rfactor.process.ErosivityData.fmap_erosivity">
+<code class="sig-name descname"><span class="pre">fmap_erosivity</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></em><a class="headerlink" href="#rfactor.process.ErosivityData.fmap_erosivity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="rfactor.process.ErosivityData.fmap_rainfall">
+<code class="sig-name descname"><span class="pre">fmap_rainfall</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></em><a class="headerlink" href="#rfactor.process.ErosivityData.fmap_rainfall" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="rfactor.process.ErosivityData.load_EI30">
+<code class="sig-name descname"><span class="pre">load_EI30</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'M'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.load_EI30"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.load_EI30" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load EI30 timeseries values</p>
+<p>The timeseries has a frequency defined by the frequency input
+parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stations</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – List of stations for which to load yearly R-value.</p></li>
+<li><p><strong>years</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – List of years for which to load yearly R-factor.</p></li>
+<li><p><strong>frequency</strong> (<em>string</em><em>, </em><em>optional</em>) – Frequency to resample data to, see <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects">https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects</a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>See <code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.proces.load_dict_format()</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rfactor.process.ErosivityData.load_R">
+<code class="sig-name descname"><span class="pre">load_R</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.load_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.load_R" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load R-values for stations and years.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stations</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – List of stations for which to load yearly R-value.</p></li>
+<li><p><strong>years</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – List of years for which to load yearly R-factor.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>See <code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.proces.load_dict_format()</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rfactor.process.ErosivityData.load_data">
+<code class="sig-name descname"><span class="pre">load_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_files</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.load_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load erosivity and rainfall data.</p>
+<p>This function loads the erosivity and rainfall data for each station.
+It only loads data for stations which have at least one year that is
+considered for analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df_files</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)"><em>pandas.DataFrame</em></a>) – Input file overview file, see
+<a class="reference internal" href="#rfactor.process.load_df_files" title="rfactor.process.load_df_files"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_df_files()</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="rfactor.process.ErosivityData.load_rainfall">
+<code class="sig-name descname"><span class="pre">load_rainfall</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.load_rainfall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.load_rainfall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load N-value for all/selected stations and years.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stations</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – List of stations for which to load yearly R-value.</p></li>
+<li><p><strong>years</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – List of years for which to load yearly R-factor.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>See <code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.proces.load_dict_format()</span></code></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="rfactor.process.StationData">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">StationData</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">station</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_files</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#StationData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.StationData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="simple">
+<dt>Load and process erosivity and rainfall data for one measurement</dt><dd><p>station.</p>
+</dd>
+<dt>station: str</dt><dd><p>Name or code of the measurement station.</p>
+</dd>
+<dt>df_files: pandas.DataFrame</dt><dd><p>See <a class="reference internal" href="#rfactor.process.load_df_files" title="rfactor.process.load_df_files"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_df_files()</span></code></a>.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="rfactor.process.StationData.df_files">
+<code class="sig-name descname"><span class="pre">df_files</span></code><em class="property"><span class="pre">:</span> <span class="pre">pandas.core.frame.DataFrame</span></em><a class="headerlink" href="#rfactor.process.StationData.df_files" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="rfactor.process.StationData.load_data">
+<code class="sig-name descname"><span class="pre">load_data</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#StationData.load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.StationData.load_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load erosivity and rainfall data per year</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>dict_rainfall</strong> (<em>dict of {str: pandas.DataFrame}</em>) – Holding rainfall data (in pandas.DataFrame) for every year, i.e.
+{<em>year</em>: <em>rainfall_data</em>}. For structure <em>rainfall_data</em>, see
+<a class="reference internal" href="#rfactor.process.load_rainfall_data" title="rfactor.process.load_rainfall_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_rainfall_data()</span></code></a>.</p></li>
+<li><p><strong>dict_erosivity</strong> (<em>dict of {str: pandas.DataFrame}</em>) – Holding erosivity data (in pandas.DataFrame) for every year, i.e.
+{<em>year</em>: <em>erosivity_data</em>}. For structure <em>rainfall_data</em>, see
+<a class="reference internal" href="#rfactor.process.load_rainfall_data" title="rfactor.process.load_rainfall_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_rainfall_data()</span></code></a>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="rfactor.process.StationData.station">
+<code class="sig-name descname"><span class="pre">station</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></em><a class="headerlink" href="#rfactor.process.StationData.station" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="rfactor.process.assign_datetime_df_erosivity">
+<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">assign_datetime_df_erosivity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#assign_datetime_df_erosivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.assign_datetime_df_erosivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compile a pandas datatime index from day-of-the-year column.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)"><em>pandas.DataFrame</em></a>) – See <a class="reference internal" href="#rfactor.process.load_erosivity_file" title="rfactor.process.load_erosivity_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_erosivity_file()</span></code></a></p></li>
+<li><p><strong>year</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Year of registration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><strong>df</strong> – Updated dataframe with datetime index added.</p>
+<ul class="simple">
+<li><p><em>index</em> (pandas.datetime64 series).</p></li>
+<li><p><em>day</em> (float): day of the year.</p></li>
+<li><p><em>cumEI30</em> (float): cumulative erosivity (MJ mm ha-1 h-1).</p></li>
+<li><p><em>fname</em> (pathlib.Path): file path of data source.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="rfactor.process.check_duplicates_df_files">
+<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">check_duplicates_df_files</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">txt_files</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#check_duplicates_df_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.check_duplicates_df_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check duplicate entries dataframe files</p>
+<p>Check duplicate entries based on tag ‘datafile’ in df_files, and exit code
+when duplicate definitions are found.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_files</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)"><em>pandas.DataFrame</em></a>) – See <a class="reference internal" href="#rfactor.process.load_df_files" title="rfactor.process.load_df_files"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_df_files()</span></code></a></p></li>
+<li><p><strong>txt_files</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – See <a class="reference internal" href="#rfactor.process.load_df_files" title="rfactor.process.load_df_files"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_df_files()</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="rfactor.process.check_if_folder_exists">
+<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">check_if_folder_exists</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#check_if_folder_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.check_if_folder_exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if folder exists</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>folder</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – input folder</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="rfactor.process.check_missing_files">
+<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">check_missing_files</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst_target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lst_reference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmap_reference</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#check_missing_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.check_missing_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if file in either rainfall or erosivity input folder is missing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lst_target</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – List of to-test files, file path of files in pathlib.Path format.</p></li>
+<li><p><strong>lst_reference</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – List of file references, file path of files in pathlib.Path format.</p></li>
+<li><p><strong>fmap_reference</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – Folder path of reference files.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>flag</strong> – Difference between two folders is zero (True), else False</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)">bool</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The files in both the erosivity and rainfall input folder have
+to be exactly the same (same number of files, same tags).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="rfactor.process.clip_erosivity_data">
+<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">clip_erosivity_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#clip_erosivity_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.clip_erosivity_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clip erosivity data so it only contains data for the given year.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)"><em>pandas.DataFrame</em></a>) – See <a class="reference internal" href="#rfactor.process.assign_datetime_df_erosivity" title="rfactor.process.assign_datetime_df_erosivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.assign_datetime_df_erosivity()</span></code></a></p></li>
+<li><p><strong>year</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Year of registration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>df</strong> – Data set filtered to year.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="rfactor.process.compute_rainfall_statistics">
+<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">compute_rainfall_statistics</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_rainfall</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_station_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#compute_rainfall_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.compute_rainfall_statistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute general statistics for rainfall timeseries</p>
+<p>Statistics (number of records, min, max, median and years data) are
+computed for each measurement station</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_rainfall</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)"><em>pandas.DataFrame</em></a>) – See <a class="reference internal" href="#rfactor.process.load_dict_format" title="rfactor.process.load_dict_format"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_dict_format()</span></code></a></p></li>
+<li><p><strong>df_station_metadata</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)"><em>pandas.DataFrame</em></a>) – <p>Dataframe holding station metadata. This dataframe has one mandatory
+column:</p>
+<ul>
+<li><p><em>station</em> (str): Name or code of the measurement station</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>df_statistics</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="rfactor.process.get_EI30">
+<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">get_EI30</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict_df_erosivity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#get_EI30"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.get_EI30" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get EI30-values from erosivity dictionary data format</p>
+<p>Get EI30-values with defined frequency</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dict_df_erosivity</strong> (<em>dict of {str: pandas.DataFrame}</em>) – Dictionary format of erosivity data (key: year, value: dataframe).</p></li>
+<li><p><strong>year</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Year of registration.</p></li>
+<li><p><strong>frequency</strong> (<em>string</em><em>, </em><em>optional</em>) – Frequency to resample data to, see <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects">https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects</a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>df</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="rfactor.process.get_R_year">
+<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">get_R_year</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict_df_erosivity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#get_R_year"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.get_R_year" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get R-value from erosvity dictionary data format</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dict_df_erosivity</strong> (<em>dict of {str: pandas.DataFrame}</em>) – Dictionary format of erosivity data (key: year, value: dataframe). For
+the format of the dataframe,
+see <a class="reference internal" href="#rfactor.process.assign_datetime_df_erosivity" title="rfactor.process.assign_datetime_df_erosivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.assign_datetime_df_erosivity()</span></code></a></p></li>
+<li><p><strong>year</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Year of registration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>R-value for year.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="rfactor.process.load_df_files">
+<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">load_df_files</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">txt_files</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_df_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_df_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load overview file of rainfall and erosivity data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>txt_files</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – File path of overview file holding <cite>datafile</cite> tag (format
+“%STATION_%YEAR”) and ‘consider’ column.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><strong>df_files</strong> – loaded txt_files data with columns:</p>
+<ul class="simple">
+<li><p><em>datafile</em> (str): unique tag referring to rainfall and erosivity
+filename (format “%STATION_%YEAR” without suffix).</p></li>
+<li><p><em>year</em> (int): Year of registration.</p></li>
+<li><p><em>station</em> (str): Name or code of the measurement station.</p></li>
+<li><p><em>consider</em> (int): Consider file for year and station for
+analysis (0/1).</p></li>
+<li><p><em>fname_rainfall</em> (str): full path to rainfall input data file.</p></li>
+<li><p><em>fname_erosivity</em> (str): full path to erosivity data file.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="rfactor.process.load_df_station">
+<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">load_df_station</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_df_station"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_df_station" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the yearly R-value for years, for one station.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dict_data</strong> (<em>dict of {int: pd.DataFrame}</em>) – Dictionary format of erosivity or rainfall data (key: year,
+value: dataframe).</p></li>
+<li><p><strong>years</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>, </em><em>default</em><em> [</em><em>]</em>) – List of years to load data for. If years == [], then all data for
+all years are loaded.</p></li>
+<li><p><strong>frequency</strong> (<em>string</em><em>, </em><em>optional</em>) – Frequency to resample data to, see <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects">https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects</a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><strong>df</strong> – Dataframe of R-value, EI30 or rainfall data.</p>
+<ul class="simple">
+<li><p><em>year</em> (int): Year of registration.</p></li>
+<li><p><em>value</em> (float): R-, EI30- or rainfall value</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="rfactor.process.load_dict_format">
+<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">load_dict_format</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_dict_format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_dict_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the yearly R-value for stations and years</p>
+<p>Load and return a dataframe of the erosivity data for the stations and
+years defined in the input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dict_data</strong> (<em>dict of {str: dict}</em>) – Dictionary format of erosivity or rainfall data. The nested
+dict {station: dict} holds {str: pandas.DataFrame} (key: year,
+value: dataframe).</p></li>
+<li><p><strong>variable</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Variable one whiches to load (“N” = rainfall, “R”= R-factor).</p></li>
+<li><p><strong>stations</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>, </em><em>default</em><em> [</em><em>]</em>) – List of stations to load data for. If list == [], then all data
+for all stations are loaded.</p></li>
+<li><p><strong>years</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>, </em><em>default</em><em> [</em><em>]</em>) – List of years to load data for. If years == [], then all data for
+all years are loaded.</p></li>
+<li><p><strong>frequency</strong> (<em>string</em><em>, </em><em>optional</em>) – Frequency to resample data to, see <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects">https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects</a></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>Dataframe of R-value, EI30 or rainfall data.</p>
+<ul class="simple">
+<li><p><em>year</em> (int): Year of registration.</p></li>
+<li><p><em>value</em> (float): R-, EI30- or rainfall value.</p></li>
+<li><p><em>station</em> (str): Name or code of the measurement station.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="rfactor.process.load_erosivity_data">
+<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">load_erosivity_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_erosivity_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_erosivity_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load and process erosivity data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fname</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – File path to erosivity data file. See <a class="reference internal" href="#rfactor.process.load_erosivity_file" title="rfactor.process.load_erosivity_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_erosivity_file()</span></code></a></p></li>
+<li><p><strong>year</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Year of registration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>df</strong> – See <a class="reference internal" href="#rfactor.process.load_erosivity_file" title="rfactor.process.load_erosivity_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_erosivity_file()</span></code></a></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="rfactor.process.load_erosivity_file">
+<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">load_erosivity_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_erosivity_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_erosivity_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load in a single erosivity file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fname</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – File path to erosivity data file. This file contains no header, three
+columns: a time stamp (DOY, float), a cumulative value for the
+rainfall erosivity (MJ mm ha-1 h-1) (float).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><strong>df</strong> – Cumulative erosivity (cumulative EI30) for day-of-the-year.</p>
+<ul class="simple">
+<li><p><em>day</em> (float): day of the year.</p></li>
+<li><p><em>cumEI30</em> (float): cumulative erosivity (MJ mm ha-1 h-1).</p></li>
+<li><p><em>fname</em> (pathlib.Path): file path of data source.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="rfactor.process.load_rainfall_data">
+<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">load_rainfall_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_rainfall_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_rainfall_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load rainfall data file</p>
+<p>Load the rainfall data file in a pandas dataframe. Add headers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fname</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – File path to rainfall data file. This file contains no header, two
+columns, and a value for the depth of rainfall (mm) registered during
+the last x minutes. Please ensure the fname is of format
+“%STATION_%YEAR”.</p></li>
+<li><p><strong>station</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Name or code of the measurement station</p></li>
+<li><p><strong>year</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Year of registration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><strong>df</strong> – Holds non-zero rainfall time series for one year, one station</p>
+<ul class="simple">
+<li><p><em>timestamp</em> (int): number of passed minutes since start of the year.</p></li>
+<li><p><em>value</em> (float): amount of rainfal (mm) fallen during past x minutes.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ol class="arabic">
+<li><p>The content of fname should be a non-zero timeseries:</p>
+<blockquote>
+<div><p>10       1.00</p>
+<p>20       0.20</p>
+<p>50       0.50</p>
+<p>60       0.30</p>
+<p>… …</p>
+</div></blockquote>
+</li>
+<li><p>The rainfall datafile can only hold data for one year: maximum value
+for column one is 525600 (365 days) minutes (527040, leap year).</p></li>
+</ol>
+</dd></dl>
+
+</div>
+<div class="section" id="module-rfactor.rfactor">
+<span id="rfactor-rfactor-module"></span><h2>rfactor.rfactor module<a class="headerlink" href="#module-rfactor.rfactor" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="rfactor.rfactor.check_oct">
+<code class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></code><code class="sig-name descname"><span class="pre">check_oct</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#check_oct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.check_oct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check octave installation</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="rfactor.rfactor.compute_rfactor">
+<code class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></code><code class="sig-name descname"><span class="pre">compute_rfactor</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rainfall_inputdata_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'matlab'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#compute_rfactor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.compute_rfactor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the R-factor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rainfall_inputdata_folder</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – Folder path to directory holding rainfall data. Rainfall data are
+stored in separate .txt files per station and year. For the format of
+the <cite>txt</cite>-files, see <a class="reference internal" href="#rfactor.process.load_rainfall_data" title="rfactor.process.load_rainfall_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_rainfall_data()</span></code></a></p></li>
+<li><p><strong>results_folder</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><em>pathlib.path</em>) – Folder path to write results to.</p></li>
+<li><p><strong>engine</strong> (<em>'matlab'</em><em> or </em><em>'octave'</em>) – Engine used to compute rfactor.</p></li>
+<li><p><strong>debug</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>default False</em>) – Debug flag to leave matlab open (Matlab engine) / run single core
+(Octave).</p></li>
+<li><p><strong>ncpu</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>default -1</em>) – Number of processors to use.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="rfactor.rfactor.rfactor_octave">
+<code class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></code><code class="sig-name descname"><span class="pre">rfactor_octave</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rainfall_inputdata_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#rfactor_octave"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.rfactor_octave" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute R-factor with octave engine</p>
+<p>The octave engine is slow, therefore multiprocessing is used as a way to
+speed up execution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rainfall_inputdata_folder</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – See <a class="reference internal" href="#rfactor.rfactor.compute_rfactor" title="rfactor.rfactor.compute_rfactor"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.rfactor.compute_rfactor()</span></code></a></p></li>
+<li><p><strong>results_folder</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><em>pathlib.path</em>) – See <a class="reference internal" href="#rfactor.rfactor.compute_rfactor" title="rfactor.rfactor.compute_rfactor"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.rfactor.compute_rfactor()</span></code></a></p></li>
+<li><p><strong>debug</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a><em>, </em><em>default False</em>) – Run single cores</p></li>
+<li><p><strong>ncpu</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>default -1</em>) – See <a class="reference internal" href="#rfactor.rfactor.compute_rfactor" title="rfactor.rfactor.compute_rfactor"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.rfactor.compute_rfactor()</span></code></a></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="rfactor.rfactor.single_file">
+<code class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></code><code class="sig-name descname"><span class="pre">single_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst_inputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#single_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.single_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute R-factor based on a single file.</p>
+<p>This function uses Octave to compute the matlab <cite>core.m</cite> function, using
+one input file as function input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lst_inputs</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – List of inputs</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../notebooks/analysis_flanders.html" class="btn btn-neutral float-right" title="Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="modules.html" class="btn btn-neutral float-left" title="rfactor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sacha Gobeyn.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

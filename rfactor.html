@@ -1,0 +1,346 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Rainfall erosivity &mdash; rfactor  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="R-factor" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> rfactor
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">R-factor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="get-started.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/modules.html">Module Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/analysis_flanders.html">Flanders</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">rfactor</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Rainfall erosivity</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            
+              <a href="https://github.com/cn-ws/rfactor/blob/master/docs/rfactor.rst" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="rainfall-erosivity">
+<span id="rfactor"></span><h1>Rainfall erosivity<a class="headerlink" href="#rainfall-erosivity" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The soil erosive power of rainfall is quantified in the rainfall erosivity factor
+<span class="math notranslate nohighlight">\(R\)</span>. This is a measure for the total erosivity of a number of rainfall
+events within a defined timeframe (years, months, number of days). The factor
+is computed by first calculating the erosivity for every rainfall event
+<span class="math notranslate nohighlight">\(k\)</span> in a timeseries. Secondly, the sum of the erosivity of all events
+is computed, for every year. Finally, the mean is computed over all the years:</p>
+<div class="math notranslate nohighlight">
+\[R = \frac{1}{n}\sum_{j=1}^{n}[\sum_{k=1}^{m_j}E_k.(I_{30})_k]_j\]</div>
+<dl class="simple">
+<dt>with</dt><dd><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(R\)</span>: rainfall erosivity factor(<span class="math notranslate nohighlight">\(\frac{\text{J
+.mm}}{\text{m}^2.\text{h.year}}\)</span>),</p></li>
+<li><p><span class="math notranslate nohighlight">\(n\)</span>, increment <span class="math notranslate nohighlight">\(j\)</span>: number of years,</p></li>
+<li><p><span class="math notranslate nohighlight">\(m_j\)</span>, increment <span class="math notranslate nohighlight">\(k\)</span>: number of rain event in year <span class="math notranslate nohighlight">\(j\)</span>,</p></li>
+<li><p><span class="math notranslate nohighlight">\(E\)</span>: the total kinetic energy of one single rain event
+(<span class="math notranslate nohighlight">\(\frac{J}{m^2}\)</span>), and</p></li>
+<li><p><span class="math notranslate nohighlight">\(I_{30}\)</span> (<span class="math notranslate nohighlight">\(\frac{mm}{h}\)</span>): the maximum rain intensity
+recorded within 30 consecutive minutes.</p></li>
+</ul>
+</dd>
+</dl>
+<p>In the above equation, the erosivity of one event is defined by the sum of the
+depth of rainfall (mm) multiplied by the total kinetic energy of the event.
+The latter is defined as:</p>
+<div class="math notranslate nohighlight">
+\[E = \sum_{r=1}^o e_r \Delta V_r\]</div>
+<dl class="simple">
+<dt>with</dt><dd><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(o\)</span>: the number of increments for a particular rain event,</p></li>
+<li><p><span class="math notranslate nohighlight">\(e_r\)</span>: the rain energy per unit depth,
+(<span class="math notranslate nohighlight">\(\frac{\text{J}}{\text{m}^{2}.\text{mm}}\)</span>), and</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Delta V_r\)</span>: the rain depth (mm).</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="energy-per-unit-depth-of-rain">
+<h2>Energy per unit depth of rain<a class="headerlink" href="#energy-per-unit-depth-of-rain" title="Permalink to this headline">¶</a></h2>
+<p>There are number of ways to compute the rain energy per unit depth
+<span class="math notranslate nohighlight">\(e_r\)</span>, depending on the area for which the R-factor is computed. For an
+application for Flanders/Belgium, the rain energy per unit is defined by
+(Salles et al., 1999, 2002, Verstraeten et al., 2006):</p>
+<div class="math notranslate nohighlight">
+\[e_r = 11.12i_r^{0.31}\]</div>
+<p>with</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(i_r\)</span>: the rain intensity for every 10-min increment
+(mm <span class="math notranslate nohighlight">\(\text{h}^{-1}\)</span>).</p></li>
+</ul>
+</div></blockquote>
+<p>Prior to the relation estimated for Belgium, an alternative relation was
+estimated for the USA by Brown and Foster (1987) (see also RUSLE-handbook,
+Renard et al., 1997):</p>
+<div class="math notranslate nohighlight">
+\[e_r = 29(1-0.72e^{-0.05i_r})\]</div>
+<p>The use of the type of relation has an important implication on the
+computation of the R-factor, as the sensitivity of the R-factor for extreme
+high-intensity events varies significantly depending on the defined relation</p>
+</div>
+<div class="section" id="application-on-flanders">
+<h2>Application on Flanders<a class="headerlink" href="#application-on-flanders" title="Permalink to this headline">¶</a></h2>
+<p>In this package, example data are presented for Flanders. For applications of
+the rainfall erosivity factor in the context of erosion and sediment
+transport modelling in Flanders a value of 870
+<span class="math notranslate nohighlight">\(\frac{\text{MJ.mm}}{\text{ha.h.year}}\)</span> is used since 2006
+(Verstraeten et al., 2006). Recently, this value has been updated to 1250
+<span class="math notranslate nohighlight">\(\frac{\text{MJ.mm}}{\text{ha.h.year}}\)</span> (Deproost et al., 2018), and has
+been evaluated in Gobeyn et al. (in prep).</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>Brown, L.C., Foster, G.R., 1987. Storm erosivity using idealized intensity
+distributions. Transactions of the ASAE 30, 0379–0386.
+<a class="reference external" href="https://doi.org/10.13031/2013.31957">https://doi.org/10.13031/2013.31957</a></p>
+<p>Gobeyn, S., Van de Wauw, J., De Vleeschouwer, N., Renders, D.,
+Van Ransbeeck, N., Verstraeten, G., Deproost, P., in prep,  Herziening van de
+neerslagerosiviteitsfactor R voor de Vlaamse erosiemodellering.
+Departement Omgeving, Brussel, 44 pp.</p>
+<p>Renard, K.G., Foster, G.R., Weesies, G.A., McCool, D.K., Yoder, D.C.,
+1997, Predicting soil erosion by water: a guide to conservation planning with
+the revised universal soil loss equation (RUSLE), Agriculture Handbook. U.S.
+Department of Agriculture, Washington.
+<a class="reference external" href="https://www.ars.usda.gov/ARSUserFiles/64080530/RUSLE/AH_703.pdf">https://www.ars.usda.gov/ARSUserFiles/64080530/RUSLE/AH_703.pdf</a></p>
+<p>Salles, C., Poesen, J., Pissart, A., 1999, Rain erosivity indices and drop
+size distribution for central Belgium. Presented at the General Assembly of
+the European Geophysical Society, The Hague, The Netherlands, p. 280.</p>
+<p>Salles, C., Poesen, J., Sempere-Torres, D., 2002. Kinetic energy of rain and
+its functional relationship with intensity. Journal of Hydrology 257, 256–270.
+<a class="reference external" href="https://doi.org/10.1016/S0022-1694(01)00555-8">https://doi.org/10.1016/S0022-1694(01)00555-8</a></p>
+<p>Verstraeten, G., Poesen, J., Demarée, G., Salles, C., 2006, Long-term
+(105 years) variability in rain erosivity as derived from 10-min rainfall
+depth data for Ukkel (Brussels, Belgium): Implications for assessing soil
+erosion rates. Journal Geophysysical Research, 111, D22109.
+<a class="reference external" href="https://doi.org/10.1029/2006JD007169">https://doi.org/10.1029/2006JD007169</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="R-factor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sacha Gobeyn.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

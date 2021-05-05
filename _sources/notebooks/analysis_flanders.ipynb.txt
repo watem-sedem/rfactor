@@ -1,0 +1,586 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Tutorial "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Aim\n",
+    "\n",
+    "Scripts to compute and analyse the R-factor of the RUSLE-equation. The\n",
+    "R-factor is a measure for the total erosivity of a number of rainfall events\n",
+    "within a defined timeframe (year, month, number of days). The factor is\n",
+    "computed by calculating the yearly sum of -for every rainfall event- the sum\n",
+    "of the depth of rainfall (mm) and the kinetic energy, and taking the mean\n",
+    "over all years. For the formula's, we refer to the [CN-WS Pascal model documentation](https://docs.fluves.net/cnws-pascal/watem-sedem.html#rusle-factors)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Imports\n",
+    "Main imports"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "%load_ext autoreload\n",
+    "%autoreload 2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import matplotlib.pyplot as plt \n",
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "from pathlib import Path\n",
+    "import sys;\n",
+    "import os"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Package imports"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from rfactor.process import (ErosivityData, compute_rainfall_statistics, compute_rainfall_statistics)\n",
+    "from rfactor.rfactor import compute_rfactor"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Working directory"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cwd = Path().resolve()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Set folders**  \n",
+    "The input files are defined by text files (extension: .txt) that hold non-zero rainfall timeseries. The data are split per station and per year with a specific datafile tag:  \n",
+    "\n",
+    "KMI_6414_2004.txt  \n",
+    "KMI_6414_2005.txt  \n",
+    "...  \n",
+    "KMI_6434_2003.txt  \n",
+    "KMI_6434_2004.txt  \n",
+    "...  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fmap_rainfall=  Path(r\"../../tests/data/test_rainfalldata\")\n",
+    "fmap_erosivity = Path(r\"../../tests/data/test_erosivitydata\")\n",
+    "fmap_results = Path.cwd() / \"results\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fmap_results"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Rainfall files summary file**  \n",
+    "An overview of the present datafiles for the analysis is saved in a  `files.csv` file (example in *./tests/data*). This file can be used to remove specific files from the analysis (column `consider`):\n",
+    "\n",
+    "   | source        | datafile      | consider  |\n",
+    "  | ------------- |:-------------:| ---------:|\n",
+    "  | KMI\t          | KMI_6414_2004 | 0         |\n",
+    "  | KMI\t          | KMI_6414_2005 | 1         |\n",
+    "  | KMI\t          | KMI_6414_2006 | 1         |\n",
+    "  | ...           | ...           | ...       |\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "txt_files=  Path(r\"data\\belgium\\files.csv\")\n",
+    "txt_files.exists()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Run Model**  \n",
+    "The current implemenation makes use of a Matlab engine, which requires Matlab to be installed. Future versions of this package will use Python. Results are \n",
+    "written to the *./src/rfactor/results*-folder."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "compute_rfactor(fmap_rainfall,fmap_results,\"matlab\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Set-up analysis**  \n",
+    "Create a erosivitydata object, build the data set with the *files.csv* file and load the rainfall and EI30 data.  \n",
+    "__NOTE__: \n",
+    "1. Set the director back to the location of this file\n",
+    "2. If the <ins>**Matlab**</ins> is used, make sure **to first let the simulation end before executing the next line!!!!!**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "os.chdir(cwd)\n",
+    "data = ErosivityData(fmap_rainfall,fmap_erosivity)\n",
+    "df_files = data.build_data_set(txt_files)\n",
+    "data.load_data(df_files)\n",
+    "df_files.to_csv(\"overview_files_stations.csv\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Rainfall statistics**  \n",
+    "Compute rainfall statistics"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "compute_rainfall_statistics(data.load_rainfall(),pd.read_csv(\"data/belgium/stations.csv\"))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Ukkel  \n",
+    "Compute R-value for specific years for Ukkel (KMI_6447 and KMI_F3)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "timeseries = [range(1898,2003,1),\n",
+    "              range(2003,2021,1),\n",
+    "              range(1898,2021,1),\n",
+    "              range(1996,2021,1),\n",
+    "              range(1991,2021,1),\n",
+    "              range(1990,2001,1),\n",
+    "              range(2000,2021,1)]\n",
+    "for i in timeseries:\n",
+    "    print(i)\n",
+    "    df_R=data.load_R([\"KMI_6447\",\"KMI_FS3\"], i)\n",
+    "    print(np.mean(df_R[\"value\"]))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "len(data.stations)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Make figure for Ukkel**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.figure(figsize=[12,7.5])\n",
+    "df_R=data.load_R([\"KMI_6447\",\"KMI_FS3\"], years)\n",
+    "df_R = df_R[~np.isnan(df_R[\"value\"])].sort_values(\"year\")\n",
+    "plt.plot(df_R[\"year\"],df_R[\"value\"],label=\"KMI_FS3 (1898-2002)\")\n",
+    "years = np.arange(2003,2021,1)\n",
+    "df_R=data.load_R([\"KMI_6447\",\"KMI_FS3\"], years)\n",
+    "df_R = df_R[~np.isnan(df_R[\"value\"])].sort_values(\"year\")\n",
+    "plt.plot(df_R[\"year\"],df_R[\"value\"],label=\"KMI_6447 (2003-2019)\")\n",
+    "\n",
+    "# rolling mean\n",
+    "scales  = [10,20,30]\n",
+    "years = np.arange(1898,2021,1)\n",
+    "df_R=data.load_R([\"KMI_6447\",\"KMI_FS3\"], years)\n",
+    "df_R = df_R[~np.isnan(df_R[\"value\"])].sort_values(\"year\")\n",
+    "for scale in scales:\n",
+    "    y = df_R[\"value\"].rolling(scale).mean()\n",
+    "    x = y.index+1898\n",
+    "    plt.plot(x,y,ls=':',lw=3,label=f'voortschrijdend gemiddelde ({scale} jaar)')\n",
+    "plt.ylim([0,3500])\n",
+    "plt.xlim([1890,2020])\n",
+    "plt.tick_params(axis='both', which='major', labelsize=14)\n",
+    "plt.xlabel(r'Jaar (-)',fontsize=16)\n",
+    "plt.ylabel(r'Jaarlijkse R [MJ mm ha$^{-1}$ h$^{-1}$ jaar$^{-1}$]',fontsize=16)\n",
+    "plt.legend(prop={'size':16})"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "len(x)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Flanders and Belgium\n",
+    "**All stations expect Ukkel**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "stations_belgium_excl_ukkel = [station for station in data.stations if station not in [\"KMI_6447\",\"KMI_FS3\"]]\n",
+    "df_R=data.load_R(stations_belgium_excl_ukkel)\n",
+    "print(np.mean(df_R[\"value\"]))\n",
+    "len(stations_belgium_excl_ukkel)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**All stations except Ukkel and Wallonia**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "stations_flanders_excl_ukkel = [station for station in data.stations if station not in  [\"KMI_6447\",\"KMI_FS3\",\"KMI_6455\",\"KMI_6459\",\"KMI_6472\",\"KMI_6494\",\"KMI_6484\"]]\n",
+    "df_R=data.load_R(stations_flanders_excl_ukkel, i)\n",
+    "print(np.mean(df_R[\"value\"]))\n",
+    "len(stations_flanders_excl_ukkel)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Plot the distribution of all R-values for Belgium, excluding the data from Ukkel**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "stations_flanders_excl_ukkel = [station for station in data.stations if station not in  [\"KMI_6447\",\"KMI_FS3\"]]\n",
+    "df_R=data.load_R(stations_flanders_excl_ukkel, range(1991, 2021))\n",
+    "print(np.mean(df_R[\"value\"]))\n",
+    "len(stations_flanders_excl_ukkel)\n",
+    "plt.hist(df_R[\"value\"],20,color=[0.8]*3,label=r\"Jaarlijkse waarden voor alle 55 stations in België\")\n",
+    "plt.plot([1239,1239],[0,120],color=[0.2]*3,ls=\":\",label=\"Ukkel (30-jaar referentie periode)\")\n",
+    "plt.ylabel(r\"#\")\n",
+    "plt.xlabel(r\"R-value [MJ mm ha$^{-1}$ h$^{-1}$ jaar$^{-1}$]\")\n",
+    "plt.ylim([0,130])\n",
+    "plt.legend()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**All stations of the VMM (Flanders)**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "stations_flanders_excl_ukkel = [station for station in data.stations if \"KMI\" not in station]\n",
+    "df_R=data.load_R(stations_flanders_excl_ukkel, i)\n",
+    "print(np.mean(df_R[\"value\"]))\n",
+    "len(stations_flanders_excl_ukkel)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Compute values per year over all stations**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df_R.groupby(\"station\").aggregate({\"value\":[np.mean,np.std],\"year\":lambda x:len(x)}).sort_values(('year', '<lambda>'),ascending=False).reset_index()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Monthly analysis\n",
+    "Get the EI30-values for 2018 based on two Ukkel station (\"KMI_6447\",\"KMI_FS3\")  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df_EI30 = data.load_EI30([\"KMI_6447\",\"KMI_FS3\"],range(1898,2021,1))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Data formatting**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df_EI30[\"m\"] = df_EI30.index.strftime(\"%m%d\")\n",
+    "df_EI30.loc[df_EI30[\"m\"]==\"0229\",\"m\"] = \"0228\"\n",
+    "df_m = df_EI30.groupby(\"m\").aggregate({\"value\":[np.mean,np.std,lambda x:np.percentile(x,25),lambda x:np.percentile(x,75)]})\n",
+    "df_m[\"mean\"] = df_m[(\"value\",\"mean\")];df_m[\"std\"] = df_m[(\"value\",\"std\")];df_m[\"p25\"] = df_m[('value', '<lambda_0>')];df_m[\"p75\"] = df_m[('value', '<lambda_1>')];df_m[\"p25_e\"] = df_m[\"mean\"]-df_m['p25'];df_m[\"p75_e\"] = df_m['p75']-df_m[\"mean\"]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**Plot**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig = plt.figure(figsize=(8,4))\n",
+    "x = np.arange(len(df_m))\n",
+    "y_gv = [26,20,24,27,70,77,144,102,68,50,37,32]\n",
+    "y_gv2 = [35,27,32,36,86,96,177,135,89,66,48,43]\n",
+    "plt.bar(x-0.3,df_m[\"mean\"],yerr=df_m[[\"p25_e\",\"p75_e\"]].T.values,color=[0.80]*3,width=0.3,label=\"Ukkel (1898-2020))\")\n",
+    "plt.bar(x,y_gv,width=0.3,color=[0.5]*3,label=\"Verstraeten $\\it{et. al}$ (2001)\")\n",
+    "plt.bar(x+0.3,y_gv2,width=0.3,color=[0.2]*3,label=\"Verstraeten $\\it{et. al}$ (2006)\")\n",
+    "plt.ylabel(\"R-value\")\n",
+    "ax = fig.axes\n",
+    "plt.xticks(x,[\"Januari\",\"Februari\",\"Maart\",\"April\",\"Mei\",\"Juni\",\"Juli\",\"Augustus\",\"September\",\"Oktober\",\"November\",\"December\"],rotation=45)\n",
+    "plt.legend(loc=2,facecolor =\"white\")\n",
+    "plt.ylabel(r\"R-waarde [MJ mm ha$^{-1}$ h$^{-1}$ maand$^{-1}$]\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Appendix B: monthly analysis (detail)\n",
+    "**Evolution monthly R-value**\n",
+    "Generate plot to analyse evolution of montly R over the years"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def subplot_montlhy_R(df,ax,ind1,ind2):\n",
+    "\n",
+    "    if (ind1==0) & (ind2==2):\n",
+    "        ax.plot(df[\"year\"],df[\"value\"],color=[0.1]*3,alpha=0.5,label=\"EI30\")\n",
+    "    else:\n",
+    "        ax.plot(df[\"year\"],df[\"value\"],color=[0.1]*3,alpha=0.5)\n",
+    "    ax.fill_between([1998,2021], 0,500,facecolor='grey', alpha=0.3)    \n",
+    "    # rolling mean\n",
+    "    scales  = [10,20,30]\n",
+    "    for scale in scales:\n",
+    "        y = df[\"value\"].reset_index().rolling(scale).mean()\n",
+    "        if scale==10:\n",
+    "            y_max=np.nanmax(y.values)*1.1\n",
+    "        x = y.index+1898\n",
+    "        ax.plot(x,y,lw=2,label=f'voortschrijdend gemiddelde ({scale} jaar)')\n",
+    "    if ind1!=3:\n",
+    "        ax.set_xticks([])\n",
+    "    else:\n",
+    "        if ind2==1:\n",
+    "            ax.set_xlabel(r'Jaar (-)',fontsize=16)\n",
+    "    ax.set_ylim([0,500])\n",
+    "    ax.set_title(name)\n",
+    "    ax.tick_params(axis='y', which='major', labelsize=12,rotation=90)\n",
+    "    ax.tick_params(axis='x', which='major', labelsize=12)\n",
+    "    if ind2!=0:\n",
+    "        ax.set_yticklabels([])\n",
+    "    else:\n",
+    "        if ind1==2:\n",
+    "            ax.set_ylabel('\\t\\t\\t Maandelijkse R [MJ mm ha$^{-1}$ h$^{-1}$ maand$^{-1}$]',fontsize=16)\n",
+    "    if (ind1==0) & (ind2==2):\n",
+    "        ax.legend(ncol=2)\n",
+    "        \n",
+    "fig,ax = plt.subplots(4,3,figsize=[9,9])\n",
+    "months = [\"Januari\",\"Februari\",\"Maart\",\"April\",\"Mei\",\"Juni\",\"Juli\",\"Augustus\",\"September\",\"Oktober\",\"November\",\"December\"]\n",
+    "df_EI30[\"month\"] = df_EI30.index.month\n",
+    "df_EI30[\"year\"] = df_EI30.index.year\n",
+    "\n",
+    "for month,name in enumerate(months):\n",
+    "    ind1=int(np.floor((month)/3))\n",
+    "    ind2=np.mod(month,3)\n",
+    "    df_EI30m = df_EI30.loc[df_EI30[\"month\"]==month+1]\n",
+    "    df_EI30m = df_EI30m[~np.isnan(df_EI30m[\"value\"])].sort_values(\"year\")\n",
+    "    subplot_montlhy_R(df_EI30m,ax[ind1,ind2],ind1,ind2)\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python [conda env:rfactor]",
+   "language": "python",
+   "name": "conda-env-rfactor-py"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.2"
+  },
+  "toc": {
+   "base_numbering": 1,
+   "nav_menu": {},
+   "number_sections": true,
+   "sideBar": true,
+   "skip_h1_title": false,
+   "title_cell": "Table of Contents",
+   "title_sidebar": "Contents",
+   "toc_cell": false,
+   "toc_position": {},
+   "toc_section_display": true,
+   "toc_window_display": false
+  },
+  "varInspector": {
+   "cols": {
+    "lenName": 16,
+    "lenType": 16,
+    "lenVar": 40
+   },
+   "kernels_config": {
+    "python": {
+     "delete_cmd_postfix": "",
+     "delete_cmd_prefix": "del ",
+     "library": "var_list.py",
+     "varRefreshCmd": "print(var_dic_list())"
+    },
+    "r": {
+     "delete_cmd_postfix": ") ",
+     "delete_cmd_prefix": "rm(",
+     "library": "var_list.r",
+     "varRefreshCmd": "cat(var_dic_list()) "
+    }
+   },
+   "types_to_exclude": [
+    "module",
+    "function",
+    "builtin_function_or_method",
+    "instance",
+    "_Feature"
+   ],
+   "window_display": false
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

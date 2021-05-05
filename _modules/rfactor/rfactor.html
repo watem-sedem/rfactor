@@ -1,0 +1,344 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>rfactor.rfactor &mdash; rfactor  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> rfactor
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rfactor.html">R-factor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../get-started.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">Module Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/analysis_flanders.html">Flanders</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">rfactor</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>rfactor.rfactor</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for rfactor.rfactor</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">check_call</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
+
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span><span class="p">,</span> <span class="n">find_dotenv</span>
+<span class="kn">from</span> <span class="nn">tqdm.contrib.concurrent</span> <span class="kn">import</span> <span class="n">process_map</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="compute_rfactor"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.compute_rfactor">[docs]</a><span class="k">def</span> <span class="nf">compute_rfactor</span><span class="p">(</span><span class="n">rainfall_inputdata_folder</span><span class="p">,</span> <span class="n">results_folder</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;matlab&quot;</span><span class="p">,</span>
+                    <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ncpu</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the R-factor</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rainfall_inputdata_folder: pathlib.Path</span>
+<span class="sd">        Folder path to directory holding rainfall data. Rainfall data are</span>
+<span class="sd">        stored in separate .txt files per station and year. For the format of</span>
+<span class="sd">        the `txt`-files, see :func:`rfactor.process.load_rainfall_data`</span>
+<span class="sd">    results_folder: str or pathlib.path</span>
+<span class="sd">        Folder path to write results to.</span>
+<span class="sd">    engine: &#39;matlab&#39; or &#39;octave&#39;</span>
+<span class="sd">        Engine used to compute rfactor.</span>
+<span class="sd">    debug: bool, default False</span>
+<span class="sd">        Debug flag to leave matlab open (Matlab engine) / run single core</span>
+<span class="sd">        (Octave).</span>
+<span class="sd">    ncpu: int, default -1</span>
+<span class="sd">        Number of processors to use.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">results_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">results_folder</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">results_folder</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">results_folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">rainfall_inputdata_folder</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Input </span><span class="si">{</span><span class="n">rainfall_inputdata_folder</span><span class="si">}</span><span class="s2">folder does not exist&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">engine</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;matlab&quot;</span><span class="p">,</span> <span class="s2">&quot;octave&quot;</span><span class="p">]:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Either select &#39;matlab&#39; or &#39;python&#39; as calculation engine for the rfactor scripts.&quot;</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">engine</span> <span class="o">==</span> <span class="s2">&quot;matlab&quot;</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="n">exitcode</span> <span class="o">=</span> <span class="s2">&quot;exit;&quot;</span> <span class="k">if</span> <span class="n">debug</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;matlab&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-nodesktop&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-r&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;main(&#39;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">rainfall_inputdata_folder</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span><span class="si">}</span><span class="s2">&#39;,&#39;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">results_folder</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;);&quot;</span> <span class="o">+</span> <span class="n">exitcode</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="n">check_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rfactor_octave</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">rainfall_inputdata_folder</span><span class="p">),</span> <span class="n">results_folder</span><span class="p">,</span> <span class="n">debug</span><span class="p">,</span>
+                       <span class="n">ncpu</span><span class="o">=</span><span class="n">ncpu</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="rfactor_octave"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.rfactor_octave">[docs]</a><span class="k">def</span> <span class="nf">rfactor_octave</span><span class="p">(</span><span class="n">rainfall_inputdata_folder</span><span class="p">,</span> <span class="n">results_folder</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                   <span class="n">ncpu</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute R-factor with octave engine</span>
+
+<span class="sd">    The octave engine is slow, therefore multiprocessing is used as a way to</span>
+<span class="sd">    speed up execution.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rainfall_inputdata_folder: pathlib.Path</span>
+<span class="sd">        See :func:`rfactor.rfactor.compute_rfactor`</span>
+<span class="sd">    results_folder: str or pathlib.path</span>
+<span class="sd">        See :func:`rfactor.rfactor.compute_rfactor`</span>
+<span class="sd">    debug: bool, default False</span>
+<span class="sd">        Run single cores</span>
+<span class="sd">    ncpu: int, default -1</span>
+<span class="sd">        See :func:`rfactor.rfactor.compute_rfactor`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">rainfall_inputdata_folder</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Input folder &#39;</span><span class="si">{</span><span class="n">rainfall_inputdata_folder</span><span class="si">}</span><span class="s2">&#39; does not exist&quot;</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">rainfall_inputdata_folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()]</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">files</span><span class="p">,</span><span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+            <span class="n">single_file</span><span class="p">([</span><span class="n">file</span><span class="p">,</span> <span class="n">results_folder</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">lst_input</span> <span class="o">=</span> <span class="p">[[</span><span class="n">file</span><span class="p">,</span> <span class="n">results_folder</span><span class="p">]</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span>
+                     <span class="n">rainfall_inputdata_folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()]</span>
+        <span class="k">if</span> <span class="n">ncpu</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">ncpu</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
+        <span class="n">process_map</span><span class="p">(</span><span class="n">single_file</span><span class="p">,</span> <span class="n">lst_input</span><span class="p">,</span> <span class="n">max_workers</span><span class="o">=</span><span class="n">ncpu</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="single_file"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.single_file">[docs]</a><span class="k">def</span> <span class="nf">single_file</span><span class="p">(</span><span class="n">lst_inputs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute R-factor based on a single file.</span>
+
+<span class="sd">    This function uses Octave to compute the matlab `core.m` function, using</span>
+<span class="sd">    one input file as function input.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lst_inputs: list</span>
+<span class="sd">        List of inputs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">lst_inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">path_results</span> <span class="o">=</span> <span class="n">lst_inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">check_oct</span><span class="p">()</span>
+    <span class="kn">from</span> <span class="nn">oct2py</span> <span class="kn">import</span> <span class="n">Oct2Py</span><span class="p">,</span><span class="n">Oct2PyError</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">inputdata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">resolve</span><span class="p">()))</span>
+
+    <span class="k">with</span> <span class="n">Oct2Py</span><span class="p">()</span> <span class="k">as</span> <span class="n">oc</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">oc</span><span class="o">.</span><span class="n">addpath</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">resolve</span><span class="p">()))</span>
+            <span class="n">cumEI</span> <span class="o">=</span> <span class="n">oc</span><span class="o">.</span><span class="n">core</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">inputdata</span><span class="p">)</span>
+            <span class="n">filename_out</span> <span class="o">=</span> <span class="n">path_results</span> <span class="o">/</span> <span class="p">(</span>
+                        <span class="n">filename</span><span class="o">.</span><span class="n">stem</span> <span class="o">+</span> <span class="s1">&#39;new cumdistr salles.txt&#39;</span><span class="p">)</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">filename_out</span><span class="p">,</span> <span class="n">cumEI</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%.2f</span><span class="s2"> </span><span class="si">%.1f</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">oc</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">Oct2PyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">SystemError</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="check_oct"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.check_oct">[docs]</a><span class="k">def</span> <span class="nf">check_oct</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Check octave installation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">load_dotenv</span><span class="p">(</span><span class="n">find_dotenv</span><span class="p">())</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">oct_exe</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;OCTAVE_EXECUTABLE&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">oct_exe</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">SystemError</span><span class="p">(</span>
+                <span class="s2">&quot;Octave is not referred to correctly in the &#39;rfactor/.env&#39;-file. Please check the executable path. &quot;</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">SystemError</span><span class="p">(</span>
+            <span class="s2">&quot;No &#39;OCTAVE_EXECUTABLE&#39; is defined in &#39;rfactor/.env&#39;-file. Please check the documentation for information on installing Octave!&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sacha Gobeyn.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

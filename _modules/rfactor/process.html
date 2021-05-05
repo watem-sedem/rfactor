@@ -1,0 +1,934 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>rfactor.process &mdash; rfactor  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> rfactor
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rfactor.html">R-factor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../get-started.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">Module Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/analysis_flanders.html">Flanders</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developer guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">rfactor</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>rfactor.process</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for rfactor.process</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+
+<div class="viewcode-block" id="ErosivityData"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.ErosivityData">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ErosivityData</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Build and load erosivity and rainfall data</span>
+
+<span class="sd">    Data class containing references to all rainfall input data files (.txt)</span>
+<span class="sd">    and computed erosivity data files (.txt).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fmap_rainfall: pathlib.Path</span>
+<span class="sd">        Folder path to directory holding rainfall data. Rainfall data are</span>
+<span class="sd">        stored in separate .txt files per station and year. For the format of</span>
+<span class="sd">        the `txt`-files, see :func:`rfactor.process.load_rainfall_data`</span>
+
+<span class="sd">    fmap_erosivity_data: pathlib.Path</span>
+<span class="sd">        Folder path to directory holding erosivity data. Erosvity data are</span>
+<span class="sd">        stored in separate .txt files per station and year. For the format of</span>
+<span class="sd">        the `txt`-files, see :func:`rfactor.rfactor.load_erosivity_data`</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; # Define input folders</span>
+<span class="sd">    &gt;&gt;&gt; fmap_rainfall=  Path(r&quot;docs/example_data&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; fmap_erosivity = Path(r&quot;rfactor/results&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; txt_files= Path(r&quot;docs/example_data/datafiles_completeness.csv&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; # Compile and load data</span>
+<span class="sd">    &gt;&gt;&gt; data = ErosivityData(fmap_rainfall,fmap_erosivity)</span>
+<span class="sd">    &gt;&gt;&gt; df_files = data.build_data_set(txt_files)</span>
+<span class="sd">    &gt;&gt;&gt; data.load_data(df_files)</span>
+<span class="sd">    &gt;&gt;&gt; # Get dataframe with R for year 2018 and station KMI_6447 and KMI_FS3</span>
+<span class="sd">    &gt;&gt;&gt; df_R=data.load_R([&quot;KMI_6447&quot;,&quot;KMI_FS3&quot;], [2018])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">fmap_rainfall</span><span class="p">:</span> <span class="n">Path</span>
+    <span class="n">fmap_erosivity</span><span class="p">:</span> <span class="n">Path</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check if folders exist and number of files are equal</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_if_folder_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fmap_rainfall</span><span class="p">)</span>
+        <span class="n">check_if_folder_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fmap_erosivity</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lst_txt_rainfall</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fmap_rainfall</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.txt*&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lst_txt_erosivity</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fmap_erosivity</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.txt*&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_number_of_files</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ErosivityData.check_number_of_files"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.ErosivityData.check_number_of_files">[docs]</a>    <span class="k">def</span> <span class="nf">check_number_of_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check if the number of files in the rainfall and erosivity data</span>
+<span class="sd">        folder are equal.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lst_rainfall</span> <span class="o">=</span> <span class="p">[</span><span class="n">txt</span><span class="o">.</span><span class="n">stem</span> <span class="k">for</span> <span class="n">txt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lst_txt_rainfall</span><span class="p">]</span>
+        <span class="n">lst_erosivity</span> <span class="o">=</span> <span class="p">[</span><span class="n">txt</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;new&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">txt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lst_txt_erosivity</span><span class="p">]</span>
+        <span class="n">flag1</span> <span class="o">=</span> <span class="n">check_missing_files</span><span class="p">(</span><span class="n">lst_rainfall</span><span class="p">,</span> <span class="n">lst_erosivity</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmap_erosivity</span><span class="p">)</span>
+        <span class="n">flag2</span> <span class="o">=</span> <span class="n">check_missing_files</span><span class="p">(</span><span class="n">lst_erosivity</span><span class="p">,</span> <span class="n">lst_rainfall</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmap_rainfall</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">flag1</span> <span class="ow">or</span> <span class="n">flag2</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Unequal number of input rainfall and erosivity &quot;</span> <span class="sa">f</span><span class="s2">&quot;calculation files.&quot;</span>
+            <span class="p">)</span>
+            <span class="ne">IOError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ErosivityData.build_data_set"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.ErosivityData.build_data_set">[docs]</a>    <span class="k">def</span> <span class="nf">build_data_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txt_files</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build data set with the help of a text file, containing an overview</span>
+<span class="sd">        of the to use rainfall and erosivity files.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        txt_files: pathlib.Path</span>
+<span class="sd">            File path of rainfall and erosivity overview file, see</span>
+<span class="sd">            :func:`rfactor.process.load_df_files`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        df_files: pandas.DataFrame</span>
+<span class="sd">            Loaded txt_files data, see :func:`rfactor.process.load_df_files`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df_files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_df_files</span><span class="p">(</span><span class="n">txt_files</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">df_files</span></div>
+
+<div class="viewcode-block" id="ErosivityData.check_df_files"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.ErosivityData.check_df_files">[docs]</a>    <span class="k">def</span> <span class="nf">check_df_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">txt_files</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Load and check if rainfall/erosivity datafile is tabulated the</span>
+<span class="sd">        datafile overview file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        txt_files: pathlib.Path</span>
+<span class="sd">            File path of rainfall and erosivity overview file, see</span>
+<span class="sd">            :func:`rfactor.process.load_df_files`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        df_files: pandas.DataFrame</span>
+<span class="sd">            Loaded txt_files data, see :func:`rfactor.process.load_df_files`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df_files</span> <span class="o">=</span> <span class="n">load_df_files</span><span class="p">(</span><span class="n">txt_files</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lst_txt_erosivity</span><span class="p">:</span>
+            <span class="n">datafile</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;new&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">datafile</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df_files</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">file</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">&#39; not listed&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot; in &#39;</span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">txt_files</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;, please add the &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;file datafile record and indicate if you want to &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;consider it for analysis.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="n">df_files</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">datafile</span><span class="p">,</span> <span class="s2">&quot;file_exists&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">df_files</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">datafile</span><span class="p">,</span> <span class="s2">&quot;fname_rainfall&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmap_rainfall</span> <span class="o">/</span> <span class="p">(</span>
+                <span class="n">datafile</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span>
+            <span class="p">)</span>
+            <span class="n">df_files</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">datafile</span><span class="p">,</span> <span class="s2">&quot;fname_erosivity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmap_erosivity</span> <span class="o">/</span> <span class="p">(</span>
+                <span class="n">datafile</span> <span class="o">+</span> <span class="s2">&quot;new cumdistr salles.txt&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">df_files</span></div>
+
+<div class="viewcode-block" id="ErosivityData.load_data"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.ErosivityData.load_data">[docs]</a>    <span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">df_files</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load erosivity and rainfall data.</span>
+
+<span class="sd">        This function loads the erosivity and rainfall data for each station.</span>
+<span class="sd">        It only loads data for stations which have at least one year that is</span>
+<span class="sd">        considered for analysis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df_files: pandas.DataFrame</span>
+<span class="sd">            Input file overview file, see</span>
+<span class="sd">            :func:`rfactor.process.load_df_files`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dict_erosivity_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dict_rainfall_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lst_nr_files</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># get stations from considered and existing datafiles</span>
+        <span class="n">condition</span> <span class="o">=</span> <span class="n">df_files</span><span class="p">[</span><span class="s2">&quot;consider&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">df_files</span><span class="p">[</span><span class="s2">&quot;file_exists&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">df_files</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">condition</span><span class="p">,</span> <span class="s2">&quot;station&quot;</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">station</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stations</span><span class="p">):</span>
+            <span class="n">stationdata</span> <span class="o">=</span> <span class="n">StationData</span><span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">df_files</span><span class="p">[</span><span class="n">df_files</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">station</span><span class="p">])</span>
+            <span class="n">dict_rainfall</span><span class="p">,</span> <span class="n">dict_erosivity</span> <span class="o">=</span> <span class="n">stationdata</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dict_rainfall_data</span><span class="p">[</span><span class="n">station</span><span class="p">]</span> <span class="o">=</span> <span class="n">dict_rainfall</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dict_erosivity_data</span><span class="p">[</span><span class="n">station</span><span class="p">]</span> <span class="o">=</span> <span class="n">dict_erosivity</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lst_nr_files</span><span class="p">[</span><span class="n">station</span><span class="p">]</span> <span class="o">=</span> <span class="n">stationdata</span><span class="o">.</span><span class="n">n_files</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nr_files</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lst_nr_files</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="ErosivityData.load_rainfall"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.ErosivityData.load_rainfall">[docs]</a>    <span class="k">def</span> <span class="nf">load_rainfall</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stations</span><span class="o">=</span><span class="p">[],</span> <span class="n">years</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="sd">&quot;&quot;&quot;Load N-value for all/selected stations and years.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        stations: list</span>
+<span class="sd">            List of stations for which to load yearly R-value.</span>
+
+<span class="sd">        years: list</span>
+<span class="sd">            List of years for which to load yearly R-factor.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pandas.DataFrame</span>
+<span class="sd">            See :func:`rfactor.proces.load_dict_format`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">load_dict_format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dict_rainfall_data</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="n">stations</span><span class="p">,</span> <span class="n">years</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ErosivityData.load_R"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.ErosivityData.load_R">[docs]</a>    <span class="k">def</span> <span class="nf">load_R</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stations</span><span class="o">=</span><span class="p">[],</span> <span class="n">years</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="sd">&quot;&quot;&quot;Load R-values for stations and years.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        stations: list</span>
+<span class="sd">            List of stations for which to load yearly R-value.</span>
+
+<span class="sd">        years: list</span>
+<span class="sd">            List of years for which to load yearly R-factor.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pandas.DataFrame</span>
+<span class="sd">            See :func:`rfactor.proces.load_dict_format`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">load_dict_format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dict_erosivity_data</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">,</span> <span class="n">stations</span><span class="p">,</span> <span class="n">years</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ErosivityData.load_EI30"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.ErosivityData.load_EI30">[docs]</a>    <span class="k">def</span> <span class="nf">load_EI30</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stations</span><span class="o">=</span><span class="p">[],</span> <span class="n">years</span><span class="o">=</span><span class="p">[],</span> <span class="n">frequency</span><span class="o">=</span><span class="s2">&quot;M&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load EI30 timeseries values</span>
+
+<span class="sd">        The timeseries has a frequency defined by the frequency input</span>
+<span class="sd">        parameter.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        stations: list</span>
+<span class="sd">            List of stations for which to load yearly R-value.</span>
+<span class="sd">        years: list</span>
+<span class="sd">            List of years for which to load yearly R-factor.</span>
+<span class="sd">        frequency: string, optional</span>
+<span class="sd">            Frequency to resample data to, see https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pandas.DataFrame</span>
+<span class="sd">            See :func:`rfactor.proces.load_dict_format`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">frequency</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;SM&quot;</span><span class="p">,</span> <span class="s2">&quot;M&quot;</span><span class="p">]:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Loading EI30 is only implemented for half-montlhy (&#39;SM&#39;) &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;and monthly scale (&#39;M&#39;)&quot;</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">load_dict_format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dict_erosivity_data</span><span class="p">,</span> <span class="s2">&quot;EI30&quot;</span><span class="p">,</span> <span class="n">stations</span><span class="p">,</span> <span class="n">years</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="n">frequency</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="StationData"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.StationData">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">StationData</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Load and process erosivity and rainfall data for one measurement</span>
+<span class="sd">     station.</span>
+
+<span class="sd">    station: str</span>
+<span class="sd">        Name or code of the measurement station.</span>
+<span class="sd">    df_files: pandas.DataFrame</span>
+<span class="sd">        See :func:`rfactor.process.load_df_files`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">station</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">df_files</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">df_erosivity</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">df_rainfall</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dict_erosivity</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dict_rainfall</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_files</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">df_files</span><span class="p">[</span><span class="s2">&quot;consider&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StationData.load_data"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.StationData.load_data">[docs]</a>    <span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load erosivity and rainfall data per year</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict_rainfall: dict of {str: pandas.DataFrame}</span>
+<span class="sd">            Holding rainfall data (in pandas.DataFrame) for every year, i.e.</span>
+<span class="sd">            {*year*: *rainfall_data*}. For structure *rainfall_data*, see</span>
+<span class="sd">            :func:`rfactor.process.load_rainfall_data`.</span>
+
+<span class="sd">        dict_erosivity: dict of {str: pandas.DataFrame}</span>
+<span class="sd">            Holding erosivity data (in pandas.DataFrame) for every year, i.e.</span>
+<span class="sd">            {*year*: *erosivity_data*}. For structure *rainfall_data*, see</span>
+<span class="sd">            :func:`rfactor.process.load_rainfall_data`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dict_rainfall</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">dict_erosivity</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_files</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_files</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+                <span class="n">year</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_files</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">]</span>
+                <span class="n">consider</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_files</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="s2">&quot;consider&quot;</span><span class="p">]</span>
+                <span class="n">fname_erosivity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_files</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="s2">&quot;fname_erosivity&quot;</span><span class="p">]</span>
+                <span class="n">fname_rainfall</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">df_files</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="s2">&quot;fname_rainfall&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">consider</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">fname_rainfall</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">fname_rainfall</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                        <span class="n">dict_rainfall</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">)]</span> <span class="o">=</span> <span class="n">load_rainfall_data</span><span class="p">(</span>
+                            <span class="n">fname_rainfall</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">station</span><span class="p">,</span> <span class="n">year</span>
+                        <span class="p">)</span>
+                    <span class="n">dict_erosivity</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">)]</span> <span class="o">=</span> <span class="n">load_erosivity_data</span><span class="p">(</span>
+                        <span class="n">fname_erosivity</span><span class="p">,</span> <span class="n">year</span>
+                    <span class="p">)</span>
+        <span class="k">return</span> <span class="n">dict_rainfall</span><span class="p">,</span> <span class="n">dict_erosivity</span></div></div>
+
+
+<div class="viewcode-block" id="load_df_files"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.load_df_files">[docs]</a><span class="k">def</span> <span class="nf">load_df_files</span><span class="p">(</span><span class="n">txt_files</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load overview file of rainfall and erosivity data</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    txt_files: pathlib.Path</span>
+<span class="sd">        File path of overview file holding `datafile` tag (format</span>
+<span class="sd">        &quot;%STATION_%YEAR&quot;) and &#39;consider&#39; column.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df_files: pandas.DataFrame</span>
+<span class="sd">        loaded txt_files data with columns:</span>
+
+<span class="sd">        - *datafile* (str): unique tag referring to rainfall and erosivity</span>
+<span class="sd">          filename (format &quot;%STATION_%YEAR&quot; without suffix).</span>
+<span class="sd">        - *year* (int): Year of registration.</span>
+<span class="sd">        - *station* (str): Name or code of the measurement station.</span>
+<span class="sd">        - *consider* (int): Consider file for year and station for</span>
+<span class="sd">          analysis (0/1).</span>
+<span class="sd">        - *fname_rainfall* (str): full path to rainfall input data file.</span>
+<span class="sd">        - *fname_erosivity* (str): full path to erosivity data file.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df_files</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">txt_files</span><span class="p">)</span>
+    <span class="n">check_duplicates_df_files</span><span class="p">(</span><span class="n">df_files</span><span class="p">,</span> <span class="n">txt_files</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;consider&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df_files</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Column &#39;consider&#39; not file </span><span class="si">{</span><span class="n">txt_files</span><span class="si">}</span><span class="s2">. Please add!&quot;</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;year&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df_files</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">df_files</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">df_files</span><span class="p">[</span><span class="s2">&quot;datafile&quot;</span><span class="p">]]</span>
+    <span class="k">if</span> <span class="s2">&quot;station&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df_files</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">df_files</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">df_files</span><span class="p">[</span><span class="s2">&quot;datafile&quot;</span><span class="p">]</span>
+        <span class="p">]</span>
+    <span class="n">df_files</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">df_files</span><span class="p">[</span><span class="s2">&quot;datafile&quot;</span><span class="p">]</span>
+    <span class="n">df_files</span><span class="p">[</span><span class="s2">&quot;fname_rainfall&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">df_files</span><span class="p">[</span><span class="s2">&quot;fname_erosivity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">df_files</span></div>
+
+
+<div class="viewcode-block" id="check_duplicates_df_files"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.check_duplicates_df_files">[docs]</a><span class="k">def</span> <span class="nf">check_duplicates_df_files</span><span class="p">(</span><span class="n">df_files</span><span class="p">,</span> <span class="n">txt_files</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check duplicate entries dataframe files</span>
+
+<span class="sd">    Check duplicate entries based on tag &#39;datafile&#39; in df_files, and exit code</span>
+<span class="sd">    when duplicate definitions are found.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_files: pandas.DataFrame</span>
+<span class="sd">        See :func:`rfactor.process.load_df_files`</span>
+<span class="sd">    txt_files: pathlib.Path</span>
+<span class="sd">        See :func:`rfactor.process.load_df_files`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df_files</span> <span class="o">=</span> <span class="n">df_files</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">([</span><span class="s2">&quot;datafile&quot;</span><span class="p">,</span> <span class="s2">&quot;consider&quot;</span><span class="p">])</span>
+    <span class="n">lst_datafiles</span> <span class="o">=</span> <span class="n">df_files</span><span class="p">[</span><span class="s2">&quot;datafile&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">datafile</span> <span class="ow">in</span> <span class="n">lst_datafiles</span><span class="p">:</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">lst_datafiles</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">datafile</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Check duplicate and remove for </span><span class="si">{</span><span class="n">datafile</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">txt_files</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="load_dict_format"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.load_dict_format">[docs]</a><span class="k">def</span> <span class="nf">load_dict_format</span><span class="p">(</span><span class="n">dict_data</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">stations</span><span class="o">=</span><span class="p">[],</span> <span class="n">years</span><span class="o">=</span><span class="p">[],</span> <span class="n">frequency</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load the yearly R-value for stations and years</span>
+
+<span class="sd">    Load and return a dataframe of the erosivity data for the stations and</span>
+<span class="sd">    years defined in the input.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dict_data: dict of {str: dict}</span>
+<span class="sd">        Dictionary format of erosivity or rainfall data. The nested </span>
+<span class="sd">        dict {station: dict} holds {str: pandas.DataFrame} (key: year, </span>
+<span class="sd">        value: dataframe).</span>
+<span class="sd">    variable: str</span>
+<span class="sd">        Variable one whiches to load (&quot;N&quot; = rainfall, &quot;R&quot;= R-factor).</span>
+<span class="sd">    stations: list, default []</span>
+<span class="sd">        List of stations to load data for. If list == [], then all data</span>
+<span class="sd">        for all stations are loaded.</span>
+<span class="sd">    years: list, default []</span>
+<span class="sd">        List of years to load data for. If years == [], then all data for</span>
+<span class="sd">        all years are loaded.</span>
+<span class="sd">    frequency: string, optional</span>
+<span class="sd">        Frequency to resample data to, see https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ------</span>
+<span class="sd">    pandas.DataFrame</span>
+<span class="sd">        Dataframe of R-value, EI30 or rainfall data.</span>
+
+<span class="sd">        - *year* (int): Year of registration.</span>
+<span class="sd">        - *value* (float): R-, EI30- or rainfall value.</span>
+<span class="sd">        - *station* (str): Name or code of the measurement station.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lst_df</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">lst_stations</span> <span class="o">=</span> <span class="n">dict_data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stations</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">stations</span>
+    <span class="k">for</span> <span class="n">station</span> <span class="ow">in</span> <span class="n">lst_stations</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">load_df_station</span><span class="p">(</span><span class="n">dict_data</span><span class="p">[</span><span class="n">station</span><span class="p">],</span> <span class="n">variable</span><span class="p">,</span> <span class="n">years</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="n">frequency</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">station</span>
+        <span class="n">lst_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">lst_df</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="load_df_station"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.load_df_station">[docs]</a><span class="k">def</span> <span class="nf">load_df_station</span><span class="p">(</span><span class="n">dict_data</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">years</span><span class="o">=</span><span class="p">[],</span> <span class="n">frequency</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load the yearly R-value for years, for one station.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dict_data: dict of {int: pd.DataFrame}</span>
+<span class="sd">        Dictionary format of erosivity or rainfall data (key: year,</span>
+<span class="sd">        value: dataframe).</span>
+<span class="sd">    years: list, default []</span>
+<span class="sd">        List of years to load data for. If years == [], then all data for</span>
+<span class="sd">        all years are loaded.</span>
+<span class="sd">    frequency: string, optional</span>
+<span class="sd">        Frequency to resample data to, see https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Dataframe of R-value, EI30 or rainfall data.</span>
+
+<span class="sd">        - *year* (int): Year of registration.</span>
+<span class="sd">        - *value* (float): R-, EI30- or rainfall value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dict_output</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">lst_years</span> <span class="o">=</span> <span class="n">dict_data</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">years</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">years</span>
+    <span class="k">if</span> <span class="n">variable</span> <span class="o">==</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">lst_years</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">dict_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">dict_output</span><span class="p">[</span><span class="n">year</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_R_year</span><span class="p">(</span><span class="n">dict_data</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dict_output</span><span class="p">[</span><span class="n">year</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">dict_output</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">])</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="s2">&quot;year&quot;</span><span class="p">})</span>
+    <span class="k">elif</span> <span class="n">variable</span> <span class="o">==</span> <span class="s2">&quot;N&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dict_data</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dict_data</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span><span class="s2">&quot;value&quot;</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">variable</span> <span class="o">==</span> <span class="s2">&quot;EI30&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">lst_years</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">dict_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="n">dict_output</span><span class="p">[</span><span class="n">year</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_EI30</span><span class="p">(</span><span class="n">dict_data</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="n">frequency</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dict_output</span><span class="p">[</span><span class="n">year</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span><span class="s2">&quot;value&quot;</span><span class="p">])</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">dict_output</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="get_R_year"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.get_R_year">[docs]</a><span class="k">def</span> <span class="nf">get_R_year</span><span class="p">(</span><span class="n">dict_df_erosivity</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get R-value from erosvity dictionary data format</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dict_df_erosivity: dict of {str: pandas.DataFrame}</span>
+<span class="sd">        Dictionary format of erosivity data (key: year, value: dataframe). For</span>
+<span class="sd">        the format of the dataframe,</span>
+<span class="sd">        see :func:`rfactor.process.assign_datetime_df_erosivity`</span>
+<span class="sd">    year: int</span>
+<span class="sd">        Year of registration.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float</span>
+<span class="sd">        R-value for year.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">dict_df_erosivity</span><span class="p">[</span><span class="n">year</span><span class="p">][</span><span class="s2">&quot;cumEI30&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="get_EI30"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.get_EI30">[docs]</a><span class="k">def</span> <span class="nf">get_EI30</span><span class="p">(</span><span class="n">dict_df_erosivity</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">frequency</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get EI30-values from erosivity dictionary data format</span>
+
+<span class="sd">    Get EI30-values with defined frequency</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dict_df_erosivity: dict of {str: pandas.DataFrame}</span>
+<span class="sd">        Dictionary format of erosivity data (key: year, value: dataframe).</span>
+<span class="sd">    year: int</span>
+<span class="sd">        Year of registration.</span>
+<span class="sd">    frequency: string, optional</span>
+<span class="sd">        Frequency to resample data to, see https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">dict_df_erosivity</span><span class="p">[</span><span class="n">year</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">frequency</span><span class="p">,</span> <span class="n">closed</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;cumEI30&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;cumEI30&quot;</span><span class="p">]</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">(),</span> <span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="k">return</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="load_rainfall_data"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.load_rainfall_data">[docs]</a><span class="k">def</span> <span class="nf">load_rainfall_data</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">station</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Load rainfall data file</span>
+
+<span class="sd">    Load the rainfall data file in a pandas dataframe. Add headers.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fname: pathlib.Path</span>
+<span class="sd">        File path to rainfall data file. This file contains no header, two</span>
+<span class="sd">        columns, and a value for the depth of rainfall (mm) registered during</span>
+<span class="sd">        the last x minutes. Please ensure the fname is of format</span>
+<span class="sd">        &quot;%STATION_%YEAR&quot;.</span>
+<span class="sd">    station: str</span>
+<span class="sd">        Name or code of the measurement station</span>
+<span class="sd">    year: int</span>
+<span class="sd">        Year of registration.</span>
+
+<span class="sd">    Return</span>
+<span class="sd">    ------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Holds non-zero rainfall time series for one year, one station</span>
+
+<span class="sd">        - *timestamp* (int): number of passed minutes since start of the year.</span>
+<span class="sd">        - *value* (float): amount of rainfal (mm) fallen during past x minutes.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+
+<span class="sd">    1. The content of fname should be a non-zero timeseries:</span>
+
+<span class="sd">        10  \t 1.00 \n</span>
+<span class="sd">        20  \t 0.20 \n</span>
+<span class="sd">        50  \t 0.50 \n</span>
+<span class="sd">        60  \t 0.30 \n</span>
+<span class="sd">        ... ...</span>
+<span class="sd">    2. The rainfall datafile can only hold data for one year: maximum value</span>
+<span class="sd">       for column one is 525600 (365 days) minutes (527040, leap year).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fname</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">year</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">station</span>
+    <span class="n">startdate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="s2">&quot;01/01/&quot;</span> <span class="o">+</span> <span class="n">year</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">startdate</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]]</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="load_erosivity_data"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.load_erosivity_data">[docs]</a><span class="k">def</span> <span class="nf">load_erosivity_data</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load and process erosivity data</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fname: pathlib.Path</span>
+<span class="sd">        File path to erosivity data file. See :func:`load_erosivity_file`</span>
+<span class="sd">    year: int</span>
+<span class="sd">        Year of registration.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        See :func:`rfactor.process.load_erosivity_file`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">load_erosivity_file</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">assign_datetime_df_erosivity</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">))</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">clip_erosivity_data</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">year</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="load_erosivity_file"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.load_erosivity_file">[docs]</a><span class="k">def</span> <span class="nf">load_erosivity_file</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load in a single erosivity file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fname: pathlib.Path</span>
+<span class="sd">        File path to erosivity data file. This file contains no header, three</span>
+<span class="sd">        columns: a time stamp (DOY, float), a cumulative value for the</span>
+<span class="sd">        rainfall erosivity (MJ mm ha-1 h-1) (float).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Cumulative erosivity (cumulative EI30) for day-of-the-year.</span>
+
+<span class="sd">        - *day* (float): day of the year.</span>
+<span class="sd">        - *cumEI30* (float): cumulative erosivity (MJ mm ha-1 h-1).</span>
+<span class="sd">        - *fname* (pathlib.Path): file path of data source.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">),</span> <span class="mi">5</span><span class="p">]),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;fname&quot;</span><span class="p">,</span> <span class="s2">&quot;cumEI30&quot;</span><span class="p">,</span> <span class="s2">&quot;day&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;date&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;cumEI30&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;day&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;fname&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fname</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="assign_datetime_df_erosivity"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.assign_datetime_df_erosivity">[docs]</a><span class="k">def</span> <span class="nf">assign_datetime_df_erosivity</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compile a pandas datatime index from day-of-the-year column.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        See :func:`rfactor.process.load_erosivity_file`</span>
+<span class="sd">    year: int</span>
+<span class="sd">        Year of registration.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+
+<span class="sd">        Updated dataframe with datetime index added.</span>
+
+<span class="sd">        - *index* (pandas.datetime64 series).</span>
+<span class="sd">        - *day* (float): day of the year.</span>
+<span class="sd">        - *cumEI30* (float): cumulative erosivity (MJ mm ha-1 h-1).</span>
+<span class="sd">        - *fname* (pathlib.Path): file path of data source.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">startdate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="s2">&quot;01/01/&quot;</span> <span class="o">+</span> <span class="n">year</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">startdate</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;day&quot;</span><span class="p">]]</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;doy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">dayofyear</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="clip_erosivity_data"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.clip_erosivity_data">[docs]</a><span class="k">def</span> <span class="nf">clip_erosivity_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Clip erosivity data so it only contains data for the given year.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        See :func:`rfactor.process.assign_datetime_df_erosivity`</span>
+<span class="sd">    year: int</span>
+<span class="sd">        Year of registration.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df: pandas.DataFrame</span>
+<span class="sd">        Data set filtered to year.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># if R-value goes out of bound, than map the last value in the year</span>
+    <span class="n">cond</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cond</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">maxR</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;cumEI30&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;cumEI30&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">maxR</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="check_if_folder_exists"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.check_if_folder_exists">[docs]</a><span class="k">def</span> <span class="nf">check_if_folder_exists</span><span class="p">(</span><span class="n">folder</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if folder exists</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    folder: pathlib.Path</span>
+<span class="sd">        input folder</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">folder</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder</span><span class="si">}</span><span class="s2"> does not exists.&quot;</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="check_missing_files"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.check_missing_files">[docs]</a><span class="k">def</span> <span class="nf">check_missing_files</span><span class="p">(</span><span class="n">lst_target</span><span class="p">,</span> <span class="n">lst_reference</span><span class="p">,</span> <span class="n">fmap_reference</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if file in either rainfall or erosivity input folder is missing.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    lst_target: list</span>
+<span class="sd">        List of to-test files, file path of files in pathlib.Path format.</span>
+<span class="sd">    lst_reference: list</span>
+<span class="sd">        List of file references, file path of files in pathlib.Path format.</span>
+<span class="sd">    fmap_reference: pathlib.Path</span>
+<span class="sd">        Folder path of reference files.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    flag: bool</span>
+<span class="sd">        Difference between two folders is zero (True), else False</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The files in both the erosivity and rainfall input folder have</span>
+<span class="sd">    to be exactly the same (same number of files, same tags).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">lst_target</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">lst_reference</span><span class="p">)</span>
+    <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span><span class="si">}</span><span class="s2"> are not in </span><span class="si">{</span><span class="n">fmap_reference</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">flag</span></div>
+
+
+<div class="viewcode-block" id="compute_rainfall_statistics"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.compute_rainfall_statistics">[docs]</a><span class="k">def</span> <span class="nf">compute_rainfall_statistics</span><span class="p">(</span><span class="n">df_rainfall</span><span class="p">,</span> <span class="n">df_station_metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute general statistics for rainfall timeseries</span>
+
+<span class="sd">    Statistics (number of records, min, max, median and years data) are</span>
+<span class="sd">    computed for each measurement station</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_rainfall: pandas.DataFrame</span>
+<span class="sd">        See :func:`rfactor.process.load_dict_format`</span>
+<span class="sd">    df_station_metadata: pandas.DataFrame</span>
+<span class="sd">        Dataframe holding station metadata. This dataframe has one mandatory</span>
+<span class="sd">        column:</span>
+
+<span class="sd">        - *station* (str): Name or code of the measurement station</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    df_statistics: pandas.DataFrame</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df_rainfall</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_rainfall</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">df_rainfall</span> <span class="o">=</span> <span class="n">df_rainfall</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">)</span>
+    <span class="n">df_statistics</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">df_rainfall</span><span class="p">[[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">]]</span>
+        <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;station&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">aggregate</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span>
+                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">0</span><span class="p">]],</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">df_station_metadata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">df_statistics</span> <span class="o">=</span> <span class="n">df_statistics</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+            <span class="n">df_station_metadata</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">df_statistics</span><span class="p">[</span><span class="s2">&quot;years&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_statistics</span><span class="p">[(</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;lambda&gt;&quot;</span><span class="p">)]</span>
+    <span class="n">df_statistics</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_statistics</span><span class="p">[(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;amin&quot;</span><span class="p">)]</span>
+    <span class="n">df_statistics</span><span class="p">[</span><span class="s2">&quot;median&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_statistics</span><span class="p">[(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">)]</span>
+    <span class="n">df_statistics</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_statistics</span><span class="p">[(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;amax&quot;</span><span class="p">)]</span>
+    <span class="n">df_statistics</span><span class="p">[</span><span class="s2">&quot;records&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_statistics</span><span class="p">[(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;lambda_0&gt;&quot;</span><span class="p">)]</span>
+
+    <span class="k">return</span> <span class="n">df_statistics</span><span class="p">[</span>
+        <span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;years&quot;</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;records&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">]</span>
+    <span class="p">]</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sacha Gobeyn.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
