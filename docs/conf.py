@@ -229,8 +229,15 @@ html_static_path = [sphinx_rtd_theme.get_html_theme_path()]
 # html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "example_project-doc"
+htmlhelp_basename = "rfactor-doc"
 
+html_context = {
+    "display_github": True,
+    "github_user": "cn-ws",
+    "github_repo": "rfactor",
+    "github_version": "master",
+    "conf_py_path": "/docs/",
+}
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -246,7 +253,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-    ("index", "user_guide.tex", "example_project Documentation", "Sacha", "manual")
+    ("index", "user_guide.tex", "rfactor Documentation", "Sacha", "manual")
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -272,7 +279,7 @@ latex_documents = [
 # -- External mapping --------------------------------------------------------
 python_version = ".".join(map(str, sys.version_info[0:2]))
 intersphinx_mapping = {
-    "sphinx": ("http://www.sphinx-doc.org/en/stable", None),
+    "sphinx": ("https://www.sphinx-doc.org/en/stable", None),
     "python": ("https://docs.python.org/" + python_version, None),
     "matplotlib": ("https://matplotlib.org", None),
     "numpy": ("https://docs.scipy.org/doc/numpy", None),
