@@ -22,7 +22,7 @@ dependencies such as Pandas and Numpy) and ``Matlab`` or ``Octave``. Python is
 used to implemented the functionalities in this package, whereas Matlab or
 Octave is used to run the core code. The installation
 (see :ref:`here <installation>`) is managed by making use of
-`Miniconda <https://docs.conda.io/en/latest/miniconda.html>`__. Make sure to
+`Miniconda <https://docs.conda.io/en/latest/miniconda.html>`_. Make sure to
 check out the installation instructions, and follow the example in the
 :ref:`Get started <getstarted>` page.
 
@@ -43,6 +43,11 @@ to obtain the a copy of the RMI rainfall input data.
 The erosivity data calculated with the rainfall input data are provided by the
 partners of this project, and are used as test data for analysing the R-factor
 for Flanders.
+
+Documentation
+-------------
+The documentation can be found on the
+`R-factor documentation page <https://cn-ws.github.io/rfactor/index.html>`_.
 
 License
 -------
