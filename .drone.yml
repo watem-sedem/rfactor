@@ -43,6 +43,10 @@ steps:
       password:
         from_secret: gh-pages-release
       pages_directory: build/sphinx/html
+    when:
+      branch:
+        - master
+        - build_gh_pages
 
 name: default
 
