@@ -46,7 +46,6 @@ steps:
     when:
       branch:
         - master
-        - build_gh_pages
 
 name: default
 
