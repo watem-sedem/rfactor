@@ -67,8 +67,8 @@ Octave, install ``oct2py`` via conda
     conda install -c conda-forge oct2py
 
 And make sure to define the path to your the ``OCTAVE_EXECUTABLE`` in a
-``.env``-file. The latter you can do by creating a ``.env``-file in the main
-location of the rfactor repository, and defining the executable location,
+``.env``-file. The latter you can do by creating a ``.env``-file in your
+current working directory, and defining the executable location,
 e.g. (local installation):
 
 ::
@@ -79,6 +79,10 @@ for a windows-based system. Make sure to check where Octave is installed on
 your computer! The ```python-dotenv``-package (installed with the installation
 of the rfactor package) will use the ``.env``-file to check your installation.
 
+An alternative is to add the path reference under the name OCTAVE_EXECUTABLE
+to your path (windows: add via
+`environmental variables <https://www.computerhope.com/issues/ch000549.htm>`_, linux: via
+`adjusting the .bashrc-file <https://linuxize.com/post/how-to-add-directory-to-path-in-linux/>`_)
 
 Development
 -----------

@@ -44,6 +44,11 @@ The erosivity data calculated with the rainfall input data are provided by the
 partners of this project, and are used as test data for analysing the R-factor
 for Flanders.
 
+Documentation
+-------------
+The documentation can be found on the 
+[R-factor documentation page](https://cn-ws.github.io/rfactor/index.html).
+
 License
 -------
 
