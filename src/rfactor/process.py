@@ -458,7 +458,7 @@ def get_R_year(dict_df_erosivity, year):
     return dict_df_erosivity[year]["cumEI30"].iloc[-1]
 
 
-def get_EI30(dict_df_erosivity, year, frequency):
+def get_EI30(dict_df_erosivity, year, frequency=""):
     """Get EI30-values from erosivity dictionary data format
 
     Get EI30-values with defined frequency
@@ -469,7 +469,7 @@ def get_EI30(dict_df_erosivity, year, frequency):
         Dictionary format of erosivity data (key: year, value: dataframe).
     year: int
         Year of registration.
-    frequency: string, optional
+    frequency: string, default empty string
         Frequency to resample data to, see https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects
 
     Returns
@@ -477,7 +477,9 @@ def get_EI30(dict_df_erosivity, year, frequency):
     df: pandas.DataFrame
 
     """
-    df = dict_df_erosivity[year].resample(frequency, closed="right").ffill()
+    df = dict_df_erosivity[year]
+    if frequency!=:
+        df=df.resample(frequency, closed="right").ffill()
     df["value"] = df["cumEI30"].diff()
     df.loc[df.index[0], "value"] = df.loc[df.index[0], "cumEI30"]
     df.loc[df["value"].isnull(), "value"] = 0.0
