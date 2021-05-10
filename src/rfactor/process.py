@@ -49,7 +49,13 @@ class ErosivityData:
         check_if_folder_exists(self.fmap_rainfall)
         check_if_folder_exists(self.fmap_erosivity)
         self.lst_txt_rainfall = list(self.fmap_rainfall.glob("*.txt*"))
+        if len(self.lst_txt_rainfall)==0:
+            msg = "No text files (*.txt) in rainfall input folder."
+            raise IOError(msg)
         self.lst_txt_erosivity = list(self.fmap_erosivity.glob("*.txt*"))
+        if len(self.lst_txt_erosivity)==0:
+            msg = "No text files (*.txt) in erosivity input folder."
+            raise IORrror(msg)
         self.check_number_of_files()
 
     def check_number_of_files(self):
