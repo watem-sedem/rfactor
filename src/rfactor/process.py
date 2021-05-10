@@ -478,7 +478,7 @@ def get_EI30(dict_df_erosivity, year, frequency=""):
 
     """
     df = dict_df_erosivity[year]
-    if frequency!=:
+    if frequency!="":
         df=df.resample(frequency, closed="right").ffill()
     df["value"] = df["cumEI30"].diff()
     df.loc[df.index[0], "value"] = df.loc[df.index[0], "cumEI30"]
