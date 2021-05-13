@@ -1,3 +1,6 @@
+.. image:: https://zenodo.org/badge/364504726.svg
+   :target: https://zenodo.org/badge/latestdoi/364504726
+   
 R-factor
 ========
 
