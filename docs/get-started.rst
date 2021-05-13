@@ -22,7 +22,7 @@ Prepare input files
 
 The input files are defined by text files (extension: ``.txt``) that
 hold non-zero rainfall timeseries. The data are split per station and
-per year with a specific datafile tag:
+per year with a specific datafile tag (format: **SOURCE\_STATION\_YEAR.txt**):
 
 -  KMI\_6414\_2004.txt
 -  KMI\_6414\_2005.txt
@@ -32,7 +32,7 @@ per year with a specific datafile tag:
 -  ...
 
 The content of each of this file is a **non-zero** rainfall timeseries
-(no header, space delimited, see for example **TO DO: LINK**):
+(no header, space delimited):
 
 ::
 
@@ -43,10 +43,11 @@ The content of each of this file is a **non-zero** rainfall timeseries
      ... ...
 
 with the first column being the timestamp from the start of the year
-(minutes) , and second the rainfall depth (in mm). An overview of the
-present datafiles for the analysis is saved in a ``files.csv`` file
-(example in **TO DO:LINK**). This file can be used to remove specific
-files from the analysis (column ``consider``):
+(minutes) , and second the rainfall depth (in mm). Optionally, if you wish
+to only consider a select number of input data files, you can define a
+``.csv``-file with following structure. If you do not do so, the code will
+generate one for you:
+
 
 +----------+-------------------+------------+
 | source   | datafile          | consider   |
@@ -64,7 +65,7 @@ Compute erosivity: EI30
 -----------------------
 
 The erosivity (EI30-values) can be computed by navigating to the
-**TO DO: LINK** folder (make sure to activating the rfactor environment,
+main folder (make sure to activating the rfactor environment,
 ``conda activate rfactor``). In Python, import:
 
 ::
@@ -81,8 +82,13 @@ And run code:
     compute_rfactor(rainfall_inputdata_folder,results_folder,"matlab")
 
 The current implementation makes use of a Matlab engine, which requires
-Matlab to be installed. Future versions of this package will use Python.
-Results are written to the *results\_folder*-folder.
+Matlab to be installed. Results are written to the *results\_folder*-folder.
+
+.. note::
+
+If you are using the free software Octave (see :ref:`installation <octave>`)
+and make sure you have the ``.env``-file with the reference to your octave
+installation in your current working directory!
 
 Analyse R-values
 ----------------
@@ -109,18 +115,31 @@ folder):
        fmap_rainfall = Path(r"./tests/data/test_rainfalldata")
        fmap_erosivty = = Path(r"results") # Folder path where results are written to (see above).
 
--  Define the path for the ``files.csv``-file:
+
+-  Create a erosivitydata object:
+
+   ::
+
+       erosivitydata = ErosivityData(fmap_rainfall, fmap_erosivity)
+
+-  (optional) Define the path for the ``files.csv``-file:
 
    ::
 
        txt_files = Path(r"./test/data/files.csv")
 
--  Create a erosivitydata object, build the data set with the
-   *files.csv* file and load the data:
+-  Build and load the data set:
 
-   ::
+    ::
 
-       erosivitydata = ErosivityData(fmap_rainfall, fmap_erosivity)
+       df_files = erosivitydata.build_data_set()
+       erosivitydata.load_data(df_files)
+
+- (optional) Alternative to building the data set with the code, you can use
+  a self-defined ``files.csv``-file:
+
+    ::
+
        df_files = erosivitydata.build_data_set(txt_files)
        erosivitydata.load_data(df_files)
 
