@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/364504726.svg)](https://zenodo.org/badge/latestdoi/364504726)
+
 R-factor
 ========
 
