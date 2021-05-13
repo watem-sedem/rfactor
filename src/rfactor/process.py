@@ -55,7 +55,7 @@ class ErosivityData:
         self.lst_txt_erosivity = list(self.fmap_erosivity.glob("*.txt*"))
         if len(self.lst_txt_erosivity)==0:
             msg = "No text files (*.txt) in erosivity input folder."
-            raise IORrror(msg)
+            raise IOError(msg)
         self.check_number_of_files()
 
     def check_number_of_files(self):
@@ -88,16 +88,40 @@ class ErosivityData:
         df_files: pandas.DataFrame
             Loaded txt_files data, see :func:`rfactor.process.load_df_files`.
         """
-        df_files = self.check_df_files(txt_files)
+        if txt_files is None:
+            df_files = self.create_df_files()
+        else:
+            df_files = load_df_files(txt_files)
+        df_files = self.check_df_files(df_files, txt_files)
 
         return df_files
 
-    def check_df_files(self, txt_files):
+    def create_df_files(self):
+        """Create a df_files dataframe given the input data in the erosivity
+        input data folder.
+
+        Returns
+        -------
+        df_files: pandas.DataFrame
+            Loaded txt_files data, see :func:`rfactor.process.load_df_files`.
+        """
+        df_files = pd.DataFrame(columns=["source","datafile","consider"])
+        tag = "new cumdistr salles"
+        df_files["datafile"] = [f.stem.replace(tag,"") for f in self.lst_txt_erosivity]
+        df_files["source"] = [str(f).split("_")[0] for f in df_files["datafile"]]
+        df_files["consider"] = 1
+        df_files=get_station_year_from_datafile(df_files)
+
+        return df_files
+
+    def check_df_files(self, df_files, txt_files=None):
         """ Load and check if rainfall/erosivity datafile is tabulated the
         datafile overview file.
 
         Parameters
         ----------
+        df_files: pandas.DataFrame
+            See :func:`rfactor.process.load_df_files`.
         txt_files: pathlib.Path
             File path of rainfall and erosivity overview file, see
             :func:`rfactor.process.load_df_files`.
@@ -107,22 +131,25 @@ class ErosivityData:
         df_files: pandas.DataFrame
             Loaded txt_files data, see :func:`rfactor.process.load_df_files`.
         """
-        df_files = load_df_files(txt_files)
-
+        df_files["file_exists"] = 0
+        df_files["file_exists_rainfall"] = 0
         for file in self.lst_txt_erosivity:
             datafile = file.stem.split("new")[0]
             if datafile not in df_files.index:
-                msg = (
-                    f"'{file.stem}' not listed"
-                    f" in '{Path(txt_files).absolute()}', please add the "
-                    f"file datafile record and indicate if you want to "
-                    f"consider it for analysis."
-                )
-                raise IOError(msg)
+                if txt_files is not None:
+                    msg = (
+                        f"'{file.stem}' not listed"
+                        f" in '{Path(txt_files).absolute()}', please add the "
+                        f"file datafile record and indicate if you want to "
+                        f"consider it for analysis."
+                    )
+                    raise IOError(msg)
             df_files.loc[datafile, "file_exists"] = 1
             df_files.loc[datafile, "fname_rainfall"] = self.fmap_rainfall / (
                 datafile + ".txt"
             )
+            if not df_files.loc[datafile, "fname_rainfall"].exists():
+                df_files.loc[datafile, "file_exists_rainfall"] = 0
             df_files.loc[datafile, "fname_erosivity"] = self.fmap_erosivity / (
                 datafile + "new cumdistr salles.txt"
             )
@@ -299,23 +326,50 @@ def load_df_files(txt_files):
     df_files: pandas.DataFrame
         loaded txt_files data with columns:
 
+        - *source* (str): source of data.
         - *datafile* (str): unique tag referring to rainfall and erosivity
           filename (format "%STATION_%YEAR" without suffix).
-        - *year* (int): Year of registration.
         - *station* (str): Name or code of the measurement station.
+        - *year* (int): Year of registration.
         - *consider* (int): Consider file for year and station for
           analysis (0/1).
-        - *fname_rainfall* (str): full path to rainfall input data file.
-        - *fname_erosivity* (str): full path to erosivity data file.
-
     """
     df_files = pd.read_csv(txt_files)
     check_duplicates_df_files(df_files, txt_files)
+    df_files = get_station_year_from_datafile(df_files)
     if "consider" not in df_files.columns:
         msg = f"Column 'consider' not file {txt_files}. Please add!"
         raise IOError(msg)
+    return df_files
+
+def get_station_year_from_datafile(df_files):
+    """Extract year and station from datafile name
+
+    Parameters
+    ----------
+     df_files: pandas.DataFrame
+        loaded txt_files data with columns:
+
+        - *source* (str): source of data.
+        - *datafile* (str): unique tag referring to rainfall and erosivity
+          filename (format "%STATION_%YEAR" without suffix).
+        - *consider* (int): Consider file for year and station for
+          analysis (0/1).
+    Returns
+    -------
+    df_files: pandas.DataFrame
+        loaded txt_files data with columns:
+
+        - *source* (str): source of data.
+        - *datafile* (str): unique tag referring to rainfall and erosivity
+          filename (format "%STATION_%YEAR" without suffix).
+        - *station* (str): Name or code of the measurement station.
+        - *year* (int): Year of registration.
+        - *consider* (int): Consider file for year and station for
+          analysis (0/1).
+    """
     if "year" not in df_files.columns:
-        df_files["year"] = [i.split("_")[2] for i in df_files["datafile"]]
+        df_files["year"] = [i.split("_")[-1] for i in df_files["datafile"]]
     if "station" not in df_files.columns:
         df_files["station"] = [
             i.split("_")[0] + "_" + i.split("_")[1] for i in df_files["datafile"]
@@ -325,7 +379,6 @@ def load_df_files(txt_files):
     df_files["fname_erosivity"] = ""
 
     return df_files
-
 
 def check_duplicates_df_files(df_files, txt_files):
     """Check duplicate entries dataframe files

@@ -3,7 +3,7 @@ import numpy as np
 from pathlib import Path
 from .conftest import erosivitydata, fmap_rainfall_one_file, fmap_erosivity_one_file
 from rfactor.rfactor import compute_rfactor
-from rfactor.process import load_erosivity_data
+from rfactor.process import load_erosivity_data,ErosivityData
 
 @pytest.mark.parametrize(
     "debug,engine",
@@ -106,3 +106,28 @@ def test_ukkel(lst_timeseries, rfactor):
     df_R = erosivitydata.load_R(["KMI_6447", "KMI_FS3"], lst_timeseries)
 
     np.testing.assert_allclose(np.mean(df_R["value"]), rfactor, atol=1e-2)
+
+@pytest.mark.parametrize(
+    "generate_df_files,number_of_files_to_consider",
+    [(True,872),
+     (False,554)
+    ],
+)
+def test_build_dataset(generate_df_files,number_of_files_to_consider):
+    """Test the building of the erosivity data set.
+
+    Parameters
+    ----------
+    generate_df_files: bool
+        Generate a df_files (holding references to files and whethet to consider
+        them or not) automatically (if False you need to generate one yourself).
+    number_of_files_to_consider: int
+        Expected number of to consider files.
+    """
+    from .conftest import fmap_rainfall,fmap_erosivity,txt_files
+    erosivitydata = ErosivityData(fmap_rainfall, fmap_erosivity)
+    if generate_df_files:
+        df_files = erosivitydata.build_data_set()
+    else:
+        df_files =  erosivitydata.build_data_set(txt_files)
+    assert number_of_files_to_consider==int(np.sum(df_files["consider"]))
