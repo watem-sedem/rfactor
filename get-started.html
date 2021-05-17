@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
 
   
   
@@ -29,12 +31,13 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "document", "processHtmlClass": "math|output_area"}}</script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -210,7 +213,7 @@ to install matlab.</p>
 <h2>Prepare input files<a class="headerlink" href="#prepare-input-files" title="Permalink to this headline">¶</a></h2>
 <p>The input files are defined by text files (extension: <code class="docutils literal notranslate"><span class="pre">.txt</span></code>) that
 hold non-zero rainfall timeseries. The data are split per station and
-per year with a specific datafile tag:</p>
+per year with a specific datafile tag (format: <strong>SOURCE_STATION_YEAR.txt</strong>):</p>
 <ul class="simple">
 <li><p>KMI_6414_2004.txt</p></li>
 <li><p>KMI_6414_2005.txt</p></li>
@@ -220,7 +223,7 @@ per year with a specific datafile tag:</p>
 <li><p>…</p></li>
 </ul>
 <p>The content of each of this file is a <strong>non-zero</strong> rainfall timeseries
-(no header, space delimited, see for example <strong>TO DO: LINK</strong>):</p>
+(no header, space delimited):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">9390</span> <span class="mf">1.00</span>
 <span class="mi">9470</span> <span class="mf">0.20</span>
 <span class="mi">9480</span> <span class="mf">0.50</span>
@@ -229,10 +232,10 @@ per year with a specific datafile tag:</p>
 </pre></div>
 </div>
 <p>with the first column being the timestamp from the start of the year
-(minutes) , and second the rainfall depth (in mm). An overview of the
-present datafiles for the analysis is saved in a <code class="docutils literal notranslate"><span class="pre">files.csv</span></code> file
-(example in <strong>TO DO:LINK</strong>). This file can be used to remove specific
-files from the analysis (column <code class="docutils literal notranslate"><span class="pre">consider</span></code>):</p>
+(minutes) , and second the rainfall depth (in mm). Optionally, if you wish
+to only consider a select number of input data files, you can define a
+<code class="docutils literal notranslate"><span class="pre">.csv</span></code>-file with following structure. If you do not do so, the code will
+generate one for you:</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 24%" />
@@ -268,7 +271,7 @@ files from the analysis (column <code class="docutils literal notranslate"><span
 <div class="section" id="compute-erosivity-ei30">
 <h2>Compute erosivity: EI30<a class="headerlink" href="#compute-erosivity-ei30" title="Permalink to this headline">¶</a></h2>
 <p>The erosivity (EI30-values) can be computed by navigating to the
-<strong>TO DO: LINK</strong> folder (make sure to activating the rfactor environment,
+main folder (make sure to activating the rfactor environment,
 <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">rfactor</span></code>). In Python, import:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor.rfactor</span> <span class="kn">import</span> <span class="n">compute_rfactor</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
@@ -281,8 +284,10 @@ files from the analysis (column <code class="docutils literal notranslate"><span
 </pre></div>
 </div>
 <p>The current implementation makes use of a Matlab engine, which requires
-Matlab to be installed. Future versions of this package will use Python.
-Results are written to the <em>results_folder</em>-folder.</p>
+Matlab to be installed. Results are written to the <em>results_folder</em>-folder.</p>
+<p>If you are using the free software Octave (see <a class="reference internal" href="installation.html#octave"><span class="std std-ref">installation</span></a>)
+and make sure you have the <code class="docutils literal notranslate"><span class="pre">.env</span></code>-file with the reference to your octave
+installation in your current working directory!</p>
 </div>
 <div class="section" id="analyse-r-values">
 <h2>Analyse R-values<a class="headerlink" href="#analyse-r-values" title="Permalink to this headline">¶</a></h2>
@@ -306,18 +311,32 @@ data:</p>
 </pre></div>
 </div>
 </li>
-<li><p>Define the path for the <code class="docutils literal notranslate"><span class="pre">files.csv</span></code>-file:</p>
+<li><p>Create a erosivitydata object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">erosivitydata</span> <span class="o">=</span> <span class="n">ErosivityData</span><span class="p">(</span><span class="n">fmap_rainfall</span><span class="p">,</span> <span class="n">fmap_erosivity</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>(optional) Define the path for the <code class="docutils literal notranslate"><span class="pre">files.csv</span></code>-file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">txt_files</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;./test/data/files.csv&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
-<li><p>Create a erosivitydata object, build the data set with the
-<em>files.csv</em> file and load the data:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">erosivitydata</span> <span class="o">=</span> <span class="n">ErosivityData</span><span class="p">(</span><span class="n">fmap_rainfall</span><span class="p">,</span> <span class="n">fmap_erosivity</span><span class="p">)</span>
-<span class="n">df_files</span> <span class="o">=</span> <span class="n">erosivitydata</span><span class="o">.</span><span class="n">build_data_set</span><span class="p">(</span><span class="n">txt_files</span><span class="p">)</span>
+<li><p>Build and load the data set:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df_files</span> <span class="o">=</span> <span class="n">erosivitydata</span><span class="o">.</span><span class="n">build_data_set</span><span class="p">()</span>
 <span class="n">erosivitydata</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">df_files</span><span class="p">)</span>
 </pre></div>
 </div>
+</div></blockquote>
+</li>
+<li><p>(optional) Alternative to building the data set with the code, you can use
+a self-defined <code class="docutils literal notranslate"><span class="pre">files.csv</span></code>-file:</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df_files</span> <span class="o">=</span> <span class="n">erosivitydata</span><span class="o">.</span><span class="n">build_data_set</span><span class="p">(</span><span class="n">txt_files</span><span class="p">)</span>
+<span class="n">erosivitydata</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">df_files</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
 </li>
 <li><p>Get the R-value for 2017 and 2018 based on two Ukkel station
 (“KMI_6447”,”KMI_FS3”):</p>

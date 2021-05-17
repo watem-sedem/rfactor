@@ -13,6 +13,8 @@
   
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
 
   
   
@@ -29,6 +31,7 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
@@ -204,8 +207,8 @@
 <div class="section" id="module-rfactor.process">
 <span id="rfactor-process-module"></span><h2>rfactor.process module<a class="headerlink" href="#module-rfactor.process" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
-<dt id="rfactor.process.ErosivityData">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">ErosivityData</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmap_rainfall</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmap_erosivity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.ErosivityData">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">ErosivityData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmap_rainfall</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmap_erosivity</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Build and load erosivity and rainfall data</p>
 <p>Data class containing references to all rainfall input data files (.txt)
@@ -236,8 +239,8 @@ the <cite>txt</cite>-files, see <code class="xref py py-func docutils literal no
 </pre></div>
 </div>
 <dl class="py method">
-<dt id="rfactor.process.ErosivityData.build_data_set">
-<code class="sig-name descname"><span class="pre">build_data_set</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">txt_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.build_data_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.build_data_set" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.ErosivityData.build_data_set">
+<span class="sig-name descname"><span class="pre">build_data_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">txt_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.build_data_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.build_data_set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build data set with the help of a text file, containing an overview
 of the to use rainfall and erosivity files.</p>
 <dl class="field-list simple">
@@ -255,14 +258,17 @@ of the to use rainfall and erosivity files.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="rfactor.process.ErosivityData.check_df_files">
-<code class="sig-name descname"><span class="pre">check_df_files</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">txt_files</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.check_df_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.check_df_files" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.ErosivityData.check_df_files">
+<span class="sig-name descname"><span class="pre">check_df_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">txt_files</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.check_df_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.check_df_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load and check if rainfall/erosivity datafile is tabulated the
 datafile overview file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>txt_files</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – File path of rainfall and erosivity overview file, see
-<a class="reference internal" href="#rfactor.process.load_df_files" title="rfactor.process.load_df_files"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_df_files()</span></code></a>.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_files</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)"><em>pandas.DataFrame</em></a>) – See <a class="reference internal" href="#rfactor.process.load_df_files" title="rfactor.process.load_df_files"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_df_files()</span></code></a>.</p></li>
+<li><p><strong>txt_files</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – File path of rainfall and erosivity overview file, see
+<a class="reference internal" href="#rfactor.process.load_df_files" title="rfactor.process.load_df_files"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_df_files()</span></code></a>.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>df_files</strong> – Loaded txt_files data, see <a class="reference internal" href="#rfactor.process.load_df_files" title="rfactor.process.load_df_files"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_df_files()</span></code></a>.</p>
@@ -274,25 +280,40 @@ datafile overview file.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="rfactor.process.ErosivityData.check_number_of_files">
-<code class="sig-name descname"><span class="pre">check_number_of_files</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.check_number_of_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.check_number_of_files" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.ErosivityData.check_number_of_files">
+<span class="sig-name descname"><span class="pre">check_number_of_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.check_number_of_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.check_number_of_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the number of files in the rainfall and erosivity data
 folder are equal.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="rfactor.process.ErosivityData.create_df_files">
+<span class="sig-name descname"><span class="pre">create_df_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.create_df_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.create_df_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a df_files dataframe given the input data in the erosivity
+input data folder.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>df_files</strong> – Loaded txt_files data, see <a class="reference internal" href="#rfactor.process.load_df_files" title="rfactor.process.load_df_files"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_df_files()</span></code></a>.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py attribute">
-<dt id="rfactor.process.ErosivityData.fmap_erosivity">
-<code class="sig-name descname"><span class="pre">fmap_erosivity</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></em><a class="headerlink" href="#rfactor.process.ErosivityData.fmap_erosivity" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.ErosivityData.fmap_erosivity">
+<span class="sig-name descname"><span class="pre">fmap_erosivity</span></span><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></em><a class="headerlink" href="#rfactor.process.ErosivityData.fmap_erosivity" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="rfactor.process.ErosivityData.fmap_rainfall">
-<code class="sig-name descname"><span class="pre">fmap_rainfall</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></em><a class="headerlink" href="#rfactor.process.ErosivityData.fmap_rainfall" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.ErosivityData.fmap_rainfall">
+<span class="sig-name descname"><span class="pre">fmap_rainfall</span></span><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><span class="pre">pathlib.Path</span></a></em><a class="headerlink" href="#rfactor.process.ErosivityData.fmap_rainfall" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="rfactor.process.ErosivityData.load_EI30">
-<code class="sig-name descname"><span class="pre">load_EI30</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'M'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.load_EI30"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.load_EI30" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.ErosivityData.load_EI30">
+<span class="sig-name descname"><span class="pre">load_EI30</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'M'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.load_EI30"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.load_EI30" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load EI30 timeseries values</p>
 <p>The timeseries has a frequency defined by the frequency input
 parameter.</p>
@@ -314,8 +335,8 @@ parameter.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="rfactor.process.ErosivityData.load_R">
-<code class="sig-name descname"><span class="pre">load_R</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.load_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.load_R" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.ErosivityData.load_R">
+<span class="sig-name descname"><span class="pre">load_R</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.load_R"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.load_R" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load R-values for stations and years.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -334,8 +355,8 @@ parameter.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="rfactor.process.ErosivityData.load_data">
-<code class="sig-name descname"><span class="pre">load_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_files</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.load_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.ErosivityData.load_data">
+<span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_files</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.load_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load erosivity and rainfall data.</p>
 <p>This function loads the erosivity and rainfall data for each station.
 It only loads data for stations which have at least one year that is
@@ -349,8 +370,8 @@ considered for analysis.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="rfactor.process.ErosivityData.load_rainfall">
-<code class="sig-name descname"><span class="pre">load_rainfall</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.load_rainfall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.load_rainfall" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.ErosivityData.load_rainfall">
+<span class="sig-name descname"><span class="pre">load_rainfall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#ErosivityData.load_rainfall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.ErosivityData.load_rainfall" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load N-value for all/selected stations and years.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -371,8 +392,8 @@ considered for analysis.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="rfactor.process.StationData">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">StationData</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">station</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_files</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#StationData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.StationData" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.StationData">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">StationData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">station</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_files</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#StationData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.StationData" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <dl class="simple">
 <dt>Load and process erosivity and rainfall data for one measurement</dt><dd><p>station.</p>
@@ -383,13 +404,13 @@ considered for analysis.</p>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt id="rfactor.process.StationData.df_files">
-<code class="sig-name descname"><span class="pre">df_files</span></code><em class="property"><span class="pre">:</span> <span class="pre">pandas.core.frame.DataFrame</span></em><a class="headerlink" href="#rfactor.process.StationData.df_files" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.StationData.df_files">
+<span class="sig-name descname"><span class="pre">df_files</span></span><em class="property"><span class="pre">:</span> <span class="pre">pandas.core.frame.DataFrame</span></em><a class="headerlink" href="#rfactor.process.StationData.df_files" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="rfactor.process.StationData.load_data">
-<code class="sig-name descname"><span class="pre">load_data</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#StationData.load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.StationData.load_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.StationData.load_data">
+<span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#StationData.load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.StationData.load_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load erosivity and rainfall data per year</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -407,15 +428,15 @@ considered for analysis.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="rfactor.process.StationData.station">
-<code class="sig-name descname"><span class="pre">station</span></code><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></em><a class="headerlink" href="#rfactor.process.StationData.station" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.StationData.station">
+<span class="sig-name descname"><span class="pre">station</span></span><em class="property"><span class="pre">:</span> <a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></em><a class="headerlink" href="#rfactor.process.StationData.station" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
-<dt id="rfactor.process.assign_datetime_df_erosivity">
-<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">assign_datetime_df_erosivity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#assign_datetime_df_erosivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.assign_datetime_df_erosivity" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.assign_datetime_df_erosivity">
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">assign_datetime_df_erosivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#assign_datetime_df_erosivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.assign_datetime_df_erosivity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compile a pandas datatime index from day-of-the-year column.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -441,8 +462,8 @@ considered for analysis.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="rfactor.process.check_duplicates_df_files">
-<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">check_duplicates_df_files</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">txt_files</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#check_duplicates_df_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.check_duplicates_df_files" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.check_duplicates_df_files">
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">check_duplicates_df_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_files</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">txt_files</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#check_duplicates_df_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.check_duplicates_df_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check duplicate entries dataframe files</p>
 <p>Check duplicate entries based on tag ‘datafile’ in df_files, and exit code
 when duplicate definitions are found.</p>
@@ -457,8 +478,8 @@ when duplicate definitions are found.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="rfactor.process.check_if_folder_exists">
-<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">check_if_folder_exists</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#check_if_folder_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.check_if_folder_exists" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.check_if_folder_exists">
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">check_if_folder_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#check_if_folder_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.check_if_folder_exists" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if folder exists</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -468,8 +489,8 @@ when duplicate definitions are found.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="rfactor.process.check_missing_files">
-<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">check_missing_files</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst_target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lst_reference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmap_reference</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#check_missing_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.check_missing_files" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.check_missing_files">
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">check_missing_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst_target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lst_reference</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmap_reference</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#check_missing_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.check_missing_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if file in either rainfall or erosivity input folder is missing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -492,8 +513,8 @@ to be exactly the same (same number of files, same tags).</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="rfactor.process.clip_erosivity_data">
-<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">clip_erosivity_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#clip_erosivity_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.clip_erosivity_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.clip_erosivity_data">
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">clip_erosivity_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#clip_erosivity_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.clip_erosivity_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clip erosivity data so it only contains data for the given year.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -512,8 +533,8 @@ to be exactly the same (same number of files, same tags).</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="rfactor.process.compute_rainfall_statistics">
-<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">compute_rainfall_statistics</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_rainfall</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_station_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#compute_rainfall_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.compute_rainfall_statistics" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.compute_rainfall_statistics">
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">compute_rainfall_statistics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_rainfall</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">df_station_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#compute_rainfall_statistics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.compute_rainfall_statistics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute general statistics for rainfall timeseries</p>
 <p>Statistics (number of records, min, max, median and years data) are
 computed for each measurement station</p>
@@ -539,8 +560,8 @@ column:</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="rfactor.process.get_EI30">
-<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">get_EI30</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict_df_erosivity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#get_EI30"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.get_EI30" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.get_EI30">
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">get_EI30</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict_df_erosivity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#get_EI30"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.get_EI30" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get EI30-values from erosivity dictionary data format</p>
 <p>Get EI30-values with defined frequency</p>
 <dl class="field-list simple">
@@ -548,7 +569,7 @@ column:</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dict_df_erosivity</strong> (<em>dict of {str: pandas.DataFrame}</em>) – Dictionary format of erosivity data (key: year, value: dataframe).</p></li>
 <li><p><strong>year</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Year of registration.</p></li>
-<li><p><strong>frequency</strong> (<em>string</em><em>, </em><em>optional</em>) – Frequency to resample data to, see <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects">https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects</a></p></li>
+<li><p><strong>frequency</strong> (<em>string</em><em>, </em><em>default empty string</em>) – Frequency to resample data to, see <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects">https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects</a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -561,8 +582,8 @@ column:</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="rfactor.process.get_R_year">
-<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">get_R_year</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict_df_erosivity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#get_R_year"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.get_R_year" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.get_R_year">
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">get_R_year</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict_df_erosivity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#get_R_year"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.get_R_year" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get R-value from erosvity dictionary data format</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -583,25 +604,31 @@ see <a class="reference internal" href="#rfactor.process.assign_datetime_df_eros
 </dd></dl>
 
 <dl class="py function">
-<dt id="rfactor.process.load_df_files">
-<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">load_df_files</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">txt_files</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_df_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_df_files" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load overview file of rainfall and erosivity data</p>
+<dt class="sig sig-object py" id="rfactor.process.get_station_year_from_datafile">
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">get_station_year_from_datafile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df_files</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#get_station_year_from_datafile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.get_station_year_from_datafile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract year and station from datafile name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>txt_files</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – File path of overview file holding <cite>datafile</cite> tag (format
-“%STATION_%YEAR”) and ‘consider’ column.</p>
+<dd class="field-odd"><p><strong>df_files</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)"><em>pandas.DataFrame</em></a>) – <p>loaded txt_files data with columns:</p>
+<ul class="simple">
+<li><p><em>source</em> (str): source of data.</p></li>
+<li><p><em>datafile</em> (str): unique tag referring to rainfall and erosivity
+filename (format “%STATION_%YEAR” without suffix).</p></li>
+<li><p><em>consider</em> (int): Consider file for year and station for
+analysis (0/1).</p></li>
+</ul>
+</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><strong>df_files</strong> – loaded txt_files data with columns:</p>
 <ul class="simple">
+<li><p><em>source</em> (str): source of data.</p></li>
 <li><p><em>datafile</em> (str): unique tag referring to rainfall and erosivity
 filename (format “%STATION_%YEAR” without suffix).</p></li>
-<li><p><em>year</em> (int): Year of registration.</p></li>
 <li><p><em>station</em> (str): Name or code of the measurement station.</p></li>
+<li><p><em>year</em> (int): Year of registration.</p></li>
 <li><p><em>consider</em> (int): Consider file for year and station for
 analysis (0/1).</p></li>
-<li><p><em>fname_rainfall</em> (str): full path to rainfall input data file.</p></li>
-<li><p><em>fname_erosivity</em> (str): full path to erosivity data file.</p></li>
 </ul>
 </p>
 </dd>
@@ -612,8 +639,36 @@ analysis (0/1).</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt id="rfactor.process.load_df_station">
-<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">load_df_station</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_df_station"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_df_station" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.load_df_files">
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">load_df_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">txt_files</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_df_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_df_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load overview file of rainfall and erosivity data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>txt_files</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – File path of overview file holding <cite>datafile</cite> tag (format
+“%STATION_%YEAR”) and ‘consider’ column.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p><strong>df_files</strong> – loaded txt_files data with columns:</p>
+<ul class="simple">
+<li><p><em>source</em> (str): source of data.</p></li>
+<li><p><em>datafile</em> (str): unique tag referring to rainfall and erosivity
+filename (format “%STATION_%YEAR” without suffix).</p></li>
+<li><p><em>station</em> (str): Name or code of the measurement station.</p></li>
+<li><p><em>year</em> (int): Year of registration.</p></li>
+<li><p><em>consider</em> (int): Consider file for year and station for
+analysis (0/1).</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.4)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rfactor.process.load_df_station">
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">load_df_station</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_df_station"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_df_station" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load the yearly R-value for years, for one station.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -640,8 +695,8 @@ all years are loaded.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt id="rfactor.process.load_dict_format">
-<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">load_dict_format</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_dict_format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_dict_format" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.load_dict_format">
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">load_dict_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">years</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_dict_format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_dict_format" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load the yearly R-value for stations and years</p>
 <p>Load and return a dataframe of the erosivity data for the stations and
 years defined in the input.</p>
@@ -675,8 +730,8 @@ all years are loaded.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt id="rfactor.process.load_erosivity_data">
-<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">load_erosivity_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_erosivity_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_erosivity_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.load_erosivity_data">
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">load_erosivity_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_erosivity_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_erosivity_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load and process erosivity data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -695,8 +750,8 @@ all years are loaded.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt id="rfactor.process.load_erosivity_file">
-<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">load_erosivity_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_erosivity_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_erosivity_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.load_erosivity_file">
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">load_erosivity_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_erosivity_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_erosivity_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load in a single erosivity file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -720,8 +775,8 @@ rainfall erosivity (MJ mm ha-1 h-1) (float).</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="rfactor.process.load_rainfall_data">
-<code class="sig-prename descclassname"><span class="pre">rfactor.process.</span></code><code class="sig-name descname"><span class="pre">load_rainfall_data</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_rainfall_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_rainfall_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.process.load_rainfall_data">
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">load_rainfall_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_rainfall_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_rainfall_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load rainfall data file</p>
 <p>Load the rainfall data file in a pandas dataframe. Add headers.</p>
 <dl class="field-list simple">
@@ -767,14 +822,14 @@ for column one is 525600 (365 days) minutes (527040, leap year).</p></li>
 <div class="section" id="module-rfactor.rfactor">
 <span id="rfactor-rfactor-module"></span><h2>rfactor.rfactor module<a class="headerlink" href="#module-rfactor.rfactor" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
-<dt id="rfactor.rfactor.check_oct">
-<code class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></code><code class="sig-name descname"><span class="pre">check_oct</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#check_oct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.check_oct" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.rfactor.check_oct">
+<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">check_oct</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#check_oct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.check_oct" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check octave installation</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="rfactor.rfactor.compute_rfactor">
-<code class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></code><code class="sig-name descname"><span class="pre">compute_rfactor</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rainfall_inputdata_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'matlab'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#compute_rfactor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.compute_rfactor" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.rfactor.compute_rfactor">
+<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">compute_rfactor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rainfall_inputdata_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">engine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'matlab'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#compute_rfactor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.compute_rfactor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the R-factor</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -793,8 +848,8 @@ the <cite>txt</cite>-files, see <a class="reference internal" href="#rfactor.pro
 </dd></dl>
 
 <dl class="py function">
-<dt id="rfactor.rfactor.rfactor_octave">
-<code class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></code><code class="sig-name descname"><span class="pre">rfactor_octave</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rainfall_inputdata_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#rfactor_octave"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.rfactor_octave" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.rfactor.rfactor_octave">
+<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">rfactor_octave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rainfall_inputdata_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#rfactor_octave"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.rfactor_octave" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute R-factor with octave engine</p>
 <p>The octave engine is slow, therefore multiprocessing is used as a way to
 speed up execution.</p>
@@ -811,8 +866,8 @@ speed up execution.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="rfactor.rfactor.single_file">
-<code class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></code><code class="sig-name descname"><span class="pre">single_file</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst_inputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#single_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.single_file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rfactor.rfactor.single_file">
+<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">single_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst_inputs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#single_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.single_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute R-factor based on a single file.</p>
 <p>This function uses Octave to compute the matlab <cite>core.m</cite> function, using
 one input file as function input.</p>
