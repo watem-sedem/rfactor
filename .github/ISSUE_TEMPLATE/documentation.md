@@ -6,7 +6,13 @@ labels: documentation
 assignees: ''
 
 ---
+Please use either use option A) or B) and fill in the selected options:
 
-## Why did you suggest this improvement?
+**A. I want to add something to this section:**
 
-## Is there additional missing info?
+*Shortly state why*
+
+**B. I have a question considering this section:**
+
+*Type your question*
+
