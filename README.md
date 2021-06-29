@@ -28,7 +28,7 @@ Get started
 -----------
 This package makes use of `Python` (and a limited number of dependencies
 such as Pandas and Numpy) and `Matlab` or `Octave`. Python is used to
-implemented the functionalities in this package, whereas Matlab or
+implement the functionalities in this package, whereas Matlab or
 Octave is used to run the core code. The installation (see
 here \<installation\>) is managed by making use of
 [Miniconda](https://docs.conda.io/en/latest/miniconda.html). Make sure
