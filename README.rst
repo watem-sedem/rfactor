@@ -64,7 +64,7 @@ This project is licensed under the GNU General Public License v3.0, see
 
 Contact
 -------
-We encourage user to submit question, suggestions and bug reports via the
+We encourage users to submit questions, suggestions and bug reports via the
 issues platform on GitHub. In case of other questions, one can mail
 to cn-ws@omgeving.vlaanderen.be
 
