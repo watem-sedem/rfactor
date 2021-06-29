@@ -3,7 +3,7 @@
 Installation
 ============
 
-Python is used to implemented the functionalities in this package, whereas
+Python is used to implement the functionalities in this package, whereas
 Matlab or Octave is used to run the core code. Do note the use of Octave is
 free of charge, but slower than the Matlab solution.
 
@@ -11,7 +11,7 @@ Install
 -------
 
 Make sure you have Python, via
-`Miniconda <https://docs.conda.io/en/latest/miniconda.html>`_, is installed.
+`Miniconda <https://docs.conda.io/en/latest/miniconda.html>`_, installed.
 The Python dependencies are handled in the ``environment.yml`` file, so
 anybody can recreate the required environment:
 
@@ -22,7 +22,7 @@ anybody can recreate the required environment:
 
 We strongly recommend to make use of the seperate ``rfactor`` environment to
 install the dependencies (see two lines above), so it does not interfere with
-other Python installation on your machine. If you which to install
+other Python installation on your machine. If you wish to install
 the dependencies in your base environment, check out the dependencies in the
 ``environment.yml``-file.
 
@@ -43,7 +43,7 @@ install developer dependencies (using pip):
 Core
 ----
 
-The core code makes use Matlab files. You can choose to either use Matlab (1)
+The core code makes use of Matlab files. You can choose to either use Matlab (1)
 or Octave (2) to run the core code. Do note that the use of Matlab requires a
 license (free trail/student edition available) whereas the use of Octave is
 free. Yet, a big downside of the use of Octave is that it is much slower in
@@ -66,7 +66,7 @@ Octave, install ``oct2py`` via conda
 
     conda install -c conda-forge oct2py
 
-And make sure to define the path to your the ``OCTAVE_EXECUTABLE`` in a
+And make sure to define the path to your ``OCTAVE_EXECUTABLE`` in a
 ``.env``-file. The latter you can do by creating a ``.env``-file in your
 current working directory, and defining the executable location,
 e.g. (local installation):
