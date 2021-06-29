@@ -66,7 +66,7 @@ here \<license\> for more information.
 Contact
 -------
 
-We encourage user to submit question, suggestions and bug reports via
+We encourage users to submit questions, suggestions and bug reports via
 the issues platform on GitHub. In case of other questions, one can mail to
 cn-ws@omgeving.vlaanderen.be.
 
