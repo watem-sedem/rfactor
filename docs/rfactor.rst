@@ -69,7 +69,7 @@ Renard et al., 1997):
 
 The use of the type of relation has an important implication on the
 computation of the R-factor, as the sensitivity of the R-factor for extreme
-high-intensity events varies significantly depending on the defined relation
+high-intensity events varies significantly depending on the defined relation.
 
 Application on Flanders
 -----------------------
