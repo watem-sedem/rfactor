@@ -80,7 +80,7 @@ transport modelling in Flanders a value of 870
 :math:`\frac{\text{MJ.mm}}{\text{ha.h.year}}` is used since 2006
 (Verstraeten et al., 2006). Recently, this value has been updated to 1250
 :math:`\frac{\text{MJ.mm}}{\text{ha.h.year}}` (Deproost et al., 2018), and has
-been evaluated in Gobeyn et al. (in prep).
+been evaluated in Gobeyn et al. (2021).
 
 
 References
@@ -91,7 +91,7 @@ distributions. Transactions of the ASAE 30, 0379–0386.
 https://doi.org/10.13031/2013.31957
 
 Gobeyn, S., Van de Wauw, J., De Vleeschouwer, N., Renders, D.,
-Van Ransbeeck, N., Verstraeten, G., Deproost, P., in prep,  Herziening van de
+Van Ransbeeck, N., Verstraeten, G., Deproost, P., 2021,  Herziening van de
 neerslagerosiviteitsfactor R voor de Vlaamse erosiemodellering.
 Departement Omgeving, Brussel, 44 pp.
 
