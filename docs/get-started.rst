@@ -10,7 +10,7 @@ The R-factor scripts can be used to:
 
 The :math:`EI_{30}` values are computed by using a matlab script that requires
 a folder as input. In this folder, non-zero rainfall timeseries are stored
-in separate text files (extension: ``.txt``) files per station and year.
+in separate text files (extension: ``.txt``) per station and year.
 The processing of the EI30 is done with Python
 
 .. note::
@@ -31,7 +31,7 @@ per year with a specific datafile tag (format: **SOURCE\_STATION\_YEAR.txt**):
 -  KMI\_6434\_2004.txt
 -  ...
 
-The content of each of this file is a **non-zero** rainfall timeseries
+The content of each of these files is a **non-zero** rainfall timeseries
 (no header, space delimited):
 
 ::
@@ -43,10 +43,10 @@ The content of each of this file is a **non-zero** rainfall timeseries
      ... ...
 
 with the first column being the timestamp from the start of the year
-(minutes) , and second the rainfall depth (in mm). Optionally, if you wish
-to only consider a select number of input data files, you can define a
-``.csv``-file with following structure. If you do not do so, the code will
-generate one for you:
+(minutes) , and the second column the rainfall depth (in mm). Optionally, 
+if you wish to only consider a select number of input data files, you can 
+define a ``.csv``-file with following structure. If you do not do so, the 
+code will generate one for you:
 
 
 +----------+-------------------+------------+
@@ -65,7 +65,7 @@ Compute erosivity: EI30
 -----------------------
 
 The erosivity (EI30-values) can be computed by navigating to the
-main folder (make sure to activating the rfactor environment,
+main folder (make sure to activate the rfactor environment,
 ``conda activate rfactor``). In Python, import:
 
 ::
@@ -86,14 +86,14 @@ Matlab to be installed. Results are written to the *results\_folder*-folder.
 
 .. note::
 
-If you are using the free software Octave (see :ref:`installation <octave>`)
-and make sure you have the ``.env``-file with the reference to your octave
+If you are using the free software Octave (see :ref:`installation <octave>`),
+make sure you have the ``.env``-file with the reference to your octave
 installation in your current working directory!
 
 Analyse R-values
 ----------------
 
-The R-value is determined by the number of years and stations the users
+The R-value is determined by the number of years and stations the user
 wishes to consider to compute the R value. For example, consider one
 wants to compute the R-value for 2018, for Ukkel (stations: KMI\_6447
 and KMI\_FS3). In order to do so, consider following steps (in the main
