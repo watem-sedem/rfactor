@@ -1,17 +1,20 @@
-import pytest
-import numpy as np
 from pathlib import Path
-from .conftest import erosivitydata, fmap_rainfall_one_file, fmap_erosivity_one_file
+
+import numpy as np
+import pytest
+
+from rfactor.process import ErosivityData, load_erosivity_data
 from rfactor.rfactor import compute_rfactor
-from rfactor.process import load_erosivity_data,ErosivityData
+
+from .conftest import erosivitydata, fmap_erosivity_one_file, fmap_rainfall_one_file
+
 
 @pytest.mark.parametrize(
     "debug,engine",
-    [(True,"octave"),
-     (False,"octave")],
+    [(True, "octave"), (False, "octave")],
 )
 @pytest.mark.externaldepedent
-def test_rfactor(debug,engine):
+def test_rfactor(debug, engine):
     """test computation of r-factor
 
     Test the computation of the R-factor with as inputdata a non-zero rainfall
@@ -27,8 +30,15 @@ def test_rfactor(debug,engine):
     """
 
     fname = "KMI_6414_2004"
-    compute_rfactor(fmap_rainfall_one_file, "results", engine=engine,debug=debug)
-    f_test = Path(__file__).parent /".." / "src"/ "rfactor" / Path("results") / (fname + "new cumdistr salles.txt")
+    compute_rfactor(fmap_rainfall_one_file, "results", engine=engine, debug=debug)
+    f_test = (
+        Path(__file__).parent
+        / ".."
+        / "src"
+        / "rfactor"
+        / Path("results")
+        / (fname + "new cumdistr salles.txt")
+    )
     df_test = load_erosivity_data(f_test, 2004)
     f_val = fmap_erosivity_one_file / (fname + "new cumdistr salles.txt")
     df_val = load_erosivity_data(f_val, 2004)
@@ -71,7 +81,9 @@ def test_flanders(lst_exclude_stations, rfactor):
         ones listed in 'lst_exclude_stations'
     """
     lst_stations = [
-        station for station in erosivitydata.stations if station not in lst_exclude_stations
+        station
+        for station in erosivitydata.stations
+        if station not in lst_exclude_stations
     ]
     df_R = erosivitydata.load_R(lst_stations)
 
@@ -107,13 +119,12 @@ def test_ukkel(lst_timeseries, rfactor):
 
     np.testing.assert_allclose(np.mean(df_R["value"]), rfactor, atol=1e-2)
 
+
 @pytest.mark.parametrize(
     "generate_df_files,number_of_files_to_consider",
-    [(True,872),
-     (False,554)
-    ],
+    [(True, 872), (False, 554)],
 )
-def test_build_dataset(generate_df_files,number_of_files_to_consider):
+def test_build_dataset(generate_df_files, number_of_files_to_consider):
     """Test the building of the erosivity data set.
 
     Parameters
@@ -124,10 +135,11 @@ def test_build_dataset(generate_df_files,number_of_files_to_consider):
     number_of_files_to_consider: int
         Expected number of to consider files.
     """
-    from .conftest import fmap_rainfall,fmap_erosivity,txt_files
+    from .conftest import fmap_erosivity, fmap_rainfall, txt_files
+
     erosivitydata = ErosivityData(fmap_rainfall, fmap_erosivity)
     if generate_df_files:
         df_files = erosivitydata.build_data_set()
     else:
-        df_files =  erosivitydata.build_data_set(txt_files)
-    assert number_of_files_to_consider==int(np.sum(df_files["consider"]))
+        df_files = erosivitydata.build_data_set(txt_files)
+    assert number_of_files_to_consider == int(np.sum(df_files["consider"]))
