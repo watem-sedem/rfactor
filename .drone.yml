@@ -15,19 +15,12 @@ steps:
       - conda activate /src/rfactor/env
       - pip install -e .[develop]
 
-  - name: install
-    image: continuumio/miniconda3
-    commands:
-      - . $CONDA_ACTIVATE
-      - conda activate /src/rfactor/env
-      - python setup.py develop --no-deps
-
   - name: unit-tests
     image: continuumio/miniconda3
     commands:
       - . $CONDA_ACTIVATE
       - conda activate /src/rfactor/env
-      - pytest tests/ -m "not externaldepedent"
+      - tox -- -m "not externaldepedent"
 
   - name: documentation
     image: continuumio/miniconda3
@@ -35,9 +28,9 @@ steps:
       - . $CONDA_ACTIVATE
       - conda activate /src/rfactor/env
       - conda install -c conda-forge pandoc
-      - python setup.py build_sphinx -s docs
+      - tox -e docs
 
-  - name: publish
+  - name: publish documentation
     image: plugins/gh-pages
     settings:
       username: johanvdw
