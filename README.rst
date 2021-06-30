@@ -1,8 +1,9 @@
-.. image:: https://zenodo.org/badge/364504726.svg
-   :target: https://zenodo.org/badge/latestdoi/364504726
-   
+
 R-factor
 ========
+
+.. image:: https://zenodo.org/badge/364504726.svg
+   :target: https://zenodo.org/badge/latestdoi/364504726
 
 The :math:`R`-factor is a measure used in erosion and (overland) sediment
 modelling to quantify the effect of rainfall on soil erosion. It is typically
