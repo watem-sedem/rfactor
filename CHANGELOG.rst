@@ -11,4 +11,3 @@ Version 0.1
 - Set-up package.
 - Added examples and test data.
 - Added tests.
-

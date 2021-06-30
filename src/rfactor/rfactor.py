@@ -1,16 +1,17 @@
-from subprocess import check_call
-import os
 import multiprocessing as mp
-
+import os
 from pathlib import Path
-from dotenv import load_dotenv, find_dotenv
-from tqdm.contrib.concurrent import process_map
-from tqdm import tqdm
+from subprocess import check_call
 
 import numpy as np
+from dotenv import find_dotenv, load_dotenv
+from tqdm import tqdm
+from tqdm.contrib.concurrent import process_map
 
-def compute_rfactor(rainfall_inputdata_folder, results_folder, engine="matlab",
-                    debug=False, ncpu=-1):
+
+def compute_rfactor(
+    rainfall_inputdata_folder, results_folder, engine="matlab", debug=False, ncpu=-1
+):
     """Compute the R-factor
 
     Parameters
@@ -34,10 +35,12 @@ def compute_rfactor(rainfall_inputdata_folder, results_folder, engine="matlab",
     if not results_folder.exists():
         results_folder.mkdir()
     if not Path(rainfall_inputdata_folder).exists():
-        raise IOError(
-            f"Input {rainfall_inputdata_folder}folder does not exist")
+        raise IOError(f"Input {rainfall_inputdata_folder}folder does not exist")
     if engine not in ["matlab", "octave"]:
-        msg = f"Either select 'matlab' or 'python' as calculation engine for the rfactor scripts."
+        msg = (
+            "Either select 'matlab' or 'python' as calculation engine "
+            "for the rfactor scripts."
+        )
         raise IOError(msg)
     if engine == "matlab":
         os.chdir(Path(__file__).parent)
@@ -48,16 +51,17 @@ def compute_rfactor(rainfall_inputdata_folder, results_folder, engine="matlab",
             "matlab",
             "-nodesktop",
             "-r",
-            f"main('{str(rainfall_inputdata_folder.resolve())}','{str(results_folder)}');" + exitcode,
+            f"main('{str(rainfall_inputdata_folder.resolve())}',"
+            f"'{str(results_folder)}');" + exitcode,
         ]
         check_call(cmd)
     else:
-        rfactor_octave(Path(rainfall_inputdata_folder), results_folder, debug,
-                       ncpu=ncpu)
+        rfactor_octave(
+            Path(rainfall_inputdata_folder), results_folder, debug, ncpu=ncpu
+        )
 
 
-def rfactor_octave(rainfall_inputdata_folder, results_folder, debug=False,
-                   ncpu=-1):
+def rfactor_octave(rainfall_inputdata_folder, results_folder, debug=False, ncpu=-1):
     """Compute R-factor with octave engine
 
     The octave engine is slow, therefore multiprocessing is used as a way to
@@ -79,12 +83,13 @@ def rfactor_octave(rainfall_inputdata_folder, results_folder, debug=False,
         raise IOError(msg)
     if debug:
         files = [file for file in rainfall_inputdata_folder.iterdir()]
-        for file in tqdm(files,total=len(files)):
+        for file in tqdm(files, total=len(files)):
             print(file)
             single_file([file, results_folder])
     else:
-        lst_input = [[file, results_folder] for file in
-                     rainfall_inputdata_folder.iterdir()]
+        lst_input = [
+            [file, results_folder] for file in rainfall_inputdata_folder.iterdir()
+        ]
         if ncpu == -1:
             ncpu = mp.cpu_count()
         process_map(single_file, lst_input, max_workers=ncpu)
@@ -105,7 +110,8 @@ def single_file(lst_inputs):
     path_results = lst_inputs[1]
 
     check_oct()
-    from oct2py import Oct2Py,Oct2PyError
+    from oct2py import Oct2Py, Oct2PyError
+
     year = filename.stem.split("_")[1]
     inputdata = np.loadtxt(str(filename.resolve()))
 
@@ -113,22 +119,25 @@ def single_file(lst_inputs):
         try:
             oc.addpath(str(Path(__file__).parent.resolve()))
             cumEI = oc.core(year, inputdata)
-            filename_out = path_results / (
-                        filename.stem + 'new cumdistr salles.txt')
+            filename_out = path_results / (filename.stem + "new cumdistr salles.txt")
             np.savetxt(filename_out, cumEI.T, "%.3f %.2f %.1f")
             oc.exit()
         except Oct2PyError as e:
             raise SystemError(e)
 
+
 def check_oct():
-    """Check octave installation
-    """
+    """Check octave installation"""
     load_dotenv(find_dotenv())
     try:
         oct_exe = Path(os.environ.get("OCTAVE_EXECUTABLE"))
         if not Path(oct_exe).exists():
             raise SystemError(
-                "Octave is not referred to correctly in the 'rfactor/.env'-file. Please check the executable path. ")
-    except:
+                "Octave is not referred to correctly in the 'rfactor/.env'-file. "
+                "Please check the executable path. "
+            )
+    except SystemError:
         raise SystemError(
-            "No 'OCTAVE_EXECUTABLE' is defined in 'rfactor/.env'-file. Please check the documentation for information on installing Octave!")
+            "No 'OCTAVE_EXECUTABLE' is defined in 'rfactor/.env'-file. Please check "
+            "the documentation for information on installing Octave!"
+        )

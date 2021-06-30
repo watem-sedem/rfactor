@@ -18,7 +18,7 @@ compute an average value, the R-factor, presenting the rainfall
 erosivity for a given period. An in-depth explanation of the formula's
 is given here \<rfactor\>.
 
-This code is developed as a function of an analysis of rainfall 
+This code is developed as a function of an analysis of rainfall
 erosivity in Flanders. The results found in the example notebooks
 are also found in [this report](https://www.friscris.be/nl/publications/herziening-van-de-neerslagerosiviteitsfactor-r-voor-de-vlaamse-erosiemodellering(9d4e2953-6c93-48d0-a1c2-d66d03c749aa).html).
 
@@ -54,7 +54,7 @@ for Flanders.
 
 Documentation
 -------------
-The documentation can be found on the 
+The documentation can be found on the
 [R-factor documentation page](https://cn-ws.github.io/rfactor/index.html).
 
 License
