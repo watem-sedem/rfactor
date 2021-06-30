@@ -14,18 +14,18 @@ Contents
    R-factor <rfactor.rst>
    Installation <installation.rst>
    Tutorial <get-started.rst>
-   Module Reference <api/modules>
    Flanders <notebooks/analysis_flanders>
+   Module Reference <api/modules>
 
 .. toctree::
    :caption: Developer guide
    :maxdepth: 1
 
-   License <license>
-   Authors <authors>
+   Contributing <contributing>
    Changelog <changelog>
-
-
+   Authors <authors>
+   Code of conduct <conduct>
+   License <license>
 
 
 Indices and tables
