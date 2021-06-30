@@ -51,10 +51,6 @@ steps:
          exclude:
            - pull_request
 
-
-name: default
-
-
 workspace:
   base: /src
   path: rfactor

@@ -6,7 +6,7 @@ labels: documentation
 assignees: ''
 
 ---
-Documentation references (replace with your lines of code): https://github.com/cn-ws/rfactor/blame/master/docs/rfactor.rst#L70-L72 
+Documentation references (replace with your lines of code): https://github.com/cn-ws/rfactor/blame/master/docs/rfactor.rst#L70-L72
 
 Please use either use option A) or B) and fill in the selected options:
 
@@ -17,4 +17,3 @@ Please use either use option A) or B) and fill in the selected options:
 **B. I have a question considering this section:**
 
 *Type your question*
-
