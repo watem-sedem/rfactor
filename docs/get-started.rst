@@ -163,7 +163,7 @@ folder):
    statistics.
 
 .. note::
-    
+
     If no values are reported for EI30 in ``df_EI30`` for a
     specific year for a station, this implies no calculations were done for
     that year. In ``df_R`` a ``nan`` value will be reported when no
