@@ -130,7 +130,7 @@ folder):
 
 -  Build and load the data set:
 
-    ::
+   ::
 
        df_files = erosivitydata.build_data_set()
        erosivitydata.load_data(df_files)
@@ -138,7 +138,7 @@ folder):
 - (optional) Alternative to building the data set with the code, you can use
   a self-defined ``files.csv``-file:
 
-    ::
+   ::
 
        df_files = erosivitydata.build_data_set(txt_files)
        erosivitydata.load_data(df_files)
