@@ -9,3 +9,5 @@ dependencies:
   - matplotlib
   - pandas
   - tqdm
+  - python-dotenv
+  - pandoc
