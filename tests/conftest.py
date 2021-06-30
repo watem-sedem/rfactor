@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from rfactor.process import ErosivityData
 
 folder_data = Path("tests/data")
@@ -14,7 +16,8 @@ fmap_rainfall_one_file = (folder_example / "rainfall").absolute()
 fmap_erosivity_one_file = (folder_example / "erosivity").absolute()
 
 
-def create_data_instance_with_test_data():
+@pytest.fixture
+def erosivitydata():
     """
     Compile database with test rainfall and erosivity data
 
@@ -34,6 +37,3 @@ def create_data_instance_with_test_data():
     erosivitydata.load_data(df_files)
 
     return erosivitydata
-
-
-erosivitydata = create_data_instance_with_test_data()
