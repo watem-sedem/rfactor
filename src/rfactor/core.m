@@ -10,7 +10,7 @@
 %%                                                                    %%
 %%                 written by Gert Verstraeten                        %%
 %%           Laboratory for Experimental Geomorphology                %%
-%%                 Department of Geography-Geology                    %% 
+%%                 Department of Geography-Geology                    %%
 %%                         KU Leuven                                  %%
 %%           Redingenstraat 16, B-3000 Leuven, Belgium                %%
 %%              gert.verstraeten@geo.kuleuven.ac.be                   %%
@@ -45,7 +45,7 @@ for i=2:x
    timediff=(time(i)-time(i -1));
    if timediff>=360 %tijd tussen twee buien groter dan 6 uur=nieuwe bui
       m=m+1;
-      c(m)=i; %begin van de nieuwe bui      
+      c(m)=i; %begin van de nieuwe bui
       d=c(m)-c(m-1);
       if d>max
          max=d;
@@ -118,13 +118,13 @@ end
 
 %berekenen van maximale neerslagintensiteit in 30 minuten
 for i=1:m
-   
+
    maxP30=0;
-   
+
    maxprecip30min(i)=0;
    a=pluviophase(1,:,i);
    b=pluviophase(3,:,i);
-   
+
    for j=1:max-2
       begin30min=pluviophase(1,j,i);
       eind30min=begin30min+20;
@@ -144,24 +144,24 @@ for i=1:m
       else
          % test
       end
-      
+
       % veronderstel uniforme vulling van bakje
       eindprecip=interp1(a,b,eind30min);
       precip30min=eindprecip-beginprecip;
       if precip30min>maxprecip30min(i)
          maxprecip30min(i)=precip30min;
       end
-      
+
       if maxprecip30min(i)>maxP30
          maxP30=maxprecip30min(i);
       end
       if (maxtime(i)-pluviophase(1,1,i))<=30
          maxP30=pluviophase(3,max,i)*2;
       end
-      
+
       I30(i)=(maxP30*2); % maximale I in 30 opeenvolgende minuten (mm/h)
-      
-   end    
+
+   end
 end
 
 
@@ -249,7 +249,7 @@ dag=14;
 c=cumEI(1,1:k-1);
 d=cumEI(2,1:k-1);
 e=cumEI(3,1:k-1);
-cumD14(1)=interp1(c,d,dag); 
+cumD14(1)=interp1(c,d,dag);
 cumP14(1)=interp1(c,e,dag);
 D14(r,1)=cumD14(1);
 P14(r,1)=cumP14(1);

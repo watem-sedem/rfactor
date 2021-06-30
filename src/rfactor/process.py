@@ -1,7 +1,8 @@
-from datetime import timedelta, datetime
-from pathlib import Path
-from dataclasses import dataclass
 import warnings
+from dataclasses import dataclass
+from datetime import datetime, timedelta
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
@@ -44,16 +45,15 @@ class ErosivityData:
     fmap_erosivity: Path
 
     def __post_init__(self):
-        """Check if folders exist and number of files are equal
-        """
+        """Check if folders exist and number of files are equal"""
         check_if_folder_exists(self.fmap_rainfall)
         check_if_folder_exists(self.fmap_erosivity)
         self.lst_txt_rainfall = list(self.fmap_rainfall.glob("*.txt*"))
-        if len(self.lst_txt_rainfall)==0:
+        if len(self.lst_txt_rainfall) == 0:
             msg = "No text files (*.txt) in rainfall input folder."
             raise IOError(msg)
         self.lst_txt_erosivity = list(self.fmap_erosivity.glob("*.txt*"))
-        if len(self.lst_txt_erosivity)==0:
+        if len(self.lst_txt_erosivity) == 0:
             msg = "No text files (*.txt) in erosivity input folder."
             raise IOError(msg)
         self.check_number_of_files()
@@ -68,9 +68,7 @@ class ErosivityData:
         flag2 = check_missing_files(lst_erosivity, lst_rainfall, self.fmap_rainfall)
 
         if flag1 or flag2:
-            msg = (
-                f"Unequal number of input rainfall and erosivity " f"calculation files."
-            )
+            msg = "Unequal number of input rainfall and erosivity calculation files."
             IOError(msg)
 
     def build_data_set(self, txt_files=None):
@@ -105,17 +103,17 @@ class ErosivityData:
         df_files: pandas.DataFrame
             Loaded txt_files data, see :func:`rfactor.process.load_df_files`.
         """
-        df_files = pd.DataFrame(columns=["source","datafile","consider"])
+        df_files = pd.DataFrame(columns=["source", "datafile", "consider"])
         tag = "new cumdistr salles"
-        df_files["datafile"] = [f.stem.replace(tag,"") for f in self.lst_txt_erosivity]
+        df_files["datafile"] = [f.stem.replace(tag, "") for f in self.lst_txt_erosivity]
         df_files["source"] = [str(f).split("_")[0] for f in df_files["datafile"]]
         df_files["consider"] = 1
-        df_files=get_station_year_from_datafile(df_files)
+        df_files = get_station_year_from_datafile(df_files)
 
         return df_files
 
     def check_df_files(self, df_files, txt_files=None):
-        """ Load and check if rainfall/erosivity datafile is tabulated the
+        """Load and check if rainfall/erosivity datafile is tabulated the
         datafile overview file.
 
         Parameters
@@ -234,7 +232,9 @@ class ErosivityData:
         years: list
             List of years for which to load yearly R-factor.
         frequency: string, optional
-            Frequency to resample data to, see https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects
+            Frequency to resample data to, see
+            https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html
+            #dateoffset-objects
 
         Returns
         -------
@@ -243,8 +243,8 @@ class ErosivityData:
         """
         if frequency not in ["SM", "M"]:
             msg = (
-                f"Loading EI30 is only implemented for half-montlhy ('SM') "
-                f"and monthly scale ('M')"
+                "Loading EI30 is only implemented for half-montlhy ('SM') "
+                "and monthly scale ('M')"
             )
             raise IOError(msg)
 
@@ -342,6 +342,7 @@ def load_df_files(txt_files):
         raise IOError(msg)
     return df_files
 
+
 def get_station_year_from_datafile(df_files):
     """Extract year and station from datafile name
 
@@ -380,6 +381,7 @@ def get_station_year_from_datafile(df_files):
 
     return df_files
 
+
 def check_duplicates_df_files(df_files, txt_files):
     """Check duplicate entries dataframe files
 
@@ -411,8 +413,8 @@ def load_dict_format(dict_data, variable, stations=[], years=[], frequency=""):
     Parameters
     ----------
     dict_data: dict of {str: dict}
-        Dictionary format of erosivity or rainfall data. The nested 
-        dict {station: dict} holds {str: pandas.DataFrame} (key: year, 
+        Dictionary format of erosivity or rainfall data. The nested
+        dict {station: dict} holds {str: pandas.DataFrame} (key: year,
         value: dataframe).
     variable: str
         Variable one whiches to load ("N" = rainfall, "R"= R-factor).
@@ -423,7 +425,9 @@ def load_dict_format(dict_data, variable, stations=[], years=[], frequency=""):
         List of years to load data for. If years == [], then all data for
         all years are loaded.
     frequency: string, optional
-        Frequency to resample data to, see https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects
+        Frequency to resample data to, see
+        https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html
+        #dateoffset-objects
 
     Return
     ------
@@ -456,7 +460,9 @@ def load_df_station(dict_data, variable, years=[], frequency=""):
         List of years to load data for. If years == [], then all data for
         all years are loaded.
     frequency: string, optional
-        Frequency to resample data to, see https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects
+        Frequency to resample data to, see
+        https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html
+        #dateoffset-objects
 
     Returns
     -------
@@ -477,16 +483,16 @@ def load_df_station(dict_data, variable, years=[], frequency=""):
         df = pd.DataFrame.from_dict(dict_output, orient="index", columns=["value"])
         df = df.reset_index().rename(columns={"index": "year"})
     elif variable == "N":
-        if len(dict_data)>0:
+        if len(dict_data) > 0:
             df = pd.concat(dict_data.values())
         else:
-            df = pd.DataFrame(columns=["year","value"])
+            df = pd.DataFrame(columns=["year", "value"])
     elif variable == "EI30":
         for year in lst_years:
             if year in dict_data.keys():
                 dict_output[year] = get_EI30(dict_data, year, frequency=frequency)
             else:
-                dict_output[year] = pd.DataFrame(columns=["year","value"])
+                dict_output[year] = pd.DataFrame(columns=["year", "value"])
         df = pd.concat(dict_output.values())
     return df[["year", "value"]]
 
@@ -523,7 +529,9 @@ def get_EI30(dict_df_erosivity, year, frequency=""):
     year: int
         Year of registration.
     frequency: string, default empty string
-        Frequency to resample data to, see https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects
+        Frequency to resample data to, see
+        https://pandas.pydata.org/pandas-docs/stable/user_guide/
+        timeseries.html#dateoffset-objects
 
     Returns
     -------
@@ -531,8 +539,8 @@ def get_EI30(dict_df_erosivity, year, frequency=""):
 
     """
     df = dict_df_erosivity[year]
-    if frequency!="":
-        df=df.resample(frequency, closed="right").ffill()
+    if frequency != "":
+        df = df.resample(frequency, closed="right").ffill()
     df["value"] = df["cumEI30"].diff()
     df.loc[df.index[0], "value"] = df.loc[df.index[0], "cumEI30"]
     df.loc[df["value"].isnull(), "value"] = 0.0
@@ -541,7 +549,7 @@ def get_EI30(dict_df_erosivity, year, frequency=""):
 
 
 def load_rainfall_data(fname, station, year):
-    """ Load rainfall data file
+    """Load rainfall data file
 
     Load the rainfall data file in a pandas dataframe. Add headers.
 
