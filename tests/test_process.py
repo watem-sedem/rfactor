@@ -6,15 +6,13 @@ import pytest
 from rfactor.process import ErosivityData, load_erosivity_data
 from rfactor.rfactor import compute_rfactor
 
-from .conftest import erosivitydata, fmap_erosivity_one_file, fmap_rainfall_one_file
-
 
 @pytest.mark.parametrize(
     "debug,engine",
     [(True, "octave"), (False, "octave")],
 )
 @pytest.mark.externaldepedent
-def test_rfactor(debug, engine):
+def test_rfactor(debug, engine, fmap_erosivity_one_file, fmap_rainfall_one_file):
     """test computation of r-factor
 
     Test the computation of the R-factor with as inputdata a non-zero rainfall
@@ -67,7 +65,7 @@ def test_rfactor(debug, engine):
         ),
     ],
 )
-def test_flanders(lst_exclude_stations, rfactor):
+def test_flanders(lst_exclude_stations, rfactor, erosivitydata):
     """Test the aggregation functions of EI30 to compute an R-value. Pull all
     EI30 data from all years and stations, except the lst_stations defined in the
     test function parameters.
@@ -85,9 +83,9 @@ def test_flanders(lst_exclude_stations, rfactor):
         for station in erosivitydata.stations
         if station not in lst_exclude_stations
     ]
-    df_R = erosivitydata.load_R(lst_stations)
+    df_r = erosivitydata.load_R(lst_stations)
 
-    np.testing.assert_allclose(np.mean(df_R["value"]), rfactor, atol=1e-2)
+    np.testing.assert_allclose(np.mean(df_r["value"]), rfactor, atol=1e-2)
 
 
 @pytest.mark.parametrize(
@@ -102,7 +100,7 @@ def test_flanders(lst_exclude_stations, rfactor):
         (range(2000, 2021, 1), 1272.774),
     ],
 )
-def test_ukkel(lst_timeseries, rfactor):
+def test_ukkel(lst_timeseries, rfactor, erosivitydata):
     """Test the aggregation functions of EI30 to compute an R-value for the
     station in Ukkel (Brussels, KMI_6447 and KMI_FS3). Pull all
     EI30 data from the years defined in timeseries,
@@ -115,16 +113,16 @@ def test_ukkel(lst_timeseries, rfactor):
         Aggregated R-value computed for all years and all stations, except the
         ones listed in 'exlude_stations'
     """
-    df_R = erosivitydata.load_R(["KMI_6447", "KMI_FS3"], lst_timeseries)
+    df_r = erosivitydata.load_R(["KMI_6447", "KMI_FS3"], lst_timeseries)
 
-    np.testing.assert_allclose(np.mean(df_R["value"]), rfactor, atol=1e-2)
+    np.testing.assert_allclose(np.mean(df_r["value"]), rfactor, atol=1e-2)
 
 
 @pytest.mark.parametrize(
     "generate_df_files,number_of_files_to_consider",
     [(True, 872), (False, 554)],
 )
-def test_build_dataset(generate_df_files, number_of_files_to_consider):
+def test_build_dataset(generate_df_files, number_of_files_to_consider, erosivitydata):
     """Test the building of the erosivity data set.
 
     Parameters
