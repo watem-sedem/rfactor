@@ -14,8 +14,8 @@ in separate text files (extension: ``.txt``) files per station and year.
 The processing of the EI30 is done with Python
 
 .. note::
-A Python script to compute the EI30 values is in the making to avoid the need
-to install matlab.
+
+    A Python script to compute the EI30 values is in the making to avoid the need to install matlab.
 
 Prepare input files
 -------------------
@@ -86,9 +86,9 @@ Matlab to be installed. Results are written to the *results\_folder*-folder.
 
 .. note::
 
-If you are using the free software Octave (see :ref:`installation <octave>`)
-and make sure you have the ``.env``-file with the reference to your octave
-installation in your current working directory!
+    If you are using the free software Octave (see :ref:`installation <octave>`)
+    and make sure you have the ``.env``-file with the reference to your octave
+    installation in your current working directory!
 
 Analyse R-values
 ----------------
@@ -163,8 +163,8 @@ folder):
    statistics.
 
 .. note::
-
-If no values are reported for EI30 in ``df_EI30`` for a
-specific year for a station, this implies no calculations were done for
-that year. In ``df_R`` a ``nan`` value will be reported when no
-calculations were done for that specific year.
+    
+    If no values are reported for EI30 in ``df_EI30`` for a
+    specific year for a station, this implies no calculations were done for
+    that year. In ``df_R`` a ``nan`` value will be reported when no
+    calculations were done for that specific year.
