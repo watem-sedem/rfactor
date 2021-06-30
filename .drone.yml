@@ -34,6 +34,7 @@ steps:
     commands:
       - . $CONDA_ACTIVATE
       - conda activate /src/rfactor/env
+      - conda install -c conda-forge pandoc
       - python setup.py build_sphinx -s docs
 
   - name: publish
@@ -42,7 +43,7 @@ steps:
       username: johanvdw
       password:
         from_secret: gh-pages-release
-      pages_directory: build/sphinx/html
+      pages_directory: docs/_build/html/
     when:
       branch:
         - master
