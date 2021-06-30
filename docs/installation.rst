@@ -7,8 +7,20 @@ Python is used to implemented the functionalities in this package, whereas
 Matlab or Octave is used to run the core code. Do note the use of Octave is
 free of charge, but slower than the Matlab solution.
 
-Install
--------
+We strongly recommend to make use of the seperate ``rfactor`` Python environment to
+install the dependencies (see two lines above), so it does not interfere with
+other Python installation on your machine.
+
+Install from source
+-------------------
+
+To install from source, ``git clone`` the repository somewhere on your local machine
+and install the code from source.
+
+Make sure to setup a new environment  in either conda or venv (using tox):
+
+Using conda
+^^^^^^^^^^^
 
 Make sure you have Python, via
 `Miniconda <https://docs.conda.io/en/latest/miniconda.html>`_, is installed.
@@ -20,25 +32,31 @@ anybody can recreate the required environment:
     conda env create -f environment.yml
     conda activate rfactor
 
-We strongly recommend to make use of the seperate ``rfactor`` environment to
-install the dependencies (see two lines above), so it does not interfere with
-other Python installation on your machine. If you which to install
-the dependencies in your base environment, check out the dependencies in the
+If you which to install the dependencies in a conda environment or your choice, check out the dependencies in the
 ``environment.yml``-file.
 
-With your ``rfactor`` environment activated (``conda activate rfactor``),
-install the rfactor package:
+With your ``rfactor`` environment activated (``conda activate rfactor``), install the rfactor package:
 
 ::
 
     pip install -e .
 
-Or for development purposes of this package, run following code to
-install developer dependencies (using pip):
+Or for development purposes of this package, run following code to install developer dependencies as well (using pip):
 
 ::
 
     pip install -e .[develop]
+
+Using venv
+^^^^^^^^^^
+
+Make sure to have `tox <https://tox.readthedocs.io/en/latest/>`_ available. Run the ``dev`` tox command,
+which will create a ``venv`` with a development install of the package and it will register the environment as a
+ipykernel (for usage inside jupyter notebook):
+
+::
+
+    tox -e dev
 
 Core
 ----
@@ -50,14 +68,16 @@ free. Yet, a big downside of the use of Octave is that it is much slower in
 code execution.
 
 Matlab
-~~~~~~
-Make sure to pick-up the
-latest version of
+^^^^^^
+
+Make sure to pick-up the latest version of
 `Matlab <https://nl.mathworks.com/products/matlab.html?requestedDomain=>`__
 
 .. _octave:
+
 Alternative: Octave
-~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^
+
 Pick up the latest version of Octave from the
 `website <https://www.gnu.org/software/octave/index>`__. After installing
 Octave, install ``oct2py`` via conda
@@ -87,48 +107,5 @@ to your path (windows: add via
 Development
 -----------
 
-When developing this package, following tools are used:
-
-syntax formatting with black
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-To ensure a more common code formatting and limit the git diff, make
-sure to use the black pre-commit hook:
-
--  install
-   `black <https://black.readthedocs.io/en/stable/installation_and_usage.html>`__
-   (should be ok as part of the develop installation, see earlier)
--  install `pre-commit <https://pre-commit.com/#install>`__ (should be
-   ok as part of the develop installation, see earlier)
-
-Install the pre-commit hook:
-
-::
-
-    pre-commit install
-
-on the main level of the package (location where the file
-``.pre-commit-config.yaml`` is located)
-
-unit testing with pytest
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-Run the test suite using the ``pytest`` package (from within the main
-package folder, in the ``rfactor`` environment!):
-
-::
-
-    pytest tests/
-
-documentation with sphinx
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Build the documentation locally with sphinx (from within the main
-package folder, in the ``rfactor`` environment!):
-
-::
-
-    python setup.py build_sphinx
-
-which will create the docs in the ``build`` folder. This directory is
-left out of version control.
+Want to contribute code or functionalities to the ``rfactor`` package? Great and welcome on board! Check out the
+:ref:`dev-guidelines` to get you up and running.
