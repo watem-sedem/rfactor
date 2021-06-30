@@ -38,7 +38,7 @@ def compute_rfactor(
         raise IOError(f"Input {rainfall_inputdata_folder}folder does not exist")
     if engine not in ["matlab", "octave"]:
         msg = (
-            "Either select 'matlab' or 'python' as calculation engine "
+            "Either select 'matlab' or 'octave' as calculation engine "
             "for the rfactor scripts."
         )
         raise IOError(msg)
