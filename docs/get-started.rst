@@ -113,7 +113,7 @@ folder):
    ::
 
        fmap_rainfall = Path(r"./tests/data/test_rainfalldata")
-       fmap_erosivty = = Path(r"results") # Folder path where results are written to (see above).
+       fmap_erosivty = Path(r"results") # Folder path where results are written to (see above).
 
 
 -  Create a erosivitydata object:
