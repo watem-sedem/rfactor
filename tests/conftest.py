@@ -1,5 +1,6 @@
-from rfactor.process import ErosivityData
 from pathlib import Path
+
+from rfactor.process import ErosivityData
 
 folder_data = Path("tests/data")
 folder_example = Path("docs/example_data/")
@@ -11,6 +12,7 @@ fmap_erosivity = (folder_data / "test_erosivitydata").absolute()
 
 fmap_rainfall_one_file = (folder_example / "rainfall").absolute()
 fmap_erosivity_one_file = (folder_example / "erosivity").absolute()
+
 
 def create_data_instance_with_test_data():
     """
