@@ -66,7 +66,8 @@ def maximum_intensity_matlab_clone(df):
 
     Returns
     -------
-    float : maximal intensity in a 30minute interval
+    intensity : float
+        maximal intensity in a 30minute interval
     """
     current_year = df["datetime"].dt.year.unique()
     if not len(current_year) == 1:
@@ -116,7 +117,8 @@ def maximum_intensity(df, interval="30Min"):
 
     Returns
     -------
-    float : maximal intensity in a 30minute interval
+    intensity : float
+        maximal intensity in a 30minute interval
     """
     # formula requires mm/hr, intensity is on half an hour
     return df.rolling(interval, on="datetime")["rain_mm"].sum().max() * 2
