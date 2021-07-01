@@ -27,18 +27,11 @@ are also found in [this report](https://www.friscris.be/nl/publications/herzieni
 Get started
 -----------
 This package makes use of `Python` (and a limited number of dependencies
-such as Pandas and Numpy) and `Matlab` or `Octave`. Python is used to
-implemented the functionalities in this package, whereas Matlab or
-Octave is used to run the core code. The installation (see
+such as Pandas and Numpy). The installation (see
 here \<installation\>) is managed by making use of
 [Miniconda](https://docs.conda.io/en/latest/miniconda.html). Make sure
 to check out the installation instructions, and follow the example in
 the Get started \<getstarted\> page.
-
-> Octave is used in this package as a free alternative if you are unable to
-> acquire a license for Matlab. Note that running the rfactor core scripts
-> is slower with Octave than with Matlab.
-
 
 Rainfall and erosivity data
 ---------------------------
