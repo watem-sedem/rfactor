@@ -41,8 +41,8 @@ def _extract_metadata_from_file_path(file_path):
 
     Expects to be 'STATION_NAME_YYYY.txt' as format
 
-    Parameter
-    ---------
+    Parameters
+    ----------
     file_path : pathlib.Path
         File path of the file to extract station/year from
     """
@@ -59,11 +59,11 @@ def load_rain_file(file_path):
     non-zero rainfall timeseries. The data are split per station and per year with
     a specific datafile tag (file name format: SOURCE_STATION_YEAR.txt)
 
-    #TODO -> not requiring non-zero time series would improve the intensity measurement
-    #   within the Pytho-implementation making sure these are handled well is possible.
+    TODO -> not requiring non-zero time series would improve the intensity measurement
+      within the Pytho-implementation making sure these are handled well is possible.
 
-    Parameter
-    ---------
+    Parameters
+    ----------
     file_path : pathlib.Path
         File path with rainfall data
 
@@ -91,8 +91,8 @@ def load_rain_file(file_path):
 def load_rain_folder(folder_path):
     """Load all (legacy Matlab format) files of rainfall data in a folder
 
-    Parameter
-    ---------
+    Parameters
+    ----------
     file_path : pathlib.Path
         Folder path with rainfall data according to legacy Matlab format,
         see :func:`rfactor.process.load_rain_file`.
@@ -128,8 +128,8 @@ def write_erosivity_data(df, folder_path):
     - *erosivity_cum* (float): Cumulative erosivity over events
     - *all_event_rain_cum* (float): Cumulative rain over events
 
-    Parameter
-    ---------
+    Parameters
+    ----------
     df : pd.DataFrame
         DataFrame with rfactor/erosivity time series. Coan contain, multiple columns,
         but should have at least the following:
