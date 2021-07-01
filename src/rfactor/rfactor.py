@@ -1,3 +1,5 @@
+from functools import partial
+
 import numpy as np
 import pandas as pd
 
@@ -127,7 +129,7 @@ def maximum_intensity(df, interval="30Min"):
     return df.rolling(interval, on="datetime")["rain_mm"].sum().max() * 2
 
 
-def compute_rfactor(
+def _compute_erosivity(
     rain,
     intensity_method,
     event_split=TIME_BETWEEN_EVENTS,
@@ -227,14 +229,14 @@ def compute_rfactor(
     return events
 
 
-def _apply_rfactor(name, group):
+def _apply_rfactor(name, group, intensity_method):
     """Wrapper helper function for parallel execution of erosivity on groups"""
-    df = compute_rfactor(group, maximum_intensity)
+    df = _compute_erosivity(group, intensity_method)
     df[["station", "year"]] = name
     return df
 
 
-def compute_rfactor_parallel(rain):
+def compute_erosivity(rain, intensity_method=maximum_intensity):
     """Calculate erosivity according to Verstraeten G. for each year/station combination
 
     Parameters
@@ -245,10 +247,14 @@ def compute_rfactor_parallel(rain):
         - *datetime* (pd.Timestamp): Time stamp
         - *rain_mm* (float): Rain in mm
         - *station* (str): Measurement station identifier
+
+    intensity_method : Callable, default maximum_intensity
+        Function to derive the maximal rain intensity (over 30min)
     """
+    fun_with_method = partial(_apply_rfactor, intensity_method=intensity_method)
     grouped = rain.groupby(["station", rain["datetime"].dt.year])
     results = Parallel(n_jobs=mp.cpu_count() - 1)(
-        delayed(_apply_rfactor)(name, group) for name, group in grouped
+        delayed(fun_with_method)(name, group) for name, group in grouped
     )
     all_erosivity = pd.concat(results)
 
