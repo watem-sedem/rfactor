@@ -1,8 +1,7 @@
 import sys
 
 from .rfactor import (
-    compute_rfactor_parallel,
-    compute_rfactor,
+    compute_erosivity,
     maximum_intensity_matlab_clone,
     maximum_intensity,
 )
@@ -23,8 +22,7 @@ finally:
     del version, PackageNotFoundError
 
 __all__ = [
-    "compute_rfactor_parallel",
-    "compute_rfactor",
+    "compute_erosivity",
     "maximum_intensity_matlab_clone",
     "maximum_intensity",
 ]
