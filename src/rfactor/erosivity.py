@@ -22,8 +22,12 @@ def rain_energy_per_unit_depth(rain):
 def maximum_intensity_matlab_clone(df):
     """Maximum rain intensity - Matlab implementation (Verstraete)"""
 
+    current_year = df["datetime"].dt.year.unique()
+    if not len(current_year) == 1:
+        raise Exception("Data should all be in the same year.")
+
     df["minutes_since"] = (
-        df["datetime"] - pd.Timestamp("2018-01-01")
+        df["datetime"] - pd.Timestamp(f"{current_year[0]}-01-01")
     ).dt.total_seconds().values / 60
 
     timestamps = df["minutes_since"].values
@@ -108,7 +112,7 @@ def erosivity(
     assert "datetime" in rain.columns
     assert "rain_mm" in rain.columns
     assert len(rain["datetime"].dt.year.unique()) == 1  # data of a single year?
-    # ?TODO -> if the enforcement of a single year actually required for this implementation
+    # ?TODO -> if the enforcement of a single year required for this implementation
     # ?TODO -> check if we should enforce 10' interval as input?
 
     # mark start of each rain event
