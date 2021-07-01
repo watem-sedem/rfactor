@@ -7,21 +7,67 @@ MIN_CUMUL_EVENT = 1.27
 
 
 def rain_energy_per_unit_depth(rain):
-    """Calculate rain energy per unit depth
+    """Calculate rain energy per unit depth according to Salles/Verstraeten
 
     # TODO -> check the factor 6 -> linked to 10min interval? Is this requirement?
 
     Parameters
     ----------
     rain : np.ndarray
+        Rain (mm)
+
+    Notes
+    -----
+    The rain energy per unit depth :math:`e_r` for an application for Flanders/Belgium,
+    is defined by [1]_ [2]_ [3]_:
+
+    .. math::
+
+        e_r = 11.12i_r^{0.31}
+
+    with
+
+     - :math:`i_r` the rain intensity for every 10-min increment (mm :math:`\\text{h}^{-1}` ).
+
+    References
+    ----------
+    .. [1] Salles, C., Poesen, J., Pissart, A., 1999, Rain erosivity indices and drop
+        size distribution for central Belgium. Presented at the General Assembly of
+        the European Geophysical Society, The Hague, The Netherlands, p. 280.
+
+    .. [2] Salles, C., Poesen, J., Sempere-Torres, D., 2002. Kinetic energy of rain and
+        its functional relationship with intensity. Journal of Hydrology 257, 256–270.
+        https://doi.org/10.1016/S0022-1694(01)00555-8
+
+    .. [3]  Verstraeten, G., Poesen, J., Demarée, G., Salles, C., 2006, Long-term
+        (105 years) variability in rain erosivity as derived from 10-min rainfall
+        depth data for Ukkel (Brussels, Belgium): Implications for assessing soil
+        erosion rates. Journal Geophysysical Research, 111, D22109.
+        https://doi.org/10.1029/2006JD007169
     """
     rain_energy = 0.1112 * ((rain * 6.0) ** 0.31) * rain
     return rain_energy.sum()
 
 
 def maximum_intensity_matlab_clone(df):
-    """Maximum rain intensity - Matlab implementation (Verstraete)"""
+    """Maximum rain intensity for 30min interval (Matlab clone)
 
+    The implementation is a direct Python-translation of the original Matlab
+    implementation by Verstraeten.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame with rainfall time series. Needs to contain the following columns:
+
+        - *datetime* (pd.Timestamp): Time stamp
+        - *rain_mm* (float): Rain in mm
+        - *event_rain_cum* (float): Cumulative rain in mm
+
+    Returns
+    -------
+    float : maximal intensity in a 30minute interval
+    """
     current_year = df["datetime"].dt.year.unique()
     if not len(current_year) == 1:
         raise Exception("Data should all be in the same year.")
@@ -53,13 +99,44 @@ def maximum_intensity_matlab_clone(df):
 
 
 def maximum_intensity(df, interval="30Min"):
-    """Maximum rain intensity for a given interval"""
+    """Maximum rain intensity for 30min interval (Pandas rolling)
+
+    The implementation uses a rolling window of the chosen interval to derive the
+    maximal intensity.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame with rainfall time series. Need to contain the following columns:
+
+        - *datetime* (pd.Timestamp): Time stamp
+        - *rain_mm* (float): Rain in mm
+    interval : str
+        Frequency str, e.g. '30Min'
+
+    Returns
+    -------
+    float : maximal intensity in a 30minute interval
+    """
     # formula requires mm/hr, intensity is on half an hour
     return df.rolling(interval, on="datetime")["rain_mm"].sum().max() * 2
 
 
-def _add_days_since_start_year(df):
-    """"""
+def _days_since_start_year(df):
+    """Translate datetime series to days since start of the year
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame with Datetime values. All datetime values should be of the same year.
+        Need to contain the following columns:
+
+        - *datetime* (pd.Timestamp): Time stamp
+
+    Notes
+    -----
+    Support function to provide integration with original Matlab implementation.
+    """
     current_year = df["datetime"].dt.year.unique()
     if not len(current_year) == 1:
         raise Exception("Data should all be in the same year.")
@@ -78,12 +155,12 @@ def erosivity(
     event_split=TIME_BETWEEN_EVENTS,
     event_threshold=MIN_CUMUL_EVENT,
 ):
-    """Calculate erosivity accoring to Verstraeten G.
+    """Calculate erosivity according to Verstraeten G.
 
     Parameters
     ----------
     rain : pd.DataFrame
-        DataFrame with rainfall time series. Needs to contain the following columns:
+        DataFrame with rainfall time series. Need to contain the following columns:
 
         - *datetime* (pd.Timestamp): Time stamp
         - *rain_mm* (float): Rain in mm
@@ -119,7 +196,7 @@ def erosivity(
     # ?TODO - shouldn't we exclude eventual 0.0 values first?
     rain["event_start"] = False
     rain.loc[rain["datetime"].diff() >= event_split, "event_start"] = True
-    rain.loc[0, "event_start"] = True
+    rain.loc[rain.index[0], "event_start"] = True
 
     # add an event identifier
     rain["event_idx"] = rain["event_start"].cumsum()
@@ -134,7 +211,7 @@ def erosivity(
 
     # calculate the maximal rain intensity in 30minutes interval
     max_intensity_event = (
-        rain.groupby("event_idx")[["datetime", "rain_mm"]]
+        rain.groupby("event_idx")[["datetime", "rain_mm", "event_rain_cum"]]
         .apply(intensity_method)
         .rename("max_30min_intensity")
         .reset_index()
@@ -147,7 +224,7 @@ def erosivity(
         {
             "datetime": "first",
             "event_rain_cum": "last",
-            "max_30min_intensity_clone": "last",
+            "max_30min_intensity": "last",
             "event_energy": "last",
         }
     )
