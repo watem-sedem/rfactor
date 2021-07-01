@@ -14,23 +14,23 @@ From 10' rain data to EI for a single station/year
 The input of the erosivity algorithm is a rainfall time series with a 10' resolution as a Pandas DataFrame, e.g.
 
 +-----+---------------------+-----------+
-|     | datetime            | rain_mm   |
-+==========+===================+========+
+| idx | datetime            | rain_mm   |
++=====+=====================+===========+
 |  0  | 2018-01-01 02:10:00 |      0.27 |
-+----------+-------------------+--------+
++-----+---------------------+-----------+
 |  1  | 2018-01-01 02:20:00 |      0.02 |
-+----------+-------------------+--------+
++-----+---------------------+-----------+
 |  2  | 2018-01-01 03:10:00 |      0.48 |
-+----------+-------------------+--------+
++-----+---------------------+-----------+
 | ... | ...                 | ...       |
 +-----+---------------------+-----------+
 
 The data can be derived from any source and contain more columns (e.g. the measurement station identifier),
-but the ``datetime``and ``rain_mm`` are required to apply the erosivity algorithm. The data should contain data of a
+but the ``datetime`` and ``rain_mm`` are required to apply the erosivity algorithm. The data should contain data of a
 single year and single station (see further to calculate multiple stations together.
 
 Erosivity (EI30-values) for a single station/year combination can be computed (make sure to activating the conda
-environment, ``conda activate rfactor``). The :func:`rfactor.rfactor.compute_erosivity`` function applies the algorithm
+environment, ``conda activate rfactor``). The :func:`rfactor.compute_erosivity`` function applies the algorithm
 to a DataFrame containing data for a single station/year, e.g. for the data in DataFrame ``df_rain``.
 
 .. code-block:: python
@@ -47,7 +47,7 @@ to a DataFrame containing data for a single station/year, e.g. for the data in D
 
 The output is a DataFrame with the intermediate results and the cumulative erosivity of each of the defined events:
 
-+-------------+---------------------+--------+----------------------+-----------------+---------+------|
++-------------+---------------------+--------+----------------------+-----------------+---------+------+
 |   event_idx | datetime            |   ...  |   all_event_rain_cum |   erosivity_cum | station | year |
 +=============+=====================+========+======================+=================+=========+======+
 |           2 | 2018-01-01 14:30:00 |   ...  |                 1.08 |         5.01878 |   P01   | 2018 |
@@ -59,10 +59,10 @@ The output is a DataFrame with the intermediate results and the cumulative erosi
 |           5 | 2018-01-05 02:20:00 |   ...  |                22.47 |         8.61462 |   P01   | 2018 |
 +-------------+---------------------+--------+----------------------+-----------------+---------+------+
 |         ... | ...                 |   ...  |                ...   |        ...      |   ...   | ...  |
-+-------------+---------------------+--------+-----------------------+----------------+---------+------+
++-------------+---------------------+--------+----------------------+-----------------+---------+------+
 
 
-As the ``erosivity_cum`` column contains the cumulative erosity over the events, the last value is the R-factor of
+As the "erosivity_cum" column contains the cumulative erosity over the events, the last value is the R-factor of
 the year/station:
 
 .. code-block:: python
@@ -82,33 +82,33 @@ Calculating multiple station/year combinations
 ----------------------------------------------
 
 When data is available from multiple stations over multiple years in a single DataFrame,
-the :func:`rfactor.rfactor.compute_erosivity` function applies the erosivity algorithm on each
+the :func:`rfactor.compute_erosivity` function applies the erosivity algorithm on each
 year/station combination in the input rain DataFrame. To do so, an
 additional column with the ``station`` name is required:
 
-+-----+---------------------+-----------+---------|
++-----+---------------------+-----------+---------+
 |     | datetime            | rain_mm   | station |
-+==========+===================+========+=========+
++=====+=====================+===========+=========+
 |  0  | 2018-01-01 02:10:00 |      0.27 |   P01   |
-+----------+-------------------+--------+---------+
++-----+---------------------+-----------+---------+
 |  1  | 2018-01-01 02:20:00 |      0.02 |   P01   |
-+----------+-------------------+--------+---------+
++-----+---------------------+-----------+---------+
 |  2  | 2018-01-01 03:10:00 |      0.48 |   P01   |
-+----------+-------------------+--------+---------+
++-----+---------------------+-----------+---------+
 | ... |       ...           |     ...   |   ...   |
-+----------+-------------------+--------+---------+
++-----+---------------------+-----------+---------+
 |  10 | 2019-01-01 01:10:00 |      0.52 |   P01   |
-+----------+-------------------+--------+---------+
++-----+---------------------+-----------+---------+
 |  11 | 2019-01-01 01:20:00 |      0.20 |   P01   |
-+----------+-------------------+--------+---------+
++-----+---------------------+-----------+---------+
 | ... |       ...           |     ...   |   ...   |
-+----------+-------------------+--------+---------+
++-----+---------------------+-----------+---------+
 | 123 | 2018-01-01 00:10:00 |      0.02 |   P02   |
-+----------+-------------------+--------+---------+
++-----+---------------------+-----------+---------+
 | 124 | 2018-01-01 00:20:00 |      0.32 |   P02   |
-+----------+-------------------+--------+---------+
++-----+---------------------+-----------+---------+
 | ... |       ...           |     ...   |   ...   |
-+----------+-------------------+--------+---------+
++-----+---------------------+-----------+---------+
 
 
 .. code-block:: python
@@ -118,7 +118,7 @@ additional column with the ``station`` name is required:
 
 The output is very similar to the previous section, but the data contains now multiple years and/or stations:
 
-+-------------+---------------------+--------+----------------------+-----------------+---------+------|
++-------------+---------------------+--------+----------------------+-----------------+---------+------+
 |   event_idx | datetime            |   ...  |   all_event_rain_cum |   erosivity_cum | station | year |
 +=============+=====================+========+======================+=================+=========+======+
 |           2 | 2018-01-01 14:30:00 |   ...  |                 1.08 |         5.01878 |   P01   | 2018 |
@@ -126,13 +126,13 @@ The output is very similar to the previous section, but the data contains now mu
 |           3 | 2018-01-02 16:30:00 |   ...  |                12.37 |         8.00847 |   P01   | 2018 |
 +-------------+---------------------+--------+----------------------+-----------------+---------+------+
 |         ... | ...                 |   ...  |                ...   |        ...      |   ...   | ...  |
-+-------------+---------------------+--------+-----------------------+----------------+---------+------+
++-------------+---------------------+--------+----------------------+-----------------+---------+------+
 |           1 | 2019-01-04 09:10:00 |   ...  |                20.13 |         8.33275 |   P01   | 2019 |
 +-------------+---------------------+--------+----------------------+-----------------+---------+------+
 |           2 | 2019-01-05 02:20:00 |   ...  |                22.47 |         8.61462 |   P01   | 2019 |
 +-------------+---------------------+--------+----------------------+-----------------+---------+------+
 |         ... | ...                 |   ...  |                ...   |        ...      |   ...   | ...  |
-+-------------+---------------------+--------+-----------------------+----------------+---------+------+
++-------------+---------------------+--------+----------------------+-----------------+---------+------+
 
 To derive the R-factor for each year/station in the data set, one can use the existing Pandas functionalities:
 
