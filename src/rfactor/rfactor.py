@@ -11,6 +11,10 @@ TIME_BETWEEN_EVENTS = "6 hours"
 MIN_CUMUL_EVENT = 1.27
 
 
+class RFactorInputException(Exception):
+    """Raise when input data is not conform the rfactor required input format"""
+
+
 def rain_energy_per_unit_depth(rain):
     """Calculate rain energy per unit depth according to Salles/Verstraeten
 
@@ -166,10 +170,13 @@ def _compute_erosivity(
         - *erosivity_cum* (float): Cumulative erosivity over all events together
 
     """
-    assert "datetime" in rain.columns
-    assert "rain_mm" in rain.columns
-    assert len(rain["datetime"].dt.year.unique()) == 1  # data of a single year
-    # ?TODO -> if the enforcement of a single year required for this implementation
+    if ("datetime" not in rain.columns) or ("rain" not in rain.columns):
+        raise RFactorInputException(
+            "DataFrame should contain 'datetime' " "and 'rain_mm' columns."
+        )
+    # ?TODO -> is the enforcement of a single year required for this implementation
+    if len(rain["datetime"].dt.year.unique()) != 1:  # data of a single year
+        raise RFactorInputException("DataFrame should contain data of a single year.")
     # ?TODO -> check if we should enforce 10' interval as input? asfreq?
 
     # mark start of each rain event
