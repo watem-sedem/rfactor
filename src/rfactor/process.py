@@ -52,6 +52,18 @@ def _extract_metadata_from_file_path(file_path):
     }
 
 
+def _check_path(file_path):
+    """Provide user feedback on file_path specification"""
+    if not isinstance(file_path, Path):
+        if isinstance(file_path, str):
+            raise TypeError(
+                f"file_path should be a pathlib.Path object, use "
+                f"Path({file_path}) to convert string file_path to Path."
+            )
+        else:
+            raise TypeError(f"file_path should be a pathlib.Path object")
+
+
 def load_rain_file(file_path):
     """Load (legacy Matlab) file format of rainfall data of a single station/year
 
@@ -60,7 +72,7 @@ def load_rain_file(file_path):
     a specific datafile tag (file name format: SOURCE_STATION_YEAR.txt)
 
     TODO -> not requiring non-zero time series would improve the intensity measurement
-      within the Pytho-implementation making sure these are handled well is possible.
+      within the Python-implementation making sure these are handled well is possible.
 
     Parameters
     ----------
@@ -75,7 +87,7 @@ def load_rain_file(file_path):
         - *datetime* (pd.Timestamp): Time stamp
         - *rain_mm* (float): Rain in mm
     """
-    assert isinstance(file_path, Path)
+    _check_path(file_path)
 
     station, year = _extract_metadata_from_file_path(file_path).values()
     rain = pd.read_csv(
@@ -105,7 +117,7 @@ def load_rain_folder(folder_path):
         - *datetime* (pd.Timestamp): Time stamp
         - *rain_mm* (float): Rain in mm
     """
-    assert isinstance(folder_path, Path)
+    _check_path(folder_path)
 
     lst_df = []
     for file_path in folder_path.glob("*.txt"):
@@ -145,7 +157,7 @@ def write_erosivity_data(df, folder_path):
         see :func:`rfactor.process.load_rain_file`.
 
     """
-    assert isinstance(folder_path, Path)
+    _check_path(folder_path)
 
     folder_path.mkdir(exist_ok=True, parents=True)
 
