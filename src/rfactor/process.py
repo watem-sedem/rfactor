@@ -116,6 +116,8 @@ def load_rain_folder(folder_path):
 
         - *datetime* (pd.Timestamp): Time stamp
         - *rain_mm* (float): Rain in mm
+        - *year* (int): Year
+        - *tag* (str): A unique tag for every couple station-year
     """
     _check_path(folder_path)
 
@@ -126,6 +128,11 @@ def load_rain_folder(folder_path):
     all_rain = pd.concat(lst_df)
     all_rain = all_rain.sort_values(["station", "minutes_since"])
     all_rain.index = range(len(all_rain))
+    all_rain["year"] = all_rain["datetime"].dt.year
+    all_rain["tag"] = (
+        all_rain["station"].astype(str) + "_" + all_rain["year"].astype(str)
+    )
+
     return all_rain
 
 
@@ -175,6 +182,43 @@ def write_erosivity_data(df, folder_path):
         )
 
 
+def get_rfactor_station_year(cumulative_erosivity, stations, years):
+    """Get R-factor at end of every year for each location from cumulative erosivity
+    data.
+
+    Parameters
+    ----------
+    cumulative_erosivity: pandas.DataFrame
+        See :func:`rfactor.rfactor._compute_erosivity`
+    stations: list
+        List of stations
+    years: list
+        List of years
+
+    Returns
+    -------
+    pandas.DataFrame
+
+        - *year* (int): year
+        - *station* (str): station
+        - *erosivity_cum* (float): cumulative erosivity at end of *year* and at location
+        *station*.
+
+    """
+    selection = (cumulative_erosivity["station"].isin(stations)) & (
+        cumulative_erosivity["year"].isin(years)
+    )
+    cumulative_erosivity = cumulative_erosivity.loc[selection].sort_values(
+        ["year", "station"]
+    )
+    cumulative_erosivity = (
+        cumulative_erosivity.groupby(["year", "station"])
+        .aggregate("erosivity_cum")
+        .last()
+    )
+    return cumulative_erosivity.reset_index()
+
+
 def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
     """Compute general statistics for rainfall timeseries
 
@@ -184,27 +228,28 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
     Parameters
     ----------
     df_rainfall: pandas.DataFrame
-        See :func:`rfactor.process.load_dict_format`
+        See :func:`rfactor.process.load_rain_file`
     df_station_metadata: pandas.DataFrame
         Dataframe holding station metadata. This dataframe has one mandatory
         column:
 
         - *station* (str): Name or code of the measurement station
+        - *x* (float): X-coordinate of station
+        - *y* (float): Y-coordinate
 
     Returns
     -------
     df_statistics: pandas.DataFrame
 
     """
-    df_rainfall["year"] = df_rainfall["year"].astype(int)
     df_rainfall = df_rainfall.sort_values(by="year")
     df_statistics = (
-        df_rainfall[["year", "station", "value"]]
+        df_rainfall[["year", "station", "rain_mm"]]
         .groupby("station")
         .aggregate(
             {
                 "year": lambda x: sorted(set(x)),
-                "value": [np.min, np.max, np.median, lambda x: np.shape(x)[0]],
+                "rain_mm": [np.min, np.max, np.median, lambda x: np.shape(x)[0]],
             }
         )
     )
@@ -214,14 +259,23 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
         )
 
     df_statistics["year"] = df_statistics[("year", "<lambda>")]
-    df_statistics["min"] = df_statistics[("value", "amin")]
-    df_statistics["median"] = df_statistics[("value", "median")]
-    df_statistics["max"] = df_statistics[("value", "amax")]
-    df_statistics["records"] = df_statistics[("value", "<lambda_0>")]
+    df_statistics["min"] = df_statistics[("rain_mm", "amin")]
+    df_statistics["median"] = df_statistics[("rain_mm", "median")]
+    df_statistics["max"] = df_statistics[("rain_mm", "amax")]
+    df_statistics["records"] = df_statistics[("rain_mm", "<lambda_0>")]
 
     if df_station_metadata is not None:
         return df_statistics[
-            ["station", "year", "location", "x", "y", "records", "min", "median", "max"]
-        ]
+            [
+                "year",
+                "location",
+                "x",
+                "y",
+                "records",
+                "min",
+                "median",
+                "max",
+            ]
+        ].reset_index()
     else:
-        return df_statistics[["station", "year", "records", "min", "median", "max"]]
+        return df_statistics[["year", "records", "min", "median", "max"]].reset_index()
