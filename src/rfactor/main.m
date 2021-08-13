@@ -27,7 +27,7 @@ function []=main(path,path_results)
        disp(filename_out)
        % write the matrix
        if fid > 0
-           fprintf(fid,'%.3f %.2f %.1f\n',cumEI);
+           fprintf(fid,'%.3f %.2f %.1f %.2f\n',cumEI);
            fclose(fid);
        end
     end
