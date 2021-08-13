@@ -168,9 +168,10 @@ def _compute_erosivity(
         - *erosivity* (float): Erosivity for each event
         - *all_events_cum* (float): Cumulative rain over all events together
         - *erosivity_cum* (float): Cumulative erosivity over all events together
+        - *tag* (str): Tag describing unique couple of station_year
 
     """
-    if ("datetime" not in rain.columns) or ("rain" not in rain.columns):
+    if ("datetime" not in rain.columns) or ("rain_mm" not in rain.columns):
         raise RFactorInputException(
             "DataFrame should contain 'datetime' " "and 'rain_mm' columns."
         )
@@ -259,10 +260,15 @@ def compute_erosivity(rain, intensity_method=maximum_intensity):
         Function to derive the maximal rain intensity (over 30min)
     """
     fun_with_method = partial(_apply_rfactor, intensity_method=intensity_method)
-    grouped = rain.groupby(["station", rain["datetime"].dt.year])
+    grouped = rain.groupby(["station", "year"])
     results = Parallel(n_jobs=mp.cpu_count() - 1)(
         delayed(fun_with_method)(name, group) for name, group in grouped
     )
     all_erosivity = pd.concat(results)
+
+    # couple tag
+    all_erosivity = all_erosivity.merge(
+        rain[["station", "year", "tag"]].drop_duplicates(), on=["station", "year"]
+    )
 
     return all_erosivity
