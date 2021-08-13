@@ -252,20 +252,17 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
                 "rain_mm": [np.min, np.max, np.median, lambda x: np.shape(x)[0]],
             }
         )
-    )
+    ).reset_index()
+    df_statistics.columns=df_statistics.columns.map(''.join)
+    rename_cols={"year<lambda>":"year","rain_mmamin":"min","rain_mmamax":"max",
+            "rain_mmmedian":"median","rain_mm<lambda_0>":"records"}
+    df_statistics=df_statistics.rename(columns=rename_cols)
+
     if df_station_metadata is not None:
         df_statistics = df_statistics.merge(
             df_station_metadata, on="station", how="left"
         )
-
-    df_statistics["year"] = df_statistics[("year", "<lambda>")]
-    df_statistics["min"] = df_statistics[("rain_mm", "amin")]
-    df_statistics["median"] = df_statistics[("rain_mm", "median")]
-    df_statistics["max"] = df_statistics[("rain_mm", "amax")]
-    df_statistics["records"] = df_statistics[("rain_mm", "<lambda_0>")]
-
-    if df_station_metadata is not None:
-        return df_statistics[
+        df_statistics =df_statistics[
             [
                 "year",
                 "location",
@@ -276,6 +273,8 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
                 "median",
                 "max",
             ]
-        ].reset_index()
+        ]
     else:
-        return df_statistics[["year", "records", "min", "median", "max"]].reset_index()
+        df_statistics = df_statistics[["year", "records", "min", "median", "max"]].reset_index()
+
+    return df_statistics
