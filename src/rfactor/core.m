@@ -102,7 +102,7 @@ E(1:m)=0;
 t=0;
 for i=1:m
    pluviophase(4,1,i)=pluviophase(2,1,i)*6;
-   pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagenergie per mm
+   pluviophase(5,1,i)=0.1112*(pluviophase(4,1,i)^0.31);  % berekenen van neerslagenergie per mm
    % totale neerslagenergie
    E(i)=E(i)+pluviophase(5,1,i)*pluviophase(2,1,i);
    cumul(i)=t;
@@ -156,7 +156,7 @@ for i=1:m
          maxP30=maxprecip30min(i);
       end
       if (maxtime(i)-pluviophase(1,1,i))<=30
-         maxP30=pluviophase(3,max,i)*2;
+         maxP30=pluviophase(3,max,i);
       end
       
       I30(i)=(maxP30*2); % maximale I in 30 opeenvolgende minuten (mm/h)
@@ -188,12 +188,14 @@ clear c;
 cumEI(1,1)=EI(1,1);
 cumEI(2,1)=EI(2,1);
 cumEI(3,1)=EI(3,1);
+cumEI(4,1)=EI(2,1);
 k=2;
 for i=2:m
    if EI(1,i)>0
       cumEI(1,k)=EI(1,i);
       cumEI(2,k)=EI(2,i)+cumEI(2,k-1);
       cumEI(3,k)=EI(3,i);
+      cumEI(4,k)=EI(2,i)
       erobui(1,k-1)=EI(2,i);
       erobui(2,k-1)=EI(1,i);
       k=k+1;

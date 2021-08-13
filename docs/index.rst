@@ -16,6 +16,7 @@ Contents
    Tutorial <get-started.rst>
    Module Reference <api/modules>
    Flanders <notebooks/analysis_flanders>
+   History <history.rst>
 
 .. toctree::
    :caption: Developer guide
