@@ -2,7 +2,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-
+from tqdm import tqdm
 
 def _days_since_start_year(df):
     """Translate datetime series to days since start of the year
@@ -122,7 +122,9 @@ def load_rain_folder(folder_path):
     _check_path(folder_path)
 
     lst_df = []
-    for file_path in folder_path.glob("*.txt"):
+
+    files = list(folder_path.glob("*.txt"))
+    for file_path in tqdm(files,total=len(files)):
         lst_df.append(load_rain_file(file_path))
 
     all_rain = pd.concat(lst_df)
@@ -182,18 +184,18 @@ def write_erosivity_data(df, folder_path):
         )
 
 
-def get_rfactor_station_year(cumulative_erosivity, stations, years):
+def get_rfactor_station_year(erosivity, stations=None, years=None):
     """Get R-factor at end of every year for each location from cumulative erosivity
     data.
 
     Parameters
     ----------
-    cumulative_erosivity: pandas.DataFrame
+    erosivity: pandas.DataFrame
         See :func:`rfactor.rfactor._compute_erosivity`
     stations: list
-        List of stations
+        List of stations to extract R for
     years: list
-        List of years
+        List of years to extract R for
 
     Returns
     -------
@@ -205,18 +207,18 @@ def get_rfactor_station_year(cumulative_erosivity, stations, years):
         *station*.
 
     """
-    selection = (cumulative_erosivity["station"].isin(stations)) & (
-        cumulative_erosivity["year"].isin(years)
-    )
-    cumulative_erosivity = cumulative_erosivity.loc[selection].sort_values(
-        ["year", "station"]
-    )
-    cumulative_erosivity = (
-        cumulative_erosivity.groupby(["year", "station"])
+
+    if stations is not None:
+        erosivity = erosivity.loc[erosivity["station"].isin(stations)]
+    if years is not None:
+        erosivity = erosivity.loc[erosivity["year"].isin(years)]
+
+    erosivity = (
+        erosivity.groupby(["year", "station"])
         .aggregate("erosivity_cum")
         .last()
     )
-    return cumulative_erosivity.reset_index()
+    return erosivity.reset_index()
 
 
 def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
