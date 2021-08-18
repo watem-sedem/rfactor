@@ -30,7 +30,7 @@ but the ``datetime`` and ``rain_mm`` are required to apply the erosivity algorit
 single year and single station (see further to calculate multiple stations together.
 
 Erosivity (EI30-values) for a single station/year combination can be computed (make sure to activating the conda
-environment, ``conda activate rfactor``). The :func:`rfactor.compute_erosivity`` function applies the algorithm
+environment, ``conda activate rfactor``). The :func:`rfactor.compute_erosivity` function applies the algorithm
 to a DataFrame containing data for a single station/year, e.g. for the data in DataFrame ``df_rain``.
 
 .. code-block:: python
@@ -42,7 +42,7 @@ to a DataFrame containing data for a single station/year, e.g. for the data in D
 
     The :func:`rfactor.rfactor.maximum_intensity` is the default method to derive the maximum 30min interval rain
     intensity of an event, but the user can provide a custom function as well or the original Matlab implementation
-    version :func:`rfactor.rfactor.maximum_intensity_matlab_clone` can be used to compare with the original Matlab
+    version :func:`rfactor.rfactor.maximum_intensity_matlab_clone` can be used to compare with the corrected Matlab
     implementation.
 
 The output is a DataFrame with the intermediate results and the cumulative erosivity of each of the defined events:
@@ -81,7 +81,7 @@ existing Pandas functionalities:
 Calculating multiple station/year combinations
 ----------------------------------------------
 
-When data is available from multiple stations over multiple years in a single DataFrame,
+When data are available from multiple stations over multiple years in a single DataFrame,
 the :func:`rfactor.compute_erosivity` function applies the erosivity algorithm on each
 year/station combination in the input rain DataFrame. To do so, an
 additional column with the ``station`` name is required:
@@ -146,9 +146,9 @@ Legacy Matlab file handling
 
 The original implementation of the algorithm was done in Matlab, which required a specific file input and output file format.
 The package provides a number of processing functions in the :mod:`rfactor.process` module to enable compatibility
-with the original data format.
+with the original data format (see example :doc:`here <notebooks/analysis_flanders.ipynb>`
 
-The :math:`EI_{30}` values were computed by using a Matlab script that required a folder as input. In this folder,
+The :math:`EI_{30}` values were computed by using a Matlab script (see also :ref:`here <codelegacy>`that required a folder as input. In this folder,
 non-zero rainfall timeseries were stored in separate text files (extension: ``.txt``) files per station and year.
 
 Input files
@@ -214,7 +214,7 @@ Analyse R-values
 ----------------
 
 The R-value is determined by the number of years and stations the users wishes to consider to compute the R value. By
-using Pandas DataFrame to store te erosivity, all funtionalities for slicing/filtering/plotting/... are availale directly.
+using Pandas DataFrame to store te erosivity, all funtionalities for slicing/filtering/plotting/... are available directly.
 
 For example, consider one wants to compute the R-value for 2017 and 2018, for Ukkel (stations: KMI\_6447 and KMI\_FS3):
 
