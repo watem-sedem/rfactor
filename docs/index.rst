@@ -15,8 +15,8 @@ Contents
    Installation <installation.rst>
    Tutorial <get-started.rst>
    Module Reference <api/modules>
-   Flanders <notebooks/analysis_flanders>
-   History <history.rst>
+   Application to Flanders <notebooks/analysis_flanders>
+   Code legacy <codelegacy.rst>
 
 .. toctree::
    :caption: Developer guide
