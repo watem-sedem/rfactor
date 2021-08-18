@@ -10,7 +10,6 @@ import multiprocessing as mp
 TIME_BETWEEN_EVENTS = "6 hours"
 MIN_CUMUL_EVENT = 1.27
 
-
 class RFactorInputException(Exception):
     """Raise when input data is not conform the rfactor required input format"""
 
@@ -27,8 +26,8 @@ def rain_energy_per_unit_depth(rain):
 
     Notes
     -----
-    The rain energy per unit depth :math:`e_r` for an application for Flanders/Belgium,
-    is defined by [1]_ [2]_ [3]_:
+    The rain energy per unit depth :math:`e_r` (:math:`\frac{J}{mm.m^2}`) for an
+    application for Flanders/Belgium is defined by [1]_ [2]_ [3]_:
 
     .. math::
 
@@ -75,8 +74,8 @@ def maximum_intensity_matlab_clone(df):
 
     Returns
     -------
-    intensity : float
-        maximal intensity in a 30minute interval
+    maxprecip_30min : float
+        Maximal 30-minute intensity during event (in mm/h).
     """
     current_year = df["datetime"].dt.year.unique()
     if not len(current_year) == 1:
@@ -121,13 +120,14 @@ def maximum_intensity(df, interval="30Min"):
 
         - *datetime* (pd.Timestamp): Time stamp
         - *rain_mm* (float): Rain in mm
+
     interval : str
         Frequency str, e.g. '30Min'
 
     Returns
     -------
-    intensity : float
-        maximal intensity in a 30minute interval
+    maxprecip_30min : float
+        Maximal 30-minute intensity during event (in mm/h).
     """
     # formula requires mm/hr, intensity is on half an hour
     return df.rolling(interval, on="datetime")["rain_mm"].sum().max() * 2
@@ -168,12 +168,11 @@ def _compute_erosivity(
         - *erosivity* (float): Erosivity for each event
         - *all_events_cum* (float): Cumulative rain over all events together
         - *erosivity_cum* (float): Cumulative erosivity over all events together
-        - *tag* (str): Tag describing unique couple of station_year
 
     """
     if ("datetime" not in rain.columns) or ("rain_mm" not in rain.columns):
         raise RFactorInputException(
-            "DataFrame should contain 'datetime' " "and 'rain_mm' columns."
+            "DataFrame should contain 'datetime' and 'rain_mm' columns."
         )
     # ?TODO -> is the enforcement of a single year required for this implementation
     if len(rain["datetime"].dt.year.unique()) != 1:  # data of a single year
@@ -258,6 +257,13 @@ def compute_erosivity(rain, intensity_method=maximum_intensity):
 
     intensity_method : Callable, default maximum_intensity
         Function to derive the maximal rain intensity (over 30min)
+
+    Returns
+    -------
+    all_erosivity: pd.DataFrame
+        See :func:`rfactor.rfactor._compute_erosivity`, added with
+
+        - *tag* (str): unique tag for year, station-couple.
     """
     fun_with_method = partial(_apply_rfactor, intensity_method=intensity_method)
     grouped = rain.groupby(["station", "year"])
@@ -271,5 +277,5 @@ def compute_erosivity(rain, intensity_method=maximum_intensity):
         rain[["station", "year", "tag"]].drop_duplicates(), on=["station", "year"]
     )
     all_erosivity.index = all_erosivity["datetime"]
-    
+
     return all_erosivity
