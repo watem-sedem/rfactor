@@ -40,50 +40,6 @@ install developer dependencies (using pip):
 
     pip install -e .[develop]
 
-Core
-----
-
-The core code makes use Matlab files. You can choose to either use Matlab (1)
-or Octave (2) to run the core code. Do note that the use of Matlab requires a
-license (free trail/student edition available) whereas the use of Octave is
-free. Yet, a big downside of the use of Octave is that it is much slower in
-code execution.
-
-Matlab
-~~~~~~
-Make sure to pick-up the
-latest version of
-`Matlab <https://nl.mathworks.com/products/matlab.html?requestedDomain=>`__
-
-.. _octave:
-Alternative: Octave
-~~~~~~~~~~~~~~~~~~~
-Pick up the latest version of Octave from the
-`website <https://www.gnu.org/software/octave/index>`__. After installing
-Octave, install ``oct2py`` via conda
-
-::
-
-    conda install -c conda-forge oct2py
-
-And make sure to define the path to your the ``OCTAVE_EXECUTABLE`` in a
-``.env``-file. The latter you can do by creating a ``.env``-file in your
-current working directory, and defining the executable location,
-e.g. (local installation):
-
-::
-
-    OCTAVE_EXECUTABLE=C://Users//YOURUSERNAME//AppData//Local//Programs//GNU Octave//Octave-6.2.0//mingw64//bin//octave-cli-6.2.0.exe
-
-for a windows-based system. Make sure to check where Octave is installed on
-your computer! The ```python-dotenv``-package (installed with the installation
-of the rfactor package) will use the ``.env``-file to check your installation.
-
-An alternative is to add the path reference under the name OCTAVE_EXECUTABLE
-to your path (windows: add via
-`environmental variables <https://www.computerhope.com/issues/ch000549.htm>`_, linux: via
-`adjusting the .bashrc-file <https://linuxize.com/post/how-to-add-directory-to-path-in-linux/>`_)
-
 Development
 -----------
 
