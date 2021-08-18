@@ -18,10 +18,18 @@ one year. These yearly values can be used to compute an average value, the
 R-factor, presenting the rainfall erosivity for a given period. An in-depth
 explanation of the formula's is given :ref:`here <rfactor>`.
 
+The implemented formula's in this code are developed in a context of rainfall
+in Belgium (Verstraeten et al., 2006). Yet, the current Python implementation
+allows for an easy integration of alternative functions and relations. An
+in-depth analysis of the application of this code on Flanders can be found in
+in `this report <https://www.friscris.be/nl/publications/herziening-van-de-neerslagerosiviteitsfactor-r-voor-de-vlaamse-erosiemodellering(9d4e2953-6c93-48d0-a1c2-d66d03c749aa).html>`_.
 
-This code is developed as a function of an analysis of rainfall 
-erosivity in Flanders. The results found in the example notebooks
-are also found in `this report <https://www.friscris.be/nl/publications/herziening-van-de-neerslagerosiviteitsfactor-r-voor-de-vlaamse-erosiemodellering(9d4e2953-6c93-48d0-a1c2-d66d03c749aa).html>`_).
+.. note::
+
+    In the earlier versions (<1.0.0) of the R-factor package, Matlab was used
+    for the core computations. Since version 1.0.0, a faster Python
+    implementation is provided. Using the version 0.x.x will provide other
+    results compared to version >1.0.0, as explained :ref:`here <codelegacy>`.
 
 Get started
 -----------
@@ -32,6 +40,7 @@ dependencies such as Pandas and Numpy). The installation
 check out the installation instructions, and follow the example in the
 :ref:`Get started <getstarted>` page.
 
+.. _databelgium:
 Data & application to Flanders
 ------------------------------
 Input rainfall data are provided by the Flemish Environment Agency (VMM),
