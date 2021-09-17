@@ -4,32 +4,32 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-def _days_since_start_year(df):
+
+def _days_since_start_year(series):
     """Translate datetime series to days since start of the year
 
     Parameters
     ----------
-    df : pd.DataFrame
-        DataFrame with Datetime values. All datetime values should be of the same year.
-        Need to contain the following columns:
-
-        - *datetime* (pd.Timestamp): Time stamp
+    series : pd.Series
+        Series with Datetime values. All datetime values should be of the same year.
 
     Returns
     -------
     days_since_start : pd.Series
-        days since the start of the year
+        Days since the start of the year as a float value.
 
     Notes
     -----
-    Support function to provide integration with original Matlab implementation.
+    Support function to provide integration with original Matlab implementation. Output
+    is different from Pandas datetime attribute `dayofyear` as it includes time of the
+    day as decimal value.
     """
-    current_year = df["datetime"].dt.year.unique()
+    current_year = series.dt.year.unique()
     if not len(current_year) == 1:
-        raise Exception("Data should all be in the same year.")
+        raise Exception("Input data should all be in the same year.")
 
     days_since_start = (
-        (df["datetime"] - pd.Timestamp(f"{current_year[0]}-01-01")).dt.total_seconds()
+        (series - pd.Timestamp(f"{current_year[0]}-01-01")).dt.total_seconds()
         / 60.0
         / 1440.0
     )
@@ -124,7 +124,7 @@ def load_rain_folder(folder_path):
     lst_df = []
 
     files = list(folder_path.glob("*.txt"))
-    for file_path in tqdm(files,total=len(files)):
+    for file_path in tqdm(files, total=len(files)):
         lst_df.append(load_rain_file(file_path))
 
     all_rain = pd.concat(lst_df)
@@ -171,7 +171,7 @@ def write_erosivity_data(df, folder_path):
     folder_path.mkdir(exist_ok=True, parents=True)
 
     for (station, year), df_group in df.groupby(["station", df["datetime"].dt.year]):
-        df_group["days_since"] = _days_since_start_year(df_group)
+        df_group["days_since"] = _days_since_start_year(df_group["datetime"])
         formats = {
             "days_since": "{:.3f}",
             "erosivity_cum": "{:.2f}",
@@ -213,11 +213,7 @@ def get_rfactor_station_year(erosivity, stations=None, years=None):
     if years is not None:
         erosivity = erosivity.loc[erosivity["year"].isin(years)]
 
-    erosivity = (
-        erosivity.groupby(["year", "station"])
-        .aggregate("erosivity_cum")
-        .last()
-    )
+    erosivity = erosivity.groupby(["year", "station"]).aggregate("erosivity_cum").last()
     return erosivity.reset_index()
 
 
@@ -255,16 +251,21 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
             }
         )
     ).reset_index()
-    df_statistics.columns=df_statistics.columns.map(''.join)
-    rename_cols={"year<lambda>":"year","rain_mmamin":"min","rain_mmamax":"max",
-            "rain_mmmedian":"median","rain_mm<lambda_0>":"records"}
-    df_statistics=df_statistics.rename(columns=rename_cols)
+    df_statistics.columns = df_statistics.columns.map("".join)
+    rename_cols = {
+        "year<lambda>": "year",
+        "rain_mmamin": "min",
+        "rain_mmamax": "max",
+        "rain_mmmedian": "median",
+        "rain_mm<lambda_0>": "records",
+    }
+    df_statistics = df_statistics.rename(columns=rename_cols)
 
     if df_station_metadata is not None:
         df_statistics = df_statistics.merge(
             df_station_metadata, on="station", how="left"
         )
-        df_statistics =df_statistics[
+        df_statistics = df_statistics[
             [
                 "year",
                 "location",
@@ -277,6 +278,8 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
             ]
         ]
     else:
-        df_statistics = df_statistics[["year", "records", "min", "median", "max"]].reset_index()
+        df_statistics = df_statistics[
+            ["year", "records", "min", "median", "max"]
+        ].reset_index()
 
     return df_statistics
