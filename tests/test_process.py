@@ -5,7 +5,12 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from rfactor.process import _days_since_start_year
+from rfactor.process import (
+    _days_since_start_year,
+    _extract_metadata_from_file_path,
+    _check_path,
+    load_rain_file,
+)
 
 
 def test_days_since_last_year_float():
@@ -19,12 +24,79 @@ def test_days_since_last_year_float():
 
 
 def test_days_since_last_year_single_year():
-    """Moment of the day is translated as decimal number."""
+    """Data should all be from the same year."""
     ts_series = pd.Series(
         pd.date_range("2020-12-31 00:00", "2021-01-02 00:00", freq="6H")
     )
     with pytest.raises(Exception):
         _days_since_start_year(ts_series)
+
+
+@pytest.mark.parametrize(
+    "file_name,station,year",
+    [
+        ("UKKEL_2002.txt", "UKKEL", "2002"),
+        ("U_K_K_E_L_1998.txt", "U_K_K_E_L", "1998"),
+        ("U_K_K_E_L_1998.txt", "U_K_K_E_L", "1998"),
+        ("UK-KEL_1998.txt", "UK-KEL", "1998"),
+    ],
+)
+def test_extract_metadata_from_file_path(file_name, station, year):
+    """Split valid file names into station and name"""
+    assert _extract_metadata_from_file_path(Path(file_name)) == (station, year)
+
+
+@pytest.mark.parametrize(
+    "file_name",
+    [
+        "UKKEL_2002---.txt",  # text after year
+        "UKKEL_2002_.txt",  # text after year
+        "UKKEL_202.txt",  # invalid year
+        "UKKEL20022.txt",  # invalid year
+        "2002.txt" "UKKEL.txt",  # no station name  # no year
+    ],
+)
+def test_extract_metadata_from_file_path_invalid(file_name):
+    """Invalid file paths should raise ValueError"""
+    with pytest.raises(ValueError) as excinfo:
+        assert _extract_metadata_from_file_path(Path(file_name))
+    assert "Input file_path_format should" in str(excinfo.value)
+
+
+def test_check_path():
+    """File path checks should provide user with info on pathlib.Path"""
+    assert _check_path(Path("./")) is None
+    with pytest.raises(TypeError) as excinfo:
+        _check_path("invalid_string_input_path")
+    assert "to convert string file_path to valid" in str(excinfo.value)
+    with pytest.raises(TypeError) as excinfo:
+        _check_path(np.array([1, 2]))
+    assert " should be a pathlib.Path" in str(excinfo.value)
+
+
+def test_load_rain_file(rain_data):
+    """Valid rainfall data should be parsed to rain DataFrame"""
+    rainfall_data = load_rain_file(rain_data)
+    assert isinstance(rainfall_data, pd.DataFrame)
+    assert list(rainfall_data.columns) == [
+        "minutes_since",
+        "rain_mm",
+        "datetime",
+        "station",
+    ]
+    assert list(rainfall_data["station"].unique()) == ["station_name"]
+    assert list(rainfall_data.iloc[0].values) == [
+        1,
+        1.0,
+        pd.to_datetime("2021-01-01 00:01:00"),
+        "station_name",
+    ]
+    assert list(rainfall_data.iloc[-1].values) == [
+        525599,
+        10.00,
+        pd.to_datetime("2021-12-31 23:59:00"),
+        "station_name",
+    ]
 
 
 @pytest.mark.parametrize(

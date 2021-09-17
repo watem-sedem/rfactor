@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 import numpy as np
@@ -39,29 +40,38 @@ def _days_since_start_year(series):
 def _extract_metadata_from_file_path(file_path):
     """Get metadata from file name
 
-    Expects to be 'STATION_NAME_YYYY.txt' as format
+    Expects to be 'STATION_NAME_YYYY.txt' as format with ``STATION_NAME`` the
+    measurement station and the ``YYYY`` as the year of the measurement.
 
     Parameters
     ----------
     file_path : pathlib.Path
         File path of the file to extract station/year from
+
+    Returns
+    -------
+    station: str
+    year : str
     """
-    return {
-        "station": "_".join(file_path.stem.split("_")[:-1]),
-        "year": file_path.stem.split("_")[-1],
-    }
+    if not re.fullmatch(".*_[0-9]{4}$", file_path.stem):
+        raise ValueError(
+            "Input file_path_format should " "match with 'STATION_NAME_YYYY.txt'"
+        )
+    station = "_".join(file_path.stem.split("_")[:-1])
+    year = file_path.stem.split("_")[-1]
+    return station, year
 
 
 def _check_path(file_path):
-    """Provide user feedback on file_path specification"""
+    """Provide user feedback on file_path type."""
     if not isinstance(file_path, Path):
         if isinstance(file_path, str):
             raise TypeError(
-                f"file_path should be a pathlib.Path object, use "
-                f"Path({file_path}) to convert string file_path to Path."
+                f"`file_path` should be a `pathlib.Path` object, use "
+                f"`Path({file_path})` to convert string file_path to valid `Path`."
             )
         else:
-            raise TypeError(f"file_path should be a pathlib.Path object")
+            raise TypeError(f"`file_path` should be a pathlib.Path object")
 
 
 def load_rain_file(file_path):
@@ -69,15 +79,14 @@ def load_rain_file(file_path):
 
     The input files are defined by text files (extension: ``.txt``) that hold
     non-zero rainfall timeseries. The data are split per station and per year with
-    a specific datafile tag (file name format: SOURCE_STATION_YEAR.txt)
-
-    TODO -> not requiring non-zero time series would improve the intensity measurement
-      within the Python-implementation making sure these are handled well is possible.
+    a specific datafile tag (file name format: ``SOURCE_STATION_YEAR.txt``). The data
+    should not contain headers, with a first column with minutes since the start of the
+    year and a second with the rainfall intensisy.
 
     Parameters
     ----------
     file_path : pathlib.Path
-        File path with rainfall data
+        File path with rainfall data according to defined format.
 
     Returns
     -------
@@ -86,10 +95,11 @@ def load_rain_file(file_path):
 
         - *datetime* (pd.Timestamp): Time stamp
         - *rain_mm* (float): Rain in mm
+        - *station* (str): station name
     """
     _check_path(file_path)
 
-    station, year = _extract_metadata_from_file_path(file_path).values()
+    station, year = _extract_metadata_from_file_path(file_path)
     rain = pd.read_csv(
         file_path, delimiter=" ", header=None, names=["minutes_since", "rain_mm"]
     )
@@ -105,7 +115,7 @@ def load_rain_folder(folder_path):
 
     Parameters
     ----------
-    file_path : pathlib.Path
+    folder_path : pathlib.Path
         Folder path with rainfall data according to legacy Matlab format,
         see :func:`rfactor.process.load_rain_file`.
 
