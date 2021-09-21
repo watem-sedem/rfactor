@@ -154,7 +154,7 @@ def write_erosivity_data(df, folder_path):
     """Write output erosivity to (legacy Matlab format) in folder
 
     Written data is split up for each year and station
-    (file name format: SOURCE_STATION_YEAR.txt) and do not contain any headers. The
+    (file name format: SOURCE_STATION_YEAR.txt) and does not contain any headers. The
     columns in the written text files represent the following:
 
     - *days_since* (float): Days since the start of the year
@@ -164,17 +164,16 @@ def write_erosivity_data(df, folder_path):
     Parameters
     ----------
     df : pd.DataFrame
-        DataFrame with rfactor/erosivity time series. Coan contain, multiple columns,
+        DataFrame with rfactor/erosivity time series. Can contain multiple columns,
         but should have at least the following:
 
         - *datetime* (pd.Timestamp): Time stamp
         - *station* (str): Station identifier
-        - *days_since* (float): Days since the start of the year
         - *erosivity_cum* (float): Cumulative erosivity over events
         - *all_event_rain_cum* (float): Cumulative rain over events
 
     folder_path : pathlib.Path
-        Folder path with rainfall data according to legacy Matlab format,
+        Folder path to save data according to legacy Matlab format,
         see :func:`rfactor.process.load_rain_file`.
 
     """
