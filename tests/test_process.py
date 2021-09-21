@@ -1,16 +1,19 @@
 import pytest
+import re
 from pathlib import Path
 
 
 import numpy as np
 import pandas as pd
 
+from rfactor import compute_erosivity
 from rfactor.process import (
     _days_since_start_year,
     _extract_metadata_from_file_path,
     _check_path,
     load_rain_file,
     load_rain_folder,
+    write_erosivity_data,
 )
 
 
@@ -136,6 +139,41 @@ def test_load_rain_folder(rain_data_foler):
         2021,
         "station_1_2021",
     ]
+
+
+def test_write_erosivity(dummy_erosivity, tmpdir):
+    """Check written legacy matlab format files output"""
+    erosivity = dummy_erosivity
+
+    # Write the erosivity to disk
+    output_dir = Path(tmpdir) / "erosivity"
+    output_dir.mkdir()
+    write_erosivity_data(erosivity, output_dir)
+
+    p = re.compile("(.*)_([0-9]{4})$")  # extract year/station from file path
+    written_files = list(sorted(output_dir.glob("*.csv")))
+
+    # check the written output files are split per year/station
+    matched_stations = set([p.match(path.stem).group(1) for path in written_files])
+    matched_years = set([int(p.match(path.stem).group(2)) for path in written_files])
+    assert set(dummy_erosivity["station"].unique()) == matched_stations
+    assert set(dummy_erosivity["datetime"].dt.year.unique()) == matched_years
+
+    # verify content of first file
+    columns_to_compare = ["days_since", "erosivity_cum", "all_event_rain_cum"]
+    first_station, first_year = p.match(written_files[0].stem).group(1, 2)
+    original_data = erosivity[
+        (erosivity["station"] == first_station)
+        & (erosivity["datetime"].dt.year == int(first_year))
+    ]
+    original_data["days_since"] = _days_since_start_year(original_data["datetime"])
+    written_data = pd.read_csv(
+        written_files[0], delimiter=" ", names=columns_to_compare
+    )
+    # compare written filewith orginal to one digit (rawest of the three columns)
+    pd.testing.assert_frame_equal(
+        original_data[columns_to_compare], written_data, atol=0.1
+    )
 
 
 @pytest.mark.parametrize(
