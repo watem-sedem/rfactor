@@ -204,13 +204,12 @@ def write_erosivity_data(df, folder_path):
 
 
 def get_rfactor_station_year(erosivity, stations=None, years=None):
-    """Get R-factor at end of every year for each station from cumulative erosivity
-    data.
+    """Get R-factor at end of every year for each station from cumulative erosivity.
 
     Parameters
     ----------
     erosivity: pandas.DataFrame
-        See :func:`rfactor.rfactor._compute_erosivity`
+        See :func:`rfactor.rfactor.compute_erosivity`
     stations: list
         List of stations to extract R for
     years: list
@@ -233,15 +232,13 @@ def get_rfactor_station_year(erosivity, stations=None, years=None):
         )
         if unexisting_stations:
             raise KeyError(
-                f"Station name(s): {unexisting_stations} not " f"part of data set."
+                f"Station name(s): {unexisting_stations} not part of data set."
             )
         erosivity = erosivity.loc[erosivity["station"].isin(stations)]
     if years is not None:
         unexisting_years = set(years).difference(set(erosivity["year"].unique()))
         if unexisting_years:
-            raise KeyError(
-                f"Station name(s): {unexisting_years} not " f"part of data set."
-            )
+            raise KeyError(f"Year(s): {unexisting_years} not part of data set.")
         erosivity = erosivity.loc[erosivity["year"].isin(years)]
 
     erosivity = erosivity.groupby(["year", "station"]).aggregate("erosivity_cum").last()
