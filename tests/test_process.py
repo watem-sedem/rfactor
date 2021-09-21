@@ -2,7 +2,6 @@ import pytest
 import re
 from pathlib import Path
 
-
 import numpy as np
 import pandas as pd
 
@@ -15,6 +14,7 @@ from rfactor.process import (
     load_rain_folder,
     write_erosivity_data,
     get_rfactor_station_year,
+    compute_rainfall_statistics,
 )
 
 
@@ -228,6 +228,24 @@ def test_rfactor_from_erosivity_subset_not_existing(dummy_erosivity):
     with pytest.raises(KeyError) as excinfo:
         get_rfactor_station_year(dummy_erosivity, years=years_of_interest)
     assert "1991" in str(excinfo.value)
+
+
+def test_rainfall_statistics(rain_data_foler):
+    """"""
+    rainfall_data = load_rain_folder(rain_data_foler)
+    rf_stats = compute_rainfall_statistics(rainfall_data)
+    assert set(rf_stats.columns) == set(["year", "records", "min", "median", "max"])
+    assert isinstance(rf_stats["year"][0], list)
+    assert rf_stats["records"].dtype == np.int64
+
+
+def test_rainfall_statistics_with_metadata(rain_data_foler, station_metadata):
+    """Extend rain stats with metadata"""
+    rainfall_data = load_rain_folder(rain_data_foler)
+    rf_stats = compute_rainfall_statistics(rainfall_data, station_metadata)
+    assert set(rf_stats.columns) == set(
+        ["year", "station", "x", "y", "records", "min", "median", "max"]
+    )
 
 
 @pytest.mark.parametrize(
