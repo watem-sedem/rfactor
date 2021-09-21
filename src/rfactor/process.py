@@ -81,7 +81,7 @@ def load_rain_file(file_path):
     non-zero rainfall timeseries. The data are split per station and per year with
     a specific datafile tag (file name format: ``SOURCE_STATION_YEAR.txt``). The data
     should not contain headers, with a first column with minutes since the start of the
-    year and a second with the rainfall intensisy.
+    year and a second with the rainfall intensity.
 
     Parameters
     ----------
@@ -93,9 +93,12 @@ def load_rain_file(file_path):
     rain : pd.DataFrame
         DataFrame with rainfall time series. Contains the following columns:
 
-        - *datetime* (pd.Timestamp): Time stamp
+        - *minutes_since* (int): Minutes since the start of the year
         - *rain_mm* (float): Rain in mm
+        - *datetime* (pd.Timestamp): Time stamp
         - *station* (str): station name
+        - *year* (int): year of the measurement
+        - *tag* (str): tag identifier, formatted as 'STATION-NAME_YEAR'
     """
     _check_path(file_path)
 
@@ -107,6 +110,8 @@ def load_rain_file(file_path):
         rain["minutes_since"], unit="min"
     )
     rain["station"] = station
+    rain["year"] = rain["datetime"].dt.year
+    rain["tag"] = rain["station"].astype(str) + "_" + rain["year"].astype(str)
     return rain
 
 
@@ -124,10 +129,12 @@ def load_rain_folder(folder_path):
     rain : pd.DataFrame
         DataFrame with rainfall time series. Contains the following columns:
 
-        - *datetime* (pd.Timestamp): Time stamp
+        - *minutes_since* (int): Minutes since the start of the year
         - *rain_mm* (float): Rain in mm
-        - *year* (int): Year
-        - *tag* (str): A unique tag for every couple station-year
+        - *datetime* (pd.Timestamp): Time stamp
+        - *station* (str): station name
+        - *year* (int): year of the measurement
+        - *tag* (str): tag identifier, formatted as 'STATION-NAME_YEAR'
     """
     _check_path(folder_path)
 
@@ -140,11 +147,6 @@ def load_rain_folder(folder_path):
     all_rain = pd.concat(lst_df)
     all_rain = all_rain.sort_values(["station", "minutes_since"])
     all_rain.index = range(len(all_rain))
-    all_rain["year"] = all_rain["datetime"].dt.year
-    all_rain["tag"] = (
-        all_rain["station"].astype(str) + "_" + all_rain["year"].astype(str)
-    )
-
     return all_rain
 
 
