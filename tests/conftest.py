@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 @pytest.fixture()
-def rain_data(tmp_path):
+def rain_data_file(tmp_path):
     """Example rainfall data file"""
     example_rain_path = tmp_path / "station_name_2021.txt"
     example_rain_data = """\
@@ -14,6 +14,26 @@ def rain_data(tmp_path):
         """
     with open(example_rain_path, "w") as rain:
         rain.write(textwrap.dedent(example_rain_data))
+    return example_rain_path
+
+
+@pytest.fixture()
+def rain_data_foler(tmp_path):
+    """Example rainfall data file"""
+    example_rain_path = tmp_path / "rain"
+    example_rain_path.mkdir()
+
+    # create example data files for multiple years
+    for idx, year in enumerate([2020, 2021]):
+        rain_file = example_rain_path / f"station_{idx}_{year}.txt"
+        example_rain_data = """\
+            1 1.00
+            2 0.20
+            525599 10.00
+            """
+        with open(rain_file, "w") as rain:
+            rain.write(textwrap.dedent(example_rain_data))
+
     return example_rain_path
 
 
