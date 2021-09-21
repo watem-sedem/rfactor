@@ -101,6 +101,10 @@ def load_rain_file(file_path):
         - *tag* (str): tag identifier, formatted as 'STATION-NAME_YEAR'
     """
     _check_path(file_path)
+    if file_path.is_dir():
+        raise ValueError(
+            "`file_path` need to be the path " "to a file instead of a directory"
+        )
 
     station, year = _extract_metadata_from_file_path(file_path)
     rain = pd.read_csv(
@@ -137,6 +141,10 @@ def load_rain_folder(folder_path):
         - *tag* (str): tag identifier, formatted as 'STATION-NAME_YEAR'
     """
     _check_path(folder_path)
+    if folder_path.is_file():
+        raise ValueError(
+            "`folder_path` need to be the path " "to a directory instead of a file"
+        )
 
     lst_df = []
 
