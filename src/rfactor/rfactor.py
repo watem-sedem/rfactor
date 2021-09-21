@@ -225,7 +225,9 @@ def _compute_erosivity(
     )
 
     # remove events below threshold
-    events = rain_events[rain_events["event_rain_cum"] > event_threshold].copy()
+    events = rain_events[
+        round(rain_events["event_rain_cum"], 2) > event_threshold
+    ].copy()
 
     # add cumulative erosivity
     events["erosivity_cum"] = events["erosivity"].cumsum()
