@@ -29,7 +29,7 @@ def test_rfactor_benchmark_single_year(
 
 
 @pytest.mark.slow
-def test_rfactor_full_benchmarkr(rain_benchmark_data, erosivity_benchmark_data):
+def test_rfactor_full_benchmark(rain_benchmark_data, erosivity_benchmark_data):
     """Run the full benchmark data set"""
     erosivity = compute_erosivity(rain_benchmark_data)
     pd.testing.assert_frame_equal(erosivity, erosivity_benchmark_data)
