@@ -196,7 +196,7 @@ def write_erosivity_data(df, folder_path):
 
 
 def get_rfactor_station_year(erosivity, stations=None, years=None):
-    """Get R-factor at end of every year for each location from cumulative erosivity
+    """Get R-factor at end of every year for each station from cumulative erosivity
     data.
 
     Parameters
@@ -220,12 +220,26 @@ def get_rfactor_station_year(erosivity, stations=None, years=None):
     """
 
     if stations is not None:
+        unexisting_stations = set(stations).difference(
+            set(erosivity["station"].unique())
+        )
+        if unexisting_stations:
+            raise KeyError(
+                f"Station name(s): {unexisting_stations} not " f"part of data set."
+            )
         erosivity = erosivity.loc[erosivity["station"].isin(stations)]
     if years is not None:
+        unexisting_years = set(years).difference(set(erosivity["year"].unique()))
+        if unexisting_years:
+            raise KeyError(
+                f"Station name(s): {unexisting_years} not " f"part of data set."
+            )
         erosivity = erosivity.loc[erosivity["year"].isin(years)]
 
     erosivity = erosivity.groupby(["year", "station"]).aggregate("erosivity_cum").last()
-    return erosivity.reset_index()
+    erosivity = erosivity.reset_index().sort_values(["station", "year"])
+    erosivity.index = range(len(erosivity))
+    return erosivity
 
 
 def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
