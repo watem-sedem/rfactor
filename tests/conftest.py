@@ -4,6 +4,38 @@ from pathlib import Path
 
 import pandas as pd
 
+from rfactor.process import load_rain_folder, load_rain_file
+
+
+@pytest.fixture()
+def rain_benchmark_closure():
+    """Rain data used for benchmark reference case"""
+
+    def rain_benchmark_year(station, year):
+        """Get benchmark data for given year and station"""
+        rain = load_rain_file(Path(f"./data/test_rainfalldata/{station}_{year}.txt"))
+        return rain
+
+    return rain_benchmark_year
+
+
+@pytest.fixture()
+def rain_benchmark_data():
+    """Rain data used for benchmark reference case"""
+    return load_rain_folder(Path("./data/test_rainfalldata"))
+
+
+@pytest.fixture()
+def erosivity_benchmark_data():
+    """Erosivity output used for benchmark reference case"""
+    erosivity = pd.read_csv(
+        "./data/test_erosivitydata/testdata_maximum_intensity.csv",
+        index_col=0,
+        parse_dates=[0, 1],
+    )
+    erosivity = erosivity.rename(columns={"datetime.1": "datetime"})
+    return erosivity
+
 
 @pytest.fixture()
 def rain_data_file(tmp_path):
