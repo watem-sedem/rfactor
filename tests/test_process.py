@@ -10,6 +10,7 @@ from rfactor.process import (
     _extract_metadata_from_file_path,
     _check_path,
     load_rain_file,
+    load_rain_folder,
 )
 
 
@@ -74,15 +75,17 @@ def test_check_path():
     assert " should be a pathlib.Path" in str(excinfo.value)
 
 
-def test_load_rain_file(rain_data):
+def test_load_rain_file(rain_data_file):
     """Valid rainfall data should be parsed to rain DataFrame"""
-    rainfall_data = load_rain_file(rain_data)
+    rainfall_data = load_rain_file(rain_data_file)
     assert isinstance(rainfall_data, pd.DataFrame)
     assert list(rainfall_data.columns) == [
         "minutes_since",
         "rain_mm",
         "datetime",
         "station",
+        "year",
+        "tag",
     ]
     assert list(rainfall_data["station"].unique()) == ["station_name"]
     assert list(rainfall_data.iloc[0].values) == [
@@ -90,12 +93,48 @@ def test_load_rain_file(rain_data):
         1.0,
         pd.to_datetime("2021-01-01 00:01:00"),
         "station_name",
+        2021,
+        "station_name_2021",
     ]
     assert list(rainfall_data.iloc[-1].values) == [
         525599,
         10.00,
         pd.to_datetime("2021-12-31 23:59:00"),
         "station_name",
+        2021,
+        "station_name_2021",
+    ]
+
+
+def test_load_rain_folder(rain_data_foler):
+    """Rainfall data should be parsed to rain DataFrame
+    when loading multiple files adding a year and tag column"""
+    rainfall_data = load_rain_folder(rain_data_foler)
+    assert isinstance(rainfall_data, pd.DataFrame)
+    assert list(rainfall_data.columns) == [
+        "minutes_since",
+        "rain_mm",
+        "datetime",
+        "station",
+        "year",
+        "tag",
+    ]
+    assert list(rainfall_data["station"].unique()) == ["station_0", "station_1"]
+    assert list(rainfall_data.iloc[0].values) == [
+        1,
+        1.0,
+        pd.to_datetime("2020-01-01 00:01:00"),
+        "station_0",
+        2020,
+        "station_0_2020",
+    ]
+    assert list(rainfall_data.iloc[-1].values) == [
+        525599,
+        10.00,
+        pd.to_datetime("2021-12-31 23:59:00"),
+        "station_1",
+        2021,
+        "station_1_2021",
     ]
 
 
