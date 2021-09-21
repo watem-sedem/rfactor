@@ -222,8 +222,8 @@ def get_rfactor_station_year(erosivity, stations=None, years=None):
 
         - *year* (int): year
         - *station* (str): station
-        - *erosivity_cum* (float): cumulative erosivity at end of *year* and at location
-        *station*.
+        - *erosivity_cum* (float): cumulative erosivity at
+          end of *year* and at *station*.
 
     """
 
@@ -271,6 +271,14 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
     Returns
     -------
     df_statistics: pandas.DataFrame
+        Apart from the ``station``, ``x``, ``y`` when ``df_station_metadata`` is
+        provided, the following columns are returned:
+
+        - *year* (list): List of the years fror which data is available for the station
+        - *records* (int): Total number of records for the station.
+        - *min* (float): Minimal measured value for the station.
+        - *median* (float): Median measured value for the station.
+        - *max* (float): Maximal measured value for the station.
 
     """
     df_rainfall = df_rainfall.sort_values(by="year")
@@ -280,7 +288,7 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
         .aggregate(
             {
                 "year": lambda x: sorted(set(x)),
-                "rain_mm": [np.min, np.max, np.median, lambda x: np.shape(x)[0]],
+                "rain_mm": [np.min, np.max, np.median, "count"],
             }
         )
     ).reset_index()
@@ -290,7 +298,7 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
         "rain_mmamin": "min",
         "rain_mmamax": "max",
         "rain_mmmedian": "median",
-        "rain_mm<lambda_0>": "records",
+        "rain_mmcount": "records",
     }
     df_statistics = df_statistics.rename(columns=rename_cols)
 
@@ -301,7 +309,7 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
         df_statistics = df_statistics[
             [
                 "year",
-                "location",
+                "station",
                 "x",
                 "y",
                 "records",
@@ -311,8 +319,6 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
             ]
         ]
     else:
-        df_statistics = df_statistics[
-            ["year", "records", "min", "median", "max"]
-        ].reset_index()
+        df_statistics = df_statistics[["year", "records", "min", "median", "max"]]
 
     return df_statistics
