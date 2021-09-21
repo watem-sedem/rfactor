@@ -8,9 +8,10 @@ from rfactor import compute_erosivity
     "station,year",
     [
         ("P01_001", 2018),
-        ("P01_003", 2020),
         ("P01_010", 2016),
         ("P11_007", 2008),
+        ("P01_003", 2020),
+        ("P05_039", 2017),
     ],
 )
 def test_rfactor_benchmark_single_year(
