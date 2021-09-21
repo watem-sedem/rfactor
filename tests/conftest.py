@@ -94,6 +94,14 @@ def dummy_erosivity():
     return erosivity
 
 
+@pytest.fixture()
+def station_metadata():
+    """Example station metadata file"""
+    return pd.DataFrame(
+        {"station": ["station_0", "station_1"], "x": [4.0, 4.1], "y": [51.2, 51.1]}
+    )
+
+
 # folder_data = Path("tests/data")
 # folder_example = Path("docs/example_data/")
 #
