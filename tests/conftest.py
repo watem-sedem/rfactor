@@ -41,7 +41,10 @@ def rain_data_foler(tmp_path):
 
 @pytest.fixture()
 def dummy_erosivity():
-    """Return"""
+    """Erosivity output for different stations and years.
+
+    Data is formatted as each second element is an rfactor for a given year/station.
+    """
     dates = [
         "2018-01-01 14:30:00",
         "2018-01-02 16:30:00",
@@ -79,7 +82,7 @@ def dummy_erosivity():
         "P01_029",
         "P01_029",
     ]
-    return pd.DataFrame(
+    erosivity = pd.DataFrame(
         {
             "datetime": pd.to_datetime(dates),
             "all_event_rain_cum": all_event_rain_cum,
@@ -87,6 +90,8 @@ def dummy_erosivity():
             "station": stations,
         }
     )
+    erosivity["year"] = erosivity["datetime"].dt.year
+    return erosivity
 
 
 # folder_data = Path("tests/data")

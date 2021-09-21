@@ -14,6 +14,7 @@ from rfactor.process import (
     load_rain_file,
     load_rain_folder,
     write_erosivity_data,
+    get_rfactor_station_year,
 )
 
 
@@ -174,6 +175,45 @@ def test_write_erosivity(dummy_erosivity, tmpdir):
     pd.testing.assert_frame_equal(
         original_data[columns_to_compare], written_data, atol=0.1
     )
+
+
+def test_rfactor_from_erosivity(dummy_erosivity):
+    """Latest erosivity of a station at the end of the year returns station/year
+    sorted output of rfactor values"""
+    # dummy data is formatted as each second element is an erosivity
+    reference = dummy_erosivity[["year", "station", "erosivity_cum"]].iloc[1::2, :]
+    reference = reference.sort_values(["station", "year"])
+    reference.index = range(len(reference))
+
+    pd.testing.assert_frame_equal(get_rfactor_station_year(dummy_erosivity), reference)
+
+
+def test_rfactor_from_erosivity_subset(dummy_erosivity):
+    """Only a given subset of stations/years as output"""
+
+    stations_of_interest = ["P01_001", "P01_003"]
+    station_subset = get_rfactor_station_year(
+        dummy_erosivity, stations=stations_of_interest
+    )
+    assert set(station_subset["station"].unique()) == set(stations_of_interest)
+
+    years_of_interest = [2005, 2009]
+    station_subset = get_rfactor_station_year(dummy_erosivity, years=years_of_interest)
+    assert set(station_subset["year"].unique()) == set(years_of_interest)
+
+
+def test_rfactor_from_erosivity_subset_not_existing(dummy_erosivity):
+    """Years/station subset is not part of the data set should raise Keyerror"""
+
+    stations_of_interest = ["UNEXISTING STATION", "P01_003"]
+    with pytest.raises(KeyError) as excinfo:
+        get_rfactor_station_year(dummy_erosivity, stations=stations_of_interest)
+    assert "UNEXISTING STATION" in str(excinfo.value)
+
+    years_of_interest = [2008, 1991]
+    with pytest.raises(KeyError) as excinfo:
+        get_rfactor_station_year(dummy_erosivity, years=years_of_interest)
+    assert "1991" in str(excinfo.value)
 
 
 @pytest.mark.parametrize(
