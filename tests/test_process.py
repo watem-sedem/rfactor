@@ -110,6 +110,13 @@ def test_load_rain_file(rain_data_file):
     ]
 
 
+def test_load_rain_file_with_folder(rain_data_foler):
+    """When input is a file, should return ValueError to user"""
+    with pytest.raises(ValueError) as excinfo:
+        load_rain_file(rain_data_foler)
+    assert "a file instead of a directory" in str(excinfo.value)
+
+
 def test_load_rain_folder(rain_data_foler):
     """Rainfall data should be parsed to rain DataFrame
     when loading multiple files adding a year and tag column"""
@@ -140,6 +147,13 @@ def test_load_rain_folder(rain_data_foler):
         2021,
         "station_1_2021",
     ]
+
+
+def test_load_rain_folder_with_file(rain_data_file):
+    """When input is a file, should return ValueError to user"""
+    with pytest.raises(ValueError) as excinfo:
+        load_rain_folder(rain_data_file)
+    assert "a directory instead of a file" in str(excinfo.value)
 
 
 def test_write_erosivity(dummy_erosivity, tmpdir):
