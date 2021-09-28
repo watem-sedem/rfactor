@@ -8,7 +8,7 @@ function []=main(path,path_results)
     %% Loop files and calculate R
     files = dir(fullfile(path,'*.txt')); %%get all text files of the present folder
     files;
-    N = length(files) ;  % Total number of files 
+    N = length(files) ;  % Total number of files
     for i = 1:N
        % Prepare filename
        filename = fullfile(path,files(i).name);
@@ -31,5 +31,3 @@ function []=main(path,path_results)
            fclose(fid);
        end
     end
-
-
