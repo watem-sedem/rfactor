@@ -1,20 +1,19 @@
-import pytest
 import re
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import pytest
 
-from rfactor import compute_erosivity
 from rfactor.process import (
+    _check_path,
     _days_since_start_year,
     _extract_metadata_from_file_path,
-    _check_path,
+    compute_rainfall_statistics,
+    get_rfactor_station_year,
     load_rain_file,
     load_rain_folder,
     write_erosivity_data,
-    get_rfactor_station_year,
-    compute_rainfall_statistics,
 )
 
 
@@ -47,7 +46,7 @@ def test_days_since_last_year_single_year():
     ],
 )
 def test_extract_metadata_from_file_path(file_name, station, year):
-    """Split valid file names into station and name"""
+    """Split valid file names into station and nam.e"""
     assert _extract_metadata_from_file_path(Path(file_name)) == (station, year)
 
 

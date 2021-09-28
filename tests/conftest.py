@@ -1,10 +1,10 @@
-import pytest
 import textwrap
 from pathlib import Path
 
 import pandas as pd
+import pytest
 
-from rfactor.process import load_rain_folder, load_rain_file
+from rfactor.process import load_rain_file, load_rain_folder
 
 
 @pytest.fixture()

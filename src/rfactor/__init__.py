@@ -2,8 +2,8 @@ import sys
 
 from .rfactor import (
     compute_erosivity,
-    maximum_intensity_matlab_clone,
     maximum_intensity,
+    maximum_intensity_matlab_clone,
 )
 
 if sys.version_info[:2] >= (3, 8):
