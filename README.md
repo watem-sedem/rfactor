@@ -60,7 +60,7 @@ The documentation can be found on the
 License
 -------
 
-This project is licensed under the GNU General Public License v3.0, see
+This project is licensed under the GNU Lesser Public License v3.0, see
 here \<license\> for more information.
 
 Contact
