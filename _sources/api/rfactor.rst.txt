@@ -1,6 +1,8 @@
 rfactor namespace
 =================
 
+.. py:module:: rfactor
+
 Submodules
 ----------
 
