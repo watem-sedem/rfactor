@@ -2,8 +2,8 @@
 Changelog
 =========
 
-Latest
-======
+Version 0.0.2
+=============
  - An only Python-implementation is provided.
  - The use of Matlab is deprecated, and removed from package.
  - Tutorial and application to Flanders is updated accordingly the Python
@@ -17,4 +17,3 @@ Version 0.0.1
  - Set-up package.
  - Added examples and test data.
  - Added tests.
-
