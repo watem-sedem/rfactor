@@ -1,6 +1,6 @@
 .. image:: https://zenodo.org/badge/364504726.svg
    :target: https://zenodo.org/badge/latestdoi/364504726
-   
+
 R-factor
 ========
 
@@ -19,26 +19,18 @@ R-factor, presenting the rainfall erosivity for a given period. An in-depth
 explanation of the formula's is given :ref:`here <rfactor>`.
 
 
-This code is developed as a function of an analysis of rainfall 
+This code is developed as a function of an analysis of rainfall
 erosivity in Flanders. The results found in the example notebooks
 are also found in `this report <https://www.friscris.be/nl/publications/herziening-van-de-neerslagerosiviteitsfactor-r-voor-de-vlaamse-erosiemodellering(9d4e2953-6c93-48d0-a1c2-d66d03c749aa).html>`_).
 
 Get started
 -----------
 This package makes use of ``Python`` (and a limited number of
-dependencies such as Pandas and Numpy) and ``Matlab`` or ``Octave``. Python is
-used to implemented the functionalities in this package, whereas Matlab or
-Octave is used to run the core code. The installation
+dependencies such as Pandas and Numpy). The installation
 (see :ref:`here <installation>`) is managed by making use of
 `Miniconda <https://docs.conda.io/en/latest/miniconda.html>`_. Make sure to
 check out the installation instructions, and follow the example in the
 :ref:`Get started <getstarted>` page.
-
-.. note::
-
-    Octave is used in this package as a free alternative if you are unable to
-    acquire a license for Matlab. Note that running the rfactor core scripts
-    is slower with Octave than with Matlab.
 
 Data & application to Flanders
 ------------------------------
@@ -59,7 +51,7 @@ The documentation can be found on the
 
 License
 -------
-This project is licensed under the GNU General Public License v3.0, see
+This project is licensed under GNU Lesser Public License v3.0, see
 :ref:`here <license>` for more information.
 
 Contact
