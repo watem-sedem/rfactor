@@ -20,7 +20,6 @@ def _days_since_start_year(series):
         Days since the start of the year as a float value.
 
     Notes
-    -----
     Support function to provide integration with original Matlab implementation. Output
     is different from Pandas datetime attribute `dayofyear` as it includes time of the
     day as decimal value.
@@ -75,13 +74,14 @@ def _check_path(file_path):
 
 
 def load_rain_file(file_path):
-    """Load (legacy Matlab) file format of rainfall data of a single station/year
+    """Load (legacy Matlab) file format of rainfall data of a single station/year.
 
     The input files are defined by text files (extension: ``.txt``) that hold
     non-zero rainfall timeseries. The data are split per station and per year with
     a specific datafile tag (file name format: ``SOURCE_STATION_YEAR.txt``). The data
-    should not contain headers, with a first column with minutes since the start of the
-    year and a second with the rainfall intensity.
+    should not contain headers, with the first column defined as 'minutes since the
+    start of the year' and the second as the rainfall depth during the t last minutes
+    (t is the temporal resolution of the timeseries).
 
     Parameters
     ----------
@@ -98,7 +98,20 @@ def load_rain_file(file_path):
         - *datetime* (pd.Timestamp): Time stamp
         - *station* (str): station name
         - *year* (int): year of the measurement
-        - *tag* (str): tag identifier, formatted as 'STATION-NAME_YEAR'
+        - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
+
+    Example
+    -------
+    1. Example of a rainfall file:
+
+    ::
+
+       9390 1.00 \n
+       9470 0.20 \n
+       9480 0.50 \n
+       10770 0.10 \n
+       ...  ...
+
     """
     _check_path(file_path)
     if file_path.is_dir():
@@ -138,7 +151,7 @@ def load_rain_folder(folder_path):
         - *datetime* (pd.Timestamp): Time stamp
         - *station* (str): station name
         - *year* (int): year of the measurement
-        - *tag* (str): tag identifier, formatted as 'STATION-NAME_YEAR'
+        - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
     """
     _check_path(folder_path)
     if folder_path.is_file():
@@ -159,23 +172,23 @@ def load_rain_folder(folder_path):
 
 
 def write_erosivity_data(df, folder_path):
-    """Write output erosivity to (legacy Matlab format) in folder
+    """Write output erosivity to (legacy Matlab format) in folder.
 
-    Written data is split up for each year and station
-    (file name format: SOURCE_STATION_YEAR.txt) and does not contain any headers. The
-    columns in the written text files represent the following:
+    Written data are split-up for each year and station
+    (file name format: ``SOURCE_STATION_YEAR.txt``) and does not contain any headers.
+    The columns (no header!) in the written text files represent the following:
 
-    - *days_since* (float): Days since the start of the year
-    - *erosivity_cum* (float): Cumulative erosivity over events
-    - *all_event_rain_cum* (float): Cumulative rain over events
+    - *days_since* (float): Days since the start of the year.
+    - *erosivity_cum* (float): Cumulative erosivity over events.
+    - *all_event_rain_cum* (float): Cumulative rain over events.
 
     Parameters
     ----------
-    df : pd.DataFrame
+    df : pandas.DataFrame
         DataFrame with rfactor/erosivity time series. Can contain multiple columns,
         but should have at least the following:
 
-        - *datetime* (pd.Timestamp): Time stamp
+        - *datetime* (pandas.Timestamp): Time stamp
         - *station* (str): Station identifier
         - *erosivity_cum* (float): Cumulative erosivity over events
         - *all_event_rain_cum* (float): Cumulative rain over events
@@ -211,13 +224,14 @@ def get_rfactor_station_year(erosivity, stations=None, years=None):
     erosivity: pandas.DataFrame
         See :func:`rfactor.rfactor.compute_erosivity`
     stations: list
-        List of stations to extract R for
+        List of stations to extract R for.
     years: list
-        List of years to extract R for
+        List of years to extract R for.
 
     Returns
     -------
-    pandas.DataFrame
+    erosivity: pandas.DataFrame
+        Updated with:
 
         - *year* (int): year
         - *station* (str): station
@@ -248,7 +262,7 @@ def get_rfactor_station_year(erosivity, stations=None, years=None):
 
 
 def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
-    """Compute general statistics for rainfall timeseries
+    """Compute general statistics for rainfall timeseries.
 
     Statistics (number of records, min, max, median and years data) are
     computed for each measurement station
@@ -262,8 +276,8 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
         column:
 
         - *station* (str): Name or code of the measurement station
-        - *x* (float): X-coordinate of station
-        - *y* (float): Y-coordinate
+        - *x* (float): X-coordinate of measurement station.
+        - *y* (float): Y-coordinate of measurement station.
 
     Returns
     -------
@@ -271,7 +285,7 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
         Apart from the ``station``, ``x``, ``y`` when ``df_station_metadata`` is
         provided, the following columns are returned:
 
-        - *year* (list): List of the years fror which data is available for the station
+        - *year* (list): List of the years fror which data is available for the station.
         - *records* (int): Total number of records for the station.
         - *min* (float): Minimal measured value for the station.
         - *median* (float): Median measured value for the station.
