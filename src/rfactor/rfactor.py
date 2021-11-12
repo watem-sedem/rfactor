@@ -10,21 +10,22 @@ MIN_CUMUL_EVENT = 1.27
 
 
 class RFactorInputException(Exception):
-    """Raise when input data is not conform the rfactor required input format"""
+    """Raise when input data are not conform the rfactor required input format."""
 
 
 def rain_energy_per_unit_depth(rain):
-    """Calculate rain energy per unit depth according to Salles/Verstraeten
+    """Calculate rain energy per unit depth according to Salles/Verstraeten.
 
     Parameters
     ----------
-    rain : np.ndarray
+    rain : numpy.ndarray
         Rain (mm)
 
     Notes
     -----
-    The rain energy per unit depth :math:`e_r` (:math:`\frac{J}{mm.m^2}`) for an
-    application for Flanders/Belgium is defined by [1]_ [2]_ [3]_:
+    The rain energy per unit depth :math:`e_r` (:math:`\\text{J}.\\text{mm}^{-1}.
+    \\text{m}^{-2}`) for an application for Flanders/Belgium is defined
+    by [1]_ [2]_ [3]_:
 
     .. math::
 
@@ -56,17 +57,17 @@ def rain_energy_per_unit_depth(rain):
 
 
 def maximum_intensity_matlab_clone(df):
-    """Maximum rain intensity for 30min interval (Matlab clone)
+    """Maximum rain intensity for 30-min interval (Matlab clone).
 
     The implementation is a direct Python-translation of the original Matlab
     implementation by Verstraeten.
 
     Parameters
     ----------
-    df : pd.DataFrame
+    df : pandas.DataFrame
         DataFrame with rainfall time series. Needs to contain the following columns:
 
-        - *datetime* (pd.Timestamp): Time stamp
+        - *datetime* (pandas.Timestamp): Time stamp
         - *rain_mm* (float): Rain in mm
         - *event_rain_cum* (float): Cumulative rain in mm
 
@@ -106,21 +107,21 @@ def maximum_intensity_matlab_clone(df):
 
 
 def maximum_intensity(df, interval="30Min"):
-    """Maximum rain intensity for 30min interval (Pandas rolling)
+    """Maximum rain intensity for 30-min interval (Pandas rolling)
 
     The implementation uses a rolling window of the chosen interval to derive the
     maximal intensity.
 
     Parameters
     ----------
-    df : pd.DataFrame
-        DataFrame with rainfall time series. Need to contain the following columns:
+    df : pandas.DataFrame
+        DataFrame with rainfall time series. Needs to contain the following columns:
 
-        - *datetime* (pd.Timestamp): Time stamp
+        - *datetime* (pandas.Timestamp): Time stamp
         - *rain_mm* (float): Rain in mm
 
     interval : str
-        Frequency str, e.g. '30Min'
+        Frequency string, e.g. '30Min'
 
     Returns
     -------
@@ -245,19 +246,19 @@ def compute_erosivity(rain, intensity_method=maximum_intensity):
 
     Parameters
     ----------
-    rain : pd.DataFrame
+    rain : pandas.DataFrame
         DataFrame with rainfall time series. Need to contain the following columns:
 
-        - *datetime* (pd.Timestamp): Time stamp
+        - *datetime* (pandas.Timestamp): Time stamp
         - *rain_mm* (float): Rain in mm
         - *station* (str): Measurement station identifier
 
     intensity_method : Callable, default maximum_intensity
-        Function to derive the maximal rain intensity (over 30min)
+        Function to derive the maximal rain intensity (over 30min).
 
     Returns
     -------
-    all_erosivity: pd.DataFrame
+    all_erosivity: pandas.DataFrame
         See :func:`rfactor.rfactor._compute_erosivity`, added with
 
         - *tag* (str): unique tag for year, station-couple.

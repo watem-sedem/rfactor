@@ -7,7 +7,7 @@ How can you contribute?
 The R-factor project is a project made possible by the Flemish Government
 (Department Environment), the Flemish Environment Agency, K.U. Leuven and
 Fluves. A special thank you to the Flemish Environment Agency for providing the
-input data, and K.U.Leuven for providing and releasing their source code.
+input data, and K.U. Leuven for providing and releasing their source code.
 
 Thank you to all partners that decided to host this code and the data as open
 source.
@@ -28,44 +28,53 @@ See the :ref:`code of conduct <code_conduct>`.
 .. _dev-guidelines:
 
 Development guidelines
-=======================
+----------------------
 
-We use a number of development tools to support us in improving the code quality. No magic bullet or free
-lunch, but just a set of tools as any craftman has tools to support him/her doing a better job.
 
-For development purposes using conda, make sure to first run ``pip install -e .[develop]`` environment
-to prepare the development environment and install all development tools. (When using ``tox -e dev`` this
-is already done).
+We use a number of development tools to support us in improving the code
+quality. No magic bullet or free lunch, but just a set of tools as any
+craftman has tools to support him/her doing a better job.
 
-When starting on the development of the ``rfactor`` package, makes sure to be familiar with the following tools. Do
-not hesitate to ask the maintainers when having trouble using these tools.
+For development purposes using conda, make sure to first run
+``pip install -e .[develop]`` environment to prepare the development
+environment and install all development tools. (When using ``tox -e dev``
+this is already done).
+
+When starting on the development of the ``rfactor`` package, makes sure to
+be familiar with the following tools. Do not hesitate to ask the maintainers
+when having trouble using these tools.
 
 Pre-commit hooks
-----------------
+^^^^^^^^^^^^^^^^
 
-To ensure a more common code formatting and limit the git diff, make sure to install the pre-commit hooks. The
-required dependencies are included in the development requirements installed when running ````pip install -e .[develop]``.
+To ensure a more common code formatting and limit the git diff, make sure to
+install the pre-commit hooks. The required dependencies are included in the
+development requirements installed when running
+``pip install -e .[develop]``.
 
 .. warning::
-   Install the ``pre-commit`` hooks before your first git commit to the package!
+   Install the ``pre-commit`` hooks before your first git commit to the
+   package!
 
 ::
 
     pre-commit install
 
-on the main level of the package (``rfactor`` folder, location where the file ``.pre-commit-config.yaml`` is located)
+on the main level of the package (``rfactor`` folder, location where the file
+``.pre-commit-config.yaml`` is located).
 
-If you just want to run the hooks on your files to see the effect (not during a git commit),
-you can use the command at any time:
+If you just want to run the hooks on your files to see the effect
+(not during a git commit), you can use the command at any time:
 
 ::
 
     pre-commit run --all-files
 
 Unit testing with pytest
--------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^
 
-Run the test suite using the ``pytest`` package, from within the main package folder (`rfactor`):
+Run the test suite using the ``pytest`` package, from within the main package
+folder (`rfactor`):
 
 ::
 
@@ -77,26 +86,11 @@ Or using tox (i.e. in a separate environment)
 
     tox
 
-You will receive information on the test status and the test coverage of the unit tests.
-
-Two types of tests are defined:
-
- - `externaldepedent`: these tests are used to test the core Matlab-code with
-   Octave (free alternative to Matlab). Check out the
-   `installation-page<octave>` to install Octave.
-
- - Not `externaldepedent`: these tests are used to test the calculated
-   R-values based on the computed EI30-values.
-
-The exclude the tests which depend on the external dependencies, use the ``-m`` argument option:
-
-::
-
-    pytest -m "not externaldepedent"
-
+You will receive information on the test status and the test coverage of the
+unit tests.
 
 Documentation with sphinx
---------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Build the documentation locally with Sphinx:
 
@@ -104,8 +98,9 @@ Build the documentation locally with Sphinx:
 
     tox -e docs
 
-which will create the docs in the ``docs/_build/html`` folder. The ``docs/_build`` directory itself is
-left out of version control (and we rather keep it as such ;-)).
+which will create the docs in the ``docs/_build/html`` folder. The
+``docs/_build`` directory itself is left out of version control (and we
+rather keep it as such ;-)).
 
 `Numpy docstring <https://numpydoc.readthedocs.io/en/latest/format.html>`_
 formatting is used to define the format of the python docstrings. As Numpy
@@ -153,13 +148,14 @@ Similar for a dictionary:
 
 
 Drone CI
---------
+^^^^^^^^
 
-Apart from these tools you can run locally, we use drone continuous integration to run these checks also
-on our servers. See https://cloud.drone.io/cn-ws/rfactor/ for the results.
+Apart from these tools you can run locally, we use drone continuous
+integration to run these checks also on our servers. See
+https://cloud.drone.io/cn-ws/rfactor/ for the results.
 
 Git lfs
--------
+^^^^^^^
 
 Git lfs, or large file support, is used in this repository to store gis files
 in the repository. To use this functionality you need to install git lfs. See
@@ -172,8 +168,9 @@ under lfs.
 .. _gitlfs: https://git-lfs.github.com/
 
 Naming things
--------------
-To provide structure in the naming of methods, functions, classes,... we ask to conform the following guidelines.
+^^^^^^^^^^^^^
+To provide structure in the naming of methods, functions, classes,... we
+ask to conform the following guidelines.
 
 Class, function/methods names follow the standard naming conventions as
 defined in the `PEP8`_ guidelines. Additionally, methods/functions start -
