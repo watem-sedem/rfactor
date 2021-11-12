@@ -71,7 +71,7 @@ def _check_path(file_path):
                 f"`Path({file_path})` to convert string file_path to valid `Path`."
             )
         else:
-            raise TypeError(f"`file_path` should be a pathlib.Path object")
+            raise TypeError("`file_path` should be a pathlib.Path object")
 
 
 def load_rain_file(file_path):
