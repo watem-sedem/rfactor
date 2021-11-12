@@ -22,6 +22,7 @@ Contents
    :caption: Developer guide
    :maxdepth: 1
 
+   Contribute <contributing>
    License <license>
    Authors <authors>
    Changelog <changelog>
