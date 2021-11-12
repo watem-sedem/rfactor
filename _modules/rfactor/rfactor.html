@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor.rfactor &mdash; rfactor  documentation</title>
+  <title>rfactor.rfactor &mdash; rfactor 0.0.0 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -27,6 +27,9 @@
         <div class="wy-side-nav-search" >
             <a href="../../index.html" class="icon icon-home"> rfactor
           </a>
+              <div class="version">
+                0.0.0
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -41,9 +44,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../get-started.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">Module Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../codelegacy.html">Code legacy</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contribute</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
@@ -74,140 +79,285 @@
            <div itemprop="articleBody">
              
   <h1>Source code for rfactor.rfactor</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">check_call</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
-
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span><span class="p">,</span> <span class="n">find_dotenv</span>
-<span class="kn">from</span> <span class="nn">tqdm.contrib.concurrent</span> <span class="kn">import</span> <span class="n">process_map</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span></span><span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
 
-<div class="viewcode-block" id="compute_rfactor"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.compute_rfactor">[docs]</a><span class="k">def</span> <span class="nf">compute_rfactor</span><span class="p">(</span><span class="n">rainfall_inputdata_folder</span><span class="p">,</span> <span class="n">results_folder</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;matlab&quot;</span><span class="p">,</span>
-                    <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ncpu</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute the R-factor</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    rainfall_inputdata_folder: pathlib.Path</span>
-<span class="sd">        Folder path to directory holding rainfall data. Rainfall data are</span>
-<span class="sd">        stored in separate .txt files per station and year. For the format of</span>
-<span class="sd">        the `txt`-files, see :func:`rfactor.process.load_rainfall_data`</span>
-<span class="sd">    results_folder: str or pathlib.path</span>
-<span class="sd">        Folder path to write results to.</span>
-<span class="sd">    engine: &#39;matlab&#39; or &#39;octave&#39;</span>
-<span class="sd">        Engine used to compute rfactor.</span>
-<span class="sd">    debug: bool, default False</span>
-<span class="sd">        Debug flag to leave matlab open (Matlab engine) / run single core</span>
-<span class="sd">        (Octave).</span>
-<span class="sd">    ncpu: int, default -1</span>
-<span class="sd">        Number of processors to use.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">results_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">results_folder</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">results_folder</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="n">results_folder</span><span class="o">.</span><span class="n">mkdir</span><span class="p">()</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">rainfall_inputdata_folder</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Input </span><span class="si">{</span><span class="n">rainfall_inputdata_folder</span><span class="si">}</span><span class="s2">folder does not exist&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">engine</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;matlab&quot;</span><span class="p">,</span> <span class="s2">&quot;octave&quot;</span><span class="p">]:</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Either select &#39;matlab&#39; or &#39;python&#39; as calculation engine for the rfactor scripts.&quot;</span>
-        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">engine</span> <span class="o">==</span> <span class="s2">&quot;matlab&quot;</span><span class="p">:</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
-
-        <span class="n">exitcode</span> <span class="o">=</span> <span class="s2">&quot;exit;&quot;</span> <span class="k">if</span> <span class="n">debug</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
-
-        <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="s2">&quot;matlab&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;-nodesktop&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;-r&quot;</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s2">&quot;main(&#39;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">rainfall_inputdata_folder</span><span class="o">.</span><span class="n">resolve</span><span class="p">())</span><span class="si">}</span><span class="s2">&#39;,&#39;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">results_folder</span><span class="p">)</span><span class="si">}</span><span class="s2">&#39;);&quot;</span> <span class="o">+</span> <span class="n">exitcode</span><span class="p">,</span>
-        <span class="p">]</span>
-        <span class="n">check_call</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">rfactor_octave</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">rainfall_inputdata_folder</span><span class="p">),</span> <span class="n">results_folder</span><span class="p">,</span> <span class="n">debug</span><span class="p">,</span>
-                       <span class="n">ncpu</span><span class="o">=</span><span class="n">ncpu</span><span class="p">)</span></div>
+<span class="n">TIME_BETWEEN_EVENTS</span> <span class="o">=</span> <span class="s2">&quot;6 hours&quot;</span>
+<span class="n">MIN_CUMUL_EVENT</span> <span class="o">=</span> <span class="mf">1.27</span>
 
 
-<div class="viewcode-block" id="rfactor_octave"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.rfactor_octave">[docs]</a><span class="k">def</span> <span class="nf">rfactor_octave</span><span class="p">(</span><span class="n">rainfall_inputdata_folder</span><span class="p">,</span> <span class="n">results_folder</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                   <span class="n">ncpu</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute R-factor with octave engine</span>
+<div class="viewcode-block" id="RFactorInputException"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.RFactorInputException">[docs]</a><span class="k">class</span> <span class="nc">RFactorInputException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Raise when input data are not conform the rfactor required input format.&quot;&quot;&quot;</span></div>
 
-<span class="sd">    The octave engine is slow, therefore multiprocessing is used as a way to</span>
-<span class="sd">    speed up execution.</span>
+
+<div class="viewcode-block" id="rain_energy_per_unit_depth"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.rain_energy_per_unit_depth">[docs]</a><span class="k">def</span> <span class="nf">rain_energy_per_unit_depth</span><span class="p">(</span><span class="n">rain</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate rain energy per unit depth according to Salles/Verstraeten.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    rainfall_inputdata_folder: pathlib.Path</span>
-<span class="sd">        See :func:`rfactor.rfactor.compute_rfactor`</span>
-<span class="sd">    results_folder: str or pathlib.path</span>
-<span class="sd">        See :func:`rfactor.rfactor.compute_rfactor`</span>
-<span class="sd">    debug: bool, default False</span>
-<span class="sd">        Run single cores</span>
-<span class="sd">    ncpu: int, default -1</span>
-<span class="sd">        See :func:`rfactor.rfactor.compute_rfactor`</span>
+<span class="sd">    rain : numpy.ndarray</span>
+<span class="sd">        Rain (mm)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The rain energy per unit depth :math:`e_r` (:math:`\\text{J}.\\text{mm}^{-1}.</span>
+<span class="sd">    \\text{m}^{-2}`) for an application for Flanders/Belgium is defined</span>
+<span class="sd">    by [1]_ [2]_ [3]_:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        e_r = 11.12i_r^{0.31}</span>
+
+<span class="sd">    with</span>
+
+<span class="sd">     - :math:`i_r` the rain intensity for every 10-min</span>
+<span class="sd">       increment (mm :math:`\\text{h}^{-1}` ).</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Salles, C., Poesen, J., Pissart, A., 1999, Rain erosivity indices and drop</span>
+<span class="sd">        size distribution for central Belgium. Presented at the General Assembly of</span>
+<span class="sd">        the European Geophysical Society, The Hague, The Netherlands, p. 280.</span>
+
+<span class="sd">    .. [2] Salles, C., Poesen, J., Sempere-Torres, D., 2002. Kinetic energy of rain and</span>
+<span class="sd">        its functional relationship with intensity. Journal of Hydrology 257, 256–270.</span>
+<span class="sd">        https://doi.org/10.1016/S0022-1694(01)00555-8</span>
+
+<span class="sd">    .. [3]  Verstraeten, G., Poesen, J., Demarée, G., Salles, C., 2006, Long-term</span>
+<span class="sd">        (105 years) variability in rain erosivity as derived from 10-min rainfall</span>
+<span class="sd">        depth data for Ukkel (Brussels, Belgium): Implications for assessing soil</span>
+<span class="sd">        erosion rates. Journal Geophysysical Research, 111, D22109.</span>
+<span class="sd">        https://doi.org/10.1029/2006JD007169</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">rainfall_inputdata_folder</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Input folder &#39;</span><span class="si">{</span><span class="n">rainfall_inputdata_folder</span><span class="si">}</span><span class="s2">&#39; does not exist&quot;</span>
-        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">debug</span><span class="p">:</span>
-        <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">file</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">rainfall_inputdata_folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()]</span>
-        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">files</span><span class="p">,</span><span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-            <span class="n">single_file</span><span class="p">([</span><span class="n">file</span><span class="p">,</span> <span class="n">results_folder</span><span class="p">])</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">lst_input</span> <span class="o">=</span> <span class="p">[[</span><span class="n">file</span><span class="p">,</span> <span class="n">results_folder</span><span class="p">]</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span>
-                     <span class="n">rainfall_inputdata_folder</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()]</span>
-        <span class="k">if</span> <span class="n">ncpu</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="n">ncpu</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
-        <span class="n">process_map</span><span class="p">(</span><span class="n">single_file</span><span class="p">,</span> <span class="n">lst_input</span><span class="p">,</span> <span class="n">max_workers</span><span class="o">=</span><span class="n">ncpu</span><span class="p">)</span></div>
+    <span class="n">rain_energy</span> <span class="o">=</span> <span class="mf">0.1112</span> <span class="o">*</span> <span class="p">((</span><span class="n">rain</span> <span class="o">*</span> <span class="mf">6.0</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.31</span><span class="p">)</span> <span class="o">*</span> <span class="n">rain</span>
+    <span class="k">return</span> <span class="n">rain_energy</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="single_file"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.single_file">[docs]</a><span class="k">def</span> <span class="nf">single_file</span><span class="p">(</span><span class="n">lst_inputs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Compute R-factor based on a single file.</span>
+<div class="viewcode-block" id="maximum_intensity_matlab_clone"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.maximum_intensity_matlab_clone">[docs]</a><span class="k">def</span> <span class="nf">maximum_intensity_matlab_clone</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Maximum rain intensity for 30-min interval (Matlab clone).</span>
 
-<span class="sd">    This function uses Octave to compute the matlab `core.m` function, using</span>
-<span class="sd">    one input file as function input.</span>
+<span class="sd">    The implementation is a direct Python-translation of the original Matlab</span>
+<span class="sd">    implementation by Verstraeten.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    lst_inputs: list</span>
-<span class="sd">        List of inputs</span>
+<span class="sd">    df : pandas.DataFrame</span>
+<span class="sd">        DataFrame with rainfall time series. Needs to contain the following columns:</span>
+
+<span class="sd">        - *datetime* (pandas.Timestamp): Time stamp</span>
+<span class="sd">        - *rain_mm* (float): Rain in mm</span>
+<span class="sd">        - *event_rain_cum* (float): Cumulative rain in mm</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    maxprecip_30min : float</span>
+<span class="sd">        Maximal 30-minute intensity during event (in mm/h).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">filename</span> <span class="o">=</span> <span class="n">lst_inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">path_results</span> <span class="o">=</span> <span class="n">lst_inputs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">current_year</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_year</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Data should all be in the same year.&quot;</span><span class="p">)</span>
 
-    <span class="n">check_oct</span><span class="p">()</span>
-    <span class="kn">from</span> <span class="nn">oct2py</span> <span class="kn">import</span> <span class="n">Oct2Py</span><span class="p">,</span><span class="n">Oct2PyError</span>
-    <span class="n">year</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">inputdata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">resolve</span><span class="p">()))</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;minutes_since&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">current_year</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">-01-01&quot;</span><span class="p">)</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span><span class="o">.</span><span class="n">values</span> <span class="o">/</span> <span class="mi">60</span>
 
-    <span class="k">with</span> <span class="n">Oct2Py</span><span class="p">()</span> <span class="k">as</span> <span class="n">oc</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">oc</span><span class="o">.</span><span class="n">addpath</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">resolve</span><span class="p">()))</span>
-            <span class="n">cumEI</span> <span class="o">=</span> <span class="n">oc</span><span class="o">.</span><span class="n">core</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">inputdata</span><span class="p">)</span>
-            <span class="n">filename_out</span> <span class="o">=</span> <span class="n">path_results</span> <span class="o">/</span> <span class="p">(</span>
-                        <span class="n">filename</span><span class="o">.</span><span class="n">stem</span> <span class="o">+</span> <span class="s1">&#39;new cumdistr salles.txt&#39;</span><span class="p">)</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">filename_out</span><span class="p">,</span> <span class="n">cumEI</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%.2f</span><span class="s2"> </span><span class="si">%.1f</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="n">oc</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-        <span class="k">except</span> <span class="n">Oct2PyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">SystemError</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
+    <span class="n">timestamps</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;minutes_since&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">rain</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">rain_cum</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;event_rain_cum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
-<div class="viewcode-block" id="check_oct"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.check_oct">[docs]</a><span class="k">def</span> <span class="nf">check_oct</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Check octave installation</span>
+    <span class="n">maxprecip_30min</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="k">if</span> <span class="n">timestamps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">timestamps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">30</span><span class="p">:</span>
+        <span class="n">maxprecip_30min</span> <span class="o">=</span> <span class="n">rain</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># *2 to mimick matlab</span>
+
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">eind_30min</span> <span class="o">=</span> <span class="n">timestamps</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+</span> <span class="mi">20</span>
+        <span class="n">begin_rain</span> <span class="o">=</span> <span class="n">rain_cum</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">rain</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+        <span class="n">eind_rain</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">eind_30min</span><span class="p">,</span> <span class="n">timestamps</span><span class="p">,</span> <span class="n">rain_cum</span><span class="p">)</span>
+        <span class="n">precip_30min</span> <span class="o">=</span> <span class="n">eind_rain</span> <span class="o">-</span> <span class="n">begin_rain</span>
+
+        <span class="k">if</span> <span class="n">precip_30min</span> <span class="o">&gt;</span> <span class="n">maxprecip_30min</span><span class="p">:</span>
+            <span class="n">maxprecip_30min</span> <span class="o">=</span> <span class="n">precip_30min</span>
+
+    <span class="k">return</span> <span class="n">maxprecip_30min</span> <span class="o">*</span> <span class="mi">2</span></div>
+
+
+<div class="viewcode-block" id="maximum_intensity"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.maximum_intensity">[docs]</a><span class="k">def</span> <span class="nf">maximum_intensity</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;30Min&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Maximum rain intensity for 30-min interval (Pandas rolling)</span>
+
+<span class="sd">    The implementation uses a rolling window of the chosen interval to derive the</span>
+<span class="sd">    maximal intensity.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : pandas.DataFrame</span>
+<span class="sd">        DataFrame with rainfall time series. Needs to contain the following columns:</span>
+
+<span class="sd">        - *datetime* (pandas.Timestamp): Time stamp</span>
+<span class="sd">        - *rain_mm* (float): Rain in mm</span>
+
+<span class="sd">    interval : str</span>
+<span class="sd">        Frequency string, e.g. &#39;30Min&#39;</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    maxprecip_30min : float</span>
+<span class="sd">        Maximal 30-minute intensity during event (in mm/h).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">load_dotenv</span><span class="p">(</span><span class="n">find_dotenv</span><span class="p">())</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">oct_exe</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;OCTAVE_EXECUTABLE&quot;</span><span class="p">))</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="n">oct_exe</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="ne">SystemError</span><span class="p">(</span>
-                <span class="s2">&quot;Octave is not referred to correctly in the &#39;rfactor/.env&#39;-file. Please check the executable path. &quot;</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">SystemError</span><span class="p">(</span>
-            <span class="s2">&quot;No &#39;OCTAVE_EXECUTABLE&#39; is defined in &#39;rfactor/.env&#39;-file. Please check the documentation for information on installing Octave!&quot;</span><span class="p">)</span></div>
+    <span class="c1"># formula requires mm/hr, intensity is on half an hour</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">interval</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span></div>
+
+
+<span class="k">def</span> <span class="nf">_compute_erosivity</span><span class="p">(</span>
+    <span class="n">rain</span><span class="p">,</span>
+    <span class="n">intensity_method</span><span class="p">,</span>
+    <span class="n">event_split</span><span class="o">=</span><span class="n">TIME_BETWEEN_EVENTS</span><span class="p">,</span>
+    <span class="n">event_threshold</span><span class="o">=</span><span class="n">MIN_CUMUL_EVENT</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate erosivity according to Verstraeten G. for a single year/station combi</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rain : pd.DataFrame</span>
+<span class="sd">        DataFrame with rainfall time series. Need to contain the following columns:</span>
+
+<span class="sd">        - *datetime* (pd.Timestamp): Time stamp</span>
+<span class="sd">        - *rain_mm* (float): Rain in mm</span>
+<span class="sd">    intensity_method : Callable</span>
+<span class="sd">        Function to derive the maximal rain intensity (over 30min)</span>
+<span class="sd">    event_split : str</span>
+<span class="sd">        Time interval to split into individual rain events</span>
+<span class="sd">    event_threshold : float</span>
+<span class="sd">        Minimal cumulative rain of an event to take into account for erosivity</span>
+<span class="sd">        derivation</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    events : pd.DataFrame</span>
+<span class="sd">        DataFrame with erosivity output for each event.</span>
+
+<span class="sd">        - *datetime* (pd.Timestamp): Time stamp</span>
+<span class="sd">        - *event_rain_cum* (float): Cumulative rain for each event</span>
+<span class="sd">        - *max_30min_intensity* (float): Maximal 30min intensity for each event</span>
+<span class="sd">        - *event_energy* (float): Rain energy per unit depth for each event</span>
+<span class="sd">        - *erosivity* (float): Erosivity for each event</span>
+<span class="sd">        - *all_events_cum* (float): Cumulative rain over all events together</span>
+<span class="sd">        - *erosivity_cum* (float): Cumulative erosivity over all events together</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;datetime&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">rain</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="s2">&quot;rain_mm&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">rain</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">RFactorInputException</span><span class="p">(</span>
+            <span class="s2">&quot;DataFrame should contain &#39;datetime&#39; and &#39;rain_mm&#39; columns.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># data of a single year</span>
+        <span class="k">raise</span> <span class="n">RFactorInputException</span><span class="p">(</span><span class="s2">&quot;DataFrame should contain data of a single year.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># mark start of each rain event</span>
+    <span class="n">rain</span> <span class="o">=</span> <span class="n">rain</span><span class="p">[</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">]</span>  <span class="c1"># Only keep measurements with rain</span>
+    <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;event_start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">rain</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">event_split</span><span class="p">,</span> <span class="s2">&quot;event_start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">rain</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rain</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;event_start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># add an event identifier</span>
+    <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;event_idx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;event_start&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+
+    <span class="c1"># add cumulative rain for each event</span>
+    <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;event_rain_cum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+
+    <span class="c1"># add rain energy for each event</span>
+    <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;event_energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
+        <span class="n">rain_energy_per_unit_depth</span>
+    <span class="p">)</span>
+
+    <span class="c1"># calculate the maximal rain intensity in 30minutes interval</span>
+    <span class="n">max_intensity_event</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">rain</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)[[</span><span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">,</span> <span class="s2">&quot;event_rain_cum&quot;</span><span class="p">]]</span>
+        <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">intensity_method</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;max_30min_intensity&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="n">rain</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">rain</span><span class="p">,</span> <span class="n">max_intensity_event</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+
+    <span class="c1"># derive event summary</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="s2">&quot;event_rain_cum&quot;</span><span class="p">,</span> <span class="s2">&quot;max_30min_intensity&quot;</span><span class="p">,</span> <span class="s2">&quot;event_energy&quot;</span><span class="p">]</span>
+    <span class="n">rain_events</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)[</span><span class="n">columns</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;datetime&quot;</span><span class="p">:</span> <span class="s2">&quot;first&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;event_rain_cum&quot;</span><span class="p">:</span> <span class="s2">&quot;last&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;max_30min_intensity&quot;</span><span class="p">:</span> <span class="s2">&quot;last&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;event_energy&quot;</span><span class="p">:</span> <span class="s2">&quot;last&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="c1"># calculate the erosivity</span>
+    <span class="n">rain_events</span><span class="p">[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">rain_events</span><span class="p">[</span><span class="s2">&quot;event_energy&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">rain_events</span><span class="p">[</span><span class="s2">&quot;max_30min_intensity&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+
+    <span class="c1"># cumulative rain over all events</span>
+    <span class="n">rain_events</span><span class="p">[</span><span class="s2">&quot;all_event_rain_cum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">rain_events</span><span class="p">[</span><span class="s2">&quot;event_rain_cum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="c1"># remove events below threshold</span>
+    <span class="n">events</span> <span class="o">=</span> <span class="n">rain_events</span><span class="p">[</span>
+        <span class="nb">round</span><span class="p">(</span><span class="n">rain_events</span><span class="p">[</span><span class="s2">&quot;event_rain_cum&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">event_threshold</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># add cumulative erosivity</span>
+    <span class="n">events</span><span class="p">[</span><span class="s2">&quot;erosivity_cum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">events</span><span class="p">[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">events</span>
+
+
+<span class="k">def</span> <span class="nf">_apply_rfactor</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">intensity_method</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Wrapper helper function for parallel execution of erosivity on groups&quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">_compute_erosivity</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">intensity_method</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="k">return</span> <span class="n">df</span>
+
+
+<div class="viewcode-block" id="compute_erosivity"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.compute_erosivity">[docs]</a><span class="k">def</span> <span class="nf">compute_erosivity</span><span class="p">(</span><span class="n">rain</span><span class="p">,</span> <span class="n">intensity_method</span><span class="o">=</span><span class="n">maximum_intensity</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate erosivity according to Verstraeten G. for each year/station combination</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rain : pandas.DataFrame</span>
+<span class="sd">        DataFrame with rainfall time series. Need to contain the following columns:</span>
+
+<span class="sd">        - *datetime* (pandas.Timestamp): Time stamp</span>
+<span class="sd">        - *rain_mm* (float): Rain in mm</span>
+<span class="sd">        - *station* (str): Measurement station identifier</span>
+
+<span class="sd">    intensity_method : Callable, default maximum_intensity</span>
+<span class="sd">        Function to derive the maximal rain intensity (over 30min).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    all_erosivity: pandas.DataFrame</span>
+<span class="sd">        See :func:`rfactor.rfactor._compute_erosivity`, added with</span>
+
+<span class="sd">        - *tag* (str): unique tag for year, station-couple.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fun_with_method</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">_apply_rfactor</span><span class="p">,</span> <span class="n">intensity_method</span><span class="o">=</span><span class="n">intensity_method</span><span class="p">)</span>
+    <span class="n">grouped</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">])</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">mp</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)(</span>
+        <span class="n">delayed</span><span class="p">(</span><span class="n">fun_with_method</span><span class="p">)(</span><span class="n">name</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">grouped</span>
+    <span class="p">)</span>
+    <span class="n">all_erosivity</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+    <span class="c1"># couple tag</span>
+    <span class="n">all_erosivity</span> <span class="o">=</span> <span class="n">all_erosivity</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+        <span class="n">rain</span><span class="p">[[</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;tag&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(),</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">all_erosivity</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">all_erosivity</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">all_erosivity</span></div>
 </pre></div>
 
            </div>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Changelog &mdash; rfactor 0.0.0 documentation</title>
+  <title>Code legacy &mdash; rfactor 0.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,7 +19,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Contributors" href="authors.html" /> 
+    <link rel="next" title="How can you contribute?" href="contributing.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="notebooks/analysis_flanders.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,23 +42,19 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="rfactor.html">R-factor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="get-started.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/modules.html">Module Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="codelegacy.html">Code legacy</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Code legacy</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribute</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#version-0-0-2">Version 0.0.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#version-0-0-1">Version 0.0.1</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 </ul>
 
         </div>
@@ -74,9 +71,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Changelog</li>
+      <li>Code legacy</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/cn-ws/rfactor/blob/master/docs/changelog.rst" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/cn-ws/rfactor/blob/master/docs/codelegacy.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -108,31 +105,42 @@
     text-align: unset;
 }
 </style>
-<section id="changelog">
-<span id="changes"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline"></a></h1>
-<section id="version-0-0-2">
-<h2>Version 0.0.2<a class="headerlink" href="#version-0-0-2" title="Permalink to this headline"></a></h2>
-<blockquote>
-<div><ul class="simple">
-<li><p>An only Python-implementation is provided.</p></li>
-<li><p>The use of Matlab is deprecated, and removed from package.</p></li>
-<li><p>Tutorial and application to Flanders is updated accordingly the Python
-implementation.</p></li>
-</ul>
-</div></blockquote>
-</section>
-<section id="version-0-0-1">
-<h2>Version 0.0.1<a class="headerlink" href="#version-0-0-1" title="Permalink to this headline"></a></h2>
-<blockquote>
-<div><ul class="simple">
-<li><p>Implemented R-factor Python processing functions.</p></li>
-<li><p>Implemented Python wrapper for KULeuven <cite>compute R-factor</cite> Matlab script.</p></li>
-<li><p>Implemented use of Octave to run Matlab scripts.</p></li>
-<li><p>Set-up package.</p></li>
-<li><p>Added examples and test data.</p></li>
-<li><p>Added tests.</p></li>
-</ul>
-</div></blockquote>
+<section id="code-legacy">
+<span id="codelegacy"></span><h1>Code legacy<a class="headerlink" href="#code-legacy" title="Permalink to this headline"></a></h1>
+<p>The first version of the R-factor scripts was developed by
+<a class="reference external" href="https://www.kuleuven.be/english/">KU Leuven</a> (Laboratory for Experimental
+Geomorphology, Department of Geography-Geology) in 2001. In 2019, the Matlab
+script were adopted by VPO, VMM and Fluves. During 2019, a number of bugs were
+fixed in the Matlab script without using code versioning (see Gobeyn et al.,
+2021, in Dutch). Since 2021, code versioning via git is applied (i.e. version
+0.0.1). The Matlab scripts were evaluated and translated to Python in order to
+optimize performance, code readability and user-friendliness. During this
+evaluation phase a number of additional bugs were identified and
+corrected. In the following section a brief comparison is presented between the Matlab
+(version 0.0.1) and Python (version 1.0.0) implementation.</p>
+<p>For the code comparison, both the Matlab code and the reimplementation in
+Python are run with rainfall input data from Belgium (KMI and VMM,
+see <span class="xref std std-ref">databelgium</span>). In the figure below, a comparison is shown between
+the Matlab code available in version 0.0.1, on the one hand, and 1.0.0, on
+the other. For this figure, the cumulative erosivity at the end of the year
+was compared for all years of all stations individually. Differences are
+explained by a  if/else-case defined in the Matlab version 0.0.1 in which
+the maximum 30-minute intensity was mistakenly multiplied by two. In addition,
+incorrect indices for the first rainfall record were used in the computation of
+the maximum 30-minute rainfall intensity.</p>
+<img alt="_images/matlab_comp.png" src="_images/matlab_comp.png" />
+<p>In the next figure, the comparison is made between the corrected Matlab version
+(1.0.0) and the Python reimplementation (1.0.0). Here the minor deviations are
+related to decimal precision.</p>
+<img alt="_images/python_matlab_comp.png" src="_images/python_matlab_comp.png" />
+<p>Currently, the Python implementation is adopted for future developments and
+applications.</p>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
+<p>Gobeyn, S., Van de Wauw, J., De Vleeschouwer, N., Renders, D., Van Ransbeeck,
+N., Verstraeten, G., Deproost, P., 2021. Herziening van de
+neerslagerosiviteitsfactor R voor de Vlaamse erosiemodellering.
+Departement Omgeving, Brussel.</p>
 </section>
 </section>
 
@@ -140,7 +148,8 @@ implementation.</p></li>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="authors.html" class="btn btn-neutral float-left" title="Contributors" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="notebooks/analysis_flanders.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="contributing.html" class="btn btn-neutral float-right" title="How can you contribute?" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

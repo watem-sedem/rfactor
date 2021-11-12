@@ -1,0 +1,2673 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&lt;no title&gt; &mdash; rfactor 0.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> rfactor
+          </a>
+              <div class="version">
+                0.0.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../rfactor.html">R-factor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get-started.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/modules.html">Module Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codelegacy.html">Code legacy</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">rfactor</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>&lt;no title&gt;</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/cn-ws/rfactor/blob/master/docs/notebooks/202106_check_erosivity_implementation.ipynb" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<dl>
+<dt>{</dt><dd><dl>
+<dt>“cells”: [</dt><dd><dl>
+<dt>{</dt><dd><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “1e7b03a1”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“# OPTIONAL: Load the &quot;autoreload&quot; extension so that code can changen”,
+“%load_ext autoreloadn”,
+“n”,
+“# OPTIONAL: always reload modules so that as you change code in src, it gets loadedn”,
+“%autoreload 2”</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “73f86a54”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“import pandas as pdn”,
+“import numpy as npn”,
+“import matplotlib.pyplot as plt”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “a90f3788”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“from pathlib import Pathn”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “9447e0e4”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“fmap_rainfall = Path(r&quot;./tests/data/test_rainfalldata&quot;)n”,
+“fmap_erosivity = Path(r&quot;./tests/data/test_erosivitydata/&quot;) # Folder path where results are written to (see above).”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “raw”,
+“id”: “7d766a69”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“from rfactor.process import ErosivityDatan”,
+“n”,
+“erosivitydata = ErosivityData(fmap_rainfall, fmap_erosivity)n”,
+“df_files = erosivitydata.build_data_set()n”,
+“erosivitydata.load_data(df_files)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “raw”,
+“id”: “4db32a59”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“all_rainfall = erosivitydata.load_rainfall()n”,
+“(all_rainfall[[&quot;value&quot;, &quot;station&quot;]]n”,
+” .reset_index()n”,
+” .rename(columns={&quot;index&quot;:&quot;datetime&quot;, &quot;value&quot;: &quot;rain_mm&quot;})n”,
+” .to_csv(&quot;./tests/data/demo_rainfall.csv&quot;, index=False))”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “f7f3c3b0”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“# Erosivity calculation”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “735e2708”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“Input is a rainfall time series:”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “2db04215”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“from rfactor.process import load_rain_folder”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “df44fdfb”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“all_rainfall = load_rain_folder(Path(&quot;../../tests/data/test_rainfalldata/&quot;))”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “870005bb”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“all_rainfall.shape”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “5b077ffd”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“all_rainfall.head()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “c8f84a11”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“Algorithm works on year/station basis, so let’s pick a year and a station for further development:”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “d58f84f1”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018 = all_rainfall[(all_rainfall[&quot;station&quot;] == &quot;P01_001&quot;) &amp; n”,
+”                            (all_rainfall[&quot;datetime&quot;].dt.year == 2018)].copy()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “1d0d7302”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018.set_index(&quot;datetime&quot;)[&quot;rain_mm&quot;].plot(figsize=(18, 4))”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “2e59188f”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018.head()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “c5ba3a5f”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“# From datetime to minutes difference since start of the year - bit hackyn”,
+“current_year = int(P01_001_2018[&quot;datetime&quot;].dt.year.unique()[0])n”,
+“start_shift = (P01_001_2018.iloc[0, 2] - pd.Timestamp(f&quot;{current_year}-01-01&quot;)).total_seconds() /60.n”,
+“P01_001_2018[&quot;min_since_start_year&quot;] = P01_001_2018[&quot;datetime&quot;].diff().dt.total_seconds().cumsum() /60. + start_shiftn”,
+“P01_001_2018.iloc[0, -1] = start_shift”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “19b19d4f”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018.head()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “811907a6”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“## The erosivity implementation”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “07f3e81c”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“### 1. Define starting point the individual rain events”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “53c3a03f”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“event_split = &quot;6 hours&quot;”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “20e3cd4c”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018[&quot;event_start&quot;] = Falsen”,
+“P01_001_2018.loc[P01_001_2018[&quot;datetime&quot;].diff() &gt;= event_split, &quot;event_start&quot;] = True  # var c in matlabn”,
+“P01_001_2018.loc[P01_001_2018.index[0], &quot;event_start&quot;] = True”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “8922d4db”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018.head(10)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “aad6ee69”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“max_idx_distance = pd.Series(P01_001_2018[P01_001_2018[&quot;event_start&quot;] == True].index).diff().max() #var max in matlabn”,
+“max_idx_distance”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “fbb0e602”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“__?? <cite>max</cite> is the maximum distance in terms of index difference -&gt; also in terms of time the longest event?__n”,
+“n”,
+“-&gt; use is to define the size of the matrix in the next step to make sure the longest event fits;”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “b94e2dea”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“### 2. Isolate the individual rain events -&gt; I add an event idx”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “da4658fe”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018[&quot;event_idx&quot;] = P01_001_2018[&quot;event_start&quot;].cumsum()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “2108a3bd”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “de963947”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“__What about lines 72-86 in matlab? add time steps with zero-rain values?__n”,
+“n”,
+“-&gt; probably not required if everything fits in groupby approach”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “ea70ada1”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“### 3a. Cumulative rain for each event”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “34da0ae9”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018[&quot;event_rain_cum&quot;] = P01_001_2018.groupby(&quot;event_idx&quot;)[&quot;rain_mm&quot;].cumsum()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “739c4c4c”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018.head()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “6569d252”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“### 3b. Rain energy”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “6a1967c0”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“Example with a single event”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “f28342dd”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“temp = P01_001_2018[P01_001_2018[&quot;event_idx&quot;] == 1].copy()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “9f8b343d”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“temp[&quot;rain_energy&quot;] = 0.1112*((temp[&quot;rain_mm&quot;]*6.)**0.31)*temp[&quot;rain_mm&quot;]”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “e4c21de2”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“__?? line 105, should it be j or 1? BUG?__n”,
+“n”,
+“<code class="docutils literal notranslate"><span class="pre">`\n&quot;,</span>
+<span class="pre">&quot;%</span> <span class="pre">j</span> <span class="pre">is</span> <span class="pre">currently</span> <span class="pre">135</span> <span class="pre">and</span> <span class="pre">NOT</span> <span class="pre">1\n&quot;,</span>
+<span class="pre">&quot;pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);</span>&#160; <span class="pre">%</span> <span class="pre">berekenen</span> <span class="pre">van</span> <span class="pre">neerslagenergie</span> <span class="pre">per</span> <span class="pre">mm\n&quot;,</span>
+<span class="pre">&quot;`</span></code>n”,
+“n”,
+“__?? factor 6 on line 104 -&gt; tight linked to 10min interval?__  YES IT IS!”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “f86ef97b”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“temp[&quot;rain_energy&quot;].sum() # to make comparible with matlab version add <cite>- 0.034867</cite>”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “6a69338f”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“temp.head()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “d991bfb1”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“def rain_energy_per_unit(rain):n”,
+”    &quot;&quot;&quot;&quot;&quot;&quot;n”,
+”    rain_energy = 0.1112*((rain*6.)**0.31)*rainn”,
+”    return rain_energy.sum()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “e6c84d28”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“rain_energy_per_unit(temp[&quot;rain_mm&quot;])”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “19e226ce”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“Apply the calculation to the entire set of defined rain events:”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “7a974bc0”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018[&quot;event_energy&quot;] = P01_001_2018.groupby(&quot;event_idx&quot;)[&quot;rain_mm&quot;].transform(rain_energy_per_unit)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “5b241aee”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018.head(20)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “68831b89”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“### 4. Maximum intensity within 30 minutes”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “40cc36b9”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“First work on a subset of the data:”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “548f2b66”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“temp = P01_001_2018[P01_001_2018[&quot;event_idx&quot;] == 1].copy()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “e53fadb1”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“temp.head()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “f1b8566d”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“__- ?? Are the lines #L134-L144 effectively used in the code? In lines #L149-L150 the variables are overwritten (also warning by matlab <a href="#id5"><span class="problematic" id="id6">itself__</span></a>n”,
+“n”,
+“__- ?? Why is on line #L159 a factor 2 required? As it gets multiplied again later?__n”,
+“n”,
+“__- ?? Why is on line #L130 the lenght of the interval only 20minutes? If the concept is 20 + 5 min in each direction of the interval, one would assume 10’ input data? Is this a valid assumption as I do not see any input check and other steps are based on checking the diff?__n”,
+“n”,
+“__- ?? lines 132-133 can have side effects as well and - I think - only works as all series are prolonged during calculation (second dimension); maxprecip30min should not be overwritten as <a href="#id5"><span class="problematic" id="id7">such__</span></a>”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “d537d491”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“A naive implementation reproducing the matlab implementation:”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “192e6872”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“def maximum_intensity_matlab_clone(df):n”,
+”    &quot;&quot;&quot;Apply for a single_event method of Matlab implementation (Verstraete)&quot;&quot;&quot;n”,
+”    n”,
+”    current_year = df[&quot;datetime&quot;].dt.year.unique()n”,
+”    if not len(current_year) == 1:n”,
+”        raise Exception(&quot;Data should all be in the same year.&quot;)n”,
+“n”,
+”    df[&quot;minutes_since&quot;] = (n”,
+”        df[&quot;datetime&quot;] - pd.Timestamp(f&quot;{current_year[0]}-01-01&quot;)n”,
+”    ).dt.total_seconds().values / 60    n”,
+“n”,
+”    timestamps = df[&quot;minutes_since&quot;].valuesn”,
+”    rain = df[&quot;rain_mm&quot;].valuesn”,
+”    rain_cum = df[&quot;event_rain_cum&quot;].valuesn”,
+“n”,
+”    maxprecip_30min = 0.n”,
+”    max_p30 = 0.n”,
+“n”,
+”    if timestamps[-1] - timestamps[0] &lt;= 30:n”,
+”        maxprecip_30min = rain[0]*2  # <a href="#id1"><span class="problematic" id="id2">*</span></a>2 to mimick matlabn”,
+“n”,
+”    for idx in range(len(df)-1):n”,
+“n”,
+”        begin_30min = timestamps[idx]n”,
+”        eind_30min = timestamps[idx] + 20n”,
+”        begin_rain = rain_cum[idx] - rain[idx]n”,
+”        if timestamps[idx + 1] &gt; eind_30min: # next timestamp later than 30minutes interval - not effectiven”,
+”            precip_30min = rain[idx]        n”,
+“n”,
+”        eind_rain = np.interp(eind_30min, timestamps, rain_cum)    n”,
+”        precip_30min = eind_rain - begin_rain;n”,
+“n”,
+”        if precip_30min &gt; maxprecip_30min:n”,
+”            maxprecip_30min = precip_30minn”,
+“n”,
+”    return maxprecip_30min*2”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “728ca27b”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“max_intensity_event_matlab_clone = (P01_001_2018.groupby(&quot;event_idx&quot;)n”,
+” .apply(maximum_intensity_matlab_clone)n”,
+” .rename(&quot;max_30min_intensity_clone&quot;)n”,
+” .reset_index())”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “391cbbee”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“# Single measurement eventsn”,
+“# P01_001_2018[P01_001_2018.groupby(&quot;event_idx&quot;)[&quot;station&quot;].transform(len) == 1]”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “0cd18a36”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018 = pd.merge(P01_001_2018, max_intensity_event_matlab_clone, how=&quot;left&quot;)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “1b2f9a26”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018.head()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “18fffcb8”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“#### intermezzo _? Is it an option to change the algorithm on defining the max intensity ??_  “</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “f9037c7f”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“Alternative implementations to extract the max intensity of a 30min interval:”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “f874b434”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“1. Rely on linear interpolation (cfr. matlab implementation) -&gt; assume missing data is not zeron”,
+“n”,
+“- interpolate linearly to interval (in this case 10min) of the data series (max value) n”,
+“- rolling interval of 30 minutes n”,
+“- take maximum of rolling interval sum of the rainfall within that periodn”,
+“n”,
+“:-) works for different time series intervals; :-( interpolation error as linear interpolation induces errors (overestimation)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “b5020c14”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“time_series_resampled = temp.resample(&quot;10Min&quot;, on=&quot;datetime&quot;)[&quot;rain_mm&quot;].max() # missing 10min are now Nann”,
+“time_series_resampled_interp = time_series_resampled.interpolate(method=’linear’)n”,
+“rolling_sum = time_series_resampled_interp.rolling(&quot;30Min&quot;).sum()n”,
+“rolling_sum.max()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “47ac2db3”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“def maximum_intensity_interpolate(df, interval=&quot;30Min&quot;, input_freq=&quot;10Min&quot;):n”,
+”    &quot;&quot;&quot;Apply for a single_event method with linear interpolation&quot;&quot;&quot;n”,
+”    time_series_resampled = df.resample(input_freq, on=&quot;datetime&quot;)[&quot;rain_mm&quot;].max()n”,
+”    time_series_resampled_interp = time_series_resampled.interpolate(method=’linear’)n”,
+”    rolling_sum = time_series_resampled_interp.rolling(interval).sum()n”,
+”    return rolling_sum.max() * 2   # formula requires mm/hr, intensity is on half an hour”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “9cc73cdc”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“2. Resample with the available data directlyn”,
+“n”,
+“- using the data available, rolling/resample over 30min interval directlyn”,
+“- take the maximum of all intervalsn”,
+“n”,
+“(This is equivalent with the previous method, but instead of interpolation, missing intervals are assumed to have no rainfall.)n”,
+“n”,
+“:-) straight forward using available data only; :-( probably an underestimation?”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “70be18cb”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“temp.rolling(&quot;30Min&quot;, on=&quot;datetime&quot;)[&quot;rain_mm&quot;].sum().max()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “09905ed7”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“def maximum_intensity_fillna(df, interval=&quot;30Min&quot;, input_freq=&quot;10Min&quot;):n”,
+”    &quot;&quot;&quot;Apply for a single_event method with zero values for no value&quot;&quot;&quot;n”,
+”    # formula requires mm/hr, intensity is on half an hourn”,
+”    return df.rolling(&quot;30Min&quot;, on=&quot;datetime&quot;)[&quot;rain_mm&quot;].sum().max()*2”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “26484194”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“For ilustration, the result would be the same as doing:n”,
+“n”,
+“<code class="docutils literal notranslate"><span class="pre">`\n&quot;,</span>
+<span class="pre">&quot;time_series_resampled</span> <span class="pre">=</span> <span class="pre">temp.resample(\&quot;10Min\&quot;,</span> <span class="pre">on=\&quot;datetime\&quot;)[\&quot;rain_mm\&quot;].max()</span> <span class="pre">#</span> <span class="pre">missing</span> <span class="pre">10min</span> <span class="pre">are</span> <span class="pre">now</span> <span class="pre">Nan\n&quot;,</span>
+<span class="pre">&quot;time_series_resampled_interp</span> <span class="pre">=</span> <span class="pre">time_series_resampled.fillna(value=0)\n&quot;,</span>
+<span class="pre">&quot;rolling_sum</span> <span class="pre">=</span> <span class="pre">time_series_resampled_interp.rolling(\&quot;30Min\&quot;).sum()\n&quot;,</span>
+<span class="pre">&quot;rolling_sum.max()\n&quot;,</span>
+<span class="pre">&quot;`</span></code>”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “d65fae1a”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“Let’s compare these methods…”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “a055b907”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“# run on the single eventn”,
+“(maximum_intensity_fillna(temp, interval=&quot;30Min&quot;, input_freq=&quot;10Min&quot;), n”,
+” maximum_intensity_interpolate(temp, interval=&quot;30Min&quot;, input_freq=&quot;10Min&quot;))”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “b879b320”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“Apply to the entire set of events:”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “6d0af27b”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“max_intensity_event_interpolate = (P01_001_2018.groupby(&quot;event_idx&quot;)[[&quot;datetime&quot;, &quot;rain_mm&quot;]]n”,
+” .apply(maximum_intensity_interpolate)n”,
+” .rename(&quot;max_30min_intensity_interpolate&quot;)n”,
+” .reset_index())n”,
+“n”,
+“max_intensity_event_fillna = (P01_001_2018.groupby(&quot;event_idx&quot;)[[&quot;datetime&quot;, &quot;rain_mm&quot;]]n”,
+” .apply(maximum_intensity_fillna)n”,
+” .rename(&quot;max_30min_intensity_fillna&quot;)n”,
+” .reset_index())”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “8ab0e8e8”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“max_intensity_event_fillna.shape”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “3223aa6b”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018 = pd.merge(P01_001_2018, max_intensity_event_interpolate, how=&quot;left&quot;)n”,
+“P01_001_2018 = pd.merge(P01_001_2018, max_intensity_event_fillna, how=&quot;left&quot;)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “1cefed00”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018.head(10)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “2980e015”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“The difference between the methods:”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “40500a88”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“fig, ax = plt.subplots(figsize=(16, 8))n”,
+“max_intensity_event_matlab_clone[&quot;max_30min_intensity_clone&quot;].plot(ax=ax, label=&quot;matlab_clone&quot;, n”,
+”                                                                   linewidth=4, linestyle=’-.’)n”,
+“max_intensity_event_interpolate[&quot;max_30min_intensity_interpolate&quot;].plot(ax=ax, label=&quot;interpolate&quot;)n”,
+“max_intensity_event_fillna[&quot;max_30min_intensity_fillna&quot;].plot(ax=ax, label=&quot;fillna&quot;)n”,
+“ax.legend()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “753547ad”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018.head()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “60707e74”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“### 5. Gather results for each event”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “e88bd224”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018.head()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “de12d80d”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“Extract summary for each event:”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “0c2cec75”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“columns = [&quot;event_rain_cum&quot;, &quot;max_30min_intensity_clone&quot;, &quot;event_energy&quot;, &quot;datetime&quot;]n”,
+“P01_001_2018_events = P01_001_2018.groupby(&quot;event_idx&quot;)[columns].agg({&quot;datetime&quot;: &quot;first&quot;,n”,
+”                                                                      &quot;event_rain_cum&quot;: &quot;last&quot;, n”,
+”                                                                      &quot;max_30min_intensity_clone&quot;: &quot;last&quot;, n”,
+”                                                                      &quot;event_energy&quot;: &quot;last&quot;, n”,
+”                                                                     })n”,
+“P01_001_2018_events”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “e6347967”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018_events[&quot;erosivity&quot;] = P01_001_2018_events[&quot;event_energy&quot;] * P01_001_2018_events[&quot;max_30min_intensity_clone&quot;]n”,
+“P01_001_2018_events.head(10)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “6f65e7a9”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“Add cumulative value of the events combined:”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “59ade87f”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018_events[&quot;all_events_cum&quot;] = P01_001_2018_events[&quot;event_rain_cum&quot;].shift(1, fill_value=0.).cumsum()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “c234c779”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018_events.head()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “69041897”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“__?? Is this shift(1) really required? - done to mimick the <cite>cumul</cite> var in <a href="#id5"><span class="problematic" id="id8">matlab__</span></a>”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “edf9980b”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“Add days from start of year (conform matlab implementation):”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “3205cfd0”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“current_year = P01_001_2018_events[&quot;datetime&quot;].dt.year.unique()n”,
+“if not len(current_year) == 1:n”,
+”    raise Exception(&quot;Data should all be in the same year.&quot;)n”,
+“n”,
+“days_since_start = (n”,
+”    (P01_001_2018_events[&quot;datetime&quot;] - pd.Timestamp(f&quot;{current_year[0]}-01-01&quot;)).dt.total_seconds()n”,
+”    / 60.0n”,
+”    / 1440.0n”,
+“)n”,
+“n”,
+“P01_001_2018_events[&quot;days_since_start_year&quot;] = days_since_start”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “b720a0f5”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“Exclude events with total rainfall lower than threshold:”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “995965db”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“MIN_CUMUL = 1.27n”,
+“n”,
+“#P01_001_2018_events.loc[P01_001_2018_events[&quot;event_rain_cum&quot;] &lt; MIN_CUMUL, n”,
+“#                        [&quot;erosivity&quot;, &quot;all_events_cum&quot;, n”,
+“#                         &quot;max_30min_intensity_clone&quot;, &quot;days_since_start_year&quot;]] = 0.n”,
+“n”,
+“P01_001_2018_events_subset = P01_001_2018_events[P01_001_2018_events[&quot;event_rain_cum&quot;] &gt; MIN_CUMUL].copy()n”,
+“P01_001_2018_events_subset”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “5350785a”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“__?? Should all_events_cum include the events that were excluded as below threshold? A matter of order of execution that matters; if someone want to do cumul, this won’t be reproducible <a href="#id5"><span class="problematic" id="id9">anymore__</span></a>”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “f6a0fa6a”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“### 6. Cumulative erosivity”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “e0fb1188”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018_events_subset[&quot;erosivity_cum&quot;] = P01_001_2018_events_subset[&quot;erosivity&quot;].cumsum()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “7da11c04”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“P01_001_2018_events_subset.head(15)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “7a7799d5”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“### Derived stats”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “49ea6b26”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“### Berekenen van maandelijkse erosiviteit”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “0ba5946b”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“__?? line 212 what about leap years ?__n”,
+“n”,
+“__! the implementation is not returned by Matlab <a href="#id5"><span class="problematic" id="id10">anyhow__</span></a>”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “21190469”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“TO CHECK -&gt; IS THIS correct interpretation of the description/implementation?”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “8135f202”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“# Monthlyn”,
+“P01_001_2018_events_subset.resample(&quot;M&quot;, on=&quot;datetime&quot;)[&quot;erosivity&quot;].sum().plot()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “0118ed3c”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“# Bi-weeklyn”,
+“P01_001_2018_events_subset.resample(&quot;SM&quot;, on=&quot;datetime&quot;)[&quot;erosivity&quot;].sum().plot()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “11b9954f”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“### Use the new package implementation”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “353165d8”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“from rfactor import compute_erosivity, maximum_intensity_matlab_clone, maximum_intensityn”,
+“from rfactor.rfactor import _compute_erosivity”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “f6108733”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“# overview of all the station-year combinationsn”,
+“all_rainfall.groupby([&quot;station&quot;, all_rainfall[&quot;datetime&quot;].dt.year]).first().index”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “de2f1d1c”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“station_year = all_rainfall[(all_rainfall[&quot;station&quot;] == &quot;P01_003&quot;) &amp; n”,
+”                            (all_rainfall[&quot;datetime&quot;].dt.year == 2005)].copy()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “bec64238”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“# compare the algorithms in term of erosivity – TODO- should be done for all togethern”,
+“new_alg = compute_erosivity(station_year, maximum_intensity)n”,
+“clone_alg = compute_erosivity(station_year, maximum_intensity_matlab_clone)n”,
+“n”,
+“fig, ax = plt.subplots(figsize=(5, 5))n”,
+“ax.scatter(new_alg[&quot;erosivity&quot;], clone_alg[&quot;erosivity&quot;], alpha=0.5)n”,
+“ax.set_xscale(&quot;log&quot;)n”,
+“ax.set_yscale(&quot;log&quot;)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “a22c6e7c”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“new_alg[&quot;erosivity_cum&quot;].iloc[-1]”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “69e9e432”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“new_alg.resample(&quot;M&quot;, on=&quot;datetime&quot;)[&quot;erosivity&quot;].sum()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “9fe2de52”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“### Apply to multiple station/years - (parallel application)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “94aa88bf”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“# for testing, smaller datasetn”,
+“rainfall_subset = all_rainfall[all_rainfall[&quot;station&quot;].isin([&quot;P01_001&quot;, &quot;P01_003&quot;, &quot;P11_043&quot;])]”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “441996c7”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“Apply the erosivity method to all combinations of year and station:”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “9a8bbfc0”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“from functools import partial”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “a14a4d5e”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“%%timen”,
+“n”,
+“my_fun = partial(_compute_erosivity, intensity_method=maximum_intensity)n”,
+“n”,
+“# overview of all the station-year combinationsn”,
+“all_erosivity = rainfall_subset .groupby(   # all_rainfalln”,
+”    [&quot;station&quot;, all_rainfall[&quot;datetime&quot;].dt.year]n”,
+“).apply(my_fun)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “1a881b1c”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“all_erosivity”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “38263f98”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“This is an ideal use case for parallel execeution:”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “2d695613”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“from joblib import Parallel, delayedn”,
+“import multiprocessing as mp”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “530d026e”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“%%timen”,
+“n”,
+“#from functools import partialn”,
+“#erosivity_apply = partial(erosivity, intensity_method=maximum_intensity) # missing the name columns :-(n”,
+“n”,
+“n”,
+“def erosivity_apply(name, group):n”,
+”    &quot;&quot;&quot;Wrapper function for parallel execution of erosivity on groups&quot;&quot;&quot;n”,
+”    df = _compute_erosivity(group, maximum_intensity)n”,
+”    df[[&quot;station&quot;, &quot;year&quot;]] = namen”,
+”    return dfn”,
+“n”,
+“grouped = rainfall_subset.groupby([&quot;station&quot;, all_rainfall[&quot;datetime&quot;].dt.year])n”,
+“results = Parallel(n_jobs=mp.cpu_count() - 1)(delayed(erosivity_apply)(name, group) for name, group in grouped)n”,
+“all_erosivity_par = pd.concat(results)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “27294f91”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“all_erosivity_par”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “cfaff3b6”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“__?? ok to use joblib or should we use the tqdm <cite>process_map</cite> function of current package?__”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “7a4471ba”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“### Integration with legacy file/folder setup”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “ced144ce”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“1. Read rainfall from the original format  =&gt; from lots of files =&gt; single rain dfn”,
+“1. Push output to the original output”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “1f118ac0”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“def _extract_metadata_from_file_path(file_path):n”,
+”    &quot;&quot;&quot;Get metadata from file formatn”,
+”    n”,
+”    Parametern”,
+”    ———n”,
+”    file_path : pathlib.Pathn”,
+”    &quot;&quot;&quot;n”,
+”    return {&quot;station&quot;: &quot;_&quot;.join(file_path.stem.split(&quot;_&quot;)[:-1]), n”,
+”            &quot;year&quot;: file_path.stem.split(&quot;_&quot;)[-1] }n”,
+“n”,
+“def load_rain_data(file_path, station, year):n”,
+”    &quot;&quot;&quot; Load rainfall data file -&gt; adjusted current package n”,
+”    &quot;&quot;&quot;n”,
+”    raw_data = pd.read_csv(file_path, delimiter=&quot; &quot;, header=None, n”,
+”                           names=[&quot;minutes_since&quot;, &quot;rain_mm&quot;])n”,
+”    raw_data[&quot;datetime&quot;] = pd.Timestamp(f&quot;{year}-01-01&quot;) + pd.to_timedelta(raw_data[&quot;minutes_since&quot;], n”,
+”                                                                           unit=&quot;min&quot;)n”,
+”    raw_data[&quot;station&quot;] = stationn”,
+”    return raw_data”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “8cefa354”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“file_path = Path(&quot;../../tests/data/test_rainfalldata/P01_001_2018.txt&quot;)n”,
+“station, year = _extract_metadata_from_file_path(file_path).values()n”,
+“station, year”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “18be67c1”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“df = load_rain_data(&quot;../../tests/data/test_rainfalldata/P01_001_2018.txt&quot;, station, year)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “f2421d91”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“For a large set of files - making the service compatible (need to put this into function):”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “b92d4223”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“folder_path = Path(&quot;../../tests/data/test_rainfalldata&quot;)n”,
+“n”,
+“lst_df = []n”,
+“for file_path in folder_path.glob(&quot;<a href="#id3"><span class="problematic" id="id4">*</span></a>.txt&quot;):n”,
+”    station, year = _extract_metadata_from_file_path(file_path).values()n”,
+”    lst_df.append(load_rain_data(file_path, station, year))n”,
+”    n”,
+“all_rain = pd.concat(lst_df)n”,
+“all_rain = all_rain.sort_values([&quot;station&quot;, &quot;minutes_since&quot;])n”,
+“all_rain.index = range(len(all_rain))n”,
+“all_rain”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “96c2fdb0”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“from rfactor import compute_erosivityn”,
+“compute_erosivity(rainfall_subset)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “83f51f6a”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“Compatibility with the old format in terms of erosivity output:”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “dc27cae8”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“demo_rain = load_rain_data(&quot;../../tests/data/test_rainfalldata/P01_001_2018.txt&quot;, station, year)n”,
+“demo_erosivity = compute_erosivity(df, maximum_intensity).head()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “0f0ec24d”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“demo_erosivity[&quot;year&quot;].unique()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “bdd08504”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“from rfactor.process import write_erosivity_data”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “25a44fb2”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“Works for a single and multiple station/year combinations:”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “822fa9d0”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“write_erosivity_data(demo_erosivity, Path(&quot;/home/stijnvh/draft/&quot;))”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “1face206”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“write_erosivity_data(all_erosivity_par, Path(&quot;/home/stijnvh/draft/&quot;))”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “71bc50bc”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“### New workflow proposal:”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “af5d30ae”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“- Read in whatever files you want to read in; directly or legacy format ( -&gt; not part of the package  ? sacha, ok)n”,
+“- Filter resulting rain dataframe however you want (pandas is there for you)n”,
+“- Apply the erosivity function to itn”,
+“- Do with the erosivity data whatever you want; save as such or legacy formatn”,
+“n”,
+“n”,
+“_+ convenience function to load erosivity from legacy format  ? sacha required?”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “e822b5c1”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“from rfactor import maximum_intensity_matlab_clone”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “bcbaf331”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“from rfactor.process import load_rain_folder, write_erosivity_data, load_rain_filen”,
+“from rfactor import compute_erosivity_parallel”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “da61e674”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“load_rain_file(Path(&quot;../../tests/data/test_rainfalldata/P01_001_2018.txt&quot;))”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “4edad38d”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“wf_rain = load_rain_folder(Path(&quot;../../tests/data/test_rainfalldata/&quot;))n”,
+“wf_rain”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “1f4c6e0c”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“wf_rain_selected = wf_rain[(wf_rain[&quot;datetime&quot;].dt.year.isin([2005, 2006])) &amp; n”,
+”                           (wf_rain[&quot;station&quot;].isin([‘P09_012’, ‘P09_016’]))]”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “1e64c885”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“wf_rain_selected.shape”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “48fb55b9”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“rfactor = compute_erosivity_parallel(wf_rain_selected)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “89394ad2”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“voor rapportage:n”,
+“n”,
+“- rfactor for jaarn”,
+“- resample halfmaandelijks (‘SM’) en maandelijk (‘M’)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “f3060e73”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“rfactor.groupby([&quot;station&quot;, &quot;year&quot;])[&quot;erosivity_cum&quot;].last().reset_index() # r for jaar”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “099dde74”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“write_erosivity_data(rfactor, Path(&quot;/home/stijnvh/draft/rfactors&quot;))”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “88f141c7”,
+“metadata”: {},
+“outputs”: [],
+“source”: []</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “42c4454d”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“df = load_rain_file(Path(&quot;../../tests/data/test_rainfalldata/P01_001_2018.txt&quot;))n”,
+“ei = compute_erosivity_parallel(df)n”,
+“write_erosivity_data(ei, Path(&quot;/home/stijnvh/draft/&quot;))”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “4436978d”,
+“metadata”: {},
+“outputs”: [],
+“source”: []</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “6c79610b”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“rfactor”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “9ca00728”,
+“metadata”: {},
+“outputs”: [],
+“source”: []</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “5d76e4cc”,
+“metadata”: {},
+“outputs”: [],
+“source”: []</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “1c694b3e”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“What if we have another source of data? - 10min required…”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “0306d572”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“import osn”,
+“from pywaterinfo import Waterinfon”,
+“vmm = Waterinfo(&quot;vmm&quot;, token=os.environ.get(&quot;VMM_TOKEN&quot;)) “</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “4f5285e8”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“rain_stations = vmm.get_timeseries_list(timeseriesgroup_id=192896)n”,
+“rainfall = vmm.get_timeseries_values(ts_id=rain_stations[&quot;ts_id&quot;][0], start=&quot;2019-01-01&quot;, end=&quot;2019-12-31&quot;)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “01ea6c1d”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“waterinfo_demo = rainfall[[&quot;Timestamp&quot;, &quot;Value&quot;]].rename(columns={&quot;Timestamp&quot;: &quot;datetime&quot;, &quot;Value&quot;: &quot;rain_mm&quot;})n”,
+“waterinfo_demo = waterinfo_demo[waterinfo_demo[‘rain_mm’] &gt; 0]”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “34509eef”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“compute_erosivity(waterinfo_demo, intensity_method=maximum_intensity)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “23ef7f85”,
+“metadata”: {},
+“outputs”: [],
+“source”: []</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “74e62b7b”,
+“metadata”: {},
+“outputs”: [],
+“source”: []</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “10e0b90c”,
+“metadata”: {},
+“outputs”: [],
+“source”: []</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “489c9df2”,
+“metadata”: {},
+“outputs”: [],
+“source”: []</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “0de40f97”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“__CODA__ -&gt; the rainfall statistics function…”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “ffe334e7”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“from rfactor.process import compute_rainfall_statistics”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “ef1fe0c9”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“all_rain[&quot;year&quot;] = all_rain[&quot;datetime&quot;].dt.yearn”,
+“all_rain.head()”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “91f0577d”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“compute_rainfall_statistics(all_rain.rename(columns={&quot;rain_mm&quot;: &quot;value&quot;}))”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “990817ad”,
+“metadata”: {},
+“outputs”: [],
+“source”: []</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “b5ce4e0b”,
+“metadata”: {},
+“outputs”: [],
+“source”: []</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “1a9159bb”,
+“metadata”: {},
+“outputs”: [],
+“source”: []</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “b0f8cb19”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“Remaining questions?n”,
+“n”,
+“- clip_erosivity_data function -&gt; explain?n”,
+“- is er een reden om het weg te schrijven in die specifieke vorm?n”,
+“- noodzaak van de file overview met de considers? -&gt; filter met pandas als vervanging?n”,
+“- rainfall statistics -&gt; &quot;x&quot;, &quot;y&quot; ??”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “09216513”,
+“metadata”: {},
+“outputs”: [],
+“source”: []</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “fb53b722”,
+“metadata”: {},
+“outputs”: [],
+“source”: []</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “c15d1fd9”,
+“metadata”: {},
+“outputs”: [],
+“source”: []</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “6197ae7a”,
+“metadata”: {},
+“outputs”: [],
+“source”: []</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “eb405b84”,
+“metadata”: {},
+“outputs”: [],
+“source”: []</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “16847a1d”,
+“metadata”: {},
+“outputs”: [],
+“source”: []</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “80cca9b8”,
+“metadata”: {},
+“outputs”: [],
+“source”: []</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“id”: “7b274970”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“– quick intermediate check –”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“id”: “f9cbe667”,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“# Check if the time difference works   - OKn”,
+“diffs = np.loadtxt(&quot;tests/data/test_rainfalldata/P01_001_2018.txt&quot;, usecols=0)n”,
+“np.testing.assert_allclose(P01_001_2018[&quot;diff&quot;].values, diffs)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+<p>],
+“metadata”: {</p>
+<blockquote>
+<div><dl class="simple">
+<dt>“kernelspec”: {</dt><dd><p>“display_name”: “Python 3 (rfactor)”,
+“language”: “python”,
+“name”: “rfactor”</p>
+</dd>
+</dl>
+<p>},
+“language_info”: {</p>
+<blockquote>
+<div><dl class="simple">
+<dt>“codemirror_mode”: {</dt><dd><p>“name”: “ipython”,
+“version”: 3</p>
+</dd>
+</dl>
+<p>},
+“file_extension”: “.py”,
+“mimetype”: “text/x-python”,
+“name”: “python”,
+“nbconvert_exporter”: “python”,
+“pygments_lexer”: “ipython3”,
+“version”: “3.7.3”</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>},
+“nbformat”: 4,
+“nbformat_minor”: 5</p>
+</dd>
+</dl>
+<p>}</p>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Sacha Gobeyn.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

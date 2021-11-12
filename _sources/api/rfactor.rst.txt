@@ -1,7 +1,5 @@
-rfactor namespace
-=================
-
-.. py:module:: rfactor
+rfactor package
+===============
 
 Submodules
 ----------
@@ -18,6 +16,14 @@ rfactor.rfactor module
 ----------------------
 
 .. automodule:: rfactor.rfactor
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: rfactor
    :members:
    :undoc-members:
    :show-inheritance:

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; rfactor  documentation</title>
+  <title>&lt;no title&gt; &mdash; rfactor 0.0.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="License" href="../license.html" />
-    <link rel="prev" title="rfactor namespace" href="../api/rfactor.html" /> 
+    <link rel="next" title="Code legacy" href="../codelegacy.html" />
+    <link rel="prev" title="rfactor package" href="../api/rfactor.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -30,6 +30,9 @@
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> rfactor
           </a>
+              <div class="version">
+                0.0.0
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -44,9 +47,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../get-started.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/modules.html">Module Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codelegacy.html">Code legacy</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contribute</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
@@ -103,11 +108,16 @@
 <dl>
 <dt>{</dt><dd><dl>
 <dt>“cells”: [</dt><dd><dl>
-<dt>{</dt><dd><p>“cell_type”: “markdown”,
+<dt>{</dt><dd><p>“cell_type”: “code”,
+“execution_count”: null,
 “metadata”: {},
+“outputs”: [],
 “source”: [</p>
 <blockquote>
-<div><p>“# Tutorial “</p>
+<div><p>“# OPTIONAL: Load the &quot;autoreload&quot; extension so that code can changen”,
+“%load_ext autoreloadn”,
+“# OPTIONAL: always reload modules so that as you change code in src, it gets loadedn”,
+“%autoreload 2”</p>
 </div></blockquote>
 <p>]</p>
 </dd>
@@ -119,14 +129,32 @@
 “metadata”: {},
 “source”: [</p>
 <blockquote>
+<div><p>“# Tutorial “</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
 <div><p>“## Aimn”,
 “n”,
-“Scripts to compute and analyse the R-factor of the RUSLE-equation. Then”,
+“Implementation to compute and analyse the R-factor of the RUSLE-equation. Then”,
 “R-factor is a measure for the total erosivity of a number of rainfall eventsn”,
 “within a defined timeframe (year, month, number of days). The factor isn”,
 “computed by calculating the yearly sum of -for every rainfall event- the sumn”,
 “of the depth of rainfall (mm) and the kinetic energy, and taking the meann”,
-“over all years. For the formula’s, we refer to the [CN-WS Pascal model documentation](<a class="reference external" href="https://docs.fluves.net/cnws-pascal/watem-sedem.html#rusle-factors">https://docs.fluves.net/cnws-pascal/watem-sedem.html#rusle-factors</a>)”</p>
+“over all years.n”,
+“n”,
+“—n”,
+“__NOTE__n”,
+“n”,
+“This notebook does not include the erosivity computation based on the Royal Meteorological Institute of Belgium (RMI) rainfall data, as the data is not available as open data. One can contact RMI to obtain the rainfall input data. Alternatively, the results of the computation of the erosivity values based on the RMI data are provided in this notebook as well as other rainfall input data, so one can proceed with the analysis.n”,
+“n”,
+“—”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -137,8 +165,7 @@
 “metadata”: {},
 “source”: [</p>
 <blockquote>
-<div><p>“## Importsn”,
-“Main imports”</p>
+<div><p>“## Package imports”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -151,26 +178,11 @@
 “outputs”: [],
 “source”: [</p>
 <blockquote>
-<div><p>“%load_ext autoreloadn”,
-“%autoreload 2”</p>
-</div></blockquote>
-<p>]</p>
-</div></blockquote>
-<p>},
-{</p>
-<blockquote>
-<div><p>“cell_type”: “code”,
-“execution_count”: null,
-“metadata”: {},
-“outputs”: [],
-“source”: [</p>
-<blockquote>
-<div><p>“import matplotlib.pyplot as plt n”,
-“import pandas as pdn”,
+<div><p>“from pathlib import Pathn”,
+“n”,
 “import numpy as npn”,
-“from pathlib import Pathn”,
-“import sys;n”,
-“import os”</p>
+“import pandas as pdn”,
+“import matplotlib.pyplot as plt”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -181,7 +193,7 @@
 “metadata”: {},
 “source”: [</p>
 <blockquote>
-<div><p>“Package imports”</p>
+<div><p>“Load the <cite>rfactor</cite> package functionalities”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -194,8 +206,8 @@
 “outputs”: [],
 “source”: [</p>
 <blockquote>
-<div><p>“from rfactor.process import (ErosivityData, compute_rainfall_statistics, compute_rainfall_statistics)n”,
-“from rfactor.rfactor import compute_rfactor”</p>
+<div><p>“from rfactor import compute_erosivity, maximum_intensity, maximum_intensity_matlab_clonen”,
+“from rfactor.process import load_rain_folder, compute_rainfall_statistics, get_rfactor_station_year”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -206,86 +218,28 @@
 “metadata”: {},
 “source”: [</p>
 <blockquote>
-<div><p>“Working directory”</p>
-</div></blockquote>
-<p>]</p>
-</div></blockquote>
-<p>},
-{</p>
-<blockquote>
-<div><p>“cell_type”: “code”,
-“execution_count”: null,
-“metadata”: {},
-“outputs”: [],
-“source”: [</p>
-<blockquote>
-<div><p>“cwd = Path().resolve()”</p>
-</div></blockquote>
-<p>]</p>
-</div></blockquote>
-<p>},
-{</p>
-<blockquote>
-<div><p>“cell_type”: “markdown”,
-“metadata”: {},
-“source”: [</p>
-<blockquote>
-<div><p>“<strong>Set folders</strong>  n”,
-“The input files are defined by text files (extension: .txt) that hold non-zero rainfall timeseries. The data are split per station and per year with a specific datafile tag:  n”,
+<div><p>“## Input data and compute erosivityn”,
 “n”,
-“KMI_6414_2004.txt  n”,
-“KMI_6414_2005.txt  n”,
-“…  n”,
-“KMI_6434_2003.txt  n”,
-“KMI_6434_2004.txt  n”,
-“…  “</p>
-</div></blockquote>
-<p>]</p>
-</div></blockquote>
-<p>},
-{</p>
-<blockquote>
-<div><p>“cell_type”: “code”,
-“execution_count”: null,
-“metadata”: {},
-“outputs”: [],
-“source”: [</p>
-<blockquote>
-<div><p>“fmap_rainfall=  Path(r&quot;../../tests/data/test_rainfalldata&quot;)n”,
-“fmap_erosivity = Path(r&quot;../../tests/data/test_erosivitydata&quot;)n”,
-“fmap_results = Path.cwd() / &quot;results&quot;”</p>
-</div></blockquote>
-<p>]</p>
-</div></blockquote>
-<p>},
-{</p>
-<blockquote>
-<div><p>“cell_type”: “code”,
-“execution_count”: null,
-“metadata”: {},
-“outputs”: [],
-“source”: [</p>
-<blockquote>
-<div><p>“fmap_results”</p>
-</div></blockquote>
-<p>]</p>
-</div></blockquote>
-<p>},
-{</p>
-<blockquote>
-<div><p>“cell_type”: “markdown”,
-“metadata”: {},
-“source”: [</p>
-<blockquote>
-<div><p>“<strong>Rainfall files summary file</strong>  n”,
-“An overview of the present datafiles for the analysis is saved in a  <cite>files.csv</cite> file (example in <em>./tests/data</em>). This file can be used to remove specific files from the analysis (column <cite>consider</cite>):n”,
+“__Set <a href="#id1"><span class="problematic" id="id2">folders__</span></a>n”,
 “n”,
-”   | source        | datafile      | consider  <a href="#id11"><span class="problematic" id="id12">|\n&quot;,
-&quot;  | ------------- |:-------------:|</span></a> ———:<a href="#id1"><span class="problematic" id="id2">|</span></a>n”,
-”  | KMIt          | KMI_6414_2004 | 0         <a href="#id3"><span class="problematic" id="id4">|</span></a>n”,
-”  | KMIt          | KMI_6414_2005 | 1         <a href="#id5"><span class="problematic" id="id6">|</span></a>n”,
-”  | KMIt          | KMI_6414_2006 | 1         <a href="#id7"><span class="problematic" id="id8">|</span></a>n”,
-”  | …           | …           | …       <a href="#id9"><span class="problematic" id="id10">|</span></a>n”</p>
+“The main function <cite>compute_erosivity</cite> requires a [pandas DataFrame](<a class="reference external" href="https://pandas.pydata.org/docs/index.html">https://pandas.pydata.org/docs/index.html</a>) containing __non-<a href="#id1"><span class="problematic" id="id3">zero__</span></a> rainfall data with the following columns:n”,
+“n”,
+“- datetime (pd.Timestamp): Time stampn”,
+“- rain_mm (float): Rain in mmn”,
+“- station (str): Measurement station identifiern”,
+“n”,
+“However, the legacy format of the input files used in the original Matlab implementation is still supported as well. For this format, te input files are defined by text files (extension: <cite>txt</cite>) that hold __non-zero <a href="#id1"><span class="problematic" id="id4">rainfall__</span></a> timeseries. The data are split per station and per year with a specific data file tag <cite>STATION_YYYY</cite>:  n”,
+“n”,
+“<code class="docutils literal notranslate"><span class="pre">`\n&quot;,</span>
+<span class="pre">&quot;KMI_6414_2004.txt</span>&#160; <span class="pre">\n&quot;,</span>
+<span class="pre">&quot;KMI_6414_2005.txt</span>&#160; <span class="pre">\n&quot;,</span>
+<span class="pre">&quot;...</span>&#160; <span class="pre">\n&quot;,</span>
+<span class="pre">&quot;KMI_6434_2003.txt</span>&#160; <span class="pre">\n&quot;,</span>
+<span class="pre">&quot;KMI_6434_2004.txt</span>&#160; <span class="pre">\n&quot;,</span>
+<span class="pre">&quot;...</span>&#160; <span class="pre">\n&quot;,</span>
+<span class="pre">&quot;`</span></code>n”,
+“n”,
+“__Note__: the files in <cite>tests/data/test_rainfalldata</cite> are an incomplete data set for Belgium (RMI rainfall data are not included), an alternative is provided in the section ‘Analysis’. “</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -298,8 +252,8 @@
 “outputs”: [],
 “source”: [</p>
 <blockquote>
-<div><p>“txt_files=  Path(r&quot;data\belgium\files.csv&quot;)n”,
-“txt_files.exists()”</p>
+<div><p>“fmap_rainfall =  Path(r&quot;../../tests/data/test_rainfalldata&quot;)n”,
+“fmap_erosivity = Path(r&quot;../../tests/data/test_erosivitydata&quot;)”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -310,9 +264,7 @@
 “metadata”: {},
 “source”: [</p>
 <blockquote>
-<div><p>“<strong>Run Model</strong>  n”,
-“The current implemenation makes use of a Matlab engine, which requires Matlab to be installed. Future versions of this package will use Python. Results are n”,
-“written to the <em>./src/rfactor/results</em>-folder.”</p>
+<div><p>“Use the <cite>load_rain_folder</cite> function to read all rain data in a folder:”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -325,7 +277,7 @@
 “outputs”: [],
 “source”: [</p>
 <blockquote>
-<div><p>“compute_rfactor(fmap_rainfall,fmap_results,&quot;matlab&quot;)”</p>
+<div><p>“all_rainfall = load_rain_folder(fmap_rainfall)”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -336,11 +288,7 @@
 “metadata”: {},
 “source”: [</p>
 <blockquote>
-<div><p>“<strong>Set-up analysis</strong>  n”,
-“Create a erosivitydata object, build the data set with the <em>files.csv</em> file and load the rainfall and EI30 data.  n”,
-“__NOTE__: n”,
-“1. Set the director back to the location of this filen”,
-“2. If the &lt;ins&gt;**Matlab**&lt;/ins&gt; is used, make sure <strong>to first let the simulation end before executing the next line!!!!!</strong>”</p>
+<div><p>“<strong>Compute rainfall statistics</strong> (and add station metadata)”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -353,24 +301,10 @@
 “outputs”: [],
 “source”: [</p>
 <blockquote>
-<div><p>“os.chdir(cwd)n”,
-“data = ErosivityData(fmap_rainfall,fmap_erosivity)n”,
-“df_files = data.build_data_set()n”,
-“data.load_data(df_files)n”,
-“df_files.to_csv(&quot;overview_files_stations.csv&quot;)”</p>
-</div></blockquote>
-<p>]</p>
-</div></blockquote>
-<p>},
-{</p>
-<blockquote>
-<div><p>“cell_type”: “code”,
-“execution_count”: null,
-“metadata”: {},
-“outputs”: [],
-“source”: [</p>
-<blockquote>
-<div><p>“df_files”</p>
+<div><p>“stations = pd.read_csv(&quot;data/belgium/stations.csv&quot;)n”,
+“n”,
+“rain_stats = compute_rainfall_statistics(all_rainfall, stations)n”,
+“rain_stats.head()”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -381,8 +315,7 @@
 “metadata”: {},
 “source”: [</p>
 <blockquote>
-<div><p>“<strong>Rainfall statistics</strong>  n”,
-“Compute rainfall statistics”</p>
+<div><p>“<strong>Select stations to compute erosivity for</strong>”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -395,7 +328,22 @@
 “outputs”: [],
 “source”: [</p>
 <blockquote>
-<div><p>“compute_rainfall_statistics(data.load_rainfall(),pd.read_csv(&quot;data/belgium/stations.csv&quot;))”</p>
+<div><p>“consider_stations = pd.read_csv(&quot;../../tests/data/files_tests.csv&quot;)n”,
+“n”,
+“sel_rainfall = all_rainfall.loc[all_rainfall[&quot;tag&quot;].isin(consider_stations[&quot;datafile&quot;])]”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“sel_rainfall”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -406,8 +354,70 @@
 “metadata”: {},
 “source”: [</p>
 <blockquote>
-<div><p>“## Ukkel  n”,
-“Compute R-value for specific years for Ukkel (KMI_6447 and KMI_F3)”</p>
+<div><p>“<strong>Run Model</strong>  “</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“By default, the erosivity is calculated with the <cite>maximum_intensity</cite> method implemented in Python, which follows a slightly different approach to the original Matlab implementation. However, one can opt to use the <cite>matlab_clone</cite> method as well, which is a Python implementation mimicking the original one:”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“erosivity = compute_erosivity(sel_rainfall, maximum_intensity_matlab_clone)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“## Analysis (in Dutch)n”,
+“n”,
+“If one does not have acces to the RMI data, the output erosivity from the computation with the full data set is provided in this repository as an alternative:”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“erosivity = pd.read_csv(&quot;data/erosivity_belgium.csv&quot;, parse_dates=[0, 1], index_col=0)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “markdown”,
+“metadata”: {},
+“source”: [</p>
+<blockquote>
+<div><p>“<strong>Ukkel</strong>  n”,
+“n”,
+“Compute R-factor for specific periods for Ukkel (KMI_6447 and KMI_F3).”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -427,23 +437,10 @@
 ”              range(1991,2021,1),n”,
 ”              range(1990,2001,1),n”,
 ”              range(2000,2021,1)]n”,
-“for i in timeseries:n”,
-”    print(i)n”,
-”    df_R=data.load_R([&quot;KMI_6447&quot;,&quot;KMI_FS3&quot;], i)n”,
-”    print(np.mean(df_R[&quot;value&quot;]))”</p>
-</div></blockquote>
-<p>]</p>
-</div></blockquote>
-<p>},
-{</p>
-<blockquote>
-<div><p>“cell_type”: “code”,
-“execution_count”: null,
-“metadata”: {},
-“outputs”: [],
-“source”: [</p>
-<blockquote>
-<div><p>“len(data.stations)”</p>
+“n”,
+“for period in timeseries:n”,
+”    rfactor = get_rfactor_station_year(erosivity,[&quot;KMI_6447&quot;,&quot;KMI_FS3&quot;], period)n”,
+”    print(f&quot;R-factor for period from {period[0]} till {period[-1]} is: {rfactor[‘erosivity_cum’].mean()}&quot;)”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -467,44 +464,50 @@
 “outputs”: [],
 “source”: [</p>
 <blockquote>
-<div><p>“plt.figure(figsize=[12,7.5])n”,
-“years = range(1898,2020,1)n”,
-“df_R=data.load_R([&quot;KMI_6447&quot;,&quot;KMI_FS3&quot;], years)n”,
-“df_R = df_R[~np.isnan(df_R[&quot;value&quot;])].sort_values(&quot;year&quot;)n”,
-“plt.plot(df_R[&quot;year&quot;],df_R[&quot;value&quot;],label=&quot;KMI_FS3 (1898-2002)&quot;)n”,
-“years = np.arange(2003,2021,1)n”,
-“df_R=data.load_R([&quot;KMI_6447&quot;,&quot;KMI_FS3&quot;], years)n”,
-“df_R = df_R[~np.isnan(df_R[&quot;value&quot;])].sort_values(&quot;year&quot;)n”,
-“plt.plot(df_R[&quot;year&quot;],df_R[&quot;value&quot;],label=&quot;KMI_6447 (2003-2019)&quot;)n”,
+<div><p>“rfactor_all= get_rfactor_station_year(erosivity, stations=[&quot;KMI_FS3&quot;, &quot;KMI_6447&quot;]).sort_values(&quot;year&quot;)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“fig, ax = plt.subplots(figsize=(12, 7.5))n”,
+“n”,
+“rfactor_fs3 = get_rfactor_station_year(erosivity, [&quot;KMI_FS3&quot;])n”,
+“rfactor_fs3 = rfactor_fs3[~(rfactor_fs3[&quot;erosivity_cum&quot;].isnull())].sort_values(&quot;year&quot;)n”,
+“n”,
+“rfactor_6447 = get_rfactor_station_year(erosivity, [&quot;KMI_6447&quot;])n”,
+“rfactor_6447 = rfactor_6447[~(rfactor_6447[&quot;erosivity_cum&quot;].isnull())].sort_values(&quot;year&quot;)n”,
+“n”,
+“# add first line of KMI6447 to end of KMI FS3 in order to make a continuous timeseries on the plotn”,
+“rfactor_fs3 = rfactor_fs3.append(rfactor_6447.iloc[0])n”,
+“n”,
+“ax.plot(rfactor_fs3[&quot;year&quot;], rfactor_fs3[&quot;erosivity_cum&quot;], label=&quot;KMI_FS3 (1898-2002)&quot;)n”,
+“n”,
+“n”,
+“ax.plot(rfactor_6447[&quot;year&quot;], rfactor_6447[&quot;erosivity_cum&quot;], label=&quot;KMI_6447 (2003-2020)&quot;)n”,
 “n”,
 “# rolling meann”,
-“scales  = [10,20,30]n”,
-“years = np.arange(1898,2021,1)n”,
-“df_R=data.load_R([&quot;KMI_6447&quot;,&quot;KMI_FS3&quot;], years)n”,
-“df_R = df_R[~np.isnan(df_R[&quot;value&quot;])].sort_values(&quot;year&quot;)n”,
-“for scale in scales:n”,
-”    y = df_R[&quot;value&quot;].rolling(scale).mean()n”,
-”    x = y.index+1898n”,
-”    plt.plot(x,y,ls=’:’,lw=3,label=f’voortschrijdend gemiddelde ({scale} jaar)’)n”,
-“plt.ylim([0,3500])n”,
-“plt.xlim([1890,2020])n”,
-“plt.tick_params(axis=’both’, which=’major’, labelsize=14)n”,
-“plt.xlabel(r’Jaar (-)’,fontsize=16)n”,
-“plt.ylabel(r’Jaarlijkse R [MJ mm ha$^{-1}$ h$^{-1}$ jaar$^{-1}$]’,fontsize=16)n”,
-“plt.legend(prop={‘size’:16})”</p>
-</div></blockquote>
-<p>]</p>
-</div></blockquote>
-<p>},
-{</p>
-<blockquote>
-<div><p>“cell_type”: “code”,
-“execution_count”: null,
-“metadata”: {},
-“outputs”: [],
-“source”: [</p>
-<blockquote>
-<div><p>“len(x)”</p>
+“rfactor_all = get_rfactor_station_year(erosivity, stations=[&quot;KMI_FS3&quot;, &quot;KMI_6447&quot;]).sort_values(&quot;year&quot;)n”,
+“windows  = [10, 20, 30]n”,
+“for window in windows:n”,
+”    y = rfactor_all.rolling(window)[&quot;erosivity_cum&quot;].mean()n”,
+”    ax.plot(rfactor_all[&quot;year&quot;], y, ls=’:’, lw=3, n”,
+”            label=f&quot;Moving average ({window} year window)&quot;)n”,
+”    n”,
+“n”,
+“ax.set_ylim([0,3500])n”,
+“ax.set_xlim([1890,2020])n”,
+“ax.tick_params(axis=’both’, which=’major’, labelsize=14)n”,
+“ax.set_xlabel(r’Year’,fontsize=16)n”,
+“ax.set_ylabel(r’Yearly R-factor [MJ mm ha$^{-1}$ h$^{-1}$ year$^{-1}$]’,fontsize=16)n”,
+“ax.legend(prop={‘size’:16})”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -515,8 +518,7 @@
 “metadata”: {},
 “source”: [</p>
 <blockquote>
-<div><p>“## Flanders and Belgiumn”,
-“<strong>All stations expect Ukkel</strong>”</p>
+<div><p>“<strong>All stations expect Ukkel</strong>”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -529,10 +531,17 @@
 “outputs”: [],
 “source”: [</p>
 <blockquote>
-<div><p>“stations_belgium_excl_ukkel = [station for station in data.stations if station not in [&quot;KMI_6447&quot;,&quot;KMI_FS3&quot;]]n”,
-“df_R=data.load_R(stations_belgium_excl_ukkel)n”,
-“print(np.mean(df_R[&quot;value&quot;]))n”,
-“len(stations_belgium_excl_ukkel)”</p>
+<div><p>“stations_belgium_excl_ukkel = [station for station in stations[&quot;station&quot;] n”,
+”                               if station not in [&quot;KMI_6447&quot;,&quot;KMI_FS3&quot;, &quot;KMI1990_2002&quot;, &quot;KMI2003_nu_v2&quot;]]n”,
+“years = range(1898, 2021, 1)n”,
+“years = [year for year in years if year in n”,
+”         erosivity[erosivity[&quot;station&quot;].isin(stations_belgium_excl_ukkel)][&quot;year&quot;].unique()]n”,
+“n”,
+“rfactor_non_ukkel = get_rfactor_station_year(erosivity, n”,
+”                                             stations=stations_belgium_excl_ukkel, n”,
+”                                             years=years)n”,
+“print(rfactor_non_ukkel[&quot;erosivity_cum&quot;].mean())n”,
+“len(rfactor_non_ukkel[&quot;station&quot;].unique())”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -543,7 +552,7 @@
 “metadata”: {},
 “source”: [</p>
 <blockquote>
-<div><p>“<strong>All stations except Ukkel and Wallonia</strong>”</p>
+<div><p>“<strong>All stations flanders</strong>”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -556,10 +565,16 @@
 “outputs”: [],
 “source”: [</p>
 <blockquote>
-<div><p>“stations_flanders_excl_ukkel = [station for station in data.stations if station not in  [&quot;KMI_6447&quot;,&quot;KMI_FS3&quot;,&quot;KMI_6455&quot;,&quot;KMI_6459&quot;,&quot;KMI_6472&quot;,&quot;KMI_6494&quot;,&quot;KMI_6484&quot;]]n”,
-“df_R=data.load_R(stations_flanders_excl_ukkel, i)n”,
-“print(np.mean(df_R[&quot;value&quot;]))n”,
-“len(stations_flanders_excl_ukkel)”</p>
+<div><p>“stations_flanders = [station for station in stations[&quot;station&quot;] n”,
+”                     if station not in  [&quot;KMI_6447&quot;, &quot;KMI_FS3&quot;, &quot;KMI_6455&quot;, &quot;KMI_6459&quot;,n”,
+”                                         &quot;KMI_6472&quot;, &quot;KMI_6494&quot;, &quot;KMI_6484&quot;, &quot;KMI1990_2002&quot;, &quot;KMI2003_nu_v2&quot;]]n”,
+“years = range(1898, 2021, 1)n”,
+“years = [year for year in years if year in n”,
+”         erosivity[erosivity[&quot;station&quot;].isin(stations_flanders)][&quot;year&quot;].unique()]n”,
+“n”,
+“rfactor_flanders = get_rfactor_station_year(erosivity,stations_flanders, years)n”,
+“print(rfactor_flanders[&quot;erosivity_cum&quot;].mean())n”,
+“len(rfactor_flanders[&quot;station&quot;].unique())”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -583,16 +598,19 @@
 “outputs”: [],
 “source”: [</p>
 <blockquote>
-<div><p>“stations_flanders_excl_ukkel = [station for station in data.stations if station not in  [&quot;KMI_6447&quot;,&quot;KMI_FS3&quot;]]n”,
-“df_R=data.load_R(stations_flanders_excl_ukkel, range(1991, 2021))n”,
-“print(np.mean(df_R[&quot;value&quot;]))n”,
-“len(stations_flanders_excl_ukkel)n”,
-“plt.hist(df_R[&quot;value&quot;],20,color=[0.8]*3,label=r&quot;Jaarlijkse waarden voor alle 55 stations in België&quot;)n”,
-“plt.plot([1239,1239],[0,120],color=[0.2]*3,ls=&quot;:&quot;,label=&quot;Ukkel (30-jaar referentie periode)&quot;)n”,
-“plt.ylabel(r&quot;#&quot;)n”,
-“plt.xlabel(r&quot;R-value [MJ mm ha$^{-1}$ h$^{-1}$ jaar$^{-1}$]&quot;)n”,
-“plt.ylim([0,130])n”,
-“plt.legend()”</p>
+<div><p>“years = [year for year in range(1991, 2021) if year in n”,
+”         erosivity[erosivity[&quot;station&quot;].isin(stations_belgium_excl_ukkel)][&quot;year&quot;].unique()]n”,
+“n”,
+“rfactor_non_ukkel = get_rfactor_station_year(erosivity, stations_belgium_excl_ukkel, years)n”,
+“n”,
+“fig, ax = plt.subplots()n”,
+“ax.hist(rfactor_non_ukkel[&quot;erosivity_cum&quot;], bins=20, color=[0.8]*3,n”,
+”        label=r&quot;Jaarlijkse waarden voor alle 55 stations in België&quot;)n”,
+“ax.plot([1239, 1239], [0, 120], color=[0.2]*3, ls=&quot;:&quot;, label=&quot;Ukkel (30-jaar referentie periode)&quot;)n”,
+“ax.set_ylabel(r&quot;#&quot;)n”,
+“ax.set_xlabel(r&quot;R-waarde [MJ mm ha$^{-1}$ h$^{-1}$ jaar$^{-1}$]&quot;)n”,
+“ax.set_ylim([0,130])n”,
+“ax.legend()”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -616,10 +634,25 @@
 “outputs”: [],
 “source”: [</p>
 <blockquote>
-<div><p>“stations_flanders_excl_ukkel = [station for station in data.stations if &quot;KMI&quot; not in station]n”,
-“df_R=data.load_R(stations_flanders_excl_ukkel, i)n”,
-“print(np.mean(df_R[&quot;value&quot;]))n”,
-“len(stations_flanders_excl_ukkel)”</p>
+<div><p>“erosivity”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“stations_vmm = [station for station in stations[&quot;station&quot;] if &quot;KMI&quot; not in station]n”,
+“n”,
+“rfactor_vmm = get_rfactor_station_year(erosivity, stations_vmm)n”,
+“n”,
+“print(rfactor_vmm[&quot;erosivity_cum&quot;].mean())n”,
+“len(rfactor_vmm[&quot;station&quot;].unique())”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -643,7 +676,14 @@
 “outputs”: [],
 “source”: [</p>
 <blockquote>
-<div><p>“df_R.groupby(&quot;station&quot;).aggregate({&quot;value&quot;:[np.mean,np.std],&quot;year&quot;:lambda x:len(x)}).sort_values((‘year’, ‘&lt;lambda&gt;’),ascending=False).reset_index()”</p>
+<div><p>“(get_rfactor_station_year(erosivity)n”,
+” .groupby(&quot;station&quot;)n”,
+” .aggregate(n”,
+”    {&quot;erosivity_cum&quot;:[np.mean, np.std],n”,
+”     &quot;year&quot;: &quot;count&quot;})n”,
+” .sort_values((‘year’, ‘count’), ascending=False)n”,
+” .reset_index()n”,
+“)”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -654,7 +694,7 @@
 “metadata”: {},
 “source”: [</p>
 <blockquote>
-<div><p>“## Monthly analysisn”,
+<div><p>“## Analysis (monthly resolution, in Dutch)n”,
 “Get the EI30-values for 2018 based on two Ukkel station (&quot;KMI_6447&quot;,&quot;KMI_FS3&quot;)  “</p>
 </div></blockquote>
 <p>]</p>
@@ -668,7 +708,11 @@
 “outputs”: [],
 “source”: [</p>
 <blockquote>
-<div><p>“df_EI30 = data.load_EI30([&quot;KMI_6447&quot;,&quot;KMI_FS3&quot;],range(1898,2021,1))”</p>
+<div><p>“erosivity_monthly = (erosivity.loc[erosivity[&quot;station&quot;].isin([&quot;KMI_6447&quot;, &quot;KMI_FS3&quot;]), &quot;erosivity&quot;]n”,
+”                     .resample(&quot;M&quot;)n”,
+”                     .sum()n”,
+”                     .to_frame())n”,
+“erosivity_monthly[&quot;month&quot;] = erosivity_monthly.index.month”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -679,7 +723,7 @@
 “metadata”: {},
 “source”: [</p>
 <blockquote>
-<div><p>“<strong>Data formatting</strong>”</p>
+<div><p>“Get meand and interquartile range of monthly R-factor”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -692,10 +736,54 @@
 “outputs”: [],
 “source”: [</p>
 <blockquote>
-<div><p>“df_EI30[&quot;m&quot;] = df_EI30.index.strftime(&quot;%m%d&quot;)n”,
-“df_EI30.loc[df_EI30[&quot;m&quot;]==&quot;0229&quot;,&quot;m&quot;] = &quot;0228&quot;n”,
-“df_m = df_EI30.groupby(&quot;m&quot;).aggregate({&quot;value&quot;:[np.mean,np.std,lambda x:np.percentile(x,25),lambda x:np.percentile(x,75)]})n”,
-“df_m[&quot;mean&quot;] = df_m[(&quot;value&quot;,&quot;mean&quot;)];df_m[&quot;std&quot;] = df_m[(&quot;value&quot;,&quot;std&quot;)];df_m[&quot;p25&quot;] = df_m[(‘value’, ‘&lt;lambda_0&gt;’)];df_m[&quot;p75&quot;] = df_m[(‘value’, ‘&lt;lambda_1&gt;’)];df_m[&quot;p25_e&quot;] = df_m[&quot;mean&quot;]-df_m[‘p25’];df_m[&quot;p75_e&quot;] = df_m[‘p75’]-df_m[&quot;mean&quot;]”</p>
+<div><p>“from functools import partial”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“tt = partial(np.percentile, 25)”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“em = (erosivity_monthlyn”,
+”      .groupby(&quot;month&quot;)n”,
+”      .aggregate({n”,
+”          &quot;erosivity&quot;:[np.mean, n”,
+”                       lambda x: np.percentile(x, 25), n”,
+”                       lambda x: np.percentile(x,75)]n”,
+”      }))”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{</p>
+<blockquote>
+<div><p>“cell_type”: “code”,
+“execution_count”: null,
+“metadata”: {},
+“outputs”: [],
+“source”: [</p>
+<blockquote>
+<div><p>“em[&quot;mean&quot;] = em[&quot;erosivity&quot;][&quot;mean&quot;]n”,
+“em[&quot;l_e&quot;] = em[&quot;erosivity&quot;][&quot;mean&quot;] - em[&quot;erosivity&quot;][&quot;&lt;lambda_0&gt;&quot;]n”,
+“em[&quot;u_e&quot;] = em[&quot;erosivity&quot;][&quot;&lt;lambda_1&gt;&quot;] - em[&quot;erosivity&quot;][&quot;mean&quot;]”</p>
 </div></blockquote>
 <p>]</p>
 </div></blockquote>
@@ -719,11 +807,12 @@
 “outputs”: [],
 “source”: [</p>
 <blockquote>
-<div><p>“fig = plt.figure(figsize=(8,4))n”,
-“x = np.arange(len(df_m))n”,
-“y_gv = [26,20,24,27,70,77,144,102,68,50,37,32]n”,
-“y_gv2 = [35,27,32,36,86,96,177,135,89,66,48,43]n”,
-“plt.bar(x-0.3,df_m[&quot;mean&quot;],yerr=df_m[[&quot;p25_e&quot;,&quot;p75_e&quot;]].T.values,color=[0.80]*3,width=0.3,label=&quot;Ukkel (1898-2020))&quot;)n”,
+<div><p>“fig = plt.figure(figsize=(8, 4))n”,
+“n”,
+“x = np.arange(len(em))n”,
+“y_gv = [26, 20, 24, 27, 70, 77, 144, 102, 68, 50, 37, 32]n”,
+“y_gv2 = [35, 27, 32, 36, 86, 96, 177, 135, 89, 66, 48, 43]n”,
+“plt.bar(x-0.3,em[&quot;mean&quot;],yerr=em[[&quot;l_e&quot;,&quot;u_e&quot;]].T.values,color=[0.80]*3,width=0.3,label=&quot;Ukkel (1898-2020))&quot;)n”,
 “plt.bar(x,y_gv,width=0.3,color=[0.5]*3,label=&quot;Verstraeten $\it{et. al}$ (2001)&quot;)n”,
 “plt.bar(x+0.3,y_gv2,width=0.3,color=[0.2]*3,label=&quot;Verstraeten $\it{et. al}$ (2006)&quot;)n”,
 “plt.ylabel(&quot;R-value&quot;)n”,
@@ -741,7 +830,7 @@
 “metadata”: {},
 “source”: [</p>
 <blockquote>
-<div><p>“## Appendix B: monthly analysis (detail)n”,
+<div><p>“## Additional: monthly analysis (detail)n”,
 “<strong>Evolution monthly R-value</strong>n”,
 “Generate plot to analyse evolution of montly R over the years”</p>
 </div></blockquote>
@@ -757,16 +846,16 @@
 “source”: [</p>
 <blockquote>
 <div><p>“def subplot_montlhy_R(df,ax,ind1,ind2):n”,
-“n”,
+”    n”,
 ”    if (ind1==0) &amp; (ind2==2):n”,
-”        ax.plot(df[&quot;year&quot;],df[&quot;value&quot;],color=[0.1]*3,alpha=0.5,label=&quot;EI30&quot;)n”,
+”        ax.plot(df[&quot;year&quot;],df[&quot;erosivity&quot;],color=[0.1]*3,alpha=0.5,label=&quot;EI30&quot;)n”,
 ”    else:n”,
-”        ax.plot(df[&quot;year&quot;],df[&quot;value&quot;],color=[0.1]*3,alpha=0.5)n”,
+”        ax.plot(df[&quot;year&quot;],df[&quot;erosivity&quot;],color=[0.1]*3,alpha=0.5)n”,
 ”    ax.fill_between([1998,2021], 0,500,facecolor=’grey’, alpha=0.3)    n”,
 ”    # rolling meann”,
 ”    scales  = [10,20,30]n”,
 ”    for scale in scales:n”,
-”        y = df[&quot;value&quot;].reset_index().rolling(scale).mean()n”,
+”        y = df[&quot;erosivity&quot;].reset_index().rolling(scale).mean()n”,
 ”        if scale==10:n”,
 ”            y_max=np.nanmax(y.values)*1.1n”,
 ”        x = y.index+1898n”,
@@ -790,27 +879,17 @@
 ”        n”,
 “fig,ax = plt.subplots(4,3,figsize=[9,9])n”,
 “months = [&quot;Januari&quot;,&quot;Februari&quot;,&quot;Maart&quot;,&quot;April&quot;,&quot;Mei&quot;,&quot;Juni&quot;,&quot;Juli&quot;,&quot;Augustus&quot;,&quot;September&quot;,&quot;Oktober&quot;,&quot;November&quot;,&quot;December&quot;]n”,
-“df_EI30[&quot;month&quot;] = df_EI30.index.monthn”,
-“df_EI30[&quot;year&quot;] = df_EI30.index.yearn”,
+“erosivity_monthly[&quot;year&quot;] = erosivity_monthly.index.yearn”,
 “n”,
 “for month,name in enumerate(months):n”,
 ”    ind1=int(np.floor((month)/3))n”,
 ”    ind2=np.mod(month,3)n”,
-”    df_EI30m = df_EI30.loc[df_EI30[&quot;month&quot;]==month+1]n”,
-”    df_EI30m = df_EI30m[~np.isnan(df_EI30m[&quot;value&quot;])].sort_values(&quot;year&quot;)n”,
-”    subplot_montlhy_R(df_EI30m,ax[ind1,ind2],ind1,ind2)n”,
+”    df_plot = erosivity_monthly.loc[erosivity_monthly[&quot;month&quot;]==month+1]n”,
+”    df_plot  = df_plot [~np.isnan(df_plot[&quot;erosivity&quot;])].sort_values(&quot;year&quot;)n”,
+”    subplot_montlhy_R(df_plot,ax[ind1,ind2],ind1,ind2)n”,
 “n”</p>
 </div></blockquote>
 <p>]</p>
-</div></blockquote>
-<p>},
-{</p>
-<blockquote>
-<div><p>“cell_type”: “code”,
-“execution_count”: null,
-“metadata”: {},
-“outputs”: [],
-“source”: []</p>
 </div></blockquote>
 <p>}</p>
 </dd>
@@ -838,7 +917,7 @@
 “name”: “python”,
 “nbconvert_exporter”: “python”,
 “pygments_lexer”: “ipython3”,
-“version”: “3.9.4”</p>
+“version”: “3.9.5”</p>
 </div></blockquote>
 <p>},
 “toc”: {</p>
@@ -909,8 +988,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../api/rfactor.html" class="btn btn-neutral float-left" title="rfactor namespace" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../license.html" class="btn btn-neutral float-right" title="License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../api/rfactor.html" class="btn btn-neutral float-left" title="rfactor package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../codelegacy.html" class="btn btn-neutral float-right" title="Code legacy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

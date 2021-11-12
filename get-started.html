@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Get started &mdash; rfactor  documentation</title>
+  <title>Get started &mdash; rfactor 0.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -16,7 +16,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -32,6 +32,9 @@
         <div class="wy-side-nav-search" >
             <a href="index.html" class="icon icon-home"> rfactor
           </a>
+              <div class="version">
+                0.0.0
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -46,9 +49,11 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/modules.html">Module Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="codelegacy.html">Code legacy</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribute</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
@@ -106,17 +111,299 @@
 <span id="getstarted"></span><h1>Get started<a class="headerlink" href="#get-started" title="Permalink to this headline"></a></h1>
 <p>The R-factor scripts can be used to:</p>
 <ol class="arabic simple">
-<li><p>Compute the <span class="math notranslate nohighlight">\(EI_{30}\)</span> values for a number of stations and years.</p></li>
+<li><p>Compute the erosivity <span class="math notranslate nohighlight">\(EI_{30}\)</span> values for a number of stations and years.</p></li>
 <li><p>Use the computed <span class="math notranslate nohighlight">\(EI_{30}\)</span> values to compute an R-value.</p></li>
 </ol>
-<p>The <span class="math notranslate nohighlight">\(EI_{30}\)</span> values are computed by using a matlab script that requires
-a folder as input. In this folder, non-zero rainfall timeseries are stored
-in separate text files (extension: <code class="docutils literal notranslate"><span class="pre">.txt</span></code>) files per station and year.
-The processing of the EI30 is done with Python</p>
-<p>A Python script to compute the EI30 values is in the making to avoid the need
-to install matlab.</p>
-<section id="prepare-input-files">
-<h2>Prepare input files<a class="headerlink" href="#prepare-input-files" title="Permalink to this headline"></a></h2>
+<section id="from-10-rain-data-to-ei-for-a-single-station-year">
+<h2>From 10’ rain data to EI for a single station/year<a class="headerlink" href="#from-10-rain-data-to-ei-for-a-single-station-year" title="Permalink to this headline"></a></h2>
+<p>The input of the erosivity algorithm is a rainfall time series with a 10’ resolution as a Pandas DataFrame, e.g.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 57%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>idx</p></th>
+<th class="head"><p>datetime</p></th>
+<th class="head"><p>rain_mm</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>2018-01-01 02:10:00</p></td>
+<td><p>0.27</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>2018-01-01 02:20:00</p></td>
+<td><p>0.02</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>2018-01-01 03:10:00</p></td>
+<td><p>0.48</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<p>The data can be derived from any source and contain more columns (e.g. the measurement station identifier),
+but the <code class="docutils literal notranslate"><span class="pre">datetime</span></code> and <code class="docutils literal notranslate"><span class="pre">rain_mm</span></code> are required to apply the erosivity algorithm. The data should contain data of a
+single year and single station (see further to calculate multiple stations together.</p>
+<p>Erosivity (EI30-values) for a single station/year combination can be computed (make sure to activating the conda
+environment, <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">rfactor</span></code>). The <a class="reference internal" href="api/rfactor.html#rfactor.compute_erosivity" title="rfactor.compute_erosivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.compute_erosivity()</span></code></a> function applies the algorithm
+to a DataFrame containing data for a single station/year, e.g. for the data in DataFrame <code class="docutils literal notranslate"><span class="pre">df_rain</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor</span> <span class="kn">import</span> <span class="n">compute_erosivity</span><span class="p">,</span> <span class="n">maximum_intensity</span>
+<span class="n">erosivity</span> <span class="o">=</span> <span class="n">compute_erosivity</span><span class="p">(</span><span class="n">df_rain</span><span class="p">,</span> <span class="n">maximum_intensity</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <a class="reference internal" href="api/rfactor.html#rfactor.rfactor.maximum_intensity" title="rfactor.rfactor.maximum_intensity"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.rfactor.maximum_intensity()</span></code></a> is the default method to derive the maximum 30min interval rain
+intensity of an event, but the user can provide a custom function as well or the original Matlab implementation
+version <a class="reference internal" href="api/rfactor.html#rfactor.rfactor.maximum_intensity_matlab_clone" title="rfactor.rfactor.maximum_intensity_matlab_clone"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.rfactor.maximum_intensity_matlab_clone()</span></code></a> can be used to compare with the corrected Matlab
+implementation.</p>
+</div>
+<p>The output is a DataFrame with the intermediate results and the cumulative erosivity of each of the defined events:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 22%" />
+<col style="width: 8%" />
+<col style="width: 23%" />
+<col style="width: 18%" />
+<col style="width: 9%" />
+<col style="width: 6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>event_idx</p></th>
+<th class="head"><p>datetime</p></th>
+<th class="head"><p>…</p></th>
+<th class="head"><p>all_event_rain_cum</p></th>
+<th class="head"><p>erosivity_cum</p></th>
+<th class="head"><p>station</p></th>
+<th class="head"><p>year</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>2018-01-01 14:30:00</p></td>
+<td><p>…</p></td>
+<td><p>1.08</p></td>
+<td><p>5.01878</p></td>
+<td><p>P01</p></td>
+<td><p>2018</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>2018-01-02 16:30:00</p></td>
+<td><p>…</p></td>
+<td><p>12.37</p></td>
+<td><p>8.00847</p></td>
+<td><p>P01</p></td>
+<td><p>2018</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>2018-01-04 09:10:00</p></td>
+<td><p>…</p></td>
+<td><p>20.13</p></td>
+<td><p>8.33275</p></td>
+<td><p>P01</p></td>
+<td><p>2018</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>2018-01-05 02:20:00</p></td>
+<td><p>…</p></td>
+<td><p>22.47</p></td>
+<td><p>8.61462</p></td>
+<td><p>P01</p></td>
+<td><p>2018</p></td>
+</tr>
+<tr class="row-even"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<p>As the “erosivity_cum” column contains the cumulative erosity over the events, the last value is the R-factor of
+the year/station:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">erosivity</span><span class="p">[</span><span class="s2">&quot;erosivity_cum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Other relevant derived statistics, such as the monthly and biweekly based R-factor can be calculated using the
+existing Pandas functionalities:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">erosivity</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>  <span class="c1"># Monthly value</span>
+<span class="n">erosivity</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;SM&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>  <span class="c1"># Biweekly value</span>
+</pre></div>
+</div>
+</section>
+<section id="calculating-multiple-station-year-combinations">
+<h2>Calculating multiple station/year combinations<a class="headerlink" href="#calculating-multiple-station-year-combinations" title="Permalink to this headline"></a></h2>
+<p>When data are available from multiple stations over multiple years in a single DataFrame,
+the <a class="reference internal" href="api/rfactor.html#rfactor.compute_erosivity" title="rfactor.compute_erosivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.compute_erosivity()</span></code></a> function applies the erosivity algorithm on each
+year/station combination in the input rain DataFrame. To do so, an
+additional column with the <code class="docutils literal notranslate"><span class="pre">station</span></code> name is required:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 46%" />
+<col style="width: 24%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"><p>datetime</p></th>
+<th class="head"><p>rain_mm</p></th>
+<th class="head"><p>station</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>2018-01-01 02:10:00</p></td>
+<td><p>0.27</p></td>
+<td><p>P01</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>2018-01-01 02:20:00</p></td>
+<td><p>0.02</p></td>
+<td><p>P01</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>2018-01-01 03:10:00</p></td>
+<td><p>0.48</p></td>
+<td><p>P01</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>2019-01-01 01:10:00</p></td>
+<td><p>0.52</p></td>
+<td><p>P01</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>2019-01-01 01:20:00</p></td>
+<td><p>0.20</p></td>
+<td><p>P01</p></td>
+</tr>
+<tr class="row-even"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-odd"><td><p>123</p></td>
+<td><p>2018-01-01 00:10:00</p></td>
+<td><p>0.02</p></td>
+<td><p>P02</p></td>
+</tr>
+<tr class="row-even"><td><p>124</p></td>
+<td><p>2018-01-01 00:20:00</p></td>
+<td><p>0.32</p></td>
+<td><p>P02</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor</span> <span class="kn">import</span> <span class="n">compute_erosivity</span><span class="p">,</span> <span class="n">maximum_intensity</span>
+<span class="n">erosivity</span> <span class="o">=</span> <span class="n">compute_erosivity</span><span class="p">(</span><span class="n">df_rain</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output is very similar to the previous section, but the data contains now multiple years and/or stations:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 22%" />
+<col style="width: 8%" />
+<col style="width: 23%" />
+<col style="width: 18%" />
+<col style="width: 9%" />
+<col style="width: 6%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>event_idx</p></th>
+<th class="head"><p>datetime</p></th>
+<th class="head"><p>…</p></th>
+<th class="head"><p>all_event_rain_cum</p></th>
+<th class="head"><p>erosivity_cum</p></th>
+<th class="head"><p>station</p></th>
+<th class="head"><p>year</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>2018-01-01 14:30:00</p></td>
+<td><p>…</p></td>
+<td><p>1.08</p></td>
+<td><p>5.01878</p></td>
+<td><p>P01</p></td>
+<td><p>2018</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>2018-01-02 16:30:00</p></td>
+<td><p>…</p></td>
+<td><p>12.37</p></td>
+<td><p>8.00847</p></td>
+<td><p>P01</p></td>
+<td><p>2018</p></td>
+</tr>
+<tr class="row-even"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>2019-01-04 09:10:00</p></td>
+<td><p>…</p></td>
+<td><p>20.13</p></td>
+<td><p>8.33275</p></td>
+<td><p>P01</p></td>
+<td><p>2019</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>2019-01-05 02:20:00</p></td>
+<td><p>…</p></td>
+<td><p>22.47</p></td>
+<td><p>8.61462</p></td>
+<td><p>P01</p></td>
+<td><p>2019</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+</tbody>
+</table>
+<p>To derive the R-factor for each year/station in the data set, one can use the existing Pandas functionalities:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">erosivity</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">])[</span><span class="s2">&quot;erosivity_cum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">last</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="legacy-matlab-file-handling">
+<h2>Legacy Matlab file handling<a class="headerlink" href="#legacy-matlab-file-handling" title="Permalink to this headline"></a></h2>
+<p>The original implementation of the algorithm was done in Matlab, which required a specific file input and output file format.
+The package provides a number of processing functions in the <a class="reference internal" href="api/rfactor.html#module-rfactor.process" title="rfactor.process"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rfactor.process</span></code></a> module to enable compatibility
+with the original data format (see example <span class="xref std std-doc">here</span></p>
+<p>The <span class="math notranslate nohighlight">\(EI_{30}\)</span> values were computed by using a Matlab script (see also <span class="xref std std-ref">here &lt;codelegacy&gt;`that required a folder as input. In this folder,
+non-zero rainfall timeseries were stored in separate text files (extension: `</span>.txt``) files per station and year.</p>
+<section id="input-files">
+<h3>Input files<a class="headerlink" href="#input-files" title="Permalink to this headline"></a></h3>
 <p>The input files are defined by text files (extension: <code class="docutils literal notranslate"><span class="pre">.txt</span></code>) that
 hold non-zero rainfall timeseries. The data are split per station and
 per year with a specific datafile tag (format: <strong>SOURCE_STATION_YEAR.txt</strong>):</p>
@@ -138,133 +425,42 @@ per year with a specific datafile tag (format: <strong>SOURCE_STATION_YEAR.txt</
 </pre></div>
 </div>
 <p>with the first column being the timestamp from the start of the year
-(minutes) , and second the rainfall depth (in mm). Optionally, if you wish
-to only consider a select number of input data files, you can define a
-<code class="docutils literal notranslate"><span class="pre">.csv</span></code>-file with following structure. If you do not do so, the code will
-generate one for you:</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 24%" />
-<col style="width: 46%" />
-<col style="width: 29%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>source</p></th>
-<th class="head"><p>datafile</p></th>
-<th class="head"><p>consider</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>KMI</p></td>
-<td><p>KMI_6414_2004</p></td>
-<td><p>0</p></td>
-</tr>
-<tr class="row-odd"><td><p>KMI</p></td>
-<td><p>KMI_6414_2005</p></td>
-<td><p>1</p></td>
-</tr>
-<tr class="row-even"><td><p>KMI</p></td>
-<td><p>KMI_6414_2006</p></td>
-<td><p>1</p></td>
-</tr>
-<tr class="row-odd"><td><p>…</p></td>
-<td><p>…</p></td>
-<td><p>…</p></td>
-</tr>
-</tbody>
-</table>
+(minutes) , and second the rainfall depth (in mm).</p>
+<p>To load the rain data stored in this format to the Package compatible DataFrame:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">load_rain_folder</span><span class="p">,</span> <span class="n">load_rain_file</span>
+<span class="c1"># Load a single rainfall file</span>
+<span class="n">single_rain</span> <span class="o">=</span> <span class="n">load_rain_file</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/PATH/TO/YOUR/RAINFALL/DATA/FOLDER/P01_001_2018.txt&quot;</span><span class="p">))</span>
+
+<span class="c1"># Load an entire set of rainfall data into a single DataFrame</span>
+<span class="n">wf_rain</span> <span class="o">=</span> <span class="n">load_rain_folder</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/PATH/TO/YOUR/RAINFALL/DATA/FOLDER&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not forget to use a <a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code></a> defined file name or folder name.</p>
+</div>
 </section>
-<section id="compute-erosivity-ei30">
-<h2>Compute erosivity: EI30<a class="headerlink" href="#compute-erosivity-ei30" title="Permalink to this headline"></a></h2>
-<p>The erosivity (EI30-values) can be computed by navigating to the
-main folder (make sure to activating the rfactor environment,
-<code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">rfactor</span></code>). In Python, import:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor.rfactor</span> <span class="kn">import</span> <span class="n">compute_rfactor</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<section id="output-erosivity">
+<h3>Output erosivity<a class="headerlink" href="#output-erosivity" title="Permalink to this headline"></a></h3>
+<p>To export the resulting DataFrame with erosivity values into the legacy output format:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">load_rain_folder</span><span class="p">,</span> <span class="n">load_rain_file</span>
+<span class="c1"># Works both on a single station/year as multiple station/year combinations</span>
+<span class="n">write_erosivity_data</span><span class="p">(</span><span class="n">erosivity</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/PATH/TO/YOUR/EROSIVITY/OUTPUT&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>And run code:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rainfall_inputdata_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;../../tests/data/test_rainfalldata&quot;</span><span class="p">)</span>
-<span class="n">results_folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;results&quot;</span><span class="p">)</span>
-<span class="n">compute_rfactor</span><span class="p">(</span><span class="n">rainfall_inputdata_folder</span><span class="p">,</span><span class="n">results_folder</span><span class="p">,</span><span class="s2">&quot;matlab&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The current implementation makes use of a Matlab engine, which requires
-Matlab to be installed. Results are written to the <em>results_folder</em>-folder.</p>
-<p>If you are using the free software Octave (see <a class="reference internal" href="installation.html#octave"><span class="std std-ref">installation</span></a>)
-and make sure you have the <code class="docutils literal notranslate"><span class="pre">.env</span></code>-file with the reference to your octave
-installation in your current working directory!</p>
+</section>
 </section>
 <section id="analyse-r-values">
 <h2>Analyse R-values<a class="headerlink" href="#analyse-r-values" title="Permalink to this headline"></a></h2>
-<p>The R-value is determined by the number of years and stations the users
-wishes to consider to compute the R value. For example, consider one
-wants to compute the R-value for 2018, for Ukkel (stations: KMI_6447
-and KMI_FS3). In order to do so, consider following steps (in the main
-folder):</p>
-<ul>
-<li><p>Activate the rfactor environment (<code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">rfactor</span></code>), open
-Python and load the necessary packages:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">ErosivityData</span>
+<p>The R-value is determined by the number of years and stations the users wishes to consider to compute the R value. By
+using Pandas DataFrame to store te erosivity, all funtionalities for slicing/filtering/plotting/… are available directly.</p>
+<p>For example, consider one wants to compute the R-value for 2017 and 2018, for Ukkel (stations: KMI_6447 and KMI_FS3):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">erosivity_selected</span> <span class="o">=</span> <span class="n">erosivity</span><span class="p">[(</span><span class="n">erosivity</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">2018</span><span class="p">]))</span> <span class="o">&amp;</span>
+                               <span class="p">(</span><span class="n">erosivity</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;KMI\_6447&#39;</span><span class="p">,</span> <span class="s1">&#39;KMI\_FS3&#39;</span><span class="p">]))]</span>
 </pre></div>
 </div>
-</li>
-<li><p>Define the folder path of the rainfall input and erosivity output
-data:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmap_rainfall</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;./tests/data/test_rainfalldata&quot;</span><span class="p">)</span>
-<span class="n">fmap_erosivty</span> <span class="o">=</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;results&quot;</span><span class="p">)</span> <span class="c1"># Folder path where results are written to (see above).</span>
-</pre></div>
-</div>
-</li>
-<li><p>Create a erosivitydata object:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">erosivitydata</span> <span class="o">=</span> <span class="n">ErosivityData</span><span class="p">(</span><span class="n">fmap_rainfall</span><span class="p">,</span> <span class="n">fmap_erosivity</span><span class="p">)</span>
-</pre></div>
-</div>
-</li>
-<li><p>(optional) Define the path for the <code class="docutils literal notranslate"><span class="pre">files.csv</span></code>-file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">txt_files</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;./test/data/files.csv&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</li>
-<li><p>Build and load the data set:</p>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df_files</span> <span class="o">=</span> <span class="n">erosivitydata</span><span class="o">.</span><span class="n">build_data_set</span><span class="p">()</span>
-<span class="n">erosivitydata</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">df_files</span><span class="p">)</span>
-</pre></div>
-</div>
-</div></blockquote>
-</li>
-<li><p>(optional) Alternative to building the data set with the code, you can use
-a self-defined <code class="docutils literal notranslate"><span class="pre">files.csv</span></code>-file:</p>
-<blockquote>
-<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df_files</span> <span class="o">=</span> <span class="n">erosivitydata</span><span class="o">.</span><span class="n">build_data_set</span><span class="p">(</span><span class="n">txt_files</span><span class="p">)</span>
-<span class="n">erosivitydata</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">df_files</span><span class="p">)</span>
-</pre></div>
-</div>
-</div></blockquote>
-</li>
-<li><p>Get the R-value for 2017 and 2018 based on two Ukkel station
-(“KMI_6447”,”KMI_FS3”):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df_R</span><span class="o">=</span><span class="n">erosivitydata</span><span class="o">.</span><span class="n">load_R</span><span class="p">([</span><span class="s2">&quot;KMI_6447&quot;</span><span class="p">,</span><span class="s2">&quot;KMI_FS3&quot;</span><span class="p">],</span> <span class="p">[</span><span class="mi">2017</span><span class="p">,</span><span class="mi">2018</span><span class="p">])</span>
-</pre></div>
-</div>
-</li>
-<li><p>Get the EI30-values for 2018 based on two Ukkel station
-(“KMI_6447”,”KMI_FS3”):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df_EI30</span><span class="o">=</span><span class="n">erosivitydata</span><span class="o">.</span><span class="n">load_EI30</span><span class="p">([</span><span class="s2">&quot;KMI_6447&quot;</span><span class="p">,</span><span class="s2">&quot;KMI_FS3&quot;</span><span class="p">],</span> <span class="p">[</span><span class="mi">2017</span><span class="p">,</span><span class="mi">2018</span><span class="p">])</span>
-</pre></div>
-</div>
-</li>
-<li><p>The dataframe <code class="docutils literal notranslate"><span class="pre">df_R</span></code> and <code class="docutils literal notranslate"><span class="pre">df_EI30</span></code> holds the R-values and
-EI30-values for each station and year (for which data are available).
-From this, basic numpy or pandas operators can be used to compute
-statistics.</p></li>
-</ul>
-<p>If no values are reported for EI30 in <code class="docutils literal notranslate"><span class="pre">df_EI30</span></code> for a
-specific year for a station, this implies no calculations were done for
-that year. In <code class="docutils literal notranslate"><span class="pre">df_R</span></code> a <code class="docutils literal notranslate"><span class="pre">nan</span></code> value will be reported when no
-calculations were done for that specific year.</p>
 </section>
 </section>
 
