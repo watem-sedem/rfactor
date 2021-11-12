@@ -43,4 +43,3 @@ Gobeyn, S., Van de Wauw, J., De Vleeschouwer, N., Renders, D., Van Ransbeeck,
 N., Verstraeten, G., Deproost, P., 2021. Herziening van de
 neerslagerosiviteitsfactor R voor de Vlaamse erosiemodellering.
 Departement Omgeving, Brussel.
-

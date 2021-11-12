@@ -25,7 +25,8 @@ and relations. An in-depth analysis of the application of this code on
 Flanders can be found in in [this
 report](https://www.friscris.be/nl/publications/herziening-van-de-neerslagerosiviteitsfactor-r-voor-de-vlaamse-erosiemodellering(9d4e2953-6c93-48d0-a1c2-d66d03c749aa).html).
 
-> **note**
+__Note__
+
 >
 > In the earlier versions (\<1.0.0) of the R-factor package, Matlab was
 > used for the core computations. Since version 1.0.0, a faster Python
@@ -42,7 +43,10 @@ is managed by making use of
 to check out the installation instructions, and follow the example in
 the Get started \<getstarted\> page.
 
-------------------------------Input rainfall data are provided by the
+Rainfall and erosivity data
+---------------------------
+
+Input rainfall data are provided by the
 Flemish Environment Agency (VMM), which are also available via
 [waterinfo](https://www.waterinfo.be). The input rainfall data from the
 Royal Meteorological Institute (RMI) are not shared in this project.
