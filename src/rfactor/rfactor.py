@@ -10,14 +10,13 @@ import multiprocessing as mp
 TIME_BETWEEN_EVENTS = "6 hours"
 MIN_CUMUL_EVENT = 1.27
 
+
 class RFactorInputException(Exception):
     """Raise when input data is not conform the rfactor required input format"""
 
 
 def rain_energy_per_unit_depth(rain):
     """Calculate rain energy per unit depth according to Salles/Verstraeten
-
-    # TODO -> check the factor 6 -> linked to 10min interval? Is this requirement?
 
     Parameters
     ----------
@@ -35,7 +34,8 @@ def rain_energy_per_unit_depth(rain):
 
     with
 
-     - :math:`i_r` the rain intensity for every 10-min increment (mm :math:`\\text{h}^{-1}` ).
+     - :math:`i_r` the rain intensity for every 10-min
+       increment (mm :math:`\\text{h}^{-1}` ).
 
     References
     ----------
@@ -174,10 +174,8 @@ def _compute_erosivity(
         raise RFactorInputException(
             "DataFrame should contain 'datetime' and 'rain_mm' columns."
         )
-    # ?TODO -> is the enforcement of a single year required for this implementation
     if len(rain["datetime"].dt.year.unique()) != 1:  # data of a single year
         raise RFactorInputException("DataFrame should contain data of a single year.")
-    # ?TODO -> check if we should enforce 10' interval as input? asfreq?
 
     # mark start of each rain event
     rain = rain[rain["rain_mm"] > 0.0]  # Only keep measurements with rain
@@ -222,13 +220,14 @@ def _compute_erosivity(
     )
 
     # cumulative rain over all events
-    # ?TODO - should we do this after or before exclusion of events below threshold?
     rain_events["all_event_rain_cum"] = (
         rain_events["event_rain_cum"].shift(1, fill_value=0.0).cumsum()
     )
 
     # remove events below threshold
-    events = rain_events[rain_events["event_rain_cum"] > event_threshold].copy()
+    events = rain_events[
+        round(rain_events["event_rain_cum"], 2) > event_threshold
+    ].copy()
 
     # add cumulative erosivity
     events["erosivity_cum"] = events["erosivity"].cumsum()
