@@ -66,7 +66,7 @@ page](https://cn-ws.github.io/rfactor/index.html).
 License
 -------
 
-This project is licensed under the GNU General Public License v3.0, see
+This project is licensed under the GNU Lesser Public License v3.0, see
 here \<license\> for more information.
 
 Contact
