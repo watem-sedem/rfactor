@@ -1,743 +1,268 @@
-from datetime import timedelta, datetime
+import re
 from pathlib import Path
-from dataclasses import dataclass
-import warnings
+
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
 
-@dataclass
-class ErosivityData:
-    """Build and load erosivity and rainfall data
-
-    Data class containing references to all rainfall input data files (.txt)
-    and computed erosivity data files (.txt).
+def _days_since_start_year(series):
+    """Translate datetime series to days since start of the year
 
     Parameters
     ----------
-    fmap_rainfall: pathlib.Path
-        Folder path to directory holding rainfall data. Rainfall data are
-        stored in separate .txt files per station and year. For the format of
-        the `txt`-files, see :func:`rfactor.process.load_rainfall_data`
+    series : pd.Series
+        Series with Datetime values. All datetime values should be of the same year.
 
-    fmap_erosivity_data: pathlib.Path
-        Folder path to directory holding erosivity data. Erosvity data are
-        stored in separate .txt files per station and year. For the format of
-        the `txt`-files, see :func:`rfactor.rfactor.load_erosivity_data`
+    Returns
+    -------
+    days_since_start : pd.Series
+        Days since the start of the year as a float value.
+
+    Notes
+    Support function to provide integration with original Matlab implementation. Output
+    is different from Pandas datetime attribute `dayofyear` as it includes time of the
+    day as decimal value.
+    """
+    current_year = series.dt.year.unique()
+    if not len(current_year) == 1:
+        raise Exception("Input data should all be in the same year.")
+
+    days_since_start = (
+        (series - pd.Timestamp(f"{current_year[0]}-01-01")).dt.total_seconds()
+        / 60.0
+        / 1440.0
+    )
+    return days_since_start
+
+
+def _extract_metadata_from_file_path(file_path):
+    """Get metadata from file name
+
+    Expects to be 'STATION_NAME_YYYY.txt' as format with ``STATION_NAME`` the
+    measurement station and the ``YYYY`` as the year of the measurement.
+
+    Parameters
+    ----------
+    file_path : pathlib.Path
+        File path of the file to extract station/year from
+
+    Returns
+    -------
+    station: str
+    year : str
+    """
+    if not re.fullmatch(".*_[0-9]{4}$", file_path.stem):
+        raise ValueError(
+            "Input file_path_format should " "match with 'STATION_NAME_YYYY.txt'"
+        )
+    station = "_".join(file_path.stem.split("_")[:-1])
+    year = file_path.stem.split("_")[-1]
+    return station, year
+
+
+def _check_path(file_path):
+    """Provide user feedback on file_path type."""
+    if not isinstance(file_path, Path):
+        if isinstance(file_path, str):
+            raise TypeError(
+                f"`file_path` should be a `pathlib.Path` object, use "
+                f"`Path({file_path})` to convert string file_path to valid `Path`."
+            )
+        else:
+            raise TypeError("`file_path` should be a pathlib.Path object")
+
+
+def load_rain_file(file_path):
+    """Load (legacy Matlab) file format of rainfall data of a single station/year.
+
+    The input files are defined by text files (extension: ``.txt``) that hold
+    non-zero rainfall timeseries. The data are split per station and per year with
+    a specific datafile tag (file name format: ``SOURCE_STATION_YEAR.txt``). The data
+    should not contain headers, with the first column defined as 'minutes since the
+    start of the year' and the second as the rainfall depth during the t last minutes
+    (t is the temporal resolution of the timeseries).
+
+    Parameters
+    ----------
+    file_path : pathlib.Path
+        File path with rainfall data according to defined format.
+
+    Returns
+    -------
+    rain : pd.DataFrame
+        DataFrame with rainfall time series. Contains the following columns:
+
+        - *minutes_since* (int): Minutes since the start of the year
+        - *rain_mm* (float): Rain in mm
+        - *datetime* (pd.Timestamp): Time stamp
+        - *station* (str): station name
+        - *year* (int): year of the measurement
+        - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
 
     Example
     -------
-    >>> # Define input folders
-    >>> fmap_rainfall=  Path(r"docs/example_data")
-    >>> fmap_erosivity = Path(r"rfactor/results")
-    >>> txt_files= Path(r"docs/example_data/datafiles_completeness.csv")
-    >>> # Compile and load data
-    >>> data = ErosivityData(fmap_rainfall,fmap_erosivity)
-    >>> df_files = data.build_data_set(txt_files)
-    >>> data.load_data(df_files)
-    >>> # Get dataframe with R for year 2018 and station KMI_6447 and KMI_FS3
-    >>> df_R=data.load_R(["KMI_6447","KMI_FS3"], [2018])
+    1. Example of a rainfall file:
+
+    ::
+
+       9390 1.00 \n
+       9470 0.20 \n
+       9480 0.50 \n
+       10770 0.10 \n
+       ...  ...
+
     """
+    _check_path(file_path)
+    if file_path.is_dir():
+        raise ValueError(
+            "`file_path` need to be the path " "to a file instead of a directory"
+        )
 
-    fmap_rainfall: Path
-    fmap_erosivity: Path
+    station, year = _extract_metadata_from_file_path(file_path)
+    rain = pd.read_csv(
+        file_path, delimiter=" ", header=None, names=["minutes_since", "rain_mm"]
+    )
+    rain["datetime"] = pd.Timestamp(f"{year}-01-01") + pd.to_timedelta(
+        rain["minutes_since"], unit="min"
+    )
+    rain["station"] = station
+    rain["year"] = rain["datetime"].dt.year
+    rain["tag"] = rain["station"].astype(str) + "_" + rain["year"].astype(str)
+    return rain
 
-    def __post_init__(self):
-        """Check if folders exist and number of files are equal
-        """
-        check_if_folder_exists(self.fmap_rainfall)
-        check_if_folder_exists(self.fmap_erosivity)
-        self.lst_txt_rainfall = list(self.fmap_rainfall.glob("*.txt*"))
-        if len(self.lst_txt_rainfall)==0:
-            msg = "No text files (*.txt) in rainfall input folder."
-            raise IOError(msg)
-        self.lst_txt_erosivity = list(self.fmap_erosivity.glob("*.txt*"))
-        if len(self.lst_txt_erosivity)==0:
-            msg = "No text files (*.txt) in erosivity input folder."
-            raise IOError(msg)
-        self.check_number_of_files()
 
-    def check_number_of_files(self):
-        """Check if the number of files in the rainfall and erosivity data
-        folder are equal.
-        """
-        lst_rainfall = [txt.stem for txt in self.lst_txt_rainfall]
-        lst_erosivity = [txt.stem.split("new")[0] for txt in self.lst_txt_erosivity]
-        flag1 = check_missing_files(lst_rainfall, lst_erosivity, self.fmap_erosivity)
-        flag2 = check_missing_files(lst_erosivity, lst_rainfall, self.fmap_rainfall)
+def load_rain_folder(folder_path):
+    """Load all (legacy Matlab format) files of rainfall data in a folder
 
-        if flag1 or flag2:
-            msg = (
-                f"Unequal number of input rainfall and erosivity " f"calculation files."
-            )
-            IOError(msg)
+    Parameters
+    ----------
+    folder_path : pathlib.Path
+        Folder path with rainfall data according to legacy Matlab format,
+        see :func:`rfactor.process.load_rain_file`.
 
-    def build_data_set(self, txt_files=None):
-        """Build data set with the help of a text file, containing an overview
-        of the to use rainfall and erosivity files.
+    Returns
+    -------
+    rain : pd.DataFrame
+        DataFrame with rainfall time series. Contains the following columns:
 
-        Parameters
-        ----------
-        txt_files: pathlib.Path
-            File path of rainfall and erosivity overview file, see
-            :func:`rfactor.process.load_df_files`.
+        - *minutes_since* (int): Minutes since the start of the year
+        - *rain_mm* (float): Rain in mm
+        - *datetime* (pd.Timestamp): Time stamp
+        - *station* (str): station name
+        - *year* (int): year of the measurement
+        - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
+    """
+    _check_path(folder_path)
+    if folder_path.is_file():
+        raise ValueError(
+            "`folder_path` need to be the path " "to a directory instead of a file"
+        )
 
-        Returns
-        -------
-        df_files: pandas.DataFrame
-            Loaded txt_files data, see :func:`rfactor.process.load_df_files`.
-        """
-        if txt_files is None:
-            df_files = self.create_df_files()
-        else:
-            df_files = load_df_files(txt_files)
-        df_files = self.check_df_files(df_files, txt_files)
+    lst_df = []
 
-        return df_files
+    files = list(folder_path.glob("*.txt"))
+    for file_path in tqdm(files, total=len(files)):
+        lst_df.append(load_rain_file(file_path))
 
-    def create_df_files(self):
-        """Create a df_files dataframe given the input data in the erosivity
-        input data folder.
+    all_rain = pd.concat(lst_df)
+    all_rain = all_rain.sort_values(["station", "minutes_since"])
+    all_rain.index = range(len(all_rain))
+    return all_rain
 
-        Returns
-        -------
-        df_files: pandas.DataFrame
-            Loaded txt_files data, see :func:`rfactor.process.load_df_files`.
-        """
-        df_files = pd.DataFrame(columns=["source","datafile","consider"])
-        tag = "new cumdistr salles"
-        df_files["datafile"] = [f.stem.replace(tag,"") for f in self.lst_txt_erosivity]
-        df_files["source"] = [str(f).split("_")[0] for f in df_files["datafile"]]
-        df_files["consider"] = 1
-        df_files=get_station_year_from_datafile(df_files)
 
-        return df_files
+def write_erosivity_data(df, folder_path):
+    """Write output erosivity to (legacy Matlab format) in folder.
 
-    def check_df_files(self, df_files, txt_files=None):
-        """ Load and check if rainfall/erosivity datafile is tabulated the
-        datafile overview file.
+    Written data are split-up for each year and station
+    (file name format: ``SOURCE_STATION_YEAR.txt``) and does not contain any headers.
+    The columns (no header!) in the written text files represent the following:
 
-        Parameters
-        ----------
-        df_files: pandas.DataFrame
-            See :func:`rfactor.process.load_df_files`.
-        txt_files: pathlib.Path
-            File path of rainfall and erosivity overview file, see
-            :func:`rfactor.process.load_df_files`.
+    - *days_since* (float): Days since the start of the year.
+    - *erosivity_cum* (float): Cumulative erosivity over events.
+    - *all_event_rain_cum* (float): Cumulative rain over events.
 
-        Returns
-        -------
-        df_files: pandas.DataFrame
-            Loaded txt_files data, see :func:`rfactor.process.load_df_files`.
-        """
-        df_files["file_exists"] = 0
-        df_files["file_exists_rainfall"] = 0
-        for file in self.lst_txt_erosivity:
-            datafile = file.stem.split("new")[0]
-            if datafile not in df_files.index:
-                if txt_files is not None:
-                    msg = (
-                        f"'{file.stem}' not listed"
-                        f" in '{Path(txt_files).absolute()}', please add the "
-                        f"file datafile record and indicate if you want to "
-                        f"consider it for analysis."
-                    )
-                    raise IOError(msg)
-            df_files.loc[datafile, "file_exists"] = 1
-            df_files.loc[datafile, "fname_rainfall"] = self.fmap_rainfall / (
-                datafile + ".txt"
-            )
-            if not df_files.loc[datafile, "fname_rainfall"].exists():
-                df_files.loc[datafile, "file_exists_rainfall"] = 0
-            df_files.loc[datafile, "fname_erosivity"] = self.fmap_erosivity / (
-                datafile + "new cumdistr salles.txt"
-            )
-        return df_files
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        DataFrame with rfactor/erosivity time series. Can contain multiple columns,
+        but should have at least the following:
 
-    def load_data(self, df_files):
-        """Load erosivity and rainfall data.
+        - *datetime* (pandas.Timestamp): Time stamp
+        - *station* (str): Station identifier
+        - *erosivity_cum* (float): Cumulative erosivity over events
+        - *all_event_rain_cum* (float): Cumulative rain over events
 
-        This function loads the erosivity and rainfall data for each station.
-        It only loads data for stations which have at least one year that is
-        considered for analysis.
+    folder_path : pathlib.Path
+        Folder path to save data according to legacy Matlab format,
+        see :func:`rfactor.process.load_rain_file`.
 
-        Parameters
-        ----------
-        df_files: pandas.DataFrame
-            Input file overview file, see
-            :func:`rfactor.process.load_df_files`.
-        """
+    """
+    _check_path(folder_path)
 
-        self.dict_erosivity_data = {}
-        self.dict_rainfall_data = {}
-        self.lst_nr_files = {}
-        # get stations from considered and existing datafiles
-        condition = df_files["consider"] * df_files["file_exists"] == 1
-        self.stations = np.unique(df_files.loc[condition, "station"])
+    folder_path.mkdir(exist_ok=True, parents=True)
 
-        for station in tqdm(self.stations):
-            stationdata = StationData(station, df_files[df_files["station"] == station])
-            dict_rainfall, dict_erosivity = stationdata.load_data()
-            self.dict_rainfall_data[station] = dict_rainfall
-            self.dict_erosivity_data[station] = dict_erosivity
-            self.lst_nr_files[station] = stationdata.n_files
-
-        self.nr_files = sum(self.lst_nr_files.values())
-
-    def load_rainfall(self, stations=[], years=[]):
-        """Load N-value for all/selected stations and years.
-
-        Parameters
-        ----------
-        stations: list
-            List of stations for which to load yearly R-value.
-
-        years: list
-            List of years for which to load yearly R-factor.
-
-        Returns
-        -------
-        pandas.DataFrame
-            See :func:`rfactor.proces.load_dict_format`
-        """
-        return load_dict_format(self.dict_rainfall_data, "N", stations, years)
-
-    def load_R(self, stations=[], years=[]):
-        """Load R-values for stations and years.
-
-        Parameters
-        ----------
-        stations: list
-            List of stations for which to load yearly R-value.
-
-        years: list
-            List of years for which to load yearly R-factor.
-
-        Returns
-        -------
-        pandas.DataFrame
-            See :func:`rfactor.proces.load_dict_format`
-        """
-        return load_dict_format(self.dict_erosivity_data, "R", stations, years)
-
-    def load_EI30(self, stations=[], years=[], frequency="M"):
-        """Load EI30 timeseries values
-
-        The timeseries has a frequency defined by the frequency input
-        parameter.
-
-        Parameters
-        ----------
-        stations: list
-            List of stations for which to load yearly R-value.
-        years: list
-            List of years for which to load yearly R-factor.
-        frequency: string, optional
-            Frequency to resample data to, see https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects
-
-        Returns
-        -------
-        pandas.DataFrame
-            See :func:`rfactor.proces.load_dict_format`
-        """
-        if frequency not in ["SM", "M"]:
-            msg = (
-                f"Loading EI30 is only implemented for half-montlhy ('SM') "
-                f"and monthly scale ('M')"
-            )
-            raise IOError(msg)
-
-        return load_dict_format(
-            self.dict_erosivity_data, "EI30", stations, years, frequency=frequency
+    for (station, year), df_group in df.groupby(["station", df["datetime"].dt.year]):
+        df_group["days_since"] = _days_since_start_year(df_group["datetime"])
+        formats = {
+            "days_since": "{:.3f}",
+            "erosivity_cum": "{:.2f}",
+            "all_event_rain_cum": "{:.1f}",
+        }
+        for column, fformat in formats.items():
+            df_group[column] = df_group[column].map(lambda x: fformat.format(x))
+        df_group[["days_since", "erosivity_cum", "all_event_rain_cum"]].to_csv(
+            folder_path / f"{station}_{year}.csv", header=None, index=None, sep=" "
         )
 
 
-@dataclass
-class StationData:
-    """Load and process erosivity and rainfall data for one measurement
-     station.
-
-    station: str
-        Name or code of the measurement station.
-    df_files: pandas.DataFrame
-        See :func:`rfactor.process.load_df_files`.
-
-    """
-
-    station: str
-    df_files: pd.DataFrame
-
-    def __post_init__(self):
-
-        self.df_erosivity = pd.DataFrame()
-        self.df_rainfall = pd.DataFrame()
-        self.dict_erosivity = {}
-        self.dict_rainfall = {}
-        self.n_files = np.sum(self.df_files["consider"] == 1)
-
-    def load_data(self):
-        """Load erosivity and rainfall data per year
-
-        Returns
-        -------
-        dict_rainfall: dict of {str: pandas.DataFrame}
-            Holding rainfall data (in pandas.DataFrame) for every year, i.e.
-            {*year*: *rainfall_data*}. For structure *rainfall_data*, see
-            :func:`rfactor.process.load_rainfall_data`.
-
-        dict_erosivity: dict of {str: pandas.DataFrame}
-            Holding erosivity data (in pandas.DataFrame) for every year, i.e.
-            {*year*: *erosivity_data*}. For structure *rainfall_data*, see
-            :func:`rfactor.process.load_rainfall_data`.
-
-        """
-        dict_rainfall = {}
-        dict_erosivity = {}
-
-        if self.n_files > 0:
-            for index in self.df_files.index:
-                year = self.df_files.loc[index, "year"]
-                consider = self.df_files.loc[index, "consider"]
-                fname_erosivity = self.df_files.loc[index, "fname_erosivity"]
-                fname_rainfall = self.df_files.loc[index, "fname_rainfall"]
-                if (consider == 1) & (fname_rainfall != ""):
-                    if fname_rainfall.exists():
-                        dict_rainfall[int(year)] = load_rainfall_data(
-                            fname_rainfall, self.station, year
-                        )
-                    dict_erosivity[int(year)] = load_erosivity_data(
-                        fname_erosivity, year
-                    )
-        return dict_rainfall, dict_erosivity
-
-
-def load_df_files(txt_files):
-    """Load overview file of rainfall and erosivity data
+def get_rfactor_station_year(erosivity, stations=None, years=None):
+    """Get R-factor at end of every year for each station from cumulative erosivity.
 
     Parameters
     ----------
-    txt_files: pathlib.Path
-        File path of overview file holding `datafile` tag (format
-        "%STATION_%YEAR") and 'consider' column.
+    erosivity: pandas.DataFrame
+        See :func:`rfactor.rfactor.compute_erosivity`
+    stations: list
+        List of stations to extract R for.
+    years: list
+        List of years to extract R for.
 
     Returns
     -------
-    df_files: pandas.DataFrame
-        loaded txt_files data with columns:
+    erosivity: pandas.DataFrame
+        Updated with:
 
-        - *source* (str): source of data.
-        - *datafile* (str): unique tag referring to rainfall and erosivity
-          filename (format "%STATION_%YEAR" without suffix).
-        - *station* (str): Name or code of the measurement station.
-        - *year* (int): Year of registration.
-        - *consider* (int): Consider file for year and station for
-          analysis (0/1).
-    """
-    df_files = pd.read_csv(txt_files)
-    check_duplicates_df_files(df_files, txt_files)
-    df_files = get_station_year_from_datafile(df_files)
-    if "consider" not in df_files.columns:
-        msg = f"Column 'consider' not file {txt_files}. Please add!"
-        raise IOError(msg)
-    return df_files
-
-def get_station_year_from_datafile(df_files):
-    """Extract year and station from datafile name
-
-    Parameters
-    ----------
-     df_files: pandas.DataFrame
-        loaded txt_files data with columns:
-
-        - *source* (str): source of data.
-        - *datafile* (str): unique tag referring to rainfall and erosivity
-          filename (format "%STATION_%YEAR" without suffix).
-        - *consider* (int): Consider file for year and station for
-          analysis (0/1).
-    Returns
-    -------
-    df_files: pandas.DataFrame
-        loaded txt_files data with columns:
-
-        - *source* (str): source of data.
-        - *datafile* (str): unique tag referring to rainfall and erosivity
-          filename (format "%STATION_%YEAR" without suffix).
-        - *station* (str): Name or code of the measurement station.
-        - *year* (int): Year of registration.
-        - *consider* (int): Consider file for year and station for
-          analysis (0/1).
-    """
-    if "year" not in df_files.columns:
-        df_files["year"] = [i.split("_")[-1] for i in df_files["datafile"]]
-    if "station" not in df_files.columns:
-        df_files["station"] = [
-            i.split("_")[0] + "_" + i.split("_")[1] for i in df_files["datafile"]
-        ]
-    df_files.index = df_files["datafile"]
-    df_files["fname_rainfall"] = ""
-    df_files["fname_erosivity"] = ""
-
-    return df_files
-
-def check_duplicates_df_files(df_files, txt_files):
-    """Check duplicate entries dataframe files
-
-    Check duplicate entries based on tag 'datafile' in df_files, and exit code
-    when duplicate definitions are found.
-
-    Parameters
-    ----------
-    df_files: pandas.DataFrame
-        See :func:`rfactor.process.load_df_files`
-    txt_files: pathlib.Path
-        See :func:`rfactor.process.load_df_files`
-    """
-    df_files = df_files.drop_duplicates(["datafile", "consider"])
-    lst_datafiles = df_files["datafile"].to_list()
-    for datafile in lst_datafiles:
-        c = lst_datafiles.count(datafile)
-        if c > 1:
-            msg = f"Check duplicate and remove for {datafile} in {txt_files}"
-            raise IOError(msg)
-
-
-def load_dict_format(dict_data, variable, stations=[], years=[], frequency=""):
-    """Load the yearly R-value for stations and years
-
-    Load and return a dataframe of the erosivity data for the stations and
-    years defined in the input.
-
-    Parameters
-    ----------
-    dict_data: dict of {str: dict}
-        Dictionary format of erosivity or rainfall data. The nested 
-        dict {station: dict} holds {str: pandas.DataFrame} (key: year, 
-        value: dataframe).
-    variable: str
-        Variable one whiches to load ("N" = rainfall, "R"= R-factor).
-    stations: list, default []
-        List of stations to load data for. If list == [], then all data
-        for all stations are loaded.
-    years: list, default []
-        List of years to load data for. If years == [], then all data for
-        all years are loaded.
-    frequency: string, optional
-        Frequency to resample data to, see https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects
-
-    Return
-    ------
-    pandas.DataFrame
-        Dataframe of R-value, EI30 or rainfall data.
-
-        - *year* (int): Year of registration.
-        - *value* (float): R-, EI30- or rainfall value.
-        - *station* (str): Name or code of the measurement station.
+        - *year* (int): year
+        - *station* (str): station
+        - *erosivity_cum* (float): cumulative erosivity at
+          end of *year* and at *station*.
 
     """
-    lst_df = []
-    lst_stations = dict_data.keys() if len(stations) == 0 else stations
-    for station in lst_stations:
-        df = load_df_station(dict_data[station], variable, years, frequency=frequency)
-        df["station"] = station
-        lst_df.append(df)
-    return pd.concat(lst_df)
 
+    if stations is not None:
+        unexisting_stations = set(stations).difference(
+            set(erosivity["station"].unique())
+        )
+        if unexisting_stations:
+            raise KeyError(
+                f"Station name(s): {unexisting_stations} not part of data set."
+            )
+        erosivity = erosivity.loc[erosivity["station"].isin(stations)]
+    if years is not None:
+        unexisting_years = set(years).difference(set(erosivity["year"].unique()))
+        if unexisting_years:
+            raise KeyError(f"Year(s): {unexisting_years} not part of data set.")
+        erosivity = erosivity.loc[erosivity["year"].isin(years)]
 
-def load_df_station(dict_data, variable, years=[], frequency=""):
-    """Load the yearly R-value for years, for one station.
-
-    Parameters
-    ----------
-    dict_data: dict of {int: pd.DataFrame}
-        Dictionary format of erosivity or rainfall data (key: year,
-        value: dataframe).
-    years: list, default []
-        List of years to load data for. If years == [], then all data for
-        all years are loaded.
-    frequency: string, optional
-        Frequency to resample data to, see https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects
-
-    Returns
-    -------
-    df: pandas.DataFrame
-        Dataframe of R-value, EI30 or rainfall data.
-
-        - *year* (int): Year of registration.
-        - *value* (float): R-, EI30- or rainfall value
-    """
-    dict_output = {}
-    lst_years = dict_data.keys() if len(years) == 0 else years
-    if variable == "R":
-        for year in lst_years:
-            if year in dict_data.keys():
-                dict_output[year] = get_R_year(dict_data, year)
-            else:
-                dict_output[year] = np.nan
-        df = pd.DataFrame.from_dict(dict_output, orient="index", columns=["value"])
-        df = df.reset_index().rename(columns={"index": "year"})
-    elif variable == "N":
-        if len(dict_data)>0:
-            df = pd.concat(dict_data.values())
-        else:
-            df = pd.DataFrame(columns=["year","value"])
-    elif variable == "EI30":
-        for year in lst_years:
-            if year in dict_data.keys():
-                dict_output[year] = get_EI30(dict_data, year, frequency=frequency)
-            else:
-                dict_output[year] = pd.DataFrame(columns=["year","value"])
-        df = pd.concat(dict_output.values())
-    return df[["year", "value"]]
-
-
-def get_R_year(dict_df_erosivity, year):
-    """Get R-value from erosvity dictionary data format
-
-    Parameters
-    ----------
-    dict_df_erosivity: dict of {str: pandas.DataFrame}
-        Dictionary format of erosivity data (key: year, value: dataframe). For
-        the format of the dataframe,
-        see :func:`rfactor.process.assign_datetime_df_erosivity`
-    year: int
-        Year of registration.
-
-    Returns
-    -------
-    float
-        R-value for year.
-    """
-    return dict_df_erosivity[year]["cumEI30"].iloc[-1]
-
-
-def get_EI30(dict_df_erosivity, year, frequency=""):
-    """Get EI30-values from erosivity dictionary data format
-
-    Get EI30-values with defined frequency
-
-    Parameters
-    ----------
-    dict_df_erosivity: dict of {str: pandas.DataFrame}
-        Dictionary format of erosivity data (key: year, value: dataframe).
-    year: int
-        Year of registration.
-    frequency: string, default empty string
-        Frequency to resample data to, see https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#dateoffset-objects
-
-    Returns
-    -------
-    df: pandas.DataFrame
-
-    """
-    df = dict_df_erosivity[year]
-    if frequency!="":
-        df=df.resample(frequency, closed="right").ffill()
-    df["value"] = df["cumEI30"].diff()
-    df.loc[df.index[0], "value"] = df.loc[df.index[0], "cumEI30"]
-    df.loc[df["value"].isnull(), "value"] = 0.0
-
-    return df[["year", "value"]]
-
-
-def load_rainfall_data(fname, station, year):
-    """ Load rainfall data file
-
-    Load the rainfall data file in a pandas dataframe. Add headers.
-
-    Parameters
-    ----------
-    fname: pathlib.Path
-        File path to rainfall data file. This file contains no header, two
-        columns, and a value for the depth of rainfall (mm) registered during
-        the last x minutes. Please ensure the fname is of format
-        "%STATION_%YEAR".
-    station: str
-        Name or code of the measurement station
-    year: int
-        Year of registration.
-
-    Return
-    ------
-    df: pandas.DataFrame
-        Holds non-zero rainfall time series for one year, one station
-
-        - *timestamp* (int): number of passed minutes since start of the year.
-        - *value* (float): amount of rainfal (mm) fallen during past x minutes.
-
-    Notes
-    -----
-
-    1. The content of fname should be a non-zero timeseries:
-
-        10  \t 1.00 \n
-        20  \t 0.20 \n
-        50  \t 0.50 \n
-        60  \t 0.30 \n
-        ... ...
-    2. The rainfall datafile can only hold data for one year: maximum value
-       for column one is 525600 (365 days) minutes (527040, leap year).
-    """
-    fname = np.loadtxt(fname, delimiter=" ")
-    df = pd.DataFrame(fname, columns=["timestamp", "value"])
-    df["year"] = year
-    df["station"] = station
-    startdate = datetime.strptime("01/01/" + year, "%d/%m/%Y")
-    df.loc[:, "date"] = [startdate + timedelta(minutes=i) for i in df["timestamp"]]
-    df.index = df["date"]
-    return df
-
-
-def load_erosivity_data(fname, year):
-    """Load and process erosivity data
-
-    Parameters
-    ----------
-    fname: pathlib.Path
-        File path to erosivity data file. See :func:`load_erosivity_file`
-    year: int
-        Year of registration.
-
-    Returns
-    -------
-    df: pandas.DataFrame
-        See :func:`rfactor.process.load_erosivity_file`
-    """
-    df = load_erosivity_file(fname)
-    df = assign_datetime_df_erosivity(df.copy(), str(year))
-    df = clip_erosivity_data(df.copy(), year)
-
-    return df
-
-
-def load_erosivity_file(fname):
-    """Load in a single erosivity file.
-
-    Parameters
-    ----------
-    fname: pathlib.Path
-        File path to erosivity data file. This file contains no header, three
-        columns: a time stamp (DOY, float), a cumulative value for the
-        rainfall erosivity (MJ mm ha-1 h-1) (float).
-
-    Returns
-    -------
-    df: pandas.DataFrame
-        Cumulative erosivity (cumulative EI30) for day-of-the-year.
-
-        - *day* (float): day of the year.
-        - *cumEI30* (float): cumulative erosivity (MJ mm ha-1 h-1).
-        - *fname* (pathlib.Path): file path of data source.
-    """
-    arr = np.loadtxt(fname)
-    df = pd.DataFrame(
-        np.zeros([len(arr), 5]), columns=["fname", "cumEI30", "day", "year", "date"]
-    )
-    df.loc[:, "cumEI30"] = arr[:, 1]
-    df.loc[:, "day"] = arr[:, 0]
-    df.loc[:, "fname"] = fname
-
-    return df
-
-
-def assign_datetime_df_erosivity(df, year):
-    """Compile a pandas datatime index from day-of-the-year column.
-
-    Parameters
-    ----------
-    df: pandas.DataFrame
-        See :func:`rfactor.process.load_erosivity_file`
-    year: int
-        Year of registration.
-
-    Returns
-    -------
-    df: pandas.DataFrame
-
-        Updated dataframe with datetime index added.
-
-        - *index* (pandas.datetime64 series).
-        - *day* (float): day of the year.
-        - *cumEI30* (float): cumulative erosivity (MJ mm ha-1 h-1).
-        - *fname* (pathlib.Path): file path of data source.
-    """
-    startdate = datetime.strptime("01/01/" + year, "%d/%m/%Y")
-    df.loc[:, "date"] = [startdate + timedelta(days=i) for i in df["day"]]
-    df.index = df["date"]
-    df["doy"] = df.index.dayofyear
-    return df
-
-
-def clip_erosivity_data(df, year):
-    """Clip erosivity data so it only contains data for the given year.
-
-    Parameters
-    ----------
-    df: pandas.DataFrame
-        See :func:`rfactor.process.assign_datetime_df_erosivity`
-    year: int
-        Year of registration.
-
-    Returns
-    -------
-    df: pandas.DataFrame
-        Data set filtered to year.
-    """
-    # if R-value goes out of bound, than map the last value in the year
-    cond = df.index.year == int(year) + 1
-    if np.sum(cond) > 0:
-        maxR = df["cumEI30"].iloc[-1]
-        df.loc[df.index[-2], "cumEI30"] = maxR
-        df = df.drop(df.index[len(df) - 1])
-    return df
-
-
-def check_if_folder_exists(folder):
-    """Check if folder exists
-
-    Parameters
-    ----------
-    folder: pathlib.Path
-        input folder
-    """
-    if not folder.exists():
-        msg = f"{folder} does not exists."
-        raise IOError(msg)
-
-
-def check_missing_files(lst_target, lst_reference, fmap_reference):
-    """Check if file in either rainfall or erosivity input folder is missing.
-
-    Parameters
-    ----------
-    lst_target: list
-        List of to-test files, file path of files in pathlib.Path format.
-    lst_reference: list
-        List of file references, file path of files in pathlib.Path format.
-    fmap_reference: pathlib.Path
-        Folder path of reference files.
-
-    Returns
-    -------
-    flag: bool
-        Difference between two folders is zero (True), else False
-
-    Notes
-    -----
-    The files in both the erosivity and rainfall input folder have
-    to be exactly the same (same number of files, same tags).
-    """
-    diff = set(lst_target) - set(lst_reference)
-    flag = True
-    if len(diff) > 0:
-        msg = f"{str(diff)} are not in {fmap_reference}"
-        warnings.warn(msg)
-        flag = False
-    return flag
+    erosivity = erosivity.groupby(["year", "station"]).aggregate("erosivity_cum").last()
+    erosivity = erosivity.reset_index().sort_values(["station", "year"])
+    erosivity.index = range(len(erosivity))
+    return erosivity
 
 
 def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
-    """Compute general statistics for rainfall timeseries
+    """Compute general statistics for rainfall timeseries.
 
     Statistics (number of records, min, max, median and years data) are
     computed for each measurement station
@@ -745,41 +270,66 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
     Parameters
     ----------
     df_rainfall: pandas.DataFrame
-        See :func:`rfactor.process.load_dict_format`
+        See :func:`rfactor.process.load_rain_file`
     df_station_metadata: pandas.DataFrame
         Dataframe holding station metadata. This dataframe has one mandatory
         column:
 
         - *station* (str): Name or code of the measurement station
+        - *x* (float): X-coordinate of measurement station.
+        - *y* (float): Y-coordinate of measurement station.
 
     Returns
     -------
     df_statistics: pandas.DataFrame
+        Apart from the ``station``, ``x``, ``y`` when ``df_station_metadata`` is
+        provided, the following columns are returned:
+
+        - *year* (list): List of the years fror which data is available for the station.
+        - *records* (int): Total number of records for the station.
+        - *min* (float): Minimal measured value for the station.
+        - *median* (float): Median measured value for the station.
+        - *max* (float): Maximal measured value for the station.
 
     """
-    df_rainfall["year"] = df_rainfall["year"].astype(int)
     df_rainfall = df_rainfall.sort_values(by="year")
     df_statistics = (
-        df_rainfall[["year", "station", "value"]]
+        df_rainfall[["year", "station", "rain_mm"]]
         .groupby("station")
         .aggregate(
             {
                 "year": lambda x: sorted(set(x)),
-                "value": [np.min, np.max, np.median, lambda x: np.shape(x)[0]],
+                "rain_mm": [np.min, np.max, np.median, "count"],
             }
         )
-    )
+    ).reset_index()
+    df_statistics.columns = df_statistics.columns.map("".join)
+    rename_cols = {
+        "year<lambda>": "year",
+        "rain_mmamin": "min",
+        "rain_mmamax": "max",
+        "rain_mmmedian": "median",
+        "rain_mmcount": "records",
+    }
+    df_statistics = df_statistics.rename(columns=rename_cols)
+
     if df_station_metadata is not None:
         df_statistics = df_statistics.merge(
             df_station_metadata, on="station", how="left"
         )
+        df_statistics = df_statistics[
+            [
+                "year",
+                "station",
+                "x",
+                "y",
+                "records",
+                "min",
+                "median",
+                "max",
+            ]
+        ]
+    else:
+        df_statistics = df_statistics[["year", "records", "min", "median", "max"]]
 
-    df_statistics["years"] = df_statistics[("year", "<lambda>")]
-    df_statistics["min"] = df_statistics[("value", "amin")]
-    df_statistics["median"] = df_statistics[("value", "median")]
-    df_statistics["max"] = df_statistics[("value", "amax")]
-    df_statistics["records"] = df_statistics[("value", "<lambda_0>")]
-
-    return df_statistics[
-        ["station", "years", "location", "x", "y", "records", "min", "median", "max"]
-    ]
+    return df_statistics
