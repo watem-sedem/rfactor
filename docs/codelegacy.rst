@@ -13,12 +13,12 @@ fixed in the Matlab script without using code versioning (see Gobeyn et al.,
 optimize performance, code readability and user-friendliness. During this
 evaluation phase a number of additional bugs were identified and
 corrected. In the following section a brief comparison is presented between the Matlab
-(version 0.0.1) and Python (version 1.0.0) implementation.
+(version 0.0.1) and Python implementation.
 
 For the code comparison, both the Matlab code and the reimplementation in
-Python are run with rainfall input data from Belgium (KMI and VMM,
-see :ref:`databelgium`). In the figure below, a comparison is shown between
-the Matlab code available in version 0.0.1, on the one hand, and 1.0.0, on
+Python are run with rainfall input data from Belgium (KMI and VMM).
+In the figure below, a comparison is shown between
+the Matlab code available in version 0.0.1, on the one hand, and the Python version on
 the other. For this figure, the cumulative erosivity at the end of the year
 was compared for all years of all stations individually. Differences are
 explained by a  if/else-case defined in the Matlab version 0.0.1 in which
@@ -29,13 +29,13 @@ the maximum 30-minute rainfall intensity.
 .. image:: _static/png/matlab_comp.png
 
 In the next figure, the comparison is made between the corrected Matlab version
-(1.0.0) and the Python reimplementation (1.0.0). Here the minor deviations are
+(1.0.0) and the Python reimplementation. Here the minor deviations are
 related to decimal precision.
 
 .. image:: _static/png/python_matlab_comp.png
 
 Currently, the Python implementation is adopted for future developments and
-applications.
+applications and unit tests included to guarantee the future consistency.
 
 References
 ----------
