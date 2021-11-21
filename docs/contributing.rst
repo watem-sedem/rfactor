@@ -191,10 +191,10 @@ Variable names follow the `PEP8`_ guidelines, but provide additional context:
 Creating a new release
 ^^^^^^^^^^^^^^^^^^^^^^
 
-For the releases, the setup uses `setuptoolsscm`_.  Basically, by managing the git-tags, the release version is managed as well.
+For the releases, the setup uses `setuptools-scm <setuptoolsscm>`_.  Basically, by managing the git-tags, the release version is managed as well.
 
 Furthermore, the deployment of the documentation and pypi package is managed using github actions,
-the `deployci`_ file.
+the `deploy.yml <deployci>`_ file.
 
 To make a new release:
 
@@ -204,7 +204,7 @@ To make a new release:
 - ``git push origin master``
 - Add git tags: ``git tag vX.X.X``
 - Push the git tags: ``git push --tags``
-- On the `releasepage`_) draft a new release using the latest git tag
+- On the `release page <releasepage>`_ draft a new release using the latest git tag
 - Copy past the changes from the changelog in the dialog and publish release
 - Check if github actions runs the deployment of docs and pypi
 
