@@ -34,9 +34,9 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
-    - name: Test with tox
+    - name: Test with tox (except full benchmark)
       run: |
-        tox
+        tox -- -m "not slow"
     - name: Check docstring coverage
       run: |
         tox -e interrogate
