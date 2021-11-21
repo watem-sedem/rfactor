@@ -20,7 +20,7 @@ steps:
     commands:
       - . $CONDA_ACTIVATE
       - conda activate /src/rfactor/env
-      - tox -- -m "not externaldepedent"
+      - tox
 
   - name: doctest coverage
     image: continuumio/miniconda3
