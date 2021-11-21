@@ -191,19 +191,24 @@ Variable names follow the `PEP8`_ guidelines, but provide additional context:
 Creating a new release
 ^^^^^^^^^^^^^^^^^^^^^^
 
-For the releases, the setup uses [`setuptools-scm`](https://pypi.org/project/setuptools-scm/) as provided by the
-[pyscaffold](https://pypi.org/project/PyScaffold/) setup.  Basically, by managing the git-tags, the release version is managed as well.
+For the releases, the setup uses `setuptoolsscm`_.  Basically, by managing the git-tags, the release version is managed as well.
 
 Furthermore, the deployment of the documentation and pypi package is managed using github actions,
-the [`deploy.yml`](https://github.com/fluves/pywaterinfo/blob/master/.github/workflows/deploy.yml) file.
+the `deployci`_ file.
 
 To make a new release:
-- `git checkout master`, `git pull origin master`
-- Update the `CHANGELOG.rst` with the changes for this new release
-- `git commit -m 'Update changelog for release  X.X.X' CHANGELOG.rst
-- `git push origin master`
-- Add git tags: `git tag vX.X.X`
-- Push the git tags: `git push --tags`
-- On the [release page](https://github.com/cn-ws/rfactor/releases) draft a new release using the latest git tag
+
+- ``git checkout master``, ``git pull origin master``
+- Update the ``CHANGELOG.rst`` with the changes for this new release
+- ``git commit -m 'Update changelog for release  X.X.X' CHANGELOG.rst``
+- ``git push origin master``
+- Add git tags: ``git tag vX.X.X``
+- Push the git tags: ``git push --tags``
+- On the `releasepage`_) draft a new release using the latest git tag
 - Copy past the changes from the changelog in the dialog and publish release
 - Check if github actions runs the deployment of docs and pypi
+
+
+.. _releasepage: https://github.com/cn-ws/rfactor/releases
+.. _setuptoolsscm: https://www.python.org/dev/peps/pep-0008/#naming-conventions
+.. _deployci: https://github.com/fluves/pywaterinfo/blob/master/.github/workflows/deploy.yml
