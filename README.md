@@ -28,10 +28,10 @@ report](https://www.friscris.be/nl/publications/herziening-van-de-neerslagerosiv
 __Note__
 
 >
-> In the earlier versions (before release as Python package) of the R-factor package, Matlab was
-> used for the core computations. During the conversion, a Python
-> implementation has been provided. Using the Matlab version will provide other
-> results compared to Python package, as explained in the [package documentation](https://cn-ws.github.io/rfactor/).
+> In the earlier versions (\<0.1.0) of the R-factor package, Matlab was
+> used for the core computations. Since version 1.0.0, a faster Python
+> implementation is provided. Using the version 0.0.x will provide other
+> results compared to version \>0.1.0, as explained in the [package documentation](https://cn-ws.github.io/rfactor/).
 
 Get started
 -----------
