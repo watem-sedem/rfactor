@@ -124,7 +124,7 @@ def load_rain_file(file_path):
         file_path, delimiter=" ", header=None, names=["minutes_since", "rain_mm"]
     )
     rain["datetime"] = pd.Timestamp(f"{year}-01-01") + pd.to_timedelta(
-        rain["minutes_since"], unit="min"
+        pd.to_numeric(rain["minutes_since"]), unit="min"
     )
     rain["station"] = station
     rain["year"] = rain["datetime"].dt.year
