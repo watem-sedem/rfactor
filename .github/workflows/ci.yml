@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.7, 3.8]
         fail-fast: [false]
 
     steps:
@@ -30,15 +30,9 @@ jobs:
         pre-commit run --all-files
       if: matrix.python-version == '3.7'
     - name: Test with pytest
-      env:
-        HIC_TOKEN: ${{ secrets.HIC_TOKEN }}
-        VMM_TOKEN: ${{ secrets.VMM_TOKEN }}
       run: |
         pytest
     - name: Test with tox
-      env:
-        HIC_TOKEN: ${{ secrets.HIC_TOKEN }}
-        VMM_TOKEN: ${{ secrets.VMM_TOKEN }}
       run: |
         tox
     - name: Check docstring coverage
