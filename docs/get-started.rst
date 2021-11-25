@@ -146,10 +146,10 @@ Legacy Matlab file handling
 
 The original implementation of the algorithm was done in Matlab, which required a specific file input and output file format.
 The package provides a number of processing functions in the :mod:`rfactor.process` module to enable compatibility
-with the original data format (see example :doc:`here <notebooks/analysis_flanders.ipynb>`
+with the original data format (for example :func:`to load rain data <rfactor.process.load_rain_file>` ).
 
-The :math:`EI_{30}` values were computed by using a Matlab script (see also :ref:`here <codelegacy>`that required a folder as input. In this folder,
-non-zero rainfall timeseries were stored in separate text files (extension: ``.txt``) files per station and year.
+The :math:`EI_{30}` values were computed by using a Matlab script (see also :ref:`here <codelegacy>` that required a folder as input. In this folder,
+non-zero rainfall timeseries were stored in separate text files (extension: ``.txt`` ) files per station and year.
 
 Input files
 ~~~~~~~~~~~
@@ -179,7 +179,7 @@ The content of each of this file is a **non-zero** rainfall timeseries
 with the first column being the timestamp from the start of the year
 (minutes) , and second the rainfall depth (in mm).
 
-To load the rain data stored in this format to the Package compatible DataFrame:
+To load the rain data stored in this legacy format into the rfactor package compatible Pandas DataFrame:
 
 .. code-block:: python
 

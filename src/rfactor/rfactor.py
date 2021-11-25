@@ -76,6 +76,11 @@ def maximum_intensity_matlab_clone(df):
     maxprecip_30min : float
         Maximal 30-minute intensity during event (in mm/h).
     """
+    if np.isnan(df["rain_mm"]).any():
+        raise Exception(
+            "Matlab intensity method does not support Nan values in rain" "time series."
+        )
+
     current_year = df["datetime"].dt.year.unique()
     if not len(current_year) == 1:
         raise Exception("Data should all be in the same year.")
@@ -106,8 +111,8 @@ def maximum_intensity_matlab_clone(df):
     return maxprecip_30min * 2
 
 
-def maximum_intensity(df, interval="30Min"):
-    """Maximum rain intensity for 30-min interval (Pandas rolling)
+def maximum_intensity(df):
+    """Maximum rain intensity for 30-min interval (Pandas rolling) expressed as mm/hour
 
     The implementation uses a rolling window of the chosen interval to derive the
     maximal intensity.
@@ -117,19 +122,16 @@ def maximum_intensity(df, interval="30Min"):
     df : pandas.DataFrame
         DataFrame with rainfall time series. Needs to contain the following columns:
 
-        - *datetime* (pandas.Timestamp): Time stamp
+        - *datetime* (pandas.Timestamp): Timestamp
         - *rain_mm* (float): Rain in mm
-
-    interval : str
-        Frequency string, e.g. '30Min'
 
     Returns
     -------
     maxprecip_30min : float
         Maximal 30-minute intensity during event (in mm/h).
     """
-    # formula requires mm/hr, intensity is on half an hour
-    return df.rolling(interval, on="datetime")["rain_mm"].sum().max() * 2
+    # formula requires mm/hr, intensity is derived on half an hour
+    return df.rolling("30min", on="datetime")["rain_mm"].sum().max() * 2
 
 
 def _compute_erosivity(
@@ -153,7 +155,7 @@ def _compute_erosivity(
         Time interval to split into individual rain events
     event_threshold : float
         Minimal cumulative rain of an event to take into account for erosivity
-        derivation
+        derivationevent_rain_cum
 
     Returns
     -------
