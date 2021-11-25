@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Get started &mdash; rfactor 0.0.0 documentation</title>
+  <title>Get started &mdash; rfactor 0.0.2.post1.dev142+g69ecbf38 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             <a href="index.html" class="icon icon-home"> rfactor
           </a>
               <div class="version">
-                0.0.0
+                0.0.2.post1.dev142+g69ecbf38
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -54,6 +54,7 @@
 <p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of conduct</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
@@ -75,7 +76,7 @@
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
       <li>Get started</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/cn-ws/rfactor/blob/master/docs/get-started.rst" class="fa fa-github"> Edit on GitHub</a>
+            <a href="https://github.com/cn-ws/rfactor/tree/master/docs/get-started.rst">View page source</a>
       </li>
   </ul>
   <hr/>
@@ -399,9 +400,9 @@ additional column with the <code class="docutils literal notranslate"><span clas
 <h2>Legacy Matlab file handling<a class="headerlink" href="#legacy-matlab-file-handling" title="Permalink to this headline"></a></h2>
 <p>The original implementation of the algorithm was done in Matlab, which required a specific file input and output file format.
 The package provides a number of processing functions in the <a class="reference internal" href="api/rfactor.html#module-rfactor.process" title="rfactor.process"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rfactor.process</span></code></a> module to enable compatibility
-with the original data format (see example <span class="xref std std-doc">here</span></p>
-<p>The <span class="math notranslate nohighlight">\(EI_{30}\)</span> values were computed by using a Matlab script (see also <span class="xref std std-ref">here &lt;codelegacy&gt;`that required a folder as input. In this folder,
-non-zero rainfall timeseries were stored in separate text files (extension: `</span>.txt``) files per station and year.</p>
+with the original data format (for example <a class="reference internal" href="api/rfactor.html#rfactor.process.load_rain_file" title="rfactor.process.load_rain_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">to</span> <span class="pre">load</span> <span class="pre">rain</span> <span class="pre">data</span></code></a> ).</p>
+<p>The <span class="math notranslate nohighlight">\(EI_{30}\)</span> values were computed by using a Matlab script (see also <a class="reference internal" href="codelegacy.html#codelegacy"><span class="std std-ref">here</span></a> that required a folder as input. In this folder,
+non-zero rainfall timeseries were stored in separate text files (extension: <code class="docutils literal notranslate"><span class="pre">.txt</span></code> ) files per station and year.</p>
 <section id="input-files">
 <h3>Input files<a class="headerlink" href="#input-files" title="Permalink to this headline"></a></h3>
 <p>The input files are defined by text files (extension: <code class="docutils literal notranslate"><span class="pre">.txt</span></code>) that
@@ -426,7 +427,7 @@ per year with a specific datafile tag (format: <strong>SOURCE_STATION_YEAR.txt</
 </div>
 <p>with the first column being the timestamp from the start of the year
 (minutes) , and second the rainfall depth (in mm).</p>
-<p>To load the rain data stored in this format to the Package compatible DataFrame:</p>
+<p>To load the rain data stored in this legacy format into the rfactor package compatible Pandas DataFrame:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">load_rain_folder</span><span class="p">,</span> <span class="n">load_rain_file</span>
 <span class="c1"># Load a single rainfall file</span>
@@ -438,7 +439,7 @@ per year with a specific datafile tag (format: <strong>SOURCE_STATION_YEAR.txt</
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Do not forget to use a <a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code></a> defined file name or folder name.</p>
+<p>Do not forget to use a <a class="reference external" href="https://docs.python.org/3.7/library/pathlib.html#pathlib.Path" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code></a> defined file name or folder name.</p>
 </div>
 </section>
 <section id="output-erosivity">

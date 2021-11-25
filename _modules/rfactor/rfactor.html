@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor.rfactor &mdash; rfactor 0.0.0 documentation</title>
+  <title>rfactor.rfactor &mdash; rfactor 0.0.2.post1.dev142+g69ecbf38 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -28,7 +28,7 @@
             <a href="../../index.html" class="icon icon-home"> rfactor
           </a>
               <div class="version">
-                0.0.0
+                0.0.2.post1.dev142+g69ecbf38
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -49,6 +49,7 @@
 <p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../conduct.html">Code of conduct</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
@@ -157,6 +158,11 @@
 <span class="sd">    maxprecip_30min : float</span>
 <span class="sd">        Maximal 30-minute intensity during event (in mm/h).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+            <span class="s2">&quot;Matlab intensity method does not support Nan values in rain&quot;</span> <span class="s2">&quot;time series.&quot;</span>
+        <span class="p">)</span>
+
     <span class="n">current_year</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_year</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Data should all be in the same year.&quot;</span><span class="p">)</span>
@@ -187,8 +193,8 @@
     <span class="k">return</span> <span class="n">maxprecip_30min</span> <span class="o">*</span> <span class="mi">2</span></div>
 
 
-<div class="viewcode-block" id="maximum_intensity"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.maximum_intensity">[docs]</a><span class="k">def</span> <span class="nf">maximum_intensity</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;30Min&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Maximum rain intensity for 30-min interval (Pandas rolling)</span>
+<div class="viewcode-block" id="maximum_intensity"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.maximum_intensity">[docs]</a><span class="k">def</span> <span class="nf">maximum_intensity</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Maximum rain intensity for 30-min interval (Pandas rolling) expressed as mm/hour</span>
 
 <span class="sd">    The implementation uses a rolling window of the chosen interval to derive the</span>
 <span class="sd">    maximal intensity.</span>
@@ -198,19 +204,16 @@
 <span class="sd">    df : pandas.DataFrame</span>
 <span class="sd">        DataFrame with rainfall time series. Needs to contain the following columns:</span>
 
-<span class="sd">        - *datetime* (pandas.Timestamp): Time stamp</span>
+<span class="sd">        - *datetime* (pandas.Timestamp): Timestamp</span>
 <span class="sd">        - *rain_mm* (float): Rain in mm</span>
-
-<span class="sd">    interval : str</span>
-<span class="sd">        Frequency string, e.g. &#39;30Min&#39;</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    maxprecip_30min : float</span>
 <span class="sd">        Maximal 30-minute intensity during event (in mm/h).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># formula requires mm/hr, intensity is on half an hour</span>
-    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">interval</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span></div>
+    <span class="c1"># formula requires mm/hr, intensity is derived on half an hour</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="s2">&quot;30min&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span></div>
 
 
 <span class="k">def</span> <span class="nf">_compute_erosivity</span><span class="p">(</span>
@@ -234,7 +237,7 @@
 <span class="sd">        Time interval to split into individual rain events</span>
 <span class="sd">    event_threshold : float</span>
 <span class="sd">        Minimal cumulative rain of an event to take into account for erosivity</span>
-<span class="sd">        derivation</span>
+<span class="sd">        derivationevent_rain_cum</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>

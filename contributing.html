@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How can you contribute? &mdash; rfactor 0.0.0 documentation</title>
+  <title>How can you contribute? &mdash; rfactor 0.0.2.post1.dev142+g69ecbf38 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="License" href="license.html" />
+    <link rel="next" title="Contributor Covenant Code of Conduct" href="conduct.html" />
     <link rel="prev" title="Code legacy" href="codelegacy.html" /> 
 </head>
 
@@ -31,7 +31,7 @@
             <a href="index.html" class="icon icon-home"> rfactor
           </a>
               <div class="version">
-                0.0.0
+                0.0.2.post1.dev142+g69ecbf38
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -60,10 +60,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#drone-ci">Drone CI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#git-lfs">Git lfs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#naming-things">Naming things</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-new-release">Creating a new release</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="conduct.html">Code of conduct</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
@@ -85,7 +87,7 @@
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
       <li>How can you contribute?</li>
       <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/cn-ws/rfactor/blob/master/docs/contributing.rst" class="fa fa-github"> Edit on GitHub</a>
+            <a href="https://github.com/cn-ws/rfactor/tree/master/docs/contributing.rst">View page source</a>
       </li>
   </ul>
   <hr/>
@@ -270,6 +272,24 @@ whenever possible - with an active verb on the action they perform
 <li><p>pandas: <code class="docutils literal notranslate"><span class="pre">df_variable</span></code></p></li>
 </ul>
 </section>
+<section id="creating-a-new-release">
+<h3>Creating a new release<a class="headerlink" href="#creating-a-new-release" title="Permalink to this headline"></a></h3>
+<p>For the releases, the setup uses <a class="reference external" href="setuptoolsscm">setuptools-scm</a>.  Basically, by managing the git-tags, the release version is managed as well.</p>
+<p>Furthermore, the deployment of the documentation and pypi package is managed using github actions,
+the <a class="reference external" href="deployci">deploy.yml</a> file.</p>
+<p>To make a new release:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">master</span></code>, <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">pull</span> <span class="pre">origin</span> <span class="pre">master</span></code></p></li>
+<li><p>Update the <code class="docutils literal notranslate"><span class="pre">CHANGELOG.rst</span></code> with the changes for this new release</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span> <span class="pre">-m</span> <span class="pre">'Update</span> <span class="pre">changelog</span> <span class="pre">for</span> <span class="pre">release</span>&#160; <span class="pre">X.X.X'</span> <span class="pre">CHANGELOG.rst</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">origin</span> <span class="pre">master</span></code></p></li>
+<li><p>Add git tags: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">tag</span> <span class="pre">vX.X.X</span></code></p></li>
+<li><p>Push the git tags: <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span> <span class="pre">--tags</span></code></p></li>
+<li><p>On the <a class="reference external" href="releasepage">release page</a> draft a new release using the latest git tag</p></li>
+<li><p>Copy past the changes from the changelog in the dialog and publish release</p></li>
+<li><p>Check if github actions runs the deployment of docs and pypi</p></li>
+</ul>
+</section>
 </section>
 </section>
 
@@ -278,7 +298,7 @@ whenever possible - with an active verb on the action they perform
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="codelegacy.html" class="btn btn-neutral float-left" title="Code legacy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="license.html" class="btn btn-neutral float-right" title="License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="conduct.html" class="btn btn-neutral float-right" title="Contributor Covenant Code of Conduct" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
