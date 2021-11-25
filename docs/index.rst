@@ -23,6 +23,7 @@ Contents
    :maxdepth: 1
 
    Contribute <contributing>
+   Code of conduct <conduct>
    License <license>
    Authors <authors>
    Changelog <changelog>
