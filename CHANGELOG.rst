@@ -24,4 +24,4 @@ Version 0.0.1
  - Implemented use of Octave to run Matlab scripts.
  - Set-up package.
  - Added examples and test data.
- - Added te
+ - Added test
