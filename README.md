@@ -3,13 +3,13 @@
 R-factor
 ========
 
-The $R$-factor is a measure used in erosion and (overland) sediment
+The R-factor is a measure used in erosion and (overland) sediment
 modelling to quantify the effect of rainfall on soil erosion. It is
 typically defined in the context of the RUSLE equation, in which gross
 erosion for an agricultural parcel is estimated (see, for example,
 [here](https://docs.fluves.net/cnws-pascal//)).
 
-Specifically, the $R$-factor is a measure for the total erosivity of a
+Specifically, the R-factor is a measure for the total erosivity of a
 number of rainfall events within a defined timeframe (year, month,
 number of days). The factor is computed by calculating the erosivity for
 every rainfall event in a timeseries, and taking the sum of the
@@ -28,10 +28,10 @@ report](https://www.friscris.be/nl/publications/herziening-van-de-neerslagerosiv
 __Note__
 
 >
-> In the earlier versions (\<1.0.0) of the R-factor package, Matlab was
+> In the earlier versions (\<0.1.0) of the R-factor package, Matlab was
 > used for the core computations. Since version 1.0.0, a faster Python
-> implementation is provided. Using the version 0.x.x will provide other
-> results compared to version \>1.0.0, as explained here \<codelegacy\>.
+> implementation is provided. Using the version 0.0.x will provide other
+> results compared to version \>0.1.0, as explained in the [package documentation](https://cn-ws.github.io/rfactor/).
 
 Get started
 -----------
@@ -41,7 +41,7 @@ such as Pandas and Numpy). The installation (see here \<installation\>)
 is managed by making use of
 [Miniconda](https://docs.conda.io/en/latest/miniconda.html). Make sure
 to check out the installation instructions, and follow the example in
-the Get started \<getstarted\> page.
+the Get started section of the [package documentation](https://cn-ws.github.io/rfactor/).
 
 Rainfall and erosivity data
 ---------------------------
@@ -67,7 +67,7 @@ License
 -------
 
 This project is licensed under the GNU Lesser Public License v3.0, see
-here \<license\> for more information.
+[LICENSE](./LICENSE) for more information.
 
 Contact
 -------
@@ -79,13 +79,13 @@ to <cn-ws@omgeving.vlaanderen.be>
 Powered by
 ----------
 
-![image](../docs/_static/png/DepartementOmgeving_logo.png)
+![image](docs/_static/png/DepartementOmgeving_logo.png)
 
-![image](../docs/_static/png/KULeuven_logo.png)
+![image](docs/_static/png/KULeuven_logo.png)
 
-![image](../docs/_static/png/VMM_logo.png)
+![image](docs/_static/png/VMM_logo.png)
 
-![image](../docs/_static/png/fluves_logo.png)
+![image](docs/_static/png/fluves_logo.png)
 
 Note
 ----
