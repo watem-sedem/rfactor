@@ -83,7 +83,7 @@ nbsphinx_execute = 'never'
 templates_path = ["_templates"]
 
 # The suffix of source filenames.
-source_suffix = [".rst", ".ipynb"]
+# source_suffix = [".rst", ".ipynb"]
 
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
