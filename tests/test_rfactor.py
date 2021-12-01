@@ -191,7 +191,7 @@ def test_rfactor_benchmark_single_year(
     )
 
 
-@pytest.mark.slow
+@pytest.mark.skip(reason="only works with full data set (not in package")
 def test_rfactor_full_benchmark(rain_benchmark_data, erosivity_benchmark_data):
     """Run the full benchmark data set"""
     erosivity = compute_erosivity(rain_benchmark_data)
