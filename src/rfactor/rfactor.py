@@ -21,6 +21,11 @@ def rain_energy_per_unit_depth(rain):
     rain : numpy.ndarray
         Rain (mm)
 
+    Returns
+    -------
+    energy : float
+        Energy per unit depth.
+
     Notes
     -----
     The rain energy per unit depth :math:`e_r` (:math:`\\text{J}.\\text{mm}^{-1}.
