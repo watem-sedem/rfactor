@@ -28,8 +28,8 @@ Get started
 This package makes use of ``Python`` (and a limited number of
 dependencies such as Pandas and Numpy). The installation
 (see :ref:`here <installation>`) is managed by making use of
-`Miniconda <https://docs.conda.io/en/latest/miniconda.html>`_. Make sure to
-check out the installation instructions, and follow the example in the
+`Miniconda <https://docs.conda.io/en/latest/miniconda.html>`_. Make sure
+tocheck out the installation instructions, and follow the example in the
 :ref:`Get started <getstarted>` page.
 
 Data & application to Flanders
