@@ -6,7 +6,7 @@ from pytest import approx
 from rfactor import compute_erosivity, maximum_intensity, maximum_intensity_matlab_clone
 from rfactor.rfactor import (
     _apply_rfactor,
-    _compute_erosivity,
+    compute_erosivity_core,
     rain_energy_per_unit_depth,
 )
 
@@ -122,7 +122,7 @@ def test_compute_erosivity_wrong_df():
         }
     )
     with pytest.raises(Exception) as excinfo:
-        _compute_erosivity(df, maximum_intensity)
+        compute_erosivity_core(df, maximum_intensity)
     assert "contain data of a single year." in str(excinfo.value)
 
 
@@ -135,7 +135,7 @@ def test_compute_erosivity_multiple_years():
         }
     )
     with pytest.raises(Exception) as excinfo:
-        _compute_erosivity(df, maximum_intensity)
+        compute_erosivity_core(df, maximum_intensity)
     assert "should contain 'datetime' and 'rain_mm' columns" in str(excinfo.value)
 
 
@@ -143,7 +143,7 @@ def test_apply_rfactor(rain_benchmark_closure):
     """apply_rfactor adds the station/year data to dataframe"""
     station, year = "P01_001", 2018
     rain = rain_benchmark_closure(station, year)
-    erosivity_support_func = _compute_erosivity(rain, maximum_intensity)
+    erosivity_support_func = compute_erosivity_core(rain, maximum_intensity)
     erosivity_apply_rfactor = _apply_rfactor((station, year), rain, maximum_intensity)
 
     pd.testing.assert_frame_equal(
@@ -177,7 +177,7 @@ def test_rfactor_benchmark_single_year(
     pd.testing.assert_frame_equal(erosivity, erosivity_reference)
 
     # using support function provides the same output
-    erosivity_support_func = _compute_erosivity(
+    erosivity_support_func = compute_erosivity_core(
         rain, intensity_method=maximum_intensity
     )
     erosivity_support_func.index = erosivity_support_func["datetime"]

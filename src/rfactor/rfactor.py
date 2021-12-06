@@ -139,7 +139,7 @@ def maximum_intensity(df):
     return df.rolling("30min", on="datetime")["rain_mm"].sum().max() * 2
 
 
-def _compute_erosivity(
+def compute_erosivity_core(
     rain,
     intensity_method,
     event_split=TIME_BETWEEN_EVENTS,
@@ -243,7 +243,7 @@ def _compute_erosivity(
 
 def _apply_rfactor(name, group, intensity_method):
     """Wrapper helper function for parallel execution of erosivity on groups"""
-    df = _compute_erosivity(group, intensity_method)
+    df = compute_erosivity_core(group, intensity_method)
     df[["station", "year"]] = name
     return df
 

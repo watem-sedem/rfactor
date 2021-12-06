@@ -24,6 +24,7 @@ finally:
     del version, PackageNotFoundError
 
 __all__ = [
+    "compute_erosivity_core",
     "compute_erosivity",
     "maximum_intensity_matlab_clone",
     "maximum_intensity",
