@@ -15,44 +15,41 @@ steps:
       - conda activate /src/rfactor/env
       - pip install -e .[develop]
 
-  - name: install
-    image: continuumio/miniconda3
-    commands:
-      - . $CONDA_ACTIVATE
-      - conda activate /src/rfactor/env
-      - python setup.py develop --no-deps
-
   - name: unit-tests
     image: continuumio/miniconda3
     commands:
       - . $CONDA_ACTIVATE
       - conda activate /src/rfactor/env
-      - pytest tests/ -m "not externaldepedent"
+      - tox
+
+  - name: doctest coverage
+    image: continuumio/miniconda3
+    commands:
+      - . $CONDA_ACTIVATE
+      - conda activate /src/rfactor/env
+      - tox -e interrogate
 
   - name: documentation
     image: continuumio/miniconda3
     commands:
       - . $CONDA_ACTIVATE
       - conda activate /src/rfactor/env
-      - python setup.py build_sphinx -s docs
+      - conda install -c conda-forge pandoc
+      - tox -e docs
 
-  - name: publish
+  - name: publish documentation
     image: plugins/gh-pages
     settings:
       username: johanvdw
       password:
         from_secret: gh-pages-release
-      pages_directory: build/sphinx/html
+      pages_directory: docs/_build/html/
     when:
       branch:
         - master
       event:
          exclude:
            - pull_request
-
-
-name: default
-
 
 workspace:
   base: /src
