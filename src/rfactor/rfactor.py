@@ -1,134 +1,286 @@
-from subprocess import check_call
-import os
 import multiprocessing as mp
-
-from pathlib import Path
-from dotenv import load_dotenv, find_dotenv
-from tqdm.contrib.concurrent import process_map
-from tqdm import tqdm
+from functools import partial
 
 import numpy as np
+import pandas as pd
+from joblib import Parallel, delayed
 
-def compute_rfactor(rainfall_inputdata_folder, results_folder, engine="matlab",
-                    debug=False, ncpu=-1):
-    """Compute the R-factor
-
-    Parameters
-    ----------
-    rainfall_inputdata_folder: pathlib.Path
-        Folder path to directory holding rainfall data. Rainfall data are
-        stored in separate .txt files per station and year. For the format of
-        the `txt`-files, see :func:`rfactor.process.load_rainfall_data`
-    results_folder: str or pathlib.path
-        Folder path to write results to.
-    engine: 'matlab' or 'octave'
-        Engine used to compute rfactor.
-    debug: bool, default False
-        Debug flag to leave matlab open (Matlab engine) / run single core
-        (Octave).
-    ncpu: int, default -1
-        Number of processors to use.
-
-    """
-    results_folder = Path(results_folder)
-    if not results_folder.exists():
-        results_folder.mkdir()
-    if not Path(rainfall_inputdata_folder).exists():
-        raise IOError(
-            f"Input {rainfall_inputdata_folder}folder does not exist")
-    if engine not in ["matlab", "octave"]:
-        msg = f"Either select 'matlab' or 'python' as calculation engine for the rfactor scripts."
-        raise IOError(msg)
-    if engine == "matlab":
-        os.chdir(Path(__file__).parent)
-
-        exitcode = "exit;" if debug else ""
-
-        cmd = [
-            "matlab",
-            "-nodesktop",
-            "-r",
-            f"main('{str(rainfall_inputdata_folder.resolve())}','{str(results_folder)}');" + exitcode,
-        ]
-        check_call(cmd)
-    else:
-        rfactor_octave(Path(rainfall_inputdata_folder), results_folder, debug,
-                       ncpu=ncpu)
+TIME_BETWEEN_EVENTS = "6 hours"
+MIN_CUMUL_EVENT = 1.27
 
 
-def rfactor_octave(rainfall_inputdata_folder, results_folder, debug=False,
-                   ncpu=-1):
-    """Compute R-factor with octave engine
+class RFactorInputException(Exception):
+    """Raise when input data are not conform the rfactor required input format."""
 
-    The octave engine is slow, therefore multiprocessing is used as a way to
-    speed up execution.
+
+def rain_energy_per_unit_depth(rain):
+    """Calculate rain energy per unit depth according to Salles/Verstraeten.
 
     Parameters
     ----------
-    rainfall_inputdata_folder: pathlib.Path
-        See :func:`rfactor.rfactor.compute_rfactor`
-    results_folder: str or pathlib.path
-        See :func:`rfactor.rfactor.compute_rfactor`
-    debug: bool, default False
-        Run single cores
-    ncpu: int, default -1
-        See :func:`rfactor.rfactor.compute_rfactor`
+    rain : numpy.ndarray
+        Rain (mm)
+
+    Returns
+    -------
+    energy : float
+        Energy per unit depth.
+
+    Notes
+    -----
+    The rain energy per unit depth :math:`e_r` (:math:`\\text{J}.\\text{mm}^{-1}.
+    \\text{m}^{-2}`) for an application for Flanders/Belgium is defined
+    by [1]_ [2]_ [3]_:
+
+    .. math::
+
+        e_r = 11.12i_r^{0.31}
+
+    with
+
+     - :math:`i_r` the rain intensity for every 10-min
+       increment (mm :math:`\\text{h}^{-1}` ).
+
+    References
+    ----------
+    .. [1] Salles, C., Poesen, J., Pissart, A., 1999, Rain erosivity indices and drop
+        size distribution for central Belgium. Presented at the General Assembly of
+        the European Geophysical Society, The Hague, The Netherlands, p. 280.
+
+    .. [2] Salles, C., Poesen, J., Sempere-Torres, D., 2002. Kinetic energy of rain and
+        its functional relationship with intensity. Journal of Hydrology 257, 256–270.
+        https://doi.org/10.1016/S0022-1694(01)00555-8
+
+    .. [3]  Verstraeten, G., Poesen, J., Demarée, G., Salles, C., 2006, Long-term
+        (105 years) variability in rain erosivity as derived from 10-min rainfall
+        depth data for Ukkel (Brussels, Belgium): Implications for assessing soil
+        erosion rates. Journal Geophysysical Research, 111, D22109.
+        https://doi.org/10.1029/2006JD007169
     """
-    if not Path(rainfall_inputdata_folder).exists():
-        msg = f"Input folder '{rainfall_inputdata_folder}' does not exist"
-        raise IOError(msg)
-    if debug:
-        files = [file for file in rainfall_inputdata_folder.iterdir()]
-        for file in tqdm(files,total=len(files)):
-            print(file)
-            single_file([file, results_folder])
-    else:
-        lst_input = [[file, results_folder] for file in
-                     rainfall_inputdata_folder.iterdir()]
-        if ncpu == -1:
-            ncpu = mp.cpu_count()
-        process_map(single_file, lst_input, max_workers=ncpu)
+    rain_energy = 0.1112 * ((rain * 6.0) ** 0.31) * rain
+    return rain_energy.sum()
 
 
-def single_file(lst_inputs):
-    """Compute R-factor based on a single file.
+def maximum_intensity_matlab_clone(df):
+    """Maximum rain intensity for 30-min interval (Matlab clone).
 
-    This function uses Octave to compute the matlab `core.m` function, using
-    one input file as function input.
+    The implementation is a direct Python-translation of the original Matlab
+    implementation by Verstraeten.
 
     Parameters
     ----------
-    lst_inputs: list
-        List of inputs
+    df : pandas.DataFrame
+        DataFrame with rainfall time series. Needs to contain the following columns:
+
+        - *datetime* (pandas.Timestamp): Time stamp
+        - *rain_mm* (float): Rain in mm
+        - *event_rain_cum* (float): Cumulative rain in mm
+
+    Returns
+    -------
+    maxprecip_30min : float
+        Maximal 30-minute intensity during event (in mm/h).
     """
-    filename = lst_inputs[0]
-    path_results = lst_inputs[1]
+    if np.isnan(df["rain_mm"]).any():
+        raise Exception(
+            "Matlab intensity method does not support Nan values in rain" "time series."
+        )
 
-    check_oct()
-    from oct2py import Oct2Py,Oct2PyError
-    year = filename.stem.split("_")[1]
-    inputdata = np.loadtxt(str(filename.resolve()))
+    current_year = df["datetime"].dt.year.unique()
+    if not len(current_year) == 1:
+        raise Exception("Data should all be in the same year.")
 
-    with Oct2Py() as oc:
-        try:
-            oc.addpath(str(Path(__file__).parent.resolve()))
-            cumEI = oc.core(year, inputdata)
-            filename_out = path_results / (
-                        filename.stem + 'new cumdistr salles.txt')
-            np.savetxt(filename_out, cumEI.T, "%.3f %.2f %.1f")
-            oc.exit()
-        except Oct2PyError as e:
-            raise SystemError(e)
+    df["minutes_since"] = (
+        df["datetime"] - pd.Timestamp(f"{current_year[0]}-01-01")
+    ).dt.total_seconds().values / 60
 
-def check_oct():
-    """Check octave installation
+    timestamps = df["minutes_since"].values
+    rain = df["rain_mm"].values
+    rain_cum = df["event_rain_cum"].values
+
+    maxprecip_30min = 0.0
+
+    if timestamps[-1] - timestamps[0] <= 30:
+        maxprecip_30min = rain[0] * 2  # *2 to mimick matlab
+
+    for idx in range(len(df) - 1):
+        eind_30min = timestamps[idx] + 20
+        begin_rain = rain_cum[idx] - rain[idx]
+
+        eind_rain = np.interp(eind_30min, timestamps, rain_cum)
+        precip_30min = eind_rain - begin_rain
+
+        if precip_30min > maxprecip_30min:
+            maxprecip_30min = precip_30min
+
+    return maxprecip_30min * 2
+
+
+def maximum_intensity(df):
+    """Maximum rain intensity for 30-min interval (Pandas rolling) expressed as mm/hour
+
+    The implementation uses a rolling window of the chosen interval to derive the
+    maximal intensity.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        DataFrame with rainfall time series. Needs to contain the following columns:
+
+        - *datetime* (pandas.Timestamp): Timestamp
+        - *rain_mm* (float): Rain in mm
+
+    Returns
+    -------
+    maxprecip_30min : float
+        Maximal 30-minute intensity during event (in mm/h).
     """
-    load_dotenv(find_dotenv())
-    try:
-        oct_exe = Path(os.environ.get("OCTAVE_EXECUTABLE"))
-        if not Path(oct_exe).exists():
-            raise SystemError(
-                "Octave is not referred to correctly in the 'rfactor/.env'-file. Please check the executable path. ")
-    except:
-        raise SystemError(
-            "No 'OCTAVE_EXECUTABLE' is defined in 'rfactor/.env'-file. Please check the documentation for information on installing Octave!")
+    # formula requires mm/hr, intensity is derived on half an hour
+    return df.rolling("30min", on="datetime")["rain_mm"].sum().max() * 2
+
+
+def _compute_erosivity(
+    rain,
+    intensity_method,
+    event_split=TIME_BETWEEN_EVENTS,
+    event_threshold=MIN_CUMUL_EVENT,
+):
+    """Calculate erosivity according to Verstraeten G. for a single year/station combi
+
+    Parameters
+    ----------
+    rain : pd.DataFrame
+        DataFrame with rainfall time series. Need to contain the following columns:
+
+        - *datetime* (pd.Timestamp): Time stamp
+        - *rain_mm* (float): Rain in mm
+    intensity_method : Callable
+        Function to derive the maximal rain intensity (over 30min)
+    event_split : str
+        Time interval to split into individual rain events
+    event_threshold : float
+        Minimal cumulative rain of an event to take into account for erosivity
+        derivationevent_rain_cum
+
+    Returns
+    -------
+    events : pd.DataFrame
+        DataFrame with erosivity output for each event.
+
+        - *datetime* (pd.Timestamp): Time stamp
+        - *event_rain_cum* (float): Cumulative rain for each event
+        - *max_30min_intensity* (float): Maximal 30min intensity for each event
+        - *event_energy* (float): Rain energy per unit depth for each event
+        - *erosivity* (float): Erosivity for each event
+        - *all_events_cum* (float): Cumulative rain over all events together
+        - *erosivity_cum* (float): Cumulative erosivity over all events together
+
+    """
+    if ("datetime" not in rain.columns) or ("rain_mm" not in rain.columns):
+        raise RFactorInputException(
+            "DataFrame should contain 'datetime' and 'rain_mm' columns."
+        )
+    if len(rain["datetime"].dt.year.unique()) != 1:  # data of a single year
+        raise RFactorInputException("DataFrame should contain data of a single year.")
+
+    # mark start of each rain event
+    rain = rain[rain["rain_mm"] > 0.0]  # Only keep measurements with rain
+    rain["event_start"] = False
+    rain.loc[rain["datetime"].diff() >= event_split, "event_start"] = True
+    rain.loc[rain.index[0], "event_start"] = True
+
+    # add an event identifier
+    rain["event_idx"] = rain["event_start"].cumsum()
+
+    # add cumulative rain for each event
+    rain["event_rain_cum"] = rain.groupby("event_idx")["rain_mm"].cumsum()
+
+    # add rain energy for each event
+    rain["event_energy"] = rain.groupby("event_idx")["rain_mm"].transform(
+        rain_energy_per_unit_depth
+    )
+
+    # calculate the maximal rain intensity in 30minutes interval
+    max_intensity_event = (
+        rain.groupby("event_idx")[["datetime", "rain_mm", "event_rain_cum"]]
+        .apply(intensity_method)
+        .rename("max_30min_intensity")
+        .reset_index()
+    )
+    rain = pd.merge(rain, max_intensity_event, how="left")
+
+    # derive event summary
+    columns = ["datetime", "event_rain_cum", "max_30min_intensity", "event_energy"]
+    rain_events = rain.groupby("event_idx")[columns].agg(
+        {
+            "datetime": "first",
+            "event_rain_cum": "last",
+            "max_30min_intensity": "last",
+            "event_energy": "last",
+        }
+    )
+
+    # calculate the erosivity
+    rain_events["erosivity"] = (
+        rain_events["event_energy"] * rain_events["max_30min_intensity"]
+    )
+
+    # cumulative rain over all events
+    rain_events["all_event_rain_cum"] = (
+        rain_events["event_rain_cum"].shift(1, fill_value=0.0).cumsum()
+    )
+
+    # remove events below threshold
+    events = rain_events[
+        round(rain_events["event_rain_cum"], 2) > event_threshold
+    ].copy()
+
+    # add cumulative erosivity
+    events["erosivity_cum"] = events["erosivity"].cumsum()
+
+    return events
+
+
+def _apply_rfactor(name, group, intensity_method):
+    """Wrapper helper function for parallel execution of erosivity on groups"""
+    df = _compute_erosivity(group, intensity_method)
+    df[["station", "year"]] = name
+    return df
+
+
+def compute_erosivity(rain, intensity_method=maximum_intensity):
+    """Calculate erosivity according to Verstraeten G. for each year/station combination
+
+    Parameters
+    ----------
+    rain : pandas.DataFrame
+        DataFrame with rainfall time series. Need to contain the following columns:
+
+        - *datetime* (pandas.Timestamp): Time stamp
+        - *rain_mm* (float): Rain in mm
+        - *station* (str): Measurement station identifier
+
+    intensity_method : Callable, default maximum_intensity
+        Function to derive the maximal rain intensity (over 30min).
+
+    Returns
+    -------
+    all_erosivity: pandas.DataFrame
+        See :func:`rfactor.rfactor._compute_erosivity`, added with
+
+        - *tag* (str): unique tag for year, station-couple.
+    """
+    fun_with_method = partial(_apply_rfactor, intensity_method=intensity_method)
+    grouped = rain.groupby(["station", "year"])
+    results = Parallel(n_jobs=mp.cpu_count() - 1)(
+        delayed(fun_with_method)(name, group) for name, group in grouped
+    )
+    all_erosivity = pd.concat(results)
+
+    # couple tag
+    all_erosivity = all_erosivity.merge(
+        rain[["station", "year", "tag"]].drop_duplicates(), on=["station", "year"]
+    )
+    all_erosivity.index = all_erosivity["datetime"]
+
+    return all_erosivity

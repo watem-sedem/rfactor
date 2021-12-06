@@ -1,6 +1,5 @@
 .. _rfactor:
 
-
 Rainfall erosivity
 ==================
 

@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/364504726.svg)](https://zenodo.org/badge/latestdoi/364504726)
+[![image](https://zenodo.org/badge/364504726.svg)](https://zenodo.org/badge/latestdoi/364504726)
 
 R-factor
 ========
@@ -18,57 +18,61 @@ compute an average value, the R-factor, presenting the rainfall
 erosivity for a given period. An in-depth explanation of the formula's
 is given here \<rfactor\>.
 
-This code is developed as a function of an analysis of rainfall 
-erosivity in Flanders. The results found in the example notebooks
-are also found in [this report](https://www.friscris.be/nl/publications/herziening-van-de-neerslagerosiviteitsfactor-r-voor-de-vlaamse-erosiemodellering(9d4e2953-6c93-48d0-a1c2-d66d03c749aa).html).
+The implemented formula's in this code are developed in a context of
+rainfall in Belgium (Verstraeten et al., 2006). Yet, the current Python
+implementation allows for an easy integration of alternative functions
+and relations. An in-depth analysis of the application of this code on
+Flanders can be found in in [this
+report](https://www.friscris.be/nl/publications/herziening-van-de-neerslagerosiviteitsfactor-r-voor-de-vlaamse-erosiemodellering(9d4e2953-6c93-48d0-a1c2-d66d03c749aa).html).
 
+__Note__
 
+>
+> In the earlier versions (\<0.1.0) of the R-factor package, Matlab was
+> used for the core computations. Since version 0.1.0, a faster Python
+> implementation is provided. Using the version 0.0.x will provide other
+> results compared to version \>0.1.0, as explained in the [package documentation](https://cn-ws.github.io/rfactor/).
 
 Get started
 -----------
 This package makes use of `Python` (and a limited number of dependencies
-such as Pandas and Numpy) and `Matlab` or `Octave`. Python is used to
-implement the functionalities in this package, whereas Matlab or
-Octave is used to run the core code. The installation (see
-here \<installation\>) is managed by making use of
-[Miniconda](https://docs.conda.io/en/latest/miniconda.html). Make sure
-to check out the installation instructions, and follow the example in
-the Get started \<getstarted\> page.
-
-> Octave is used in this package as a free alternative if you are unable to
-> acquire a license for Matlab. Note that running the rfactor core scripts
-> is slower with Octave than with Matlab.
-
+such as Pandas and Numpy). The installation (see here \<installation\>)
+is managed by making use of [Miniconda](https://docs.conda.io/en/latest/miniconda.html).
+Make sure to check out the installation instructions, and follow the example in
+the Get started section of the [package documentation](https://cn-ws.github.io/rfactor/).
 
 Rainfall and erosivity data
 ---------------------------
-Input rainfall data are provided by the Flemish Environment Agency (VMM),
-which are also available via [waterinfo](https://www.waterinfo.be). The
-input rainfall data from the Royal Meteorological Institute
-(RMI) are not shared in this project. Please contact the RMI if you would like
-to obtain the a copy of the RMI rainfall input data.
 
-The erosivity data calculated with the rainfall input data are provided by the
-partners of this project, and are used as test data for analysing the R-factor
-for Flanders.
+Input rainfall data are provided by the
+Flemish Environment Agency (VMM), which are also available via
+[waterinfo](https://www.waterinfo.be). The input rainfall data from the
+Royal Meteorological Institute (RMI) are not shared in this project.
+Please contact the RMI if you would like to obtain the a copy of the RMI
+rainfall input data.
+
+The erosivity data calculated with the rainfall input data are provided
+by the partners of this project, and are used as test data for analysing
+the R-factor for Flanders.
 
 Documentation
 -------------
-The documentation can be found on the 
-[R-factor documentation page](https://cn-ws.github.io/rfactor/index.html).
+
+The documentation can be found on the [R-factor documentation
+page](https://cn-ws.github.io/rfactor/index.html).
 
 License
 -------
 
-This project is licensed under the GNU General Public License v3.0, see
-here \<license\> for more information.
+This project is licensed under the GNU Lesser Public License v3.0, see
+[LICENSE](./LICENSE) for more information.
 
 Contact
 -------
 
 We encourage user to submit question, suggestions and bug reports via
-the issues platform on GitHub. In case of other questions, one can mail to
-cn-ws@omgeving.vlaanderen.be.
+the issues platform on GitHub. In case of other questions, one can mail
+to <cn-ws@omgeving.vlaanderen.be>
 
 Powered by
 ----------
