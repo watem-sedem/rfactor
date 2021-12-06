@@ -1,18 +1,17 @@
 
-.. _dev-guidelines:
+.. _contribute:
 
-Contributing to rfactor
+How can you contribute?
 =======================
+
 The R-factor project is a project made possible by the Flemish Government
 (Department Environment), the Flemish Environment Agency, K.U. Leuven and
 Fluves. A special thank you to the Flemish Environment Agency for providing the
-input data, and K.U.Leuven for providing and releasing their source code.
+input data, and K.U. Leuven for providing and releasing their source code.
 
 Thank you to all partners that decided to host this code and the data as open
 source.
 
-How can you contribute?
------------------------
 There are many ways to contribute to this project:
 
 - Ask a question.
@@ -22,28 +21,87 @@ There are many ways to contribute to this project:
 - Improve the documentation.
 - Help develop this package.
 
-TO DO: shortly explain how-to.
-
 Code of conduct
 ---------------
-See the `code of conduct <CODE_OF_CONDUCT.rst>`
+See the :ref:`code of conduct <code_conduct>`.
+
+.. _dev-guidelines:
 
 Development guidelines
-=======================
+----------------------
 
-Git lfs
--------
 
-Git lfs, or large file support, is used in this repository to store gis files
-in the repository. To use this functionality you need to install git lfs. See
-`https://git-lfs.github.com/`_ for instructions and more information.
+We use a number of development tools to support us in improving the code
+quality. No magic bullet or free lunch, but just a set of tools as any
+craftman has tools to support him/her doing a better job.
 
-The .gitattributes-file in the root folder contains the file extensions which
-are stored under lfs. For now, only files within the test folder are stored
-under lfs.
+For development purposes using conda, make sure to first run
+``pip install -e .[develop]`` environment to prepare the development
+environment and install all development tools. (When using ``tox -e dev``
+this is already done).
 
-Documentation
--------------
+When starting on the development of the ``rfactor`` package, makes sure to
+be familiar with the following tools. Do not hesitate to ask the maintainers
+when having trouble using these tools.
+
+Pre-commit hooks
+^^^^^^^^^^^^^^^^
+
+To ensure a more common code formatting and limit the git diff, make sure to
+install the pre-commit hooks. The required dependencies are included in the
+development requirements installed when running
+``pip install -e .[develop]``.
+
+.. warning::
+   Install the ``pre-commit`` hooks before your first git commit to the
+   package!
+
+::
+
+    pre-commit install
+
+on the main level of the package (``rfactor`` folder, location where the file
+``.pre-commit-config.yaml`` is located).
+
+If you just want to run the hooks on your files to see the effect
+(not during a git commit), you can use the command at any time:
+
+::
+
+    pre-commit run --all-files
+
+Unit testing with pytest
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Run the test suite using the ``pytest`` package, from within the main package
+folder (`rfactor`):
+
+::
+
+    pytest
+
+Or using tox (i.e. in a separate environment)
+
+::
+
+    tox
+
+You will receive information on the test status and the test coverage of the
+unit tests.
+
+Documentation with sphinx
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Build the documentation locally with Sphinx:
+
+::
+
+    tox -e docs
+
+which will create the docs in the ``docs/_build/html`` folder. The
+``docs/_build`` directory itself is left out of version control (and we
+rather keep it as such ;-)).
+
 `Numpy docstring <https://numpydoc.readthedocs.io/en/latest/format.html>`_
 formatting is used to define the format of the python docstrings. As Numpy
 docstring does not provide default rules on describing a parameter or returned
@@ -88,10 +146,31 @@ Similar for a dictionary:
     2. Detail alert: the format *variable: type* is used as constructor for
        every variable in the documentation (and not *variable : type*).
 
+
+Drone CI
+^^^^^^^^
+
+Apart from these tools you can run locally, we use drone continuous
+integration to run these checks also on our servers. See
+https://cloud.drone.io/cn-ws/rfactor/ for the results.
+
+Git lfs
+^^^^^^^
+
+Git lfs, or large file support, is used in this repository to store gis files
+in the repository. To use this functionality you need to install git lfs. See
+`gitlfs`_ for instructions and more information.
+
+The .gitattributes-file in the root folder contains the file extensions which
+are stored under lfs. For now, only files within the test folder are stored
+under lfs.
+
+.. _gitlfs: https://git-lfs.github.com/
+
 Naming things
--------------
+^^^^^^^^^^^^^
 To provide structure in the naming of methods, functions, classes,... we
-propose to conform the following guidelines.
+ask to conform the following guidelines.
 
 Class, function/methods names follow the standard naming conventions as
 defined in the `PEP8`_ guidelines. Additionally, methods/functions start -
@@ -108,22 +187,28 @@ Variable names follow the `PEP8`_ guidelines, but provide additional context:
 
 .. _PEP8: https://www.python.org/dev/peps/pep-0008/#naming-conventions
 
-Unit testing
-------------
-Pytest is used to test the functionalities. Two types of tests are defined:
 
- - `externaldepedent`: these tests are used to test the core Matlab-code with
-   Octave (free alternative to Matlab). Check out the
-   `installation-page<octave>` to install Octave.
+Creating a new release
+^^^^^^^^^^^^^^^^^^^^^^
 
- - Not `externaldepedent`: these tests are used to test the calculated
-   R-values based on the computed EI30-values.
+For the releases, the setup uses `setuptools-scm <setuptoolsscm>`_.  Basically, by managing the git-tags, the release version is managed as well.
 
-The tests can be called in the main folder of this
-project, e.g. `~/GitHub/rfactor`::
+Furthermore, the deployment of the documentation and pypi package is managed using github actions,
+the `deploy.yml <deployci>`_ file.
 
-    pytest pycnws/tests/ -m "externaldepedent"
+To make a new release:
 
-or::
+- ``git checkout master``, ``git pull origin master``
+- Update the ``CHANGELOG.rst`` with the changes for this new release
+- ``git commit -m 'Update changelog for release  X.X.X' CHANGELOG.rst``
+- ``git push origin master``
+- Add git tags: ``git tag vX.X.X``
+- Push the git tags: ``git push --tags``
+- On the `release page <releasepage>`_ draft a new release using the latest git tag
+- Copy past the changes from the changelog in the dialog and publish release
+- Check if github actions runs the deployment of docs and pypi
 
-    pytest pycnws/tests/ -m "not externaldepedent"
+
+.. _releasepage: https://github.com/cn-ws/rfactor/releases
+.. _setuptoolsscm: https://www.python.org/dev/peps/pep-0008/#naming-conventions
+.. _deployci: https://github.com/fluves/pywaterinfo/blob/master/.github/workflows/deploy.yml
