@@ -35,12 +35,10 @@ __Note__
 
 Get started
 -----------
-
 This package makes use of `Python` (and a limited number of dependencies
 such as Pandas and Numpy). The installation (see here \<installation\>)
-is managed by making use of
-[Miniconda](https://docs.conda.io/en/latest/miniconda.html). Make sure
-to check out the installation instructions, and follow the example in
+is managed by making use of [Miniconda](https://docs.conda.io/en/latest/miniconda.html).
+Make sure to check out the installation instructions, and follow the example in
 the Get started section of the [package documentation](https://cn-ws.github.io/rfactor/).
 
 Rainfall and erosivity data

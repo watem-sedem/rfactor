@@ -21,7 +21,7 @@ with
  - :math:`R`: rainfall erosivity factor(:math:`\frac{\text{J
    .mm}}{\text{m}^2.\text{h.year}}`),
  - :math:`n`, increment :math:`j`: number of years,
- - :math:`m_j`, increment :math:`k`: number of rain event in year :math:`j`,
+ - :math:`m_j`, increment :math:`k`: number of rain events in a year :math:`j`,
  - :math:`E`: the total kinetic energy of one single rain event
    (:math:`\frac{J}{m^2}`), and
  - :math:`I_{30}` (:math:`\frac{mm}{h}`): the maximum rain intensity
@@ -68,7 +68,7 @@ Renard et al., 1997):
 
 The use of the type of relation has an important implication on the
 computation of the R-factor, as the sensitivity of the R-factor for extreme
-high-intensity events varies significantly depending on the defined relation
+high-intensity events varies significantly depending on the defined relation.
 
 Application on Flanders
 -----------------------
