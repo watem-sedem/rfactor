@@ -280,14 +280,14 @@ def compute_erosivity(rain, intensity_method=maximum_intensity):
         )
     if not pd.core.dtypes.common.is_datetime64_any_dtype(rain["datetime"]):
         raise RFactorTypeError(
-            "The 'datetime' column need to be of a datetime data type."
+            "The 'datetime' column needs to be of a datetime data type."
         )
     if not pd.core.dtypes.common.is_string_dtype(rain["station"]):
         raise RFactorTypeError(
-            "The 'station' column need to be of a str/object data type."
+            "The 'station' column needs to be of a str/object data type."
         )
     if not pd.core.dtypes.common.is_float_dtype(rain["rain_mm"]):
-        raise RFactorTypeError("The 'rain_mm' column need to be of a float type.")
+        raise RFactorTypeError("The 'rain_mm' column needs to be of a float type.")
 
     rain["year"] = rain["datetime"].dt.year
     if "tag" not in rain.columns:
