@@ -96,7 +96,7 @@ def maximum_intensity_matlab_clone(df):
 
     current_year = df["datetime"].dt.year.unique()
     if not len(current_year) == 1:
-        raise Exception("Data should all be in the same year.")
+        raise RFactorInputError("Data should all be in the same year.")
 
     df["minutes_since"] = (
         df["datetime"] - pd.Timestamp(f"{current_year[0]}-01-01")
