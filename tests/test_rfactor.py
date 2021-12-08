@@ -5,6 +5,9 @@ from pytest import approx
 
 from rfactor import compute_erosivity, maximum_intensity, maximum_intensity_matlab_clone
 from rfactor.rfactor import (
+    RFactorInputError,
+    RFactorKeyError,
+    RFactorTypeError,
     _apply_rfactor,
     _compute_erosivity,
     rain_energy_per_unit_depth,
@@ -90,7 +93,7 @@ def test_maximum_intensity_matlab_multiple_years():
             "event_rain_cum": np.cumsum(np.ones(30)),
         }
     )
-    with pytest.raises(Exception) as excinfo:
+    with pytest.raises(RFactorInputError) as excinfo:
         maximum_intensity_matlab_clone(df)
     assert "should all be in the same year" in str(excinfo.value)
 
@@ -121,7 +124,7 @@ def test_compute_erosivity_wrong_df():
             "rain_mm": np.ones(30),
         }
     )
-    with pytest.raises(Exception) as excinfo:
+    with pytest.raises(RFactorInputError) as excinfo:
         _compute_erosivity(df, maximum_intensity)
     assert "contain data of a single year." in str(excinfo.value)
 
@@ -159,7 +162,7 @@ def test_erosivity_rain_single_yearstation(dummy_rain):
 def test_erosivity_rain_single_yearstation_wrong_datetime_dtype(dummy_rain):
     """Erosivity calculation with wrong datetime dtype returns error."""
     dummy_rain["datetime"] = dummy_rain["datetime"].astype(str)
-    with pytest.raises(Exception) as excinfo:
+    with pytest.raises(RFactorTypeError) as excinfo:
         compute_erosivity(dummy_rain)
     assert "'datetime' column need to be of a datetime" in str(excinfo.value)
 
@@ -167,7 +170,7 @@ def test_erosivity_rain_single_yearstation_wrong_datetime_dtype(dummy_rain):
 def test_erosivity_rain_single_yearstation_wrong_station_dtype(dummy_rain):
     """Erosivity calculation with wrong station dtype returns error."""
     dummy_rain["station"] = 44
-    with pytest.raises(Exception) as excinfo:
+    with pytest.raises(RFactorTypeError) as excinfo:
         compute_erosivity(dummy_rain)
     assert "'station' column need to be of a str/object" in str(excinfo.value)
 
@@ -175,7 +178,7 @@ def test_erosivity_rain_single_yearstation_wrong_station_dtype(dummy_rain):
 def test_erosivity_rain_single_yearstation_wrong_rain_dtype(dummy_rain):
     """Erosivity calculation with wrong datetime dtype returns error."""
     dummy_rain["rain_mm"] = "0.44"
-    with pytest.raises(Exception) as excinfo:
+    with pytest.raises(RFactorTypeError) as excinfo:
         compute_erosivity(dummy_rain)
     assert "'rain_mm' column need to be of a float" in str(excinfo.value)
 
@@ -184,13 +187,13 @@ def test_erosivity_rain_single_yearstation_missing_column(dummy_rain):
     """Erosivity calculation need on rain input dataframe a datetime,
     rain_mm and station column."""
 
-    with pytest.raises(Exception) as excinfo:
+    with pytest.raises(RFactorKeyError) as excinfo:
         compute_erosivity(dummy_rain[["rain_mm", "datetime"]])
     assert "should contain 'datetime', 'rain_mm' and 'station'" in str(excinfo.value)
-    with pytest.raises(Exception) as excinfo:
+    with pytest.raises(RFactorKeyError) as excinfo:
         compute_erosivity(dummy_rain[["station", "datetime"]])
     assert "should contain 'datetime', 'rain_mm' and 'station'" in str(excinfo.value)
-    with pytest.raises(Exception) as excinfo:
+    with pytest.raises(RFactorKeyError) as excinfo:
         compute_erosivity(dummy_rain[["station", "rain_mm"]])
     assert "should contain 'datetime', 'rain_mm' and 'station'" in str(excinfo.value)
 
