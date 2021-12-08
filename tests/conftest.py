@@ -34,7 +34,22 @@ def rain_benchmark_data():
 def erosivity_benchmark_data():
     """Erosivity output used for benchmark reference case"""
     erosivity = pd.read_csv(
-        CURRENT_DIR / "data" / "test_erosivitydata" / "testdata_maximum_intensity.csv",
+        CURRENT_DIR / "data" / "test_erosivitydata" / "test_data_maximum_intensity.csv",
+        index_col=0,
+        parse_dates=[0, 1],
+    )
+    erosivity = erosivity.rename(columns={"datetime.1": "datetime"})
+    return erosivity
+
+
+@pytest.fixture()
+def erosivity_benchmark_matlab_clone_data():
+    """Erosivity output used for benchmark reference case"""
+    erosivity = pd.read_csv(
+        CURRENT_DIR
+        / "data"
+        / "test_erosivitydata"
+        / "test_data_maximum_intensity_matlab_clone.csv",
         index_col=0,
         parse_dates=[0, 1],
     )
