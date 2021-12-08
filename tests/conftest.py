@@ -1,3 +1,4 @@
+import os
 import textwrap
 from pathlib import Path
 
@@ -5,6 +6,8 @@ import pandas as pd
 import pytest
 
 from rfactor.process import load_rain_file, load_rain_folder
+
+CURRENT_DIR = Path(os.path.dirname(__file__))
 
 
 @pytest.fixture()
@@ -14,7 +17,7 @@ def rain_benchmark_closure():
     def rain_benchmark_year(station, year):
         """Get benchmark data for given year and station"""
         rain = load_rain_file(
-            Path(f"./tests/data/test_rainfalldata/{station}_{year}.txt")
+            CURRENT_DIR / "data" / "test_rainfalldata" / f"{station}_{year}.txt"
         )
         return rain
 
@@ -24,14 +27,14 @@ def rain_benchmark_closure():
 @pytest.fixture()
 def rain_benchmark_data():
     """Rain data used for benchmark reference case"""
-    return load_rain_folder(Path("./tests/data/test_rainfalldata"))
+    return load_rain_folder(CURRENT_DIR / "data" / "test_rainfalldata")
 
 
 @pytest.fixture()
 def erosivity_benchmark_data():
     """Erosivity output used for benchmark reference case"""
     erosivity = pd.read_csv(
-        "./tests/data/test_erosivitydata/testdata_maximum_intensity.csv",
+        CURRENT_DIR / "data" / "test_erosivitydata" / "testdata_maximum_intensity.csv",
         index_col=0,
         parse_dates=[0, 1],
     )
@@ -54,7 +57,7 @@ def rain_data_file(tmp_path):
 
 
 @pytest.fixture()
-def rain_data_foler(tmp_path):
+def rain_data_folder(tmp_path):
     """Example rainfall data file"""
     example_rain_path = tmp_path / "rain"
     example_rain_path.mkdir()
@@ -71,6 +74,47 @@ def rain_data_foler(tmp_path):
             rain.write(textwrap.dedent(example_rain_data))
 
     return example_rain_path
+
+
+@pytest.fixture()
+def dummy_rain():
+    """Dummy rainfall data according to required input data."""
+    rain = [
+        0.27,
+        0.02,
+        0.48,
+        0.22,
+        0.09,
+        0.08,
+        0.19,
+        0.21,
+        0.2,
+        0.15,
+        0.17,
+        0.25,
+        0.45,
+        0.57,
+    ]
+    dates = [
+        "2018-01-01 02:10:00",
+        "2018-01-01 02:20:00",
+        "2018-01-01 03:10:00",
+        "2018-01-01 07:40:00",
+        "2018-01-01 07:50:00",
+        "2018-01-01 14:30:00",
+        "2018-01-01 14:40:00",
+        "2018-01-01 14:50:00",
+        "2018-01-01 15:00:00",
+        "2018-01-01 15:10:00",
+        "2018-01-01 15:20:00",
+        "2018-01-01 15:30:00",
+        "2018-01-01 15:40:00",
+        "2018-01-01 15:50:00",
+    ]
+    station = "P01_001"
+    return pd.DataFrame(
+        {"rain_mm": rain, "datetime": pd.to_datetime(dates), "station": station}
+    )
 
 
 @pytest.fixture()

@@ -14,21 +14,22 @@ From 10' rain data to EI for a single station/year
 
 The input of the erosivity algorithm is a rainfall time series with a 10' resolution as a Pandas DataFrame, e.g.
 
-+-----+---------------------+-----------+
-| idx | datetime            | rain_mm   |
-+=====+=====================+===========+
-|  0  | 2018-01-01 02:10:00 |      0.27 |
-+-----+---------------------+-----------+
-|  1  | 2018-01-01 02:20:00 |      0.02 |
-+-----+---------------------+-----------+
-|  2  | 2018-01-01 03:10:00 |      0.48 |
-+-----+---------------------+-----------+
-| ... | ...                 | ...       |
-+-----+---------------------+-----------+
++-----+---------------------+-----------+-----------+
+| idx | datetime            | rain_mm   | station   |
++=====+=====================+===========+===========+
+|  0  | 2018-01-01 02:10:00 |      0.27 |      P01  |
++-----+---------------------+-----------+-----------+
+|  1  | 2018-01-01 02:20:00 |      0.02 |      P01  |
++-----+---------------------+-----------+-----------+
+|  2  | 2018-01-01 03:10:00 |      0.48 |      P01  |
++-----+---------------------+-----------+-----------+
+| ... | ...                 | ...       |      ...  |
++-----+---------------------+-----------+-----------+
 
 The data can be derived from any source and contain more columns (e.g. the measurement station identifier),
-but the ``datetime`` and ``rain_mm`` are required to apply the erosivity algorithm. The data should contain data of a
-single year and single station (see further to calculate multiple stations together.
+but the ``datetime``, ``rain_mm`` and ``station`` are required to apply the erosivity algorithm. The data
+can contain both data of a single year/station  as multiple years/stations (see further to calculate multiple
+stations together. Make sure that the ``station`` column is present also for the single station case.
 
 Erosivity (EI30-values) for a single station/year combination can be computed (make sure to activating the conda
 environment, ``conda activate rfactor``). The :func:`rfactor.compute_erosivity` function applies the algorithm
