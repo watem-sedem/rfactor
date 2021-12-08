@@ -46,8 +46,10 @@ def erosivity_benchmark_data():
 def erosivity_benchmark_matlab_clone_data():
     """Erosivity output used for benchmark reference case"""
     erosivity = pd.read_csv(
-        CURRENT_DIR / "data" / "test_erosivitydata" /
-        "test_data_maximum_intensity_matlab_clone.csv",
+        CURRENT_DIR
+        / "data"
+        / "test_erosivitydata"
+        / "test_data_maximum_intensity_matlab_clone.csv",
         index_col=0,
         parse_dates=[0, 1],
     )
