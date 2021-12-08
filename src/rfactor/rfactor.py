@@ -9,8 +9,16 @@ TIME_BETWEEN_EVENTS = "6 hours"
 MIN_CUMUL_EVENT = 1.27
 
 
-class RFactorInputException(Exception):
+class RFactorInputError(Exception):
     """Raise when input data are not conform the rfactor required input format."""
+
+
+class RFactorKeyError(Exception):
+    """Raise when input data missing required column names."""
+
+
+class RFactorTypeError(Exception):
+    """Raise when input data data type of a data column is wrong."""
 
 
 def rain_energy_per_unit_depth(rain):
@@ -176,12 +184,8 @@ def _compute_erosivity(
         - *erosivity_cum* (float): Cumulative erosivity over all events together
 
     """
-    if ("datetime" not in rain.columns) or ("rain_mm" not in rain.columns):
-        raise RFactorInputException(
-            "DataFrame should contain 'datetime' and 'rain_mm' columns."
-        )
     if len(rain["datetime"].dt.year.unique()) != 1:  # data of a single year
-        raise RFactorInputException("DataFrame should contain data of a single year.")
+        raise RFactorInputError("DataFrame should contain data of a single year.")
 
     # mark start of each rain event
     rain = rain[rain["rain_mm"] > 0.0]  # Only keep measurements with rain
@@ -270,6 +274,25 @@ def compute_erosivity(rain, intensity_method=maximum_intensity):
 
         - *tag* (str): unique tag for year, station-couple.
     """
+    if not {"station", "rain_mm", "datetime"}.issubset(rain):
+        raise RFactorKeyError(
+            "DataFrame should contain 'datetime', 'rain_mm' and 'station' columns."
+        )
+    if not pd.core.dtypes.common.is_datetime64_any_dtype(rain["datetime"]):
+        raise RFactorTypeError(
+            "The 'datetime' column need to be of a datetime data type."
+        )
+    if not pd.core.dtypes.common.is_string_dtype(rain["station"]):
+        raise RFactorTypeError(
+            "The 'station' column need to be of a str/object data type."
+        )
+    if not pd.core.dtypes.common.is_float_dtype(rain["rain_mm"]):
+        raise RFactorTypeError("The 'rain_mm' column need to be of a float type.")
+
+    rain["year"] = rain["datetime"].dt.year
+    if "tag" not in rain.columns:
+        rain["tag"] = rain["station"].astype(str) + "_" + rain["year"].astype(str)
+
     fun_with_method = partial(_apply_rfactor, intensity_method=intensity_method)
     grouped = rain.groupby(["station", "year"])
     results = Parallel(n_jobs=mp.cpu_count() - 1)(
