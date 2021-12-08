@@ -109,17 +109,17 @@ def test_load_rain_file(rain_data_file):
     ]
 
 
-def test_load_rain_file_with_folder(rain_data_foler):
+def test_load_rain_file_with_folder(rain_data_folder):
     """When input is a file, should return ValueError to user"""
     with pytest.raises(ValueError) as excinfo:
-        load_rain_file(rain_data_foler)
+        load_rain_file(rain_data_folder)
     assert "a file instead of a directory" in str(excinfo.value)
 
 
-def test_load_rain_folder(rain_data_foler):
+def test_load_rain_folder(rain_data_folder):
     """Rainfall data should be parsed to rain DataFrame
     when loading multiple files adding a year and tag column"""
-    rainfall_data = load_rain_folder(rain_data_foler)
+    rainfall_data = load_rain_folder(rain_data_folder)
     assert isinstance(rainfall_data, pd.DataFrame)
     assert list(rainfall_data.columns) == [
         "minutes_since",
@@ -229,18 +229,18 @@ def test_rfactor_from_erosivity_subset_not_existing(dummy_erosivity):
     assert "1991" in str(excinfo.value)
 
 
-def test_rainfall_statistics(rain_data_foler):
+def test_rainfall_statistics(rain_data_folder):
     """"""
-    rainfall_data = load_rain_folder(rain_data_foler)
+    rainfall_data = load_rain_folder(rain_data_folder)
     rf_stats = compute_rainfall_statistics(rainfall_data)
     assert set(rf_stats.columns) == set(["year", "records", "min", "median", "max"])
     assert isinstance(rf_stats["year"][0], list)
     assert rf_stats["records"].dtype == np.int64
 
 
-def test_rainfall_statistics_with_metadata(rain_data_foler, station_metadata):
+def test_rainfall_statistics_with_metadata(rain_data_folder, station_metadata):
     """Extend rain stats with metadata"""
-    rainfall_data = load_rain_folder(rain_data_foler)
+    rainfall_data = load_rain_folder(rain_data_folder)
     rf_stats = compute_rainfall_statistics(rainfall_data, station_metadata)
     assert set(rf_stats.columns) == set(
         ["year", "station", "x", "y", "records", "min", "median", "max"]
