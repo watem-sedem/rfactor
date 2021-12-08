@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Get started &mdash; rfactor 0.0.post1.dev328+g1a5c8c5.d20211208 documentation</title>
+  <title>Get started &mdash; rfactor 0.0.post1.dev344+g9f66885.d20211208 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             <a href="index.html" class="icon icon-home"> rfactor
           </a>
               <div class="version">
-                0.0.post1.dev328+g1a5c8c5.d20211208
+                0.0.post1.dev344+g9f66885.d20211208
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -121,38 +121,45 @@
 <p>The input of the erosivity algorithm is a rainfall time series with a 10’ resolution as a Pandas DataFrame, e.g.</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 14%" />
-<col style="width: 57%" />
-<col style="width: 30%" />
+<col style="width: 10%" />
+<col style="width: 44%" />
+<col style="width: 23%" />
+<col style="width: 23%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>idx</p></th>
 <th class="head"><p>datetime</p></th>
 <th class="head"><p>rain_mm</p></th>
+<th class="head"><p>station</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>0</p></td>
 <td><p>2018-01-01 02:10:00</p></td>
 <td><p>0.27</p></td>
+<td><p>P01</p></td>
 </tr>
 <tr class="row-odd"><td><p>1</p></td>
 <td><p>2018-01-01 02:20:00</p></td>
 <td><p>0.02</p></td>
+<td><p>P01</p></td>
 </tr>
 <tr class="row-even"><td><p>2</p></td>
 <td><p>2018-01-01 03:10:00</p></td>
 <td><p>0.48</p></td>
+<td><p>P01</p></td>
 </tr>
 <tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
 <td><p>…</p></td>
 <td><p>…</p></td>
 </tr>
 </tbody>
 </table>
 <p>The data can be derived from any source and contain more columns (e.g. the measurement station identifier),
-but the <code class="docutils literal notranslate"><span class="pre">datetime</span></code> and <code class="docutils literal notranslate"><span class="pre">rain_mm</span></code> are required to apply the erosivity algorithm. The data should contain data of a
-single year and single station (see further to calculate multiple stations together.</p>
+but the <code class="docutils literal notranslate"><span class="pre">datetime</span></code>, <code class="docutils literal notranslate"><span class="pre">rain_mm</span></code> and <code class="docutils literal notranslate"><span class="pre">station</span></code> are required to apply the erosivity algorithm. The data
+can contain both data of a single year/station  as multiple years/stations (see further to calculate multiple
+stations together. Make sure that the <code class="docutils literal notranslate"><span class="pre">station</span></code> column is present also for the single station case.</p>
 <p>Erosivity (EI30-values) for a single station/year combination can be computed (make sure to activating the conda
 environment, <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">rfactor</span></code>). The <a class="reference internal" href="api/rfactor.html#rfactor.compute_erosivity" title="rfactor.compute_erosivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.compute_erosivity()</span></code></a> function applies the algorithm
 to a DataFrame containing data for a single station/year, e.g. for the data in DataFrame <code class="docutils literal notranslate"><span class="pre">df_rain</span></code>.</p>

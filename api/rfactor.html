@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor package &mdash; rfactor 0.0.post1.dev328+g1a5c8c5.d20211208 documentation</title>
+  <title>rfactor package &mdash; rfactor 0.0.post1.dev344+g9f66885.d20211208 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             <a href="../index.html" class="icon icon-home"> rfactor
           </a>
               <div class="version">
-                0.0.post1.dev328+g1a5c8c5.d20211208
+                0.0.post1.dev344+g9f66885.d20211208
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -295,10 +295,24 @@ see <a class="reference internal" href="#rfactor.process.load_rain_file" title="
 <section id="module-rfactor.rfactor">
 <span id="rfactor-rfactor-module"></span><h2>rfactor.rfactor module<a class="headerlink" href="#module-rfactor.rfactor" title="Permalink to this headline"></a></h2>
 <dl class="py exception">
-<dt class="sig sig-object py" id="rfactor.rfactor.RFactorInputException">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">RFactorInputException</span></span><a class="reference internal" href="../_modules/rfactor/rfactor.html#RFactorInputException"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.RFactorInputException" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="rfactor.rfactor.RFactorInputError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">RFactorInputError</span></span><a class="reference internal" href="../_modules/rfactor/rfactor.html#RFactorInputError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.RFactorInputError" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#Exception" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
 <p>Raise when input data are not conform the rfactor required input format.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="rfactor.rfactor.RFactorKeyError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">RFactorKeyError</span></span><a class="reference internal" href="../_modules/rfactor/rfactor.html#RFactorKeyError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.RFactorKeyError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#Exception" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Raise when input data missing required column names.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="rfactor.rfactor.RFactorTypeError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">RFactorTypeError</span></span><a class="reference internal" href="../_modules/rfactor/rfactor.html#RFactorTypeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.RFactorTypeError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#Exception" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Raise when input data data type of a data column is wrong.</p>
 </dd></dl>
 
 <dl class="py function">
