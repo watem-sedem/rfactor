@@ -8,6 +8,7 @@ The R-factor scripts can be used to:
 1. Compute the erosivity :math:`EI_{30}` values for a number of stations and years.
 2. Use the computed :math:`EI_{30}` values to compute an R-value.
 
+
 From 10' rain data to EI for a single station/year
 --------------------------------------------------
 
@@ -218,7 +219,6 @@ using Pandas DataFrame to store te erosivity, all funtionalities for slicing/fil
 
 For example, consider one wants to compute the R-value for 2017 and 2018, for Ukkel (stations: KMI\_6447 and KMI\_FS3):
 
-::
-
+.. code-block:: python
     erosivity_selected = erosivity[(erosivity["year"].isin([2017, 2018])) &
                                    (erosivity["station"].isin(['KMI\_6447', 'KMI\_FS3']))]
