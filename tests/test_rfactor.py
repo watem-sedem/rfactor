@@ -210,10 +210,15 @@ def test_erosivity_existing_tag(dummy_rain):
     "station,year",
     [
         ("P01_001", 2018),
-        ("P01_010", 2016),
-        ("P11_007", 2008),
         ("P01_003", 2020),
+        ("P01_010", 2012),
+        ("P01_010", 2016),
+        ("P05_038", 2018),
         ("P05_039", 2017),
+        ("P08_018", 2012),
+        ("P09_032", 2020),
+        ("P11_007", 2008),
+        ("P11_024", 2012),
     ],
 )
 def test_rfactor_benchmark_single_year(
@@ -240,7 +245,7 @@ def test_rfactor_benchmark_single_year(
     )
 
 
-@pytest.mark.slow
+@pytest.mark.skip(reason="only works with full data set (not in package")
 def test_rfactor_full_benchmark(rain_benchmark_data, erosivity_benchmark_data):
     """Run the full benchmark data set"""
     erosivity = compute_erosivity(rain_benchmark_data)
