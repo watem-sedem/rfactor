@@ -205,12 +205,9 @@ def test_erosivity_existing_tag(dummy_rain):
     assert "tag" in erosivity.columns
     assert erosivity["tag"][0] == "MY_UNIQUE_TAG"
 
+
 @pytest.mark.parametrize(
-    "intensity_method",
-    [
-        (maximum_intensity),
-        (maximum_intensity_matlab_clone)
-    ]
+    "intensity_method", [(maximum_intensity), (maximum_intensity_matlab_clone)]
 )
 @pytest.mark.parametrize(
     "station,year",
@@ -228,8 +225,12 @@ def test_erosivity_existing_tag(dummy_rain):
     ],
 )
 def test_rfactor_benchmark_single_year(
-    station, year, rain_benchmark_closure, intensity_method,
-        erosivity_benchmark_data, erosivity_benchmark_matlab_clone_data
+    station,
+    year,
+    rain_benchmark_closure,
+    intensity_method,
+    erosivity_benchmark_data,
+    erosivity_benchmark_matlab_clone_data,
 ):
     """Run the erosivity/rfactor calculation for single year/station combinations"""
     rain = rain_benchmark_closure(station, year)
@@ -241,16 +242,13 @@ def test_rfactor_benchmark_single_year(
 
     erosivity = compute_erosivity(rain, intensity_method)
     erosivity_reference = eros_benchmark[
-        (eros_benchmark["year"] == year)
-        & (eros_benchmark["station"] == station)
+        (eros_benchmark["year"] == year) & (eros_benchmark["station"] == station)
     ]
 
     pd.testing.assert_frame_equal(erosivity, erosivity_reference)
 
     # using support function provides the same output
-    erosivity_support_func = _compute_erosivity(
-        rain, intensity_method=intensity_method
-    )
+    erosivity_support_func = _compute_erosivity(rain, intensity_method=intensity_method)
     erosivity_support_func.index = erosivity_support_func["datetime"]
     pd.testing.assert_frame_equal(
         erosivity.drop(columns=["tag", "station", "year"]), erosivity_support_func
