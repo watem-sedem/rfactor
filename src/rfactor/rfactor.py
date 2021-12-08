@@ -279,7 +279,7 @@ def compute_erosivity(rain, intensity_method=maximum_intensity):
 
     # couple tag
     all_erosivity = all_erosivity.merge(
-        rain[["station", "year", "tag"]].drop_duplicates(), on=["station", "year"]
+        rain[["station", "year"]].drop_duplicates(), on=["station", "year"]
     )
     all_erosivity.index = all_erosivity["datetime"]
 
