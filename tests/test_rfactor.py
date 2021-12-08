@@ -126,19 +126,6 @@ def test_compute_erosivity_wrong_df():
     assert "contain data of a single year." in str(excinfo.value)
 
 
-def test_compute_erosivity_multiple_years():
-    """Erosivity input DataFrame should contain data of a single year"""
-    df = pd.DataFrame(
-        {
-            "date": pd.date_range(start="2020-01-01 00:00", periods=2, freq="10min"),
-            "rain": np.ones(2),
-        }
-    )
-    with pytest.raises(Exception) as excinfo:
-        _compute_erosivity(df, maximum_intensity)
-    assert "should contain 'datetime' and 'rain_mm' columns" in str(excinfo.value)
-
-
 def test_apply_rfactor(rain_benchmark_closure):
     """apply_rfactor adds the station/year data to dataframe"""
     station, year = "P01_001", 2018
@@ -150,6 +137,70 @@ def test_apply_rfactor(rain_benchmark_closure):
         erosivity_support_func,
         erosivity_apply_rfactor.drop(columns=["station", "year"]),
     )
+
+
+def test_erosivity_rain_single_yearstation(dummy_rain):
+    """Erosivity calculation need to work on rain input dataframe with datetime,
+    rain_mm and station only for a given year/station."""
+    erosivity = compute_erosivity(dummy_rain)
+
+    # year column added when not existing
+    assert "year" in erosivity.columns
+    assert erosivity["year"][0] == 2018
+
+    # station column preserved
+    assert erosivity["station"][0] == "P01_001"
+
+    # tag column added when not existing
+    assert "tag" in erosivity.columns
+    assert erosivity["tag"][0] == "P01_001_2018"
+
+
+def test_erosivity_rain_single_yearstation_wrong_datetime_dtype(dummy_rain):
+    """Erosivity calculation with wrong datetime dtype returns error."""
+    dummy_rain["datetime"] = dummy_rain["datetime"].astype(str)
+    with pytest.raises(Exception) as excinfo:
+        compute_erosivity(dummy_rain)
+    assert "'datetime' column need to be of a datetime" in str(excinfo.value)
+
+
+def test_erosivity_rain_single_yearstation_wrong_station_dtype(dummy_rain):
+    """Erosivity calculation with wrong station dtype returns error."""
+    dummy_rain["station"] = 44
+    with pytest.raises(Exception) as excinfo:
+        compute_erosivity(dummy_rain)
+    assert "'station' column need to be of a str/object" in str(excinfo.value)
+
+
+def test_erosivity_rain_single_yearstation_wrong_rain_dtype(dummy_rain):
+    """Erosivity calculation with wrong datetime dtype returns error."""
+    dummy_rain["rain_mm"] = "0.44"
+    with pytest.raises(Exception) as excinfo:
+        compute_erosivity(dummy_rain)
+    assert "'rain_mm' column need to be of a float" in str(excinfo.value)
+
+
+def test_erosivity_rain_single_yearstation_missing_column(dummy_rain):
+    """Erosivity calculation need on rain input dataframe a datetime,
+    rain_mm and station column."""
+
+    with pytest.raises(Exception) as excinfo:
+        compute_erosivity(dummy_rain[["rain_mm", "datetime"]])
+    assert "should contain 'datetime', 'rain_mm' and 'station'" in str(excinfo.value)
+    with pytest.raises(Exception) as excinfo:
+        compute_erosivity(dummy_rain[["station", "datetime"]])
+    assert "should contain 'datetime', 'rain_mm' and 'station'" in str(excinfo.value)
+    with pytest.raises(Exception) as excinfo:
+        compute_erosivity(dummy_rain[["station", "rain_mm"]])
+    assert "should contain 'datetime', 'rain_mm' and 'station'" in str(excinfo.value)
+
+
+def test_erosivity_existing_tag(dummy_rain):
+    """Existing tag is not overwritten. If not tag, new one is created."""
+    dummy_rain["tag"] = "MY_UNIQUE_TAG"
+    erosivity = compute_erosivity(dummy_rain)
+    assert "tag" in erosivity.columns
+    assert erosivity["tag"][0] == "MY_UNIQUE_TAG"
 
 
 @pytest.mark.parametrize(

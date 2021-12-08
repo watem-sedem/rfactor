@@ -74,6 +74,47 @@ def rain_data_folder(tmp_path):
 
 
 @pytest.fixture()
+def dummy_rain():
+    """Dummy rainfall data according to required input data."""
+    rain = [
+        0.27,
+        0.02,
+        0.48,
+        0.22,
+        0.09,
+        0.08,
+        0.19,
+        0.21,
+        0.2,
+        0.15,
+        0.17,
+        0.25,
+        0.45,
+        0.57,
+    ]
+    dates = [
+        "2018-01-01 02:10:00",
+        "2018-01-01 02:20:00",
+        "2018-01-01 03:10:00",
+        "2018-01-01 07:40:00",
+        "2018-01-01 07:50:00",
+        "2018-01-01 14:30:00",
+        "2018-01-01 14:40:00",
+        "2018-01-01 14:50:00",
+        "2018-01-01 15:00:00",
+        "2018-01-01 15:10:00",
+        "2018-01-01 15:20:00",
+        "2018-01-01 15:30:00",
+        "2018-01-01 15:40:00",
+        "2018-01-01 15:50:00",
+    ]
+    station = "P01_001"
+    return pd.DataFrame(
+        {"rain_mm": rain, "datetime": pd.to_datetime(dates), "station": station}
+    )
+
+
+@pytest.fixture()
 def dummy_erosivity():
     """Erosivity output for different stations and years.
 
