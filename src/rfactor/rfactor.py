@@ -274,7 +274,7 @@ def compute_erosivity(rain, intensity_method=maximum_intensity):
 
         - *tag* (str): unique tag for year, station-couple.
     """
-    if not {"station", "rain_mm", "datetime"}.issubset(rain):
+    if not {"station", "rain_mm", "datetime"}.issubset(rain.columns):
         raise RFactorKeyError(
             "DataFrame should contain 'datetime', 'rain_mm' and 'station' columns."
         )
