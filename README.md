@@ -6,8 +6,7 @@ R-factor
 The R-factor is a measure used in erosion and (overland) sediment
 modelling to quantify the effect of rainfall on soil erosion. It is
 typically defined in the context of the RUSLE equation, in which gross
-erosion for an agricultural parcel is estimated (see, for example,
-[here](https://docs.fluves.net/cnws-pascal//)).
+erosion for an agricultural parcel is estimated.
 
 Specifically, the R-factor is a measure for the total erosivity of a
 number of rainfall events within a defined timeframe (year, month,
