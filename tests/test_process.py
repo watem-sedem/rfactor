@@ -179,7 +179,7 @@ def test_write_erosivity(dummy_erosivity, tmpdir):
     original_data = erosivity[
         (erosivity["station"] == first_station)
         & (erosivity["datetime"].dt.year == int(first_year))
-    ]
+    ].copy()
     original_data["days_since"] = _days_since_start_year(original_data["datetime"])
     written_data = pd.read_csv(
         written_files[0], delimiter=" ", names=columns_to_compare
