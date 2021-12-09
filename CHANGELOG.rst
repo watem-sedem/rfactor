@@ -2,6 +2,12 @@
 Changelog
 =========
 
+Version 0.1.1
+=============
+ - Cleaned up data-files avaible in repo.
+ - Included test for ``maximum_intensity_matlab_clone`` function and updated
+   tests.
+
 Version 0.1.0
 =============
  - Matlab code is translated to Python.
