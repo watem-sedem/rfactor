@@ -35,16 +35,15 @@ __Note__
 Get started
 -----------
 This package makes use of `Python` (and a limited number of dependencies
-such as Pandas and Numpy). The installation (see here \<installation\>)
-is managed by making use of [Miniconda](https://docs.conda.io/en/latest/miniconda.html).
-Make sure to check out the installation instructions, and follow the example in
-the Get started section of the [package documentation](https://cn-ws.github.io/rfactor/).
+such as Pandas and Numpy). Make sure to check out the installation instructions, and follow the example in
+the _Get started section_ of the [package documentation](https://cn-ws.github.io/rfactor/).
 
 Rainfall and erosivity data
 ---------------------------
 
-Input rainfall data are provided by the
-Flemish Environment Agency (VMM), which are also available via
+Any 10 minute ezqolurion input rainfall should work, but input rainfall data for the initial project
+were provided by the Flemish Environment Agency (VMM) and the Royal Meteorological Institute (RMI).
+Teh data from the Flemish Environment Agency (VMM) are available via
 [waterinfo](https://www.waterinfo.be). The input rainfall data from the
 Royal Meteorological Institute (RMI) are not shared in this project.
 Please contact the RMI if you would like to obtain the a copy of the RMI
