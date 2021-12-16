@@ -50,7 +50,7 @@ The documentation can be found on the
 
 Code
 ----
-The open-source code can be found on 
+The open-source code can be found on
 `GitHub <https://github.com/cn-ws/rfactor/>`_.
 
 License
