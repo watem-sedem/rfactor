@@ -48,6 +48,11 @@ Documentation
 The documentation can be found on the
 `R-factor documentation page <https://cn-ws.github.io/rfactor/index.html>`_.
 
+Code
+----
+The open-source code can be found on
+`GitHub <https://github.com/cn-ws/rfactor/>`_.
+
 License
 -------
 This project is licensed under GNU Lesser Public License v3.0, see
