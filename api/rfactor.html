@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor package &mdash; rfactor 0.1.1.post1.dev3+gd6db166 documentation</title>
+  <title>rfactor package &mdash; rfactor 0.0.post1.dev354+g8e8bd7e.d20211217 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             <a href="../index.html" class="icon icon-home"> rfactor
           </a>
               <div class="version">
-                0.1.1.post1.dev3+gd6db166
+                0.0.post1.dev354+g8e8bd7e.d20211217
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -166,8 +166,8 @@ provided, the following columns are returned:</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>erosivity</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.3.5)"><em>pandas.DataFrame</em></a>) – See <a class="reference internal" href="#rfactor.rfactor.compute_erosivity" title="rfactor.rfactor.compute_erosivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.rfactor.compute_erosivity()</span></code></a></p></li>
-<li><p><strong>stations</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of stations to extract R for.</p></li>
-<li><p><strong>years</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of years to extract R for.</p></li>
+<li><p><strong>stations</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – List of stations to extract R for.</p></li>
+<li><p><strong>years</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – List of years to extract R for.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -198,7 +198,7 @@ start of the year’ and the second as the rainfall depth during the t last minu
 (t is the temporal resolution of the timeseries).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/pathlib.html#pathlib.Path" title="(in Python v3.7)"><em>pathlib.Path</em></a>) – File path with rainfall data according to defined format.</p>
+<dd class="field-odd"><p><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – File path with rainfall data according to defined format.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><p><strong>rain</strong> – DataFrame with rainfall time series. Contains the following columns:</p>
@@ -239,7 +239,7 @@ start of the year’ and the second as the rainfall depth during the t last minu
 <dd><p>Load all (legacy Matlab format) files of rainfall data in a folder</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>folder_path</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/pathlib.html#pathlib.Path" title="(in Python v3.7)"><em>pathlib.Path</em></a>) – Folder path with rainfall data according to legacy Matlab format,
+<dd class="field-odd"><p><strong>folder_path</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – Folder path with rainfall data according to legacy Matlab format,
 see <a class="reference internal" href="#rfactor.process.load_rain_file" title="rfactor.process.load_rain_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_rain_file()</span></code></a>.</p>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -284,7 +284,7 @@ but should have at least the following:</p>
 <li><p><em>all_event_rain_cum</em> (float): Cumulative rain over events</p></li>
 </ul>
 </p></li>
-<li><p><strong>folder_path</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/pathlib.html#pathlib.Path" title="(in Python v3.7)"><em>pathlib.Path</em></a>) – Folder path to save data according to legacy Matlab format,
+<li><p><strong>folder_path</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/pathlib.html#pathlib.Path" title="(in Python v3.9)"><em>pathlib.Path</em></a>) – Folder path to save data according to legacy Matlab format,
 see <a class="reference internal" href="#rfactor.process.load_rain_file" title="rfactor.process.load_rain_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_rain_file()</span></code></a>.</p></li>
 </ul>
 </dd>
@@ -297,21 +297,21 @@ see <a class="reference internal" href="#rfactor.process.load_rain_file" title="
 <dl class="py exception">
 <dt class="sig sig-object py" id="rfactor.rfactor.RFactorInputError">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">RFactorInputError</span></span><a class="reference internal" href="../_modules/rfactor/rfactor.html#RFactorInputError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.RFactorInputError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/exceptions.html#Exception" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#Exception" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
 <p>Raise when input data are not conform the rfactor required input format.</p>
 </dd></dl>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="rfactor.rfactor.RFactorKeyError">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">RFactorKeyError</span></span><a class="reference internal" href="../_modules/rfactor/rfactor.html#RFactorKeyError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.RFactorKeyError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/exceptions.html#Exception" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#Exception" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
 <p>Raise when input data missing required column names.</p>
 </dd></dl>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="rfactor.rfactor.RFactorTypeError">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">RFactorTypeError</span></span><a class="reference internal" href="../_modules/rfactor/rfactor.html#RFactorTypeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.RFactorTypeError" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.7/library/exceptions.html#Exception" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#Exception" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
 <p>Raise when input data data type of a data column is wrong.</p>
 </dd></dl>
 
@@ -364,7 +364,7 @@ maximal intensity.</p>
 <dd class="field-even"><p><strong>maxprecip_30min</strong> – Maximal 30-minute intensity during event (in mm/h).</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -389,7 +389,7 @@ implementation by Verstraeten.</p>
 <dd class="field-even"><p><strong>maxprecip_30min</strong> – Maximal 30-minute intensity during event (in mm/h).</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -406,7 +406,7 @@ implementation by Verstraeten.</p>
 <dd class="field-even"><p><strong>energy</strong> – Energy per unit depth.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)">float</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -496,7 +496,7 @@ maximal intensity.</p>
 <dd class="field-even"><p><strong>maxprecip_30min</strong> – Maximal 30-minute intensity during event (in mm/h).</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -521,7 +521,7 @@ implementation by Verstraeten.</p>
 <dd class="field-even"><p><strong>maxprecip_30min</strong> – Maximal 30-minute intensity during event (in mm/h).</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.7/library/functions.html#float" title="(in Python v3.7)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#float" title="(in Python v3.9)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
