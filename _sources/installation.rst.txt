@@ -15,16 +15,16 @@ interfere with other Python installation on your machine.
     Matlab or Octave were previously used to run the core rfactor code.
     See :ref:`codelegacy` for more information on the conversion towards a
     Python environment.
-    
+
 Latest release
 --------------
 
 The rfactor package is available on `PyPI <https://pypi.org/project/rfactor/>`_. Make sure to setup an environment (either virtualenv, conda,….) first with ``pip`` installed. To install the rfactor package, run:
-    
+
 ::
 
     pip install rfactor
-    
+
 
 .. _installfromsource:
 
