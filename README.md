@@ -35,7 +35,13 @@ __Note__
 Get started
 -----------
 This package makes use of `Python` (and a limited number of dependencies
-such as Pandas and Numpy). Make sure to check out the installation instructions, and follow the example in
+such as Pandas and Numpy). To install:
+
+```
+pip install rfactor
+```
+
+Make sure to check out the installation instructions and follow the example in
 the _Get started section_ of the [package documentation](https://cn-ws.github.io/rfactor/).
 
 Rainfall and erosivity data
