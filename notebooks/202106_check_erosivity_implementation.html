@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Erosivity calculation &mdash; rfactor 0.0.post1.dev358+g1453b72.d20211218 documentation</title>
+  <title>Erosivity calculation &mdash; rfactor 0.0.post1.dev360+g315e113.d20220202 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -16,8 +16,8 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" /> 
@@ -31,7 +31,7 @@
             <a href="../index.html" class="icon icon-home"> rfactor
           </a>
               <div class="version">
-                0.0.post1.dev358+g1453b72.d20211218
+                0.0.post1.dev360+g315e113.d20220202
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -293,7 +293,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
-.prompt a.copybtn {
+.prompt .copybtn {
     display: none;
 }
 
@@ -357,8 +357,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># OPTIONAL: Load the &quot;autoreload&quot; extension so that code can change</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># OPTIONAL: Load the &quot;autoreload&quot; extension so that code can change</span>
 <span class="o">%</span><span class="k">load_ext</span> autoreload
 
 <span class="c1"># OPTIONAL: always reload modules so that as you change code in src, it gets loaded</span>
@@ -370,8 +369,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 </pre></div>
@@ -381,18 +379,15 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-
-</pre></div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<br/></pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">fmap_rainfall</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;./tests/data/test_rainfalldata&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fmap_rainfall</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;./tests/data/test_rainfalldata&quot;</span><span class="p">)</span>
 <span class="n">fmap_erosivity</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;./tests/data/test_erosivitydata/&quot;</span><span class="p">)</span> <span class="c1"># Folder path where results are written to (see above).</span>
 </pre></div>
 </div>
@@ -412,8 +407,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">load_rain_folder</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">load_rain_folder</span>
 </pre></div>
 </div>
 </div>
@@ -421,8 +415,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">all_rainfall</span> <span class="o">=</span> <span class="n">load_rain_folder</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../../tests/data/test_rainfalldata/&quot;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_rainfall</span> <span class="o">=</span> <span class="n">load_rain_folder</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../../tests/data/test_rainfalldata/&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -430,8 +423,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">all_rainfall</span><span class="o">.</span><span class="n">shape</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_rainfall</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
 </div>
@@ -439,8 +431,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">all_rainfall</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_rainfall</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -449,8 +440,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018</span> <span class="o">=</span> <span class="n">all_rainfall</span><span class="p">[(</span><span class="n">all_rainfall</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;P01_001&quot;</span><span class="p">)</span> <span class="o">&amp;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018</span> <span class="o">=</span> <span class="n">all_rainfall</span><span class="p">[(</span><span class="n">all_rainfall</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;P01_001&quot;</span><span class="p">)</span> <span class="o">&amp;</span>
                             <span class="p">(</span><span class="n">all_rainfall</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2018</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -459,8 +449,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -468,8 +457,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -477,8 +465,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># From datetime to minutes difference since start of the year - bit hacky</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># From datetime to minutes difference since start of the year - bit hacky</span>
 <span class="n">current_year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">unique</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">start_shift</span> <span class="o">=</span> <span class="p">(</span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">current_year</span><span class="si">}</span><span class="s2">-01-01&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">/</span><span class="mf">60.</span>
 <span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;min_since_start_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span> <span class="o">/</span><span class="mf">60.</span> <span class="o">+</span> <span class="n">start_shift</span>
@@ -490,8 +477,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -503,8 +489,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">event_split</span> <span class="o">=</span> <span class="s2">&quot;6 hours&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">event_split</span> <span class="o">=</span> <span class="s2">&quot;6 hours&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -512,8 +497,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;event_start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;event_start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">P01_001_2018</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">event_split</span><span class="p">,</span> <span class="s2">&quot;event_start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># var c in matlab</span>
 <span class="n">P01_001_2018</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;event_start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 </pre></div>
@@ -523,8 +507,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -532,8 +515,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">max_idx_distance</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">P01_001_2018</span><span class="p">[</span><span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;event_start&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="c1">#var max in matlab</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">max_idx_distance</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">P01_001_2018</span><span class="p">[</span><span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;event_start&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="c1">#var max in matlab</span>
 <span class="n">max_idx_distance</span>
 </pre></div>
 </div>
@@ -547,8 +529,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;event_idx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;event_start&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;event_idx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;event_start&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -556,8 +537,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018</span>
 </pre></div>
 </div>
 </div>
@@ -570,8 +550,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;event_rain_cum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">P01_001_2018</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;event_rain_cum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">P01_001_2018</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -579,8 +558,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -592,8 +570,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">temp</span> <span class="o">=</span> <span class="n">P01_001_2018</span><span class="p">[</span><span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;event_idx&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temp</span> <span class="o">=</span> <span class="n">P01_001_2018</span><span class="p">[</span><span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;event_idx&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -601,8 +578,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">temp</span><span class="p">[</span><span class="s2">&quot;rain_energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1112</span><span class="o">*</span><span class="p">((</span><span class="n">temp</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">*</span><span class="mf">6.</span><span class="p">)</span><span class="o">**</span><span class="mf">0.31</span><span class="p">)</span><span class="o">*</span><span class="n">temp</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temp</span><span class="p">[</span><span class="s2">&quot;rain_energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1112</span><span class="o">*</span><span class="p">((</span><span class="n">temp</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">*</span><span class="mf">6.</span><span class="p">)</span><span class="o">**</span><span class="mf">0.31</span><span class="p">)</span><span class="o">*</span><span class="n">temp</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -616,8 +592,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">temp</span><span class="p">[</span><span class="s2">&quot;rain_energy&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="c1"># to make comparible with matlab version add `- 0.034867`</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temp</span><span class="p">[</span><span class="s2">&quot;rain_energy&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="c1"># to make comparible with matlab version add `- 0.034867`</span>
 </pre></div>
 </div>
 </div>
@@ -625,8 +600,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">temp</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temp</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -634,8 +608,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">rain_energy_per_unit</span><span class="p">(</span><span class="n">rain</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rain_energy_per_unit</span><span class="p">(</span><span class="n">rain</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
     <span class="n">rain_energy</span> <span class="o">=</span> <span class="mf">0.1112</span><span class="o">*</span><span class="p">((</span><span class="n">rain</span><span class="o">*</span><span class="mf">6.</span><span class="p">)</span><span class="o">**</span><span class="mf">0.31</span><span class="p">)</span><span class="o">*</span><span class="n">rain</span>
     <span class="k">return</span> <span class="n">rain_energy</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -646,8 +619,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">rain_energy_per_unit</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rain_energy_per_unit</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -656,8 +628,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;event_energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">P01_001_2018</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">rain_energy_per_unit</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;event_energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">P01_001_2018</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">rain_energy_per_unit</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -665,8 +636,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -678,8 +648,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">temp</span> <span class="o">=</span> <span class="n">P01_001_2018</span><span class="p">[</span><span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;event_idx&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temp</span> <span class="o">=</span> <span class="n">P01_001_2018</span><span class="p">[</span><span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;event_idx&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -687,8 +656,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">temp</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temp</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -701,8 +669,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">maximum_intensity_matlab_clone</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">maximum_intensity_matlab_clone</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Apply for a single_event method of Matlab implementation (Verstraete)&quot;&quot;&quot;</span>
 
     <span class="n">current_year</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
@@ -745,8 +712,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">max_intensity_event_matlab_clone</span> <span class="o">=</span> <span class="p">(</span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">max_intensity_event_matlab_clone</span> <span class="o">=</span> <span class="p">(</span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)</span>
  <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">maximum_intensity_matlab_clone</span><span class="p">)</span>
  <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;max_30min_intensity_clone&quot;</span><span class="p">)</span>
  <span class="o">.</span><span class="n">reset_index</span><span class="p">())</span>
@@ -757,8 +723,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Single measurement events</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Single measurement events</span>
 <span class="c1"># P01_001_2018[P01_001_2018.groupby(&quot;event_idx&quot;)[&quot;station&quot;].transform(len) == 1]</span>
 </pre></div>
 </div>
@@ -767,8 +732,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">P01_001_2018</span><span class="p">,</span> <span class="n">max_intensity_event_matlab_clone</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">P01_001_2018</span><span class="p">,</span> <span class="n">max_intensity_event_matlab_clone</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -776,8 +740,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -797,8 +760,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">time_series_resampled</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;10Min&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="c1"># missing 10min are now Nan</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">time_series_resampled</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;10Min&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="c1"># missing 10min are now Nan</span>
 <span class="n">time_series_resampled_interp</span> <span class="o">=</span> <span class="n">time_series_resampled</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
 <span class="n">rolling_sum</span> <span class="o">=</span> <span class="n">time_series_resampled_interp</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="s2">&quot;30Min&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">rolling_sum</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
@@ -809,8 +771,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">maximum_intensity_interpolate</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;30Min&quot;</span><span class="p">,</span> <span class="n">input_freq</span><span class="o">=</span><span class="s2">&quot;10Min&quot;</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">maximum_intensity_interpolate</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;30Min&quot;</span><span class="p">,</span> <span class="n">input_freq</span><span class="o">=</span><span class="s2">&quot;10Min&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Apply for a single_event method with linear interpolation&quot;&quot;&quot;</span>
     <span class="n">time_series_resampled</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">input_freq</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
     <span class="n">time_series_resampled_interp</span> <span class="o">=</span> <span class="n">time_series_resampled</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
@@ -832,8 +793,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">temp</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="s2">&quot;30Min&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temp</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="s2">&quot;30Min&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -841,8 +801,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">maximum_intensity_fillna</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;30Min&quot;</span><span class="p">,</span> <span class="n">input_freq</span><span class="o">=</span><span class="s2">&quot;10Min&quot;</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">maximum_intensity_fillna</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;30Min&quot;</span><span class="p">,</span> <span class="n">input_freq</span><span class="o">=</span><span class="s2">&quot;10Min&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Apply for a single_event method with zero values for no value&quot;&quot;&quot;</span>
     <span class="c1"># formula requires mm/hr, intensity is on half an hour</span>
     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="s2">&quot;30Min&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">*</span><span class="mi">2</span>
@@ -861,8 +820,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># run on the single event</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># run on the single event</span>
 <span class="p">(</span><span class="n">maximum_intensity_fillna</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;30Min&quot;</span><span class="p">,</span> <span class="n">input_freq</span><span class="o">=</span><span class="s2">&quot;10Min&quot;</span><span class="p">),</span>
  <span class="n">maximum_intensity_interpolate</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;30Min&quot;</span><span class="p">,</span> <span class="n">input_freq</span><span class="o">=</span><span class="s2">&quot;10Min&quot;</span><span class="p">))</span>
 </pre></div>
@@ -873,8 +831,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">max_intensity_event_interpolate</span> <span class="o">=</span> <span class="p">(</span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)[[</span><span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">]]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">max_intensity_event_interpolate</span> <span class="o">=</span> <span class="p">(</span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)[[</span><span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">]]</span>
  <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">maximum_intensity_interpolate</span><span class="p">)</span>
  <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;max_30min_intensity_interpolate&quot;</span><span class="p">)</span>
  <span class="o">.</span><span class="n">reset_index</span><span class="p">())</span>
@@ -890,8 +847,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">max_intensity_event_fillna</span><span class="o">.</span><span class="n">shape</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">max_intensity_event_fillna</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
 </div>
@@ -899,8 +855,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">P01_001_2018</span><span class="p">,</span> <span class="n">max_intensity_event_interpolate</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">P01_001_2018</span><span class="p">,</span> <span class="n">max_intensity_event_interpolate</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
 <span class="n">P01_001_2018</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">P01_001_2018</span><span class="p">,</span> <span class="n">max_intensity_event_fillna</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -909,8 +864,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -919,8 +873,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 <span class="n">max_intensity_event_matlab_clone</span><span class="p">[</span><span class="s2">&quot;max_30min_intensity_clone&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;matlab_clone&quot;</span><span class="p">,</span>
                                                                    <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-.&#39;</span><span class="p">)</span>
 <span class="n">max_intensity_event_interpolate</span><span class="p">[</span><span class="s2">&quot;max_30min_intensity_interpolate&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;interpolate&quot;</span><span class="p">)</span>
@@ -933,8 +886,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -946,8 +898,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -956,8 +907,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;event_rain_cum&quot;</span><span class="p">,</span> <span class="s2">&quot;max_30min_intensity_clone&quot;</span><span class="p">,</span> <span class="s2">&quot;event_energy&quot;</span><span class="p">,</span> <span class="s2">&quot;datetime&quot;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;event_rain_cum&quot;</span><span class="p">,</span> <span class="s2">&quot;max_30min_intensity_clone&quot;</span><span class="p">,</span> <span class="s2">&quot;event_energy&quot;</span><span class="p">,</span> <span class="s2">&quot;datetime&quot;</span><span class="p">]</span>
 <span class="n">P01_001_2018_events</span> <span class="o">=</span> <span class="n">P01_001_2018</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)[</span><span class="n">columns</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span><span class="s2">&quot;datetime&quot;</span><span class="p">:</span> <span class="s2">&quot;first&quot;</span><span class="p">,</span>
                                                                       <span class="s2">&quot;event_rain_cum&quot;</span><span class="p">:</span> <span class="s2">&quot;last&quot;</span><span class="p">,</span>
                                                                       <span class="s2">&quot;max_30min_intensity_clone&quot;</span><span class="p">:</span> <span class="s2">&quot;last&quot;</span><span class="p">,</span>
@@ -971,8 +921,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018_events</span><span class="p">[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">P01_001_2018_events</span><span class="p">[</span><span class="s2">&quot;event_energy&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">P01_001_2018_events</span><span class="p">[</span><span class="s2">&quot;max_30min_intensity_clone&quot;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018_events</span><span class="p">[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">P01_001_2018_events</span><span class="p">[</span><span class="s2">&quot;event_energy&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">P01_001_2018_events</span><span class="p">[</span><span class="s2">&quot;max_30min_intensity_clone&quot;</span><span class="p">]</span>
 <span class="n">P01_001_2018_events</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -982,8 +931,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018_events</span><span class="p">[</span><span class="s2">&quot;all_events_cum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">P01_001_2018_events</span><span class="p">[</span><span class="s2">&quot;event_rain_cum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018_events</span><span class="p">[</span><span class="s2">&quot;all_events_cum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">P01_001_2018_events</span><span class="p">[</span><span class="s2">&quot;event_rain_cum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.</span><span class="p">)</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -991,8 +939,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018_events</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018_events</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1002,8 +949,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">current_year</span> <span class="o">=</span> <span class="n">P01_001_2018_events</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">current_year</span> <span class="o">=</span> <span class="n">P01_001_2018_events</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_year</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Data should all be in the same year.&quot;</span><span class="p">)</span>
 
@@ -1022,8 +968,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">MIN_CUMUL</span> <span class="o">=</span> <span class="mf">1.27</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MIN_CUMUL</span> <span class="o">=</span> <span class="mf">1.27</span>
 
 <span class="c1">#P01_001_2018_events.loc[P01_001_2018_events[&quot;event_rain_cum&quot;] &lt; MIN_CUMUL,</span>
 <span class="c1">#                        [&quot;erosivity&quot;, &quot;all_events_cum&quot;,</span>
@@ -1042,8 +987,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018_events_subset</span><span class="p">[</span><span class="s2">&quot;erosivity_cum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">P01_001_2018_events_subset</span><span class="p">[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018_events_subset</span><span class="p">[</span><span class="s2">&quot;erosivity_cum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">P01_001_2018_events_subset</span><span class="p">[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1051,8 +995,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">P01_001_2018_events_subset</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">P01_001_2018_events_subset</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1069,8 +1012,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Monthly</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Monthly</span>
 <span class="n">P01_001_2018_events_subset</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1079,8 +1021,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Bi-weekly</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Bi-weekly</span>
 <span class="n">P01_001_2018_events_subset</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;SM&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1092,8 +1033,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">rfactor</span> <span class="kn">import</span> <span class="n">compute_erosivity</span><span class="p">,</span> <span class="n">maximum_intensity_matlab_clone</span><span class="p">,</span> <span class="n">maximum_intensity</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor</span> <span class="kn">import</span> <span class="n">compute_erosivity</span><span class="p">,</span> <span class="n">maximum_intensity_matlab_clone</span><span class="p">,</span> <span class="n">maximum_intensity</span>
 <span class="kn">from</span> <span class="nn">rfactor.rfactor</span> <span class="kn">import</span> <span class="n">_compute_erosivity</span>
 </pre></div>
 </div>
@@ -1102,8 +1042,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># overview of all the station-year combinations</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># overview of all the station-year combinations</span>
 <span class="n">all_rainfall</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="n">all_rainfall</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">])</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">index</span>
 </pre></div>
 </div>
@@ -1112,8 +1051,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">station_year</span> <span class="o">=</span> <span class="n">all_rainfall</span><span class="p">[(</span><span class="n">all_rainfall</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;P01_003&quot;</span><span class="p">)</span> <span class="o">&amp;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">station_year</span> <span class="o">=</span> <span class="n">all_rainfall</span><span class="p">[(</span><span class="n">all_rainfall</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;P01_003&quot;</span><span class="p">)</span> <span class="o">&amp;</span>
                             <span class="p">(</span><span class="n">all_rainfall</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span> <span class="o">==</span> <span class="mi">2005</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1122,8 +1060,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># compare the algorithms in term of erosivity -- TODO- should be done for all together</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># compare the algorithms in term of erosivity -- TODO- should be done for all together</span>
 <span class="n">new_alg</span> <span class="o">=</span> <span class="n">compute_erosivity</span><span class="p">(</span><span class="n">station_year</span><span class="p">,</span> <span class="n">maximum_intensity</span><span class="p">)</span>
 <span class="n">clone_alg</span> <span class="o">=</span> <span class="n">compute_erosivity</span><span class="p">(</span><span class="n">station_year</span><span class="p">,</span> <span class="n">maximum_intensity_matlab_clone</span><span class="p">)</span>
 
@@ -1138,8 +1075,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">new_alg</span><span class="p">[</span><span class="s2">&quot;erosivity_cum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_alg</span><span class="p">[</span><span class="s2">&quot;erosivity_cum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1147,8 +1083,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">new_alg</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_alg</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;M&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1159,8 +1094,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># for testing, smaller dataset</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># for testing, smaller dataset</span>
 <span class="n">rainfall_subset</span> <span class="o">=</span> <span class="n">all_rainfall</span><span class="p">[</span><span class="n">all_rainfall</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s2">&quot;P01_001&quot;</span><span class="p">,</span> <span class="s2">&quot;P01_003&quot;</span><span class="p">,</span> <span class="s2">&quot;P11_043&quot;</span><span class="p">])]</span>
 </pre></div>
 </div>
@@ -1170,8 +1104,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 </pre></div>
 </div>
 </div>
@@ -1179,8 +1112,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%time</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
 
 <span class="n">my_fun</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">_compute_erosivity</span><span class="p">,</span> <span class="n">intensity_method</span><span class="o">=</span><span class="n">maximum_intensity</span><span class="p">)</span>
 
@@ -1195,8 +1127,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">all_erosivity</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_erosivity</span>
 </pre></div>
 </div>
 </div>
@@ -1205,8 +1136,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
 <span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
 </pre></div>
 </div>
@@ -1215,8 +1145,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%time</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
 
 <span class="c1">#from functools import partial</span>
 <span class="c1">#erosivity_apply = partial(erosivity, intensity_method=maximum_intensity) # missing the name columns :-(</span>
@@ -1238,8 +1167,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">all_erosivity_par</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_erosivity_par</span>
 </pre></div>
 </div>
 </div>
@@ -1255,8 +1183,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">def</span> <span class="nf">_extract_metadata_from_file_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_extract_metadata_from_file_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Get metadata from file format</span>
 
 <span class="sd">    Parameter</span>
@@ -1282,8 +1209,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../../tests/data/test_rainfalldata/P01_001_2018.txt&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../../tests/data/test_rainfalldata/P01_001_2018.txt&quot;</span><span class="p">)</span>
 <span class="n">station</span><span class="p">,</span> <span class="n">year</span> <span class="o">=</span> <span class="n">_extract_metadata_from_file_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
 <span class="n">station</span><span class="p">,</span> <span class="n">year</span>
 </pre></div>
@@ -1293,8 +1219,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">df</span> <span class="o">=</span> <span class="n">load_rain_data</span><span class="p">(</span><span class="s2">&quot;../../tests/data/test_rainfalldata/P01_001_2018.txt&quot;</span><span class="p">,</span> <span class="n">station</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">load_rain_data</span><span class="p">(</span><span class="s2">&quot;../../tests/data/test_rainfalldata/P01_001_2018.txt&quot;</span><span class="p">,</span> <span class="n">station</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1303,8 +1228,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">folder_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../../tests/data/test_rainfalldata&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">folder_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../../tests/data/test_rainfalldata&quot;</span><span class="p">)</span>
 
 <span class="n">lst_df</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="n">folder_path</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.txt&quot;</span><span class="p">):</span>
@@ -1322,8 +1246,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">rfactor</span> <span class="kn">import</span> <span class="n">compute_erosivity</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor</span> <span class="kn">import</span> <span class="n">compute_erosivity</span>
 <span class="n">compute_erosivity</span><span class="p">(</span><span class="n">rainfall_subset</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1333,8 +1256,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">demo_rain</span> <span class="o">=</span> <span class="n">load_rain_data</span><span class="p">(</span><span class="s2">&quot;../../tests/data/test_rainfalldata/P01_001_2018.txt&quot;</span><span class="p">,</span> <span class="n">station</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">demo_rain</span> <span class="o">=</span> <span class="n">load_rain_data</span><span class="p">(</span><span class="s2">&quot;../../tests/data/test_rainfalldata/P01_001_2018.txt&quot;</span><span class="p">,</span> <span class="n">station</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
 <span class="n">demo_erosivity</span> <span class="o">=</span> <span class="n">compute_erosivity</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">maximum_intensity</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1343,8 +1265,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">demo_erosivity</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">demo_erosivity</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1352,8 +1273,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">write_erosivity_data</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">write_erosivity_data</span>
 </pre></div>
 </div>
 </div>
@@ -1362,8 +1282,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">write_erosivity_data</span><span class="p">(</span><span class="n">demo_erosivity</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/home/stijnvh/draft/&quot;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">write_erosivity_data</span><span class="p">(</span><span class="n">demo_erosivity</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/home/stijnvh/draft/&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1371,8 +1290,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">write_erosivity_data</span><span class="p">(</span><span class="n">all_erosivity_par</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/home/stijnvh/draft/&quot;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">write_erosivity_data</span><span class="p">(</span><span class="n">all_erosivity_par</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/home/stijnvh/draft/&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1390,8 +1308,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">rfactor</span> <span class="kn">import</span> <span class="n">maximum_intensity_matlab_clone</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor</span> <span class="kn">import</span> <span class="n">maximum_intensity_matlab_clone</span>
 </pre></div>
 </div>
 </div>
@@ -1399,8 +1316,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">load_rain_folder</span><span class="p">,</span> <span class="n">write_erosivity_data</span><span class="p">,</span> <span class="n">load_rain_file</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">load_rain_folder</span><span class="p">,</span> <span class="n">write_erosivity_data</span><span class="p">,</span> <span class="n">load_rain_file</span>
 <span class="kn">from</span> <span class="nn">rfactor</span> <span class="kn">import</span> <span class="n">compute_erosivity_parallel</span>
 </pre></div>
 </div>
@@ -1409,8 +1325,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">load_rain_file</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../../tests/data/test_rainfalldata/P01_001_2018.txt&quot;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">load_rain_file</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../../tests/data/test_rainfalldata/P01_001_2018.txt&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1418,8 +1333,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">wf_rain</span> <span class="o">=</span> <span class="n">load_rain_folder</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../../tests/data/test_rainfalldata/&quot;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wf_rain</span> <span class="o">=</span> <span class="n">load_rain_folder</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../../tests/data/test_rainfalldata/&quot;</span><span class="p">))</span>
 <span class="n">wf_rain</span>
 </pre></div>
 </div>
@@ -1428,8 +1342,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">wf_rain_selected</span> <span class="o">=</span> <span class="n">wf_rain</span><span class="p">[(</span><span class="n">wf_rain</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="mi">2005</span><span class="p">,</span> <span class="mi">2006</span><span class="p">]))</span> <span class="o">&amp;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wf_rain_selected</span> <span class="o">=</span> <span class="n">wf_rain</span><span class="p">[(</span><span class="n">wf_rain</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="mi">2005</span><span class="p">,</span> <span class="mi">2006</span><span class="p">]))</span> <span class="o">&amp;</span>
                            <span class="p">(</span><span class="n">wf_rain</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;P09_012&#39;</span><span class="p">,</span> <span class="s1">&#39;P09_016&#39;</span><span class="p">]))]</span>
 </pre></div>
 </div>
@@ -1438,8 +1351,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">wf_rain_selected</span><span class="o">.</span><span class="n">shape</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wf_rain_selected</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 </div>
 </div>
@@ -1447,8 +1359,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">rfactor</span> <span class="o">=</span> <span class="n">compute_erosivity_parallel</span><span class="p">(</span><span class="n">wf_rain_selected</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rfactor</span> <span class="o">=</span> <span class="n">compute_erosivity_parallel</span><span class="p">(</span><span class="n">wf_rain_selected</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1461,8 +1372,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">rfactor</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">])[</span><span class="s2">&quot;erosivity_cum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">last</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span> <span class="c1"># r for jaar</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rfactor</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">])[</span><span class="s2">&quot;erosivity_cum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">last</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span> <span class="c1"># r for jaar</span>
 </pre></div>
 </div>
 </div>
@@ -1470,8 +1380,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">write_erosivity_data</span><span class="p">(</span><span class="n">rfactor</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/home/stijnvh/draft/rfactors&quot;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">write_erosivity_data</span><span class="p">(</span><span class="n">rfactor</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/home/stijnvh/draft/rfactors&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1479,8 +1388,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1488,8 +1396,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">df</span> <span class="o">=</span> <span class="n">load_rain_file</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../../tests/data/test_rainfalldata/P01_001_2018.txt&quot;</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">load_rain_file</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;../../tests/data/test_rainfalldata/P01_001_2018.txt&quot;</span><span class="p">))</span>
 <span class="n">ei</span> <span class="o">=</span> <span class="n">compute_erosivity_parallel</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="n">write_erosivity_data</span><span class="p">(</span><span class="n">ei</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/home/stijnvh/draft/&quot;</span><span class="p">))</span>
 </pre></div>
@@ -1499,8 +1406,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1508,8 +1414,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">rfactor</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rfactor</span>
 </pre></div>
 </div>
 </div>
@@ -1517,8 +1422,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1526,8 +1430,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1536,8 +1439,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pywaterinfo</span> <span class="kn">import</span> <span class="n">Waterinfo</span>
 <span class="n">vmm</span> <span class="o">=</span> <span class="n">Waterinfo</span><span class="p">(</span><span class="s2">&quot;vmm&quot;</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;VMM_TOKEN&quot;</span><span class="p">))</span>
 </pre></div>
@@ -1547,8 +1449,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">rain_stations</span> <span class="o">=</span> <span class="n">vmm</span><span class="o">.</span><span class="n">get_timeseries_list</span><span class="p">(</span><span class="n">timeseriesgroup_id</span><span class="o">=</span><span class="mi">192896</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rain_stations</span> <span class="o">=</span> <span class="n">vmm</span><span class="o">.</span><span class="n">get_timeseries_list</span><span class="p">(</span><span class="n">timeseriesgroup_id</span><span class="o">=</span><span class="mi">192896</span><span class="p">)</span>
 <span class="n">rainfall</span> <span class="o">=</span> <span class="n">vmm</span><span class="o">.</span><span class="n">get_timeseries_values</span><span class="p">(</span><span class="n">ts_id</span><span class="o">=</span><span class="n">rain_stations</span><span class="p">[</span><span class="s2">&quot;ts_id&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">start</span><span class="o">=</span><span class="s2">&quot;2019-01-01&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;2019-12-31&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1557,8 +1458,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">waterinfo_demo</span> <span class="o">=</span> <span class="n">rainfall</span><span class="p">[[</span><span class="s2">&quot;Timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;Value&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="s2">&quot;Value&quot;</span><span class="p">:</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">})</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">waterinfo_demo</span> <span class="o">=</span> <span class="n">rainfall</span><span class="p">[[</span><span class="s2">&quot;Timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;Value&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="s2">&quot;Value&quot;</span><span class="p">:</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">})</span>
 <span class="n">waterinfo_demo</span> <span class="o">=</span> <span class="n">waterinfo_demo</span><span class="p">[</span><span class="n">waterinfo_demo</span><span class="p">[</span><span class="s1">&#39;rain_mm&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -1567,8 +1467,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">compute_erosivity</span><span class="p">(</span><span class="n">waterinfo_demo</span><span class="p">,</span> <span class="n">intensity_method</span><span class="o">=</span><span class="n">maximum_intensity</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">compute_erosivity</span><span class="p">(</span><span class="n">waterinfo_demo</span><span class="p">,</span> <span class="n">intensity_method</span><span class="o">=</span><span class="n">maximum_intensity</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1576,8 +1475,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1585,8 +1483,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1594,8 +1491,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1603,8 +1499,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1613,8 +1508,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">compute_rainfall_statistics</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">compute_rainfall_statistics</span>
 </pre></div>
 </div>
 </div>
@@ -1622,8 +1516,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">all_rain</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_rain</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_rain</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_rain</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span>
 <span class="n">all_rain</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1632,8 +1525,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">compute_rainfall_statistics</span><span class="p">(</span><span class="n">all_rain</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span><span class="p">}))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">compute_rainfall_statistics</span><span class="p">(</span><span class="n">all_rain</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">:</span> <span class="s2">&quot;value&quot;</span><span class="p">}))</span>
 </pre></div>
 </div>
 </div>
@@ -1641,8 +1533,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1650,8 +1541,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1659,8 +1549,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1675,8 +1564,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1684,8 +1572,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1693,8 +1580,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1702,8 +1588,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1711,8 +1596,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1720,8 +1604,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1729,8 +1612,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -1739,8 +1621,7 @@ rolling_sum.max()
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Check if the time difference works   - OK</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if the time difference works   - OK</span>
 <span class="n">diffs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s2">&quot;tests/data/test_rainfalldata/P01_001_2018.txt&quot;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">P01_001_2018</span><span class="p">[</span><span class="s2">&quot;diff&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">diffs</span><span class="p">)</span>
 </pre></div>
