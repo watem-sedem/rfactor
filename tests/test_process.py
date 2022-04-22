@@ -14,8 +14,86 @@ from rfactor.process import (
     load_rain_file,
     load_rain_folder,
     write_erosivity_data,
+    resample_rainfall,
+    valid_column,
+    valid_freq,
+    valid_const_freq
 )
 
+@pytest.mark.parametrize(
+    "idx,values,freq,idx_n,values_n",
+    [(pd.date_range("2018-01-01 03:30", periods=4, freq="1H"),
+      [0.06,0.08,0.21,0.05],
+      "1H",
+     pd.date_range("2018-01-01 03:30", periods=19, freq="10T"),
+    [0.01]+[0.0133]*6+[0.035]*6+[0.0083]*6),
+     (pd.date_range("2018-01-01 03:30", periods=6, freq="15T"),
+      [0,0.08,0,0.21,0.05,0],
+      "15T",
+     pd.date_range("2018-01-01 03:30", periods=9, freq="10T"),
+      [0,0.026667*2,0.026667,0,0.14,0.0866667,0.016667*2,0,0]),
+    (pd.date_range("2018-01-01 03:30", periods=5, freq="15T"),
+      [0.08, 0, 0.21, 0.05, 0],
+      "15T",
+      pd.date_range("2018-01-01 03:30", periods=7, freq="10T"),
+      [0.026667 * 2, 0, 0.07, 0.14, 0.016667 * 2, 0.016667,0])])
+
+def test_resample_rainfall(idx,values,freq,idx_n,values_n):
+
+    df = pd.DataFrame(columns=["datetime","rain_mm"])
+    df["datetime"] = idx
+    df["rain_mm"] = values
+    df.index= df["datetime"]
+    df.index.freq = freq
+
+    df_o = resample_rainfall(df)
+
+    # test dates
+    df = pd.DataFrame(columns=["rain_mm"])
+    df["rain_mm"] = values_n
+    df.index= idx_n
+    df.index.name="datetime"
+    pd.testing.assert_frame_equal(df,df_o,atol=1e-3)
+
+def test_valid_rainfall_timeseries():
+
+    idx = pd.date_range("2018-01-01 03:30", periods=2, freq="1S")
+    val = [0.06,0.08]
+
+    df = pd.DataFrame(columns=["datetime","rain_mm"])
+    df["datetime"] = idx
+    df.index = df["datetime"]
+    df["rain_mm"] = val
+
+
+    with pytest.raises(KeyError) as excinfo:
+        valid_column(df,{"datetime","rain"})
+    assert "should contain" in str(excinfo.value)
+
+    freq = df.index.freq
+    with pytest.raises(IOError) as excinfo:
+        valid_freq(freq,mode_test_freq=1)
+    assert "Please define a frequency for your input timeseries" in str(excinfo.value)
+
+    df.index.freq = "1S"
+    freq = df.index.freq
+
+    with pytest.raises(IOError) as excinfo:
+        valid_freq(freq,mode_test_freq=1)
+    assert "Rainfall resolution can not be subminute resolution" in str(excinfo.value)
+
+    with pytest.raises(IOError) as excinfo:
+        valid_freq(freq,mode_test_freq=2)
+    assert "Rainfall resolution should be equal to 10 minutes" in str(excinfo.value)
+
+    idx = pd.DatetimeIndex(["2018-01-01 03:30","2018-01-01 03:31","2018-01-01 03:33"])
+    val = [0.06,0.08,0.0]
+    df = pd.DataFrame(columns=["datetime","rain_mm"])
+    df["datetime"] = idx
+    df["rain"] = val
+    with pytest.raises(IOError) as excinfo:
+        valid_const_freq(df)
+    assert "Timeseries resolution is not a strict constant" in str(excinfo.value)
 
 def test_days_since_last_year_float():
     """Moment of the day is translated as decimal number."""
@@ -245,3 +323,4 @@ def test_rainfall_statistics_with_metadata(rain_data_folder, station_metadata):
     assert set(rf_stats.columns) == set(
         ["year", "station", "x", "y", "records", "min", "median", "max"]
     )
+

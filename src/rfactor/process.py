@@ -1,10 +1,96 @@
+import pdb
 import re
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from pandas import Timedelta
 from tqdm import tqdm
+from functools import wraps
 
+
+def valid_column(rain,req_col):
+    """Input dataframe has valid required columns
+
+    Parameters
+    ----------
+    rain: pd.DataFrame
+        To test dataframe
+    req_col: set
+        Required columns in dataframe, e.g. {"datetime", "rain_mm"}
+    """
+    # test for columns
+    if not req_col.issubset(rain.columns):
+        raise KeyError(
+            f"DataFrame should contain {req_col}  columns."
+        )
+
+def valid_const_freq(rain):
+    """Check if rainfall inputdata has constant frequency
+
+    Parameters
+    ----------
+    rain: pandas.DataFrame
+    """
+    # constant frequency
+    if len(rain["datetime"].diff().unique()) > 2:
+        msg = "Timeseries resolution is not a strict constant, please define " \
+              "rainfall timeseries with one temporal resolution."
+        raise IOError(msg)
+
+def valid_freq(freq,mode_test_freq):
+    """Valid frequency
+
+    Parameters
+    ----------
+    freq: pandas.DatetimeIndex.freq
+        Frequency
+    mode_test_freq: int
+        1: Frequency of input rainfall data must be at least minute resolution.
+        2: Frequency of input rainfall data must be 10-minute resolution.
+    """
+    # test for frequency
+    if freq is None:
+        msg = "Please define a frequency for your input timeseries."
+        raise IOError(msg)
+
+    # frequency should be at least one minute
+    if mode_test_freq == 1:
+        if freq.nanos < 1000000000*60:
+            msg = "Rainfall resolution can not be subminute resolution. " \
+                  "Resample at " \
+                  "least to one minute!"
+            raise IOError(msg)
+
+    elif mode_test_freq == 2:
+        if freq.nanos != 1000000000 * 60*10:
+            msg = f"Rainfall resolution should be equal to 10 minutes, " \
+                  f"resample input " \
+                  f"rainfall with {resample_rainfall}"
+            raise IOError(msg)
+
+def valid_rainfall_timeseries(func=None, req_col = {"datetime", "rain_mm"}, mode_test_freq=1):
+    """Customisable decorator to check input data
+
+    Parameters
+    ----------
+    func: callable
+    req_col: set
+        See :func:`rfactor.process.valid_column`
+    mode_test_freq: int
+        See :func:`rfactor.process.valid_freq`
+    """
+    assert callable(func) or func is None
+    def _decorator(func):
+        @wraps(func)
+        def wrapper(rain, **kwargs):
+            valid_column(rain,req_col)
+            freq = rain.index.freq
+            valid_freq(freq, mode_test_freq)
+            valid_const_freq(rain)
+            return func(rain, **kwargs)
+        return wrapper
+    return _decorator(func) if callable(func) else _decorator
 
 def _days_since_start_year(series):
     """Translate datetime series to days since start of the year
@@ -20,6 +106,7 @@ def _days_since_start_year(series):
         Days since the start of the year as a float value.
 
     Notes
+    -----
     Support function to provide integration with original Matlab implementation. Output
     is different from Pandas datetime attribute `dayofyear` as it includes time of the
     day as decimal value.
@@ -333,3 +420,53 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
         df_statistics = df_statistics[["year", "records", "min", "median", "max"]]
 
     return df_statistics
+
+@valid_rainfall_timeseries(req_col = {"datetime", "rain_mm"}, mode_test_freq=1)
+def resample_rainfall(rain):
+    """ Resample rainfall dataset to 10 minutes resolution
+
+    Resampling is done in two steps:
+
+    1. Upsample to 1 minute and appoint to each record 1/(temporal resolution)*value
+    samples,
+    e.g. 1.5 mm on 00:15:00, and 3 mm on 00:30:00
+        - 0.1 mm on 00:01:00
+        - 0.1 mm on 00:02:00
+        - ...
+        - 0.1 mm on 00:15:00
+        - 0.2 mm on 00:16:00
+        - 0.2 mm on 00:17:00
+        - ...
+        - 0.2 mm on 00:30:00
+
+    2. Downsample to 10 minutes and sommate rain volume for two sequential records, e.g.
+    timeseries above will resample to:
+
+        - 1 mm  on 00:10:00
+        - 1.5 mm on 00:20:00
+        - 2 mm on 00:30:00
+
+    Parameters
+    ----------
+    rain : pd.DataFrame
+        DataFrame with rainfall time series. Contains the following columns:
+
+        - *rain_mm* (float): Rain in mm
+        - *datetime* (pd.Timestamp): Time stamp
+    """
+    freq = rain.index.freq.nanos/60000000000 # in minutes
+
+    # resample to 1 minute
+    bdate = rain.index[0]
+    # check boundary condition
+    # if first value is not 0, than an additional record is needed for backward filling
+    fvalue = rain.loc[bdate, "rain_mm"]
+    if fvalue!=0:
+        bound = pd.DataFrame([fvalue],columns=["rain_mm"],index=[bdate-Timedelta(freq,unit="T")])
+        rain = pd.concat([bound, rain])
+    df1 = (rain["rain_mm"].resample('1T').bfill() / freq)
+    df10 = df1.resample("10T", closed='right',label ="right").sum().to_frame()
+    df10.index.name = "datetime"
+
+    return df10.loc[bdate:]
+

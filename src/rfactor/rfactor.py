@@ -5,8 +5,13 @@ import numpy as np
 import pandas as pd
 from joblib import Parallel, delayed
 
+import rfactor.process
+
 TIME_BETWEEN_EVENTS = "6 hours"
 MIN_CUMUL_EVENT = 1.27
+
+
+
 
 
 class RFactorInputError(Exception):
