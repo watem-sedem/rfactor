@@ -1,7 +1,5 @@
 from functools import wraps
 
-from process import resample_rainfall
-
 
 def valid_column(rain, req_col):
     """Input dataframe has valid required columns
@@ -26,7 +24,7 @@ def valid_const_freq(rain):
     rain: pandas.DataFrame
     """
     # constant frequency
-    if len(rain["datetime"].diff().unique()) > 1:
+    if len(rain["datetime"].diff().unique()) > 2:
         msg = (
             "Timeseries resolution is not a strict constant, please define "
             "rainfall timeseries with one temporal resolution."
@@ -68,7 +66,8 @@ def valid_freq(df_freq, req_freq=None):
         if df_freq.nanos != 1000000000 * 60 * req_freq:
             msg = (
                 f"Rainfall resolution should be equal to {req_freq} minutes, "
-                f"resample input rainfall with {resample_rainfall}"
+                f"resample input rainfall with the resample functionalities available"
+                f" in this package."
             )
             raise IOError(msg)
 

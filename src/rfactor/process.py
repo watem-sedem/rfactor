@@ -5,7 +5,8 @@ import numpy as np
 import pandas as pd
 from pandas import Timedelta
 from tqdm import tqdm
-from valid import valid_rainfall_timeseries
+
+from rfactor.valid import valid_rainfall_timeseries
 
 
 def _days_since_start_year(series):
@@ -338,7 +339,7 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
     return df_statistics
 
 
-@valid_rainfall_timeseries(req_col={"datetime", "rain_mm"}, req_freq=10)
+@valid_rainfall_timeseries(req_col={"datetime", "rain_mm"})
 def resample_rainfall(rain, output_frequency="10T"):
     """Resample rainfall dataset to 10 minutes resolution
 
