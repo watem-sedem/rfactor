@@ -223,3 +223,38 @@ For example, consider one wants to compute the R-value for 2017 and 2018, for Uk
 .. code-block:: python
     erosivity_selected = erosivity[(erosivity["year"].isin([2017, 2018])) &
                                    (erosivity["station"].isin(['KMI\_6447', 'KMI\_FS3']))]
+
+Resample input rainfall data
+----------------------------
+
+The current implementation of the R-factor are valid on a resolution of
+10-minutes. A resampling module allowing you to resample to a 10-minute
+resolution is provided in the package:
+
+.. code-block:: python
+
+    # import
+    import pandas as pd
+    from rfactor.process import resample_rainfall
+    #input
+    df = pd.DataFrame(columns=["datetime", "rain_mm"])
+    freq="15T"
+    df["datetime"] = pd.date_range("2018-01-01 03:30", periods=6, freq=freq)
+    df["rain_mm"] = [0, 0.08, 0, 0.21, 0.05, 0]
+    df.index = df["datetime"]
+    df.index.freq = freq
+
+    # standard resampling to 10 minutes is implemented
+    df_o = resample_rainfall(df)
+
+    # print
+    print(df_o)
+
+Resampling to other frequencies is also supported:
+
+.. code-block:: python
+
+    df_o = resample_rainfall(df,output_frequency="20T")
+
+    # print
+    print(df_o)
