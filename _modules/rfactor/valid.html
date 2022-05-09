@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rfactor.valid &mdash; rfactor 0.0.post1.dev371+g3697f9c.d20220509 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> rfactor
+          </a>
+              <div class="version">
+                0.0.post1.dev371+g3697f9c.d20220509
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rfactor.html">R-factor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../get-started.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">Module Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks/analysis_flanders.html">Application on Flanders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../codelegacy.html">Code legacy</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Developer guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contribute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../conduct.html">Code of conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">rfactor</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>rfactor.valid</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for rfactor.valid</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+
+
+<div class="viewcode-block" id="valid_column"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.valid.valid_column">[docs]</a><span class="k">def</span> <span class="nf">valid_column</span><span class="p">(</span><span class="n">rain</span><span class="p">,</span> <span class="n">req_col</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Input dataframe has valid required columns</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rain: pd.DataFrame</span>
+<span class="sd">        To test dataframe</span>
+<span class="sd">    req_col: set</span>
+<span class="sd">        Required columns in dataframe, e.g. {&quot;datetime&quot;, &quot;rain_mm&quot;}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># test for columns</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">req_col</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">rain</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DataFrame should contain </span><span class="si">{</span><span class="n">req_col</span><span class="si">}</span><span class="s2">  columns.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="valid_const_freq"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.valid.valid_const_freq">[docs]</a><span class="k">def</span> <span class="nf">valid_const_freq</span><span class="p">(</span><span class="n">rain</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if rainfall inputdata has constant frequency</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rain: pandas.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># constant frequency</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">&quot;Timeseries resolution is not a strict constant, please define &quot;</span>
+            <span class="s2">&quot;rainfall timeseries with one temporal resolution.&quot;</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="valid_freq"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.valid.valid_freq">[docs]</a><span class="k">def</span> <span class="nf">valid_freq</span><span class="p">(</span><span class="n">df_freq</span><span class="p">,</span> <span class="n">req_freq</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Test for valid frequency of input data</span>
+
+<span class="sd">    The frequency of the input data is tested to a defined frequency. Limit</span>
+<span class="sd">    usage R-factor package to above 1-minute resolution.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df_freq: pandas.DatetimeIndex.freq</span>
+<span class="sd">        Temporal frequency in the rainfall data</span>
+<span class="sd">    req_freq: int, default None</span>
+<span class="sd">        Required frequency (minutes). If None, the req_frequence should at least be</span>
+<span class="sd">        1 minute.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># test for frequency</span>
+    <span class="k">if</span> <span class="n">df_freq</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Please define a frequency for your input timeseries.&quot;</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="c1"># if required frequency is zeros, test if the dataframe is at least a one minute</span>
+    <span class="c1"># resolution.</span>
+    <span class="k">if</span> <span class="n">req_freq</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="k">if</span> <span class="n">df_freq</span><span class="o">.</span><span class="n">nanos</span> <span class="o">&lt;</span> <span class="mi">1000000000</span> <span class="o">*</span> <span class="mi">60</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;The R-factor package cannot process sub-minute rainfall input data, &quot;</span>
+                <span class="s2">&quot;resample to at least a one minute resolution.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">df_freq</span><span class="o">.</span><span class="n">nanos</span> <span class="o">!=</span> <span class="mi">1000000000</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="n">req_freq</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Rainfall resolution should be equal to </span><span class="si">{</span><span class="n">req_freq</span><span class="si">}</span><span class="s2"> minutes, &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;resample input rainfall with the resample functionalities available&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; in this package.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="valid_rainfall_timeseries"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.valid.valid_rainfall_timeseries">[docs]</a><span class="k">def</span> <span class="nf">valid_rainfall_timeseries</span><span class="p">(</span>
+    <span class="n">func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">req_col</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">},</span> <span class="n">req_freq</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Customisable decorator to check pandas input rainfall data for functions used in</span>
+<span class="sd">     this package.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    func: callable, default None</span>
+<span class="sd">    req_col: set</span>
+<span class="sd">        See :func:`rfactor.process.valid_column`</span>
+<span class="sd">    req_freq int</span>
+<span class="sd">        See :func:`rfactor.process.valid_freq`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    decorator: callable</span>
+<span class="sd">        Return the execution of the actual decorator</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Use super decorator to allow for decorator inputs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">callable</span><span class="p">(</span><span class="n">func</span><span class="p">)</span> <span class="ow">or</span> <span class="n">func</span> <span class="ow">is</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        func: callable</span>
+<span class="sd">            Input function</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        wrapper: callable</span>
+<span class="sd">            Wrapper function</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">rain</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">            Parameters</span>
+<span class="sd">            ----------</span>
+<span class="sd">            rain: pandas.DataFrame</span>
+<span class="sd">                Input rainfall dataseries</span>
+<span class="sd">            kwarg: dict</span>
+<span class="sd">                Keyword arguments</span>
+
+<span class="sd">            Returns</span>
+<span class="sd">            -------</span>
+<span class="sd">            func: callable</span>
+<span class="sd">                Return the execution of the function call</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">valid_column</span><span class="p">(</span><span class="n">rain</span><span class="p">,</span> <span class="n">req_col</span><span class="p">)</span>
+            <span class="n">freq</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">freq</span>
+            <span class="n">valid_freq</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">req_freq</span><span class="p">)</span>
+            <span class="n">valid_const_freq</span><span class="p">(</span><span class="n">rain</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">rain</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">wrapper</span>
+
+    <span class="k">return</span> <span class="n">_decorator</span><span class="p">(</span><span class="n">func</span><span class="p">)</span> <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">func</span><span class="p">)</span> <span class="k">else</span> <span class="n">_decorator</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Sacha Gobeyn.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

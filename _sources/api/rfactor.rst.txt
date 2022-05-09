@@ -20,6 +20,14 @@ rfactor.rfactor module
    :undoc-members:
    :show-inheritance:
 
+rfactor.valid module
+--------------------
+
+.. automodule:: rfactor.valid
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

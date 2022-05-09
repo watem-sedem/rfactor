@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Get started &mdash; rfactor 0.0.post1.dev363+gb0d5ca1.d20220506 documentation</title>
+  <title>Get started &mdash; rfactor 0.0.post1.dev371+g3697f9c.d20220509 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -33,7 +33,7 @@
             <a href="index.html" class="icon icon-home"> rfactor
           </a>
               <div class="version">
-                0.0.post1.dev363+gb0d5ca1.d20220506
+                0.0.post1.dev371+g3697f9c.d20220509
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -466,6 +466,37 @@ per year with a specific datafile tag (format: <strong>SOURCE_STATION_YEAR.txt</
 <p>The R-value is determined by the number of years and stations the users wishes to consider to compute the R value. By
 using Pandas DataFrame to store te erosivity, all funtionalities for slicing/filtering/plotting/… are available directly.</p>
 <p>For example, consider one wants to compute the R-value for 2017 and 2018, for Ukkel (stations: KMI_6447 and KMI_FS3):</p>
+</section>
+<section id="resample-input-rainfall-data">
+<h2>Resample input rainfall data<a class="headerlink" href="#resample-input-rainfall-data" title="Permalink to this headline"></a></h2>
+<p>The current implementation of the R-factor are valid on a resolution of
+10-minutes. A resampling module allowing you to resample to a 10-minute
+resolution is provided in the package:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">resample_rainfall</span>
+<span class="c1">#input</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">])</span>
+<span class="n">freq</span><span class="o">=</span><span class="s2">&quot;15T&quot;</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2018-01-01 03:30&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.21</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">df</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span>
+<span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">freq</span>
+
+<span class="c1"># standard resampling to 10 minutes is implemented</span>
+<span class="n">df_o</span> <span class="o">=</span> <span class="n">resample_rainfall</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="c1"># print</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_o</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Resampling to other frequencies is also supported:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_o</span> <span class="o">=</span> <span class="n">resample_rainfall</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">output_frequency</span><span class="o">=</span><span class="s2">&quot;20T&quot;</span><span class="p">)</span>
+
+<span class="c1"># print</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_o</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 </section>
 

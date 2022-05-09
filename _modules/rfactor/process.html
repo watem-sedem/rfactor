@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor.process &mdash; rfactor 0.0.post1.dev363+gb0d5ca1.d20220506 documentation</title>
+  <title>rfactor.process &mdash; rfactor 0.0.post1.dev371+g3697f9c.d20220509 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -28,7 +28,7 @@
             <a href="../../index.html" class="icon icon-home"> rfactor
           </a>
               <div class="version">
-                0.0.post1.dev363+gb0d5ca1.d20220506
+                0.0.post1.dev371+g3697f9c.d20220509
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -86,7 +86,10 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">Timedelta</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="kn">from</span> <span class="nn">rfactor.valid</span> <span class="kn">import</span> <span class="n">valid_rainfall_timeseries</span>
 
 
 <span class="k">def</span> <span class="nf">_days_since_start_year</span><span class="p">(</span><span class="n">series</span><span class="p">):</span>
@@ -103,6 +106,7 @@
 <span class="sd">        Days since the start of the year as a float value.</span>
 
 <span class="sd">    Notes</span>
+<span class="sd">    -----</span>
 <span class="sd">    Support function to provide integration with original Matlab implementation. Output</span>
 <span class="sd">    is different from Pandas datetime attribute `dayofyear` as it includes time of the</span>
 <span class="sd">    day as decimal value.</span>
@@ -416,6 +420,67 @@
         <span class="n">df_statistics</span> <span class="o">=</span> <span class="n">df_statistics</span><span class="p">[[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;records&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">]]</span>
 
     <span class="k">return</span> <span class="n">df_statistics</span></div>
+
+
+<div class="viewcode-block" id="resample_rainfall"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.resample_rainfall">[docs]</a><span class="nd">@valid_rainfall_timeseries</span><span class="p">(</span><span class="n">req_col</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">})</span>
+<span class="k">def</span> <span class="nf">resample_rainfall</span><span class="p">(</span><span class="n">rain</span><span class="p">,</span> <span class="n">output_frequency</span><span class="o">=</span><span class="s2">&quot;10T&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Resample rainfall dataset to 10 minutes resolution</span>
+
+<span class="sd">    Resampling is done in two steps:</span>
+
+<span class="sd">    1. Upsample to 1 minute and appoint to each record 1/(temporal resolution)*value</span>
+<span class="sd">    samples,</span>
+<span class="sd">    e.g. 1.5 mm on 00:15:00, and 3 mm on 00:30:00</span>
+<span class="sd">        - 0.1 mm on 00:01:00</span>
+<span class="sd">        - 0.1 mm on 00:02:00</span>
+<span class="sd">        - ...</span>
+<span class="sd">        - 0.1 mm on 00:15:00</span>
+<span class="sd">        - 0.2 mm on 00:16:00</span>
+<span class="sd">        - 0.2 mm on 00:17:00</span>
+<span class="sd">        - ...</span>
+<span class="sd">        - 0.2 mm on 00:30:00</span>
+
+<span class="sd">    2. Downsample to 10 minutes and sommate rain volume for two sequential records, e.g.</span>
+<span class="sd">    timeseries above will resample to:</span>
+
+<span class="sd">        - 1 mm  on 00:10:00</span>
+<span class="sd">        - 1.5 mm on 00:20:00</span>
+<span class="sd">        - 2 mm on 00:30:00</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rain : pd.DataFrame</span>
+<span class="sd">        DataFrame with rainfall time series. Contains the following columns:</span>
+
+<span class="sd">        - *rain_mm* (float): Rain in mm</span>
+<span class="sd">        - *datetime* (pd.Timestamp): Time stamp</span>
+
+<span class="sd">    output_frequency: pandas.DataFrame.resample, default &quot;10T&quot;</span>
+<span class="sd">        For definition frequency, see :func:`pandas.DataFrame.resample`. Default</span>
+<span class="sd">        10 minutes.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The resample procedure can only take rainfall inputdata with a resolution larger</span>
+<span class="sd">    than or equal to one minute.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">freq</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">freq</span><span class="o">.</span><span class="n">nanos</span> <span class="o">/</span> <span class="mi">60000000000</span>  <span class="c1"># in minutes</span>
+
+    <span class="c1"># resample to 1 minute</span>
+    <span class="n">bdate</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># check boundary condition</span>
+    <span class="c1"># if first value is not 0, than an additional record is needed for backward filling</span>
+    <span class="n">fvalue</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">bdate</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">fvalue</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">bound</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">fvalue</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">bdate</span> <span class="o">-</span> <span class="n">Timedelta</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;T&quot;</span><span class="p">)]</span>
+        <span class="p">)</span>
+        <span class="n">rain</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">bound</span><span class="p">,</span> <span class="n">rain</span><span class="p">])</span>
+    <span class="n">df1</span> <span class="o">=</span> <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;1T&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span> <span class="o">/</span> <span class="n">freq</span>
+    <span class="n">dfx</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">output_frequency</span><span class="p">,</span> <span class="n">closed</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
+    <span class="n">dfx</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;datetime&quot;</span>
+
+    <span class="k">return</span> <span class="n">dfx</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">bdate</span><span class="p">:]</span></div>
 </pre></div>
 
            </div>
