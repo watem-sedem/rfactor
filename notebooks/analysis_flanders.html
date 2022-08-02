@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application of rfactor on data det Flanders &mdash; rfactor 0.0.post1.dev371+g3697f9c.d20220509 documentation</title>
+  <title>Application of rfactor on data det Flanders &mdash; rfactor 0.0.post1.dev372+g1234632.d20220802 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
@@ -33,7 +34,7 @@
             <a href="../index.html" class="icon icon-home"> rfactor
           </a>
               <div class="version">
-                0.0.post1.dev371+g3697f9c.d20220509
+                0.0.post1.dev372+g1234632.d20220802
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -300,6 +301,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -308,10 +310,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -323,12 +329,15 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
@@ -356,9 +365,9 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <section id="Application-of-rfactor-on-data-det-Flanders">
-<h1>Application of rfactor on data det Flanders<a class="headerlink" href="#Application-of-rfactor-on-data-det-Flanders" title="Permalink to this headline"></a></h1>
+<h1>Application of rfactor on data det Flanders<a class="headerlink" href="#Application-of-rfactor-on-data-det-Flanders" title="Permalink to this heading"></a></h1>
 <section id="Aim">
-<h2>Aim<a class="headerlink" href="#Aim" title="Permalink to this headline"></a></h2>
+<h2>Aim<a class="headerlink" href="#Aim" title="Permalink to this heading"></a></h2>
 <p>Implementation to compute and analyse the R-factor of the RUSLE-equation. The R-factor is a measure for the total erosivity of a number of rainfall events within a defined timeframe (year, month, number of days). The factor is computed by calculating the yearly sum of -for every rainfall event- the sum of the depth of rainfall (mm) and the kinetic energy, and taking the mean over all years.</p>
 <table class="docutils align-default">
 <colgroup>
@@ -393,7 +402,7 @@ with the analysis.</p></td>
 </table>
 </section>
 <section id="Package-imports">
-<h2>Package imports<a class="headerlink" href="#Package-imports" title="Permalink to this headline"></a></h2>
+<h2>Package imports<a class="headerlink" href="#Package-imports" title="Permalink to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -418,7 +427,7 @@ with the analysis.</p></td>
 </div>
 </section>
 <section id="Input-data-and-compute-erosivity">
-<h2>Input data and compute erosivity<a class="headerlink" href="#Input-data-and-compute-erosivity" title="Permalink to this headline"></a></h2>
+<h2>Input data and compute erosivity<a class="headerlink" href="#Input-data-and-compute-erosivity" title="Permalink to this heading"></a></h2>
 <p><strong>Set folders</strong></p>
 <p>The main function <code class="docutils literal notranslate"><span class="pre">compute_erosivity</span></code> requires a <a class="reference external" href="https://pandas.pydata.org/docs/index.html">pandas DataFrame</a> containing <strong>non-zero</strong> rainfall data with the following columns:</p>
 <ul class="simple">
@@ -795,7 +804,7 @@ KMI_6434_2004.txt
 </div>
 </section>
 <section id="Analysis">
-<h2>Analysis<a class="headerlink" href="#Analysis" title="Permalink to this headline"></a></h2>
+<h2>Analysis<a class="headerlink" href="#Analysis" title="Permalink to this heading"></a></h2>
 <p>If one does not have acces to the RMI data, the output erosivity from the computation with the full data set is provided in this repository as an alternative:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -1624,7 +1633,7 @@ R-factor for period from 2000 till 2020 is: 1331.83
 </div>
 </section>
 <section id="Analysis-(monthly-resolution)">
-<h2>Analysis (monthly resolution)<a class="headerlink" href="#Analysis-(monthly-resolution)" title="Permalink to this headline"></a></h2>
+<h2>Analysis (monthly resolution)<a class="headerlink" href="#Analysis-(monthly-resolution)" title="Permalink to this heading"></a></h2>
 <p>Get the EI30-values for 2018 based on two Ukkel station (“KMI_6447”,“KMI_FS3”)</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -1755,7 +1764,7 @@ R-factor for period from 2000 till 2020 is: 1331.83
 </div>
 </section>
 <section id="Additional:-monthly-analysis-(detail)">
-<h2>Additional: monthly analysis (detail)<a class="headerlink" href="#Additional:-monthly-analysis-(detail)" title="Permalink to this headline"></a></h2>
+<h2>Additional: monthly analysis (detail)<a class="headerlink" href="#Additional:-monthly-analysis-(detail)" title="Permalink to this heading"></a></h2>
 <p><strong>Evolution monthly R-value</strong></p>
 <p>Generate plot to analyse evolution of montly R over the years</p>
 <div class="nbinput docutils container">

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How can you contribute? &mdash; rfactor 0.0.post1.dev371+g3697f9c.d20220509 documentation</title>
+  <title>How can you contribute? &mdash; rfactor 0.0.post1.dev372+g1234632.d20220802 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -31,7 +32,7 @@
             <a href="index.html" class="icon icon-home"> rfactor
           </a>
               <div class="version">
-                0.0.post1.dev371+g3697f9c.d20220509
+                0.0.post1.dev372+g1234632.d20220802
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -121,7 +122,7 @@
 }
 </style>
 <section id="how-can-you-contribute">
-<span id="contribute"></span><h1>How can you contribute?<a class="headerlink" href="#how-can-you-contribute" title="Permalink to this headline"></a></h1>
+<span id="contribute"></span><h1>How can you contribute?<a class="headerlink" href="#how-can-you-contribute" title="Permalink to this heading"></a></h1>
 <p>The R-factor project is a project made possible by the Flemish Government
 (Department Environment), the Flemish Environment Agency, K.U. Leuven and
 Fluves. A special thank you to the Flemish Environment Agency for providing the
@@ -138,11 +139,11 @@ source.</p>
 <li><p>Help develop this package.</p></li>
 </ul>
 <section id="code-of-conduct">
-<h2>Code of conduct<a class="headerlink" href="#code-of-conduct" title="Permalink to this headline"></a></h2>
+<h2>Code of conduct<a class="headerlink" href="#code-of-conduct" title="Permalink to this heading"></a></h2>
 <p>See the <a class="reference internal" href="conduct.html#code-conduct"><span class="std std-ref">code of conduct</span></a>.</p>
 </section>
 <section id="development-guidelines">
-<span id="dev-guidelines"></span><h2>Development guidelines<a class="headerlink" href="#development-guidelines" title="Permalink to this headline"></a></h2>
+<span id="dev-guidelines"></span><h2>Development guidelines<a class="headerlink" href="#development-guidelines" title="Permalink to this heading"></a></h2>
 <p>We use a number of development tools to support us in improving the code
 quality. No magic bullet or free lunch, but just a set of tools as any
 craftman has tools to support him/her doing a better job.</p>
@@ -154,7 +155,7 @@ this is already done).</p>
 be familiar with the following tools. Do not hesitate to ask the maintainers
 when having trouble using these tools.</p>
 <section id="pre-commit-hooks">
-<h3>Pre-commit hooks<a class="headerlink" href="#pre-commit-hooks" title="Permalink to this headline"></a></h3>
+<h3>Pre-commit hooks<a class="headerlink" href="#pre-commit-hooks" title="Permalink to this heading"></a></h3>
 <p>To ensure a more common code formatting and limit the git diff, make sure to
 install the pre-commit hooks. The required dependencies are included in the
 development requirements installed when running
@@ -176,7 +177,7 @@ package!</p>
 </div>
 </section>
 <section id="unit-testing-with-pytest">
-<h3>Unit testing with pytest<a class="headerlink" href="#unit-testing-with-pytest" title="Permalink to this headline"></a></h3>
+<h3>Unit testing with pytest<a class="headerlink" href="#unit-testing-with-pytest" title="Permalink to this heading"></a></h3>
 <p>Run the test suite using the <code class="docutils literal notranslate"><span class="pre">pytest</span></code> package, from within the main package
 folder (<cite>rfactor</cite>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest</span>
@@ -190,7 +191,7 @@ folder (<cite>rfactor</cite>):</p>
 unit tests.</p>
 </section>
 <section id="documentation-with-sphinx">
-<h3>Documentation with sphinx<a class="headerlink" href="#documentation-with-sphinx" title="Permalink to this headline"></a></h3>
+<h3>Documentation with sphinx<a class="headerlink" href="#documentation-with-sphinx" title="Permalink to this heading"></a></h3>
 <p>Build the documentation locally with Sphinx:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tox</span> <span class="o">-</span><span class="n">e</span> <span class="n">docs</span>
 </pre></div>
@@ -242,13 +243,13 @@ every variable in the documentation (and not <em>variable : type</em>).</p></li>
 </div>
 </section>
 <section id="drone-ci">
-<h3>Drone CI<a class="headerlink" href="#drone-ci" title="Permalink to this headline"></a></h3>
+<h3>Drone CI<a class="headerlink" href="#drone-ci" title="Permalink to this heading"></a></h3>
 <p>Apart from these tools you can run locally, we use drone continuous
 integration to run these checks also on our servers. See
 <a class="reference external" href="https://cloud.drone.io/cn-ws/rfactor/">https://cloud.drone.io/cn-ws/rfactor/</a> for the results.</p>
 </section>
 <section id="git-lfs">
-<h3>Git lfs<a class="headerlink" href="#git-lfs" title="Permalink to this headline"></a></h3>
+<h3>Git lfs<a class="headerlink" href="#git-lfs" title="Permalink to this heading"></a></h3>
 <p>Git lfs, or large file support, is used in this repository to store gis files
 in the repository. To use this functionality you need to install git lfs. See
 <a class="reference external" href="https://git-lfs.github.com/">gitlfs</a> for instructions and more information.</p>
@@ -257,7 +258,7 @@ are stored under lfs. For now, only files within the test folder are stored
 under lfs.</p>
 </section>
 <section id="naming-things">
-<h3>Naming things<a class="headerlink" href="#naming-things" title="Permalink to this headline"></a></h3>
+<h3>Naming things<a class="headerlink" href="#naming-things" title="Permalink to this heading"></a></h3>
 <p>To provide structure in the naming of methods, functions, classes,… we
 ask to conform the following guidelines.</p>
 <p>Class, function/methods names follow the standard naming conventions as
@@ -274,7 +275,7 @@ whenever possible - with an active verb on the action they perform
 </ul>
 </section>
 <section id="creating-a-new-release">
-<h3>Creating a new release<a class="headerlink" href="#creating-a-new-release" title="Permalink to this headline"></a></h3>
+<h3>Creating a new release<a class="headerlink" href="#creating-a-new-release" title="Permalink to this heading"></a></h3>
 <p>For the releases, the setup uses <a class="reference external" href="setuptoolsscm">setuptools-scm</a>.  Basically, by managing the git-tags, the release version is managed as well.</p>
 <p>Furthermore, the deployment of the documentation and pypi package is managed using github actions,
 the <a class="reference external" href="deployci">deploy.yml</a> file.</p>

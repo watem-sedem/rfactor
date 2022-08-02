@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>R-factor &mdash; rfactor 0.0.post1.dev371+g3697f9c.d20220509 documentation</title>
+  <title>R-factor &mdash; rfactor 0.0.post1.dev372+g1234632.d20220802 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
@@ -32,7 +33,7 @@
             <a href="#" class="icon icon-home"> rfactor
           </a>
               <div class="version">
-                0.0.post1.dev371+g3697f9c.d20220509
+                0.0.post1.dev372+g1234632.d20220802
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -110,7 +111,7 @@
 </style>
 <a class="reference external image-reference" href="https://zenodo.org/badge/latestdoi/364504726"><img alt="https://zenodo.org/badge/364504726.svg" src="https://zenodo.org/badge/364504726.svg" /></a>
 <section id="r-factor">
-<h1>R-factor<a class="headerlink" href="#r-factor" title="Permalink to this headline"></a></h1>
+<h1>R-factor<a class="headerlink" href="#r-factor" title="Permalink to this heading"></a></h1>
 <p>The <span class="math notranslate nohighlight">\(R\)</span>-factor is a measure used in erosion and (overland) sediment
 modelling to quantify the effect of rainfall on soil erosion. It is typically
 defined in the context of the RUSLE equation, in which gross erosion for an
@@ -126,7 +127,7 @@ explanation of the formula’s is given <a class="reference internal" href="rfac
 erosivity in Flanders. The results found in the example notebooks
 are also found in <a class="reference external" href="https://www.friscris.be/nl/publications/herziening-van-de-neerslagerosiviteitsfactor-r-voor-de-vlaamse-erosiemodellering(9d4e2953-6c93-48d0-a1c2-d66d03c749aa).html">this report</a>).</p>
 <section id="get-started">
-<h2>Get started<a class="headerlink" href="#get-started" title="Permalink to this headline"></a></h2>
+<h2>Get started<a class="headerlink" href="#get-started" title="Permalink to this heading"></a></h2>
 <p>This package makes use of <code class="docutils literal notranslate"><span class="pre">Python</span></code> (and a limited number of
 dependencies such as Pandas and Numpy). To install the package:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">rfactor</span>
@@ -136,7 +137,7 @@ dependencies such as Pandas and Numpy). To install the package:</p>
 <a class="reference internal" href="get-started.html#getstarted"><span class="std std-ref">Get started</span></a> page.</p>
 </section>
 <section id="data-application-to-flanders">
-<h2>Data &amp; application to Flanders<a class="headerlink" href="#data-application-to-flanders" title="Permalink to this headline"></a></h2>
+<h2>Data &amp; application to Flanders<a class="headerlink" href="#data-application-to-flanders" title="Permalink to this heading"></a></h2>
 <p>Input rainfall data are provided by the Flemish Environment Agency (VMM),
 which are also available via <a class="reference external" href="https://www.waterinfo.be">waterinfo</a>. The
 input rainfall data from the Royal Meteorological Institute
@@ -147,41 +148,41 @@ partners of this project, and are used as test data for analysing the R-factor
 for Flanders.</p>
 </section>
 <section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline"></a></h2>
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this heading"></a></h2>
 <p>The documentation can be found on the
 <a class="reference external" href="https://cn-ws.github.io/rfactor/index.html">R-factor documentation page</a>.</p>
 </section>
 <section id="code">
-<h2>Code<a class="headerlink" href="#code" title="Permalink to this headline"></a></h2>
+<h2>Code<a class="headerlink" href="#code" title="Permalink to this heading"></a></h2>
 <p>The open-source code can be found on
 <a class="reference external" href="https://github.com/cn-ws/rfactor/">GitHub</a>.</p>
 </section>
 <section id="license">
-<h2>License<a class="headerlink" href="#license" title="Permalink to this headline"></a></h2>
+<h2>License<a class="headerlink" href="#license" title="Permalink to this heading"></a></h2>
 <p>This project is licensed under GNU Lesser Public License v3.0, see
 <a class="reference internal" href="license.html#license"><span class="std std-ref">here</span></a> for more information.</p>
 </section>
 <section id="contact">
-<h2>Contact<a class="headerlink" href="#contact" title="Permalink to this headline"></a></h2>
+<h2>Contact<a class="headerlink" href="#contact" title="Permalink to this heading"></a></h2>
 <p>We encourage users to submit questions, suggestions and bug reports via the
 issues platform on GitHub. In case of other questions, one can mail
 to <a class="reference external" href="mailto:cn-ws&#37;&#52;&#48;omgeving&#46;vlaanderen&#46;be">cn-ws<span>&#64;</span>omgeving<span>&#46;</span>vlaanderen<span>&#46;</span>be</a></p>
 </section>
 <section id="powered-by">
-<h2>Powered by<a class="headerlink" href="#powered-by" title="Permalink to this headline"></a></h2>
+<h2>Powered by<a class="headerlink" href="#powered-by" title="Permalink to this heading"></a></h2>
 <img alt="_images/DepartementOmgeving_logo.png" src="_images/DepartementOmgeving_logo.png" />
 <img alt="_images/KULeuven_logo.png" src="_images/KULeuven_logo.png" />
 <img alt="_images/VMM_logo.png" src="_images/VMM_logo.png" />
 <img alt="_images/fluves_logo.png" src="_images/fluves_logo.png" />
 </section>
 <section id="note">
-<h2>Note<a class="headerlink" href="#note" title="Permalink to this headline"></a></h2>
+<h2>Note<a class="headerlink" href="#note" title="Permalink to this heading"></a></h2>
 <p>This project has been set up using PyScaffold 3.2.3. For details and usage
 information on PyScaffold see <a class="reference external" href="https://pyscaffold.org/">https://pyscaffold.org/</a>.</p>
 </section>
 </section>
 <section id="contents">
-<h1>Contents<a class="headerlink" href="#contents" title="Permalink to this headline"></a></h1>
+<h1>Contents<a class="headerlink" href="#contents" title="Permalink to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
@@ -196,7 +197,7 @@ information on PyScaffold see <a class="reference external" href="https://pyscaf
 </div>
 </section>
 <section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline"></a></h1>
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h1>
 <ul class="simple">
 <li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>

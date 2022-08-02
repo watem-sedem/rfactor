@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rainfall erosivity &mdash; rfactor 0.0.post1.dev371+g3697f9c.d20220509 documentation</title>
+  <title>Rainfall erosivity &mdash; rfactor 0.0.post1.dev372+g1234632.d20220802 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
@@ -33,7 +34,7 @@
             <a href="index.html" class="icon icon-home"> rfactor
           </a>
               <div class="version">
-                0.0.post1.dev371+g3697f9c.d20220509
+                0.0.post1.dev372+g1234632.d20220802
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -110,9 +111,9 @@
 }
 </style>
 <section id="rainfall-erosivity">
-<span id="rfactor"></span><h1>Rainfall erosivity<a class="headerlink" href="#rainfall-erosivity" title="Permalink to this headline"></a></h1>
+<span id="rfactor"></span><h1>Rainfall erosivity<a class="headerlink" href="#rainfall-erosivity" title="Permalink to this heading"></a></h1>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline"></a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h2>
 <p>The soil erosive power of rainfall is quantified in the rainfall erosivity factor
 <span class="math notranslate nohighlight">\(R\)</span>. This is a measure for the total erosivity of a number of rainfall
 events within a defined timeframe (years, months, number of days). The factor
@@ -148,9 +149,13 @@ The latter is defined as:</p>
 </ul>
 </dd>
 </dl>
+<p>Note these equations assume that events are predefined. Typically, the end of
+and event is defined by a period of no rainfall. For Flanders, six hours is
+used as time period, and in addition, only events with a volume of 1.27 mm
+are retained in the calculations.</p>
 </section>
 <section id="energy-per-unit-depth-of-rain">
-<h2>Energy per unit depth of rain<a class="headerlink" href="#energy-per-unit-depth-of-rain" title="Permalink to this headline"></a></h2>
+<h2>Energy per unit depth of rain<a class="headerlink" href="#energy-per-unit-depth-of-rain" title="Permalink to this heading"></a></h2>
 <p>There are number of ways to compute the rain energy per unit depth
 <span class="math notranslate nohighlight">\(e_r\)</span>, depending on the area for which the R-factor is computed. For an
 application for Flanders/Belgium, the rain energy per unit is defined by
@@ -174,7 +179,7 @@ computation of the R-factor, as the sensitivity of the R-factor for extreme
 high-intensity events varies significantly depending on the defined relation.</p>
 </section>
 <section id="application-on-flanders">
-<h2>Application on Flanders<a class="headerlink" href="#application-on-flanders" title="Permalink to this headline"></a></h2>
+<h2>Application on Flanders<a class="headerlink" href="#application-on-flanders" title="Permalink to this heading"></a></h2>
 <p>In this package, example data are presented for Flanders. For applications of
 the rainfall erosivity factor in the context of erosion and sediment
 transport modelling in Flanders a value of 870
@@ -184,7 +189,7 @@ transport modelling in Flanders a value of 870
 been evaluated in Gobeyn et al. (2021).</p>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading"></a></h2>
 <p>Brown, L.C., Foster, G.R., 1987. Storm erosivity using idealized intensity
 distributions. Transactions of the ASAE 30, 0379–0386.
 <a class="reference external" href="https://doi.org/10.13031/2013.31957">https://doi.org/10.13031/2013.31957</a></p>

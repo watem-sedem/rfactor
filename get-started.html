@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Get started &mdash; rfactor 0.0.post1.dev371+g3697f9c.d20220509 documentation</title>
+  <title>Get started &mdash; rfactor 0.0.post1.dev372+g1234632.d20220802 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
@@ -33,7 +34,7 @@
             <a href="index.html" class="icon icon-home"> rfactor
           </a>
               <div class="version">
-                0.0.post1.dev371+g3697f9c.d20220509
+                0.0.post1.dev372+g1234632.d20220802
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -110,14 +111,14 @@
 }
 </style>
 <section id="get-started">
-<span id="getstarted"></span><h1>Get started<a class="headerlink" href="#get-started" title="Permalink to this headline"></a></h1>
+<span id="getstarted"></span><h1>Get started<a class="headerlink" href="#get-started" title="Permalink to this heading"></a></h1>
 <p>The R-factor scripts can be used to:</p>
 <ol class="arabic simple">
 <li><p>Compute the erosivity <span class="math notranslate nohighlight">\(EI_{30}\)</span> values for a number of stations and years.</p></li>
 <li><p>Use the computed <span class="math notranslate nohighlight">\(EI_{30}\)</span> values to compute an R-value.</p></li>
 </ol>
 <section id="from-10-rain-data-to-ei-for-a-single-station-year">
-<h2>From 10’ rain data to EI for a single station/year<a class="headerlink" href="#from-10-rain-data-to-ei-for-a-single-station-year" title="Permalink to this headline"></a></h2>
+<h2>From 10’ rain data to EI for a single station/year<a class="headerlink" href="#from-10-rain-data-to-ei-for-a-single-station-year" title="Permalink to this heading"></a></h2>
 <p>The input of the erosivity algorithm is a rainfall time series with a 10’ resolution as a Pandas DataFrame, e.g.</p>
 <table class="docutils align-default">
 <colgroup>
@@ -251,7 +252,7 @@ existing Pandas functionalities:</p>
 </div>
 </section>
 <section id="calculating-multiple-station-year-combinations">
-<h2>Calculating multiple station/year combinations<a class="headerlink" href="#calculating-multiple-station-year-combinations" title="Permalink to this headline"></a></h2>
+<h2>Calculating multiple station/year combinations<a class="headerlink" href="#calculating-multiple-station-year-combinations" title="Permalink to this heading"></a></h2>
 <p>When data are available from multiple stations over multiple years in a single DataFrame,
 the <a class="reference internal" href="api/rfactor.html#rfactor.compute_erosivity" title="rfactor.compute_erosivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.compute_erosivity()</span></code></a> function applies the erosivity algorithm on each
 year/station combination in the input rain DataFrame. To do so, an
@@ -405,14 +406,14 @@ additional column with the <code class="docutils literal notranslate"><span clas
 </div>
 </section>
 <section id="legacy-matlab-file-handling">
-<h2>Legacy Matlab file handling<a class="headerlink" href="#legacy-matlab-file-handling" title="Permalink to this headline"></a></h2>
+<h2>Legacy Matlab file handling<a class="headerlink" href="#legacy-matlab-file-handling" title="Permalink to this heading"></a></h2>
 <p>The original implementation of the algorithm was done in Matlab, which required a specific file input and output file format.
 The package provides a number of processing functions in the <a class="reference internal" href="api/rfactor.html#module-rfactor.process" title="rfactor.process"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rfactor.process</span></code></a> module to enable compatibility
 with the original data format (for example <a class="reference internal" href="api/rfactor.html#rfactor.process.load_rain_file" title="rfactor.process.load_rain_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">to</span> <span class="pre">load</span> <span class="pre">rain</span> <span class="pre">data</span></code></a> ).</p>
 <p>The <span class="math notranslate nohighlight">\(EI_{30}\)</span> values were computed by using a Matlab script (see also <a class="reference internal" href="codelegacy.html#codelegacy"><span class="std std-ref">here</span></a> that required a folder as input. In this folder,
 non-zero rainfall timeseries were stored in separate text files (extension: <code class="docutils literal notranslate"><span class="pre">.txt</span></code> ) files per station and year.</p>
 <section id="input-files">
-<h3>Input files<a class="headerlink" href="#input-files" title="Permalink to this headline"></a></h3>
+<h3>Input files<a class="headerlink" href="#input-files" title="Permalink to this heading"></a></h3>
 <p>The input files are defined by text files (extension: <code class="docutils literal notranslate"><span class="pre">.txt</span></code>) that
 hold non-zero rainfall timeseries. The data are split per station and
 per year with a specific datafile tag (format: <strong>SOURCE_STATION_YEAR.txt</strong>):</p>
@@ -451,7 +452,7 @@ per year with a specific datafile tag (format: <strong>SOURCE_STATION_YEAR.txt</
 </div>
 </section>
 <section id="output-erosivity">
-<h3>Output erosivity<a class="headerlink" href="#output-erosivity" title="Permalink to this headline"></a></h3>
+<h3>Output erosivity<a class="headerlink" href="#output-erosivity" title="Permalink to this heading"></a></h3>
 <p>To export the resulting DataFrame with erosivity values into the legacy output format:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">load_rain_folder</span><span class="p">,</span> <span class="n">load_rain_file</span>
@@ -462,13 +463,13 @@ per year with a specific datafile tag (format: <strong>SOURCE_STATION_YEAR.txt</
 </section>
 </section>
 <section id="analyse-r-values">
-<h2>Analyse R-values<a class="headerlink" href="#analyse-r-values" title="Permalink to this headline"></a></h2>
+<h2>Analyse R-values<a class="headerlink" href="#analyse-r-values" title="Permalink to this heading"></a></h2>
 <p>The R-value is determined by the number of years and stations the users wishes to consider to compute the R value. By
 using Pandas DataFrame to store te erosivity, all funtionalities for slicing/filtering/plotting/… are available directly.</p>
 <p>For example, consider one wants to compute the R-value for 2017 and 2018, for Ukkel (stations: KMI_6447 and KMI_FS3):</p>
 </section>
 <section id="resample-input-rainfall-data">
-<h2>Resample input rainfall data<a class="headerlink" href="#resample-input-rainfall-data" title="Permalink to this headline"></a></h2>
+<h2>Resample input rainfall data<a class="headerlink" href="#resample-input-rainfall-data" title="Permalink to this heading"></a></h2>
 <p>The current implementation of the R-factor are valid on a resolution of
 10-minutes. A resampling module allowing you to resample to a 10-minute
 resolution is provided in the package:</p>
