@@ -41,6 +41,11 @@ with
    (:math:`\frac{\text{J}}{\text{m}^{2}.\text{mm}}`), and
  - :math:`\Delta V_r`: the rain depth (mm).
 
+Note these equations assume that events are predefined. Typically, the end of
+and event is defined by a period of no rainfall. For Flanders, six hours is
+used as time period, and in addition, only events with a volume of 1.27 mm
+are retained in the calculations.  
+
 Energy per unit depth of rain
 -----------------------------
 
