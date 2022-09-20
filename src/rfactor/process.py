@@ -160,7 +160,7 @@ def load_rain_folder(folder_path):
     _check_path(folder_path)
     if not folder_path.exists():
         msg = f"Input folder '{folder_path}' does not exists."
-        raise IOError(msg)
+        raise FileNotFoundError(msg)
     if folder_path.is_file():
         raise ValueError(
             "`folder_path` need to be the path " "to a directory instead of a file"
@@ -170,7 +170,7 @@ def load_rain_folder(folder_path):
     files = list(folder_path.glob("*.txt"))
     if len(files) == 0:
         msg = f"Input folder '{folder_path}' does not contain any 'txt'-files."
-        raise IOError(msg)
+        raise FileNotFoundError(msg)
 
     for file_path in tqdm(files, total=len(files)):
         lst_df.append(load_rain_file(file_path))

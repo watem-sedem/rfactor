@@ -191,7 +191,9 @@ def test_load_rain_file_with_folder(rain_data_folder):
     assert "a file instead of a directory" in str(excinfo.value)
 
 
-def test_load_rain_folder(rain_data_folder):
+def test_load_rain_folder(
+    rain_data_folder, rain_data_folder_non_existing, rain_data_folder_empty
+):
     """Rainfall data should be parsed to rain DataFrame
     when loading multiple files adding a year and tag column"""
     rainfall_data = load_rain_folder(rain_data_folder)
@@ -221,16 +223,17 @@ def test_load_rain_folder(rain_data_folder):
         2021,
         "station_1_2021",
     ]
-    with pytest.raises(IOError) as excinfo:
-        load_rain_folder(Path("nonexistingfolder"))
-    assert "Input folder 'nonexistingfolder' does not exists." in str(excinfo.value)
-
-    with pytest.raises(IOError) as excinfo:
-        folder = Path("emptyfolder")
-        folder.mkdir()
-        load_rain_folder(folder)
-    assert "Input folder 'emptyfolder' does not contain any 'txt'-files." in str(
+    with pytest.raises(FileNotFoundError) as excinfo:
+        load_rain_folder(rain_data_folder_non_existing)
+    assert f"Input folder '{rain_data_folder_non_existing}' does not exists." in str(
         excinfo.value
+    )
+
+    with pytest.raises(FileNotFoundError) as excinfo:
+        load_rain_folder(rain_data_folder_empty)
+    assert (
+        f"Input folder '{rain_data_folder_empty}' does not contain any 'txt'-files."
+        in str(excinfo.value)
     )
 
 
