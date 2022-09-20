@@ -158,14 +158,20 @@ def load_rain_folder(folder_path):
         - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
     """
     _check_path(folder_path)
+    if not folder_path.exists():
+        msg = f"Input folder '{folder_path}' does not exists."
+        raise IOError(msg)
     if folder_path.is_file():
         raise ValueError(
             "`folder_path` need to be the path " "to a directory instead of a file"
         )
 
     lst_df = []
-
     files = list(folder_path.glob("*.txt"))
+    if len(files) == 0:
+        msg = f"Input folder '{folder_path}' does not contain any 'txt'-files."
+        raise IOError(msg)
+
     for file_path in tqdm(files, total=len(files)):
         lst_df.append(load_rain_file(file_path))
 
