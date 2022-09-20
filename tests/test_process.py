@@ -56,7 +56,25 @@ from rfactor.process import (
     ],
 )
 def test_resample_rainfall(idx, values, freq, idx_n, values_n, freq_n):
+    """
 
+    Parameters
+    ----------
+    idx: pd.Timestamp
+        Input time stamp
+    values: float
+        Input rainfall (mm)
+    freq: pandas.DataFrame.resample
+        Input frequency, for definition frequency,
+        see :func:`pandas.DataFrame.resample`.
+    idx_n: pd.Timestamp
+        Output time stamp
+    values_n: float
+        Output rainfall (mm)
+    freq_n: pandas.DataFrame.resample
+        Output frequency, for definition frequency,
+        see :func:`pandas.DataFrame.resample`.
+    """
     df = pd.DataFrame(columns=["datetime", "rain_mm"])
     df["datetime"] = idx
     df["rain_mm"] = values
@@ -167,6 +185,7 @@ def test_load_rain_file(rain_data_file):
 
 def test_load_rain_file_with_folder(rain_data_folder):
     """When input is a file, should return ValueError to user"""
+
     with pytest.raises(ValueError) as excinfo:
         load_rain_file(rain_data_folder)
     assert "a file instead of a directory" in str(excinfo.value)
@@ -202,6 +221,17 @@ def test_load_rain_folder(rain_data_folder):
         2021,
         "station_1_2021",
     ]
+    with pytest.raises(IOError) as excinfo:
+        load_rain_folder(Path("nonexistingfolder"))
+    assert "Input folder 'nonexistingfolder' does not exists." in str(excinfo.value)
+
+    with pytest.raises(IOError) as excinfo:
+        folder = Path("emptyfolder")
+        folder.mkdir()
+        load_rain_folder(folder)
+    assert "Input folder 'emptyfolder' does not contain any 'txt'-files." in str(
+        excinfo.value
+    )
 
 
 def test_load_rain_folder_with_file(rain_data_file):
