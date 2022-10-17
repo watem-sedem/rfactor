@@ -9,6 +9,11 @@ from tqdm import tqdm
 from rfactor.valid import valid_rainfall_timeseries
 
 
+class RainfallFilesIOMsg(str):
+    """Print message a string"""
+    def __repr__(self): return str(self)
+
+
 def _days_since_start_year(series):
     """Translate datetime series to days since start of the year
 
@@ -127,9 +132,17 @@ def load_rain_file(file_path):
     rain = pd.read_csv(
         file_path, delimiter=" ", header=None, names=["minutes_since", "rain_mm"]
     )
+    if np.sum(rain["minutes_since"].isnull())>0:
+        msg = "Timestamp (i.e. minutes from start of year) column contains " \
+              "NaN-values. Input should be a (space-delimited) text file with the " \
+              "first column being the timestamp from the start of the year (minutes)," \
+              " and second the rainfall depth (in mm, non-zero series): \n \n9390 " \
+              "1.00\n9470 0.20\n9480 0.50\n... ..."
+        raise IOError(RainfallFilesIOMsg(msg))
     rain["datetime"] = pd.Timestamp(f"{year}-01-01") + pd.to_timedelta(
-        pd.to_numeric(rain["minutes_since"]), unit="min"
-    )
+            pd.to_numeric(rain["minutes_since"]), unit="min"
+        )
+
     rain["station"] = station
     rain["year"] = rain["datetime"].dt.year
     rain["tag"] = rain["station"].astype(str) + "_" + rain["year"].astype(str)
@@ -166,7 +179,7 @@ def load_rain_folder(folder_path):
     lst_df = []
 
     files = list(folder_path.glob("*.txt"))
-    for file_path in tqdm(files, total=len(files)):
+    for file_path in files:
         lst_df.append(load_rain_file(file_path))
 
     all_rain = pd.concat(lst_df)
