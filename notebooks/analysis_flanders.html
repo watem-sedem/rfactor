@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application of rfactor on data det Flanders &mdash; rfactor 0.0.post1.dev373+g40c0e10.d20220802 documentation</title>
+  <title>Application of rfactor on data det Flanders &mdash; rfactor 0.0.post1.dev382+g9560456.d20221102 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -16,6 +16,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -34,7 +35,7 @@
             <a href="../index.html" class="icon icon-home"> rfactor
           </a>
               <div class="version">
-                0.0.post1.dev373+g40c0e10.d20220802
+                0.0.post1.dev382+g9560456.d20221102
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -75,8 +76,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Application of rfactor on data det Flanders</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Application of rfactor on data det Flanders</li>
       <li class="wy-breadcrumbs-aside">
             <a href="https://github.com/cn-ws/rfactor/tree/master/docs/notebooks/analysis_flanders.ipynb">View page source</a>
       </li>
@@ -364,6 +365,15 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
+<span class="o">%</span><span class="k">autoreload</span> 2
+</pre></div>
+</div>
+</div>
 <section id="Application-of-rfactor-on-data-det-Flanders">
 <h1>Application of rfactor on data det Flanders<a class="headerlink" href="#Application-of-rfactor-on-data-det-Flanders" title="Permalink to this heading"></a></h1>
 <section id="Aim">
@@ -450,7 +460,6 @@ KMI_6434_2004.txt
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fmap_rainfall</span> <span class="o">=</span>  <span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;../../tests/data/test_rainfalldata&quot;</span><span class="p">)</span>
-<span class="n">fmap_erosivity</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;../../tests/data/test_erosivitydata&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -468,7 +477,7 @@ KMI_6434_2004.txt
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 581/581 [00:04&lt;00:00, 138.92it/s]
+100%|██████████████████████████████████████████████████████████████████████████████████| 10/10 [00:00&lt;00:00, 66.28it/s]
 </pre></div></div>
 </div>
 <p><strong>Compute rainfall statistics</strong> (and add station metadata)</p>
@@ -476,7 +485,7 @@ KMI_6434_2004.txt
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data/belgium/stations.csv&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data/stations.csv&quot;</span><span class="p">)</span>
 
 <span class="n">rain_stats</span> <span class="o">=</span> <span class="n">compute_rainfall_statistics</span><span class="p">(</span><span class="n">all_rainfall</span><span class="p">,</span> <span class="n">stations</span><span class="p">)</span>
 <span class="n">rain_stats</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -524,52 +533,52 @@ KMI_6434_2004.txt
       <td>NaN</td>
       <td>2718</td>
       <td>0.01</td>
-      <td>0.09</td>
+      <td>0.090</td>
       <td>5.05</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>[2005, 2006, 2007, 2008, 2009, 2010, 2011, 201...</td>
+      <td>[2020]</td>
       <td>P01_003</td>
       <td>51907.0</td>
       <td>191193.0</td>
-      <td>56546</td>
+      <td>3481</td>
       <td>0.01</td>
-      <td>0.10</td>
-      <td>24.32</td>
+      <td>0.100</td>
+      <td>4.56</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>[2005, 2006, 2007, 2008, 2009, 2010, 2011, 201...</td>
+      <td>[2012, 2016]</td>
       <td>P01_010</td>
       <td>45836.0</td>
       <td>171260.0</td>
-      <td>54543</td>
+      <td>7549</td>
       <td>0.01</td>
-      <td>0.10</td>
-      <td>22.75</td>
+      <td>0.100</td>
+      <td>17.71</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>[2005, 2006, 2007, 2008, 2009, 2010, 2011, 201...</td>
-      <td>P01_015</td>
-      <td>37391.0</td>
-      <td>203053.0</td>
-      <td>52304</td>
+      <td>[2018]</td>
+      <td>P05_038</td>
+      <td>59622.0</td>
+      <td>167497.0</td>
+      <td>2866</td>
       <td>0.01</td>
-      <td>0.10</td>
-      <td>21.61</td>
+      <td>0.105</td>
+      <td>9.03</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>[2009, 2010, 2011, 2012, 2013, 2014, 2015, 201...</td>
-      <td>P01_029</td>
-      <td>25566.0</td>
-      <td>198775.0</td>
-      <td>36628</td>
+      <td>[2017]</td>
+      <td>P05_039</td>
+      <td>65867.0</td>
+      <td>181510.0</td>
+      <td>3536</td>
       <td>0.01</td>
-      <td>0.12</td>
-      <td>15.75</td>
+      <td>0.100</td>
+      <td>6.96</td>
     </tr>
   </tbody>
 </table>
@@ -580,7 +589,7 @@ KMI_6434_2004.txt
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">consider_stations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../../tests/data/files_tests.csv&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">consider_stations</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;data/files.csv&quot;</span><span class="p">)</span>
 
 <span class="n">sel_rainfall</span> <span class="o">=</span> <span class="n">all_rainfall</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">all_rainfall</span><span class="p">[</span><span class="s2">&quot;tag&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">consider_stations</span><span class="p">[</span><span class="s2">&quot;datafile&quot;</span><span class="p">])]</span>
 </pre></div>
@@ -1016,16 +1025,25 @@ R-factor for period from 2000 till 2020 is: 1331.83
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+C:\Users\SachaGobeyn\AppData\Local\Temp\ipykernel_7912\1035895420.py:10: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.
+  rfactor_fs3 = rfactor_fs3.append(rfactor_6447.iloc[0])
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x7f760b09dcf8&gt;
+&lt;matplotlib.legend.Legend at 0x18782a4d610&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_analysis_flanders_24_1.png" src="../_images/notebooks_analysis_flanders_24_1.png" />
+<img alt="../_images/notebooks_analysis_flanders_25_2.png" src="../_images/notebooks_analysis_flanders_25_2.png" />
 </div>
 </div>
 <p><strong>All stations expect Ukkel</strong></p>
@@ -1123,14 +1141,14 @@ R-factor for period from 2000 till 2020 is: 1331.83
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-&lt;matplotlib.legend.Legend at 0x7f760fcc1128&gt;
+&lt;matplotlib.legend.Legend at 0x1878187e070&gt;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_analysis_flanders_30_1.png" src="../_images/notebooks_analysis_flanders_30_1.png" />
+<img alt="../_images/notebooks_analysis_flanders_31_1.png" src="../_images/notebooks_analysis_flanders_31_1.png" />
 </div>
 </div>
 <p><strong>All stations of the VMM (Flanders)</strong></p>
@@ -1759,7 +1777,7 @@ R-factor for period from 2000 till 2020 is: 1331.83
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_analysis_flanders_41_0.png" src="../_images/notebooks_analysis_flanders_41_0.png" />
+<img alt="../_images/notebooks_analysis_flanders_42_0.png" src="../_images/notebooks_analysis_flanders_42_0.png" />
 </div>
 </div>
 </section>
@@ -1781,10 +1799,10 @@ R-factor for period from 2000 till 2020 is: 1331.83
     <span class="c1"># rolling mean</span>
     <span class="n">scales</span>  <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">30</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">scale</span> <span class="ow">in</span> <span class="n">scales</span><span class="p">:</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">scale</span><span class="o">==</span><span class="mi">10</span><span class="p">:</span>
             <span class="n">y_max</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">*</span><span class="mf">1.1</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">index</span><span class="o">+</span><span class="mi">1898</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">year</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;voortschrijdend gemiddelde (</span><span class="si">{</span><span class="n">scale</span><span class="si">}</span><span class="s1"> jaar)&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">ind1</span><span class="o">!=</span><span class="mi">3</span><span class="p">:</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
@@ -1813,14 +1831,14 @@ R-factor for period from 2000 till 2020 is: 1331.83
     <span class="n">df_plot</span> <span class="o">=</span> <span class="n">erosivity_monthly</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">erosivity_monthly</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span><span class="o">==</span><span class="n">month</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">df_plot</span>  <span class="o">=</span> <span class="n">df_plot</span> <span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">df_plot</span><span class="p">[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">])]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">)</span>
     <span class="n">subplot_montlhy_R</span><span class="p">(</span><span class="n">df_plot</span><span class="p">,</span><span class="n">ax</span><span class="p">[</span><span class="n">ind1</span><span class="p">,</span><span class="n">ind2</span><span class="p">],</span><span class="n">ind1</span><span class="p">,</span><span class="n">ind2</span><span class="p">)</span>
-<br/><br/></pre></div>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_analysis_flanders_43_0.png" src="../_images/notebooks_analysis_flanders_43_0.png" />
+<img alt="../_images/notebooks_analysis_flanders_44_0.png" src="../_images/notebooks_analysis_flanders_44_0.png" />
 </div>
 </div>
 </section>
