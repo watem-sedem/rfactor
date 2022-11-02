@@ -92,7 +92,7 @@ def rain_data_folder(tmp_path):
 
 
 @pytest.fixture()
-def rain_data_folder_non_existing(tmp_path):
+def data_folder_non_existing(tmp_path):
     """Example rainfall data file"""
     example_rain_path_non_existing = tmp_path / "non-existing"
 
@@ -100,7 +100,7 @@ def rain_data_folder_non_existing(tmp_path):
 
 
 @pytest.fixture()
-def rain_data_folder_empty(tmp_path):
+def data_folder_empty(tmp_path):
     """Example rainfall data file"""
     example_rain_path_empty = tmp_path / "empty"
     example_rain_path_empty.mkdir()
