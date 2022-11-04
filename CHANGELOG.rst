@@ -2,6 +2,10 @@
 Changelog
 =========
 
+Version 0.1.2
+=============
+ - Fixed small spelling mistakes
+
 Version 0.1.1
 =============
  - Cleaned up data-files avaible in repo.
