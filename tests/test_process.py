@@ -56,7 +56,25 @@ from rfactor.process import (
     ],
 )
 def test_resample_rainfall(idx, values, freq, idx_n, values_n, freq_n):
+    """
 
+    Parameters
+    ----------
+    idx: pd.Timestamp
+        Input time stamp
+    values: float
+        Input rainfall (mm)
+    freq: pandas.DataFrame.resample
+        Input frequency, for definition frequency,
+        see :func:`pandas.DataFrame.resample`.
+    idx_n: pd.Timestamp
+        Output time stamp
+    values_n: float
+        Output rainfall (mm)
+    freq_n: pandas.DataFrame.resample
+        Output frequency, for definition frequency,
+        see :func:`pandas.DataFrame.resample`.
+    """
     df = pd.DataFrame(columns=["datetime", "rain_mm"])
     df["datetime"] = idx
     df["rain_mm"] = values
@@ -167,12 +185,15 @@ def test_load_rain_file(rain_data_file):
 
 def test_load_rain_file_with_folder(rain_data_folder):
     """When input is a file, should return ValueError to user"""
+
     with pytest.raises(ValueError) as excinfo:
         load_rain_file(rain_data_folder)
     assert "a file instead of a directory" in str(excinfo.value)
 
 
-def test_load_rain_folder(rain_data_folder):
+def test_load_rain_folder(
+    rain_data_folder, data_folder_non_existing, data_folder_empty
+):
     """Rainfall data should be parsed to rain DataFrame
     when loading multiple files adding a year and tag column"""
     rainfall_data = load_rain_folder(rain_data_folder)
@@ -202,6 +223,18 @@ def test_load_rain_folder(rain_data_folder):
         2021,
         "station_1_2021",
     ]
+    with pytest.raises(FileNotFoundError) as excinfo:
+        load_rain_folder(data_folder_non_existing)
+    assert f"Input folder '{data_folder_non_existing}' does not exists." in str(
+        excinfo.value
+    )
+
+    with pytest.raises(FileNotFoundError) as excinfo:
+        load_rain_folder(data_folder_empty)
+    assert (
+        f"Input folder '{data_folder_empty}' does not contain any 'txt'-files."
+        in str(excinfo.value)
+    )
 
 
 def test_load_rain_folder_with_file(rain_data_file):
