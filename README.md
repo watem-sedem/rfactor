@@ -49,7 +49,7 @@ Rainfall and erosivity data
 
 Any 10 minute ezqolurion input rainfall should work, but input rainfall data for the initial project
 were provided by the Flemish Environment Agency (VMM) and the Royal Meteorological Institute (RMI).
-Teh data from the Flemish Environment Agency (VMM) are available via
+The data from the Flemish Environment Agency (VMM) are available via
 [waterinfo](https://www.waterinfo.be). The input rainfall data from the
 Royal Meteorological Institute (RMI) are not shared in this project.
 Please contact the RMI if you would like to obtain the a copy of the RMI
