@@ -109,6 +109,7 @@ def load_rain_file(file_path, load_fun):
 
         - *rain_mm* (float): Rain in mm
         - *datetime* (pandas.Timestamp): Time stamp
+        - *minutes_since* (float): Minutes since start of year.
         - *station* (str): station name
         - *year* (int): year of the measurement
         - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
@@ -304,7 +305,7 @@ def load_rain_file_matlab_legacy(file_path):
 
     rain["station"] = station
 
-    return rain
+    return rain[["datetime", "minutes_since", "station", "rain_mm"]]
 
 
 def load_rain_folder(folder_path, load_fun):
@@ -327,16 +328,8 @@ def load_rain_folder(folder_path, load_fun):
     Returns
     -------
     rain : pandas.DataFrame
-        DataFrame with rainfall time series. Contains the following columns:
-
-        - *minutes_since* (int): Minutes since the start of the year
-        - *rain_mm* (float): Rain in mm
-        - *datetime* (pandas.Timestamp): Time stamp
-        - *station* (str): station name
-        - *year* (int): year of the measurement
-        - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
-
-    coverage: pandas.DataFrame
+        See definition in :func:`rfactor.process.load_rain_file`
+    diagnostics: pandas.DataFrame
         See definition in :func:`rfactor.process.load_rain_file`
     """
     _check_path(folder_path)
@@ -363,19 +356,19 @@ def load_rain_folder(folder_path, load_fun):
         raise FileNotFoundError(msg)
 
     for file_path in files:
-        df, coverage = load_rain_file(file_path, load_fun)
+        df, diagnostics = load_rain_file(file_path, load_fun)
         lst_df.append(df)
-        if coverage is not None:
-            lst_coverage.append(coverage)
+        if diagnostics is not None:
+            lst_coverage.append(diagnostics)
     if len(lst_coverage) > 0:
-        coverage = pd.concat(lst_coverage)
+        diagnostics = pd.concat(lst_coverage)
     else:
-        coverage = None
+        diagnostics = None
     all_rain = pd.concat(lst_df)
     all_rain = all_rain.sort_values(["station", "minutes_since"])
     all_rain.index = range(len(all_rain))
 
-    return all_rain, coverage
+    return all_rain, diagnostics
 
 
 def write_erosivity_data(df, folder_path):

@@ -164,11 +164,7 @@ the required data format defined in this package (see previous section).
 Currently, next processing functions are implemented:
 
 - :func:`rfactor.process.load_rain_file_matlab_legacy`: This is the processing
-  function used to process the ``Matlab KU-Leuven`` file legacy. The
-  :math:`EI_{30}` values were computed by using a Matlab script (see also
-  :ref:`here <codelegacy>` that required a folder as input. In this folder,
-  **non-zero rainfall timeseries** were stored in separate text files (extension:
-  ``.txt`` ) files per station and year.
+  function used to process the ``Matlab KU-Leuven`` file legacy.
 - :func:`rfactor.process.load_rain_file_csv_vmm`: This is the processing
   function used to process the ``VMM CSV`` file legacy.
 
@@ -242,8 +238,8 @@ with the first column being the timestamp from the start of the year
 VMM CSV legacy
 ~~~~~~~~~~~~~~
 
-Starting from 2018, a new input format is used for the analysis of flanders.
-The reason for this is two-folded:
+Starting from 2018, a new input format is defined and used for the analysis of
+flanders. The reason for this is two-folded:
 
 1. The new format is compatible with the VMM output from VMM's WISKI-system.
 2. The format allows to compute timeseries coverage (see ``diagnostics`` in
@@ -254,10 +250,11 @@ The input files are defined by text files (extension: ``.CSV``) that hold
 rainfall timeseries. The data are split per station with a specific datafile
 tag (format: **IDENTIFIER_STATION.CSV**):
 
--  KMI\_6414.txt
--  KMI\_6434.txt
+-  KMI\_6414.CSV
+-  KMI\_6434.CSV
 -  ...
--  P07\_006.txt
+-  P07\_006.CSV
+-  ...
 
 The content of each of this file is a rainfall timeseries (comma delimited):
 
