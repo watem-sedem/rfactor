@@ -9,9 +9,11 @@ from rfactor.process import (
     _check_path,
     _days_since_start_year,
     _extract_metadata_from_file_path,
+    compute_diagnostics,
     compute_rainfall_statistics,
     get_rfactor_station_year,
     load_rain_file,
+    load_rain_file_csv_vmm,
     load_rain_file_matlab_legacy,
     load_rain_folder,
     resample_rainfall,
@@ -180,6 +182,35 @@ def test_load_rain_file(rain_data_file):
         2021,
         "station_name_2021",
     ]
+
+
+def test_compute_diagnostics(rain_data_file_csv_vmm):
+    """Test compute diagnostics funf or vmm input file"""
+    rain_data = load_rain_file(rain_data_file_csv_vmm, load_rain_file_csv_vmm)
+    diagnostics = compute_diagnostics(rain_data)
+
+    assert set(diagnostics.columns) == {
+        "station",
+        "year",
+        "coverage",
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+    }
+    assert diagnostics["coverage"].iloc[0] == pytest.approx(0.972928)
+    assert (
+        diagnostics[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]].iloc[0].to_list()
+        == [0] * 2 + [1] * 10
+    )
 
 
 def test_load_rain_file_with_folder(rain_data_folder):
