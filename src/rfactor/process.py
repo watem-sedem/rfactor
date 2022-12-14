@@ -113,7 +113,37 @@ def load_rain_file(file_path, load_fun):
         - *station* (str): station name
         - *year* (int): year of the measurement
         - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
+    """
+    if load_fun not in [load_rain_file_matlab_legacy, load_rain_file_csv_vmm]:
+        msg = f"Rainfall load  function {load_fun} not implemented in R-factor package."
+        raise IOError(msg)
 
+    rain = load_fun(file_path)
+    rain["year"] = rain["datetime"].dt.year
+    rain["tag"] = rain["station"].astype(str) + "_" + rain["year"].astype(str)
+
+    return rain
+
+
+def compute_diagnostics(rain):
+    """Compute diagnostics for input rainfall.
+
+    This function computes coverage (per year, station) and missing rainfall for each
+    month (per year, station).
+
+    Parameters
+    ----------
+    rain: pandas.DataFrame
+        DataFrame with rainfall time series. Contains at least the following columns:
+
+        - *rain_mm* (float): Rain in mm
+        - *datetime* (pandas.Timestamp): Time stamp
+        - *station* (str): station name
+        - *year* (int): year of the measurement
+        - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
+
+    Returns
+    -------
     diagnostics: pandas.DataFrame
         Diagnostics per station, year with coverage and identifier for no-rain per
         month. Computed based on non-zero rainfall timeseries.
@@ -126,6 +156,7 @@ def load_rain_file(file_path, load_fun):
 
         - *months* (int):  1: no rain observed in month, 0: rain observed.
 
+
     Notes
     -----
     The coverage is computed as:
@@ -134,16 +165,7 @@ def load_rain_file(file_path, load_fun):
 
         C = 100*[1-\\frac{\\text{number of NULL-data}}
         {\\text{length of non-zero timeseries}}]
-
     """
-    if load_fun not in [load_rain_file_matlab_legacy, load_rain_file_csv_vmm]:
-        msg = f"Rainfall load  function {load_fun} not implemented in R-factor package."
-        raise IOError(msg)
-
-    rain = load_fun(file_path)
-    rain["year"] = rain["datetime"].dt.year
-    rain["tag"] = rain["station"].astype(str) + "_" + rain["year"].astype(str)
-
     # compute coverage
     diagnostics = rain.groupby([rain["datetime"].dt.year, "station"]).aggregate(
         {"rain_mm": lambda x: 1 - np.sum(np.isnan(x)) / len(x)}
@@ -166,7 +188,7 @@ def load_rain_file(file_path, load_fun):
     diagnostics = diagnostics.merge(df, how="left", on=["station", "datetime"])
     diagnostics = diagnostics.rename(columns={"datetime": "year"})
 
-    return rain, diagnostics
+    return diagnostics
 
 
 def load_rain_file_csv_vmm(file_path):
@@ -305,7 +327,7 @@ def load_rain_file_matlab_legacy(file_path):
 
     rain["station"] = station
 
-    return rain[["datetime", "minutes_since", "station", "rain_mm"]]
+    return rain[["datetime", "station", "rain_mm"]]
 
 
 def load_rain_folder(folder_path, load_fun):
@@ -329,8 +351,6 @@ def load_rain_folder(folder_path, load_fun):
     -------
     rain : pandas.DataFrame
         See definition in :func:`rfactor.process.load_rain_file`
-    diagnostics: pandas.DataFrame
-        See definition in :func:`rfactor.process.load_rain_file`
     """
     _check_path(folder_path)
     if not folder_path.exists():
@@ -342,7 +362,6 @@ def load_rain_folder(folder_path, load_fun):
         )
 
     lst_df = []
-    lst_coverage = []
     if load_fun.__name__ == "load_rain_file_csv_vmm":
         files = list(folder_path.glob("*.CSV"))
     elif load_fun.__name__ == "load_rain_file_matlab_legacy":
@@ -352,23 +371,17 @@ def load_rain_folder(folder_path, load_fun):
         raise NotImplementedError(msg)
 
     if len(files) == 0:
-        msg = f"Input folder '{folder_path}' does not contain any 'txt'/'csv'-files."
+        msg = f"Input folder '{folder_path}' does not contain any 'txt'-files."
         raise FileNotFoundError(msg)
 
     for file_path in files:
-        df, diagnostics = load_rain_file(file_path, load_fun)
+        df = load_rain_file(file_path, load_fun)
         lst_df.append(df)
-        if diagnostics is not None:
-            lst_coverage.append(diagnostics)
-    if len(lst_coverage) > 0:
-        diagnostics = pd.concat(lst_coverage)
-    else:
-        diagnostics = None
     all_rain = pd.concat(lst_df)
-    all_rain = all_rain.sort_values(["station", "minutes_since"])
+    all_rain = all_rain.sort_values(["station", "datetime"])
     all_rain.index = range(len(all_rain))
 
-    return all_rain, diagnostics
+    return all_rain
 
 
 def write_erosivity_data(df, folder_path):

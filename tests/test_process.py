@@ -12,6 +12,7 @@ from rfactor.process import (
     compute_rainfall_statistics,
     get_rfactor_station_year,
     load_rain_file,
+    load_rain_file_matlab_legacy,
     load_rain_folder,
     resample_rainfall,
     write_erosivity_data,
@@ -154,30 +155,28 @@ def test_check_path():
 
 def test_load_rain_file(rain_data_file):
     """Valid rainfall data should be parsed to rain DataFrame"""
-    rainfall_data = load_rain_file(rain_data_file)
+    rainfall_data = load_rain_file(rain_data_file, load_rain_file_matlab_legacy)
     assert isinstance(rainfall_data, pd.DataFrame)
+
     assert list(rainfall_data.columns) == [
-        "minutes_since",
-        "rain_mm",
         "datetime",
         "station",
+        "rain_mm",
         "year",
         "tag",
     ]
     assert list(rainfall_data["station"].unique()) == ["station_name"]
     assert list(rainfall_data.iloc[0].values) == [
-        1,
-        1.0,
         pd.to_datetime("2021-01-01 00:01:00"),
         "station_name",
+        1.0,
         2021,
         "station_name_2021",
     ]
     assert list(rainfall_data.iloc[-1].values) == [
-        525599,
-        10.00,
         pd.to_datetime("2021-12-31 23:59:00"),
         "station_name",
+        10.00,
         2021,
         "station_name_2021",
     ]
@@ -187,7 +186,7 @@ def test_load_rain_file_with_folder(rain_data_folder):
     """When input is a file, should return ValueError to user"""
 
     with pytest.raises(ValueError) as excinfo:
-        load_rain_file(rain_data_folder)
+        load_rain_file(rain_data_folder, load_rain_file_matlab_legacy)
     assert "a file instead of a directory" in str(excinfo.value)
 
 
@@ -196,41 +195,38 @@ def test_load_rain_folder(
 ):
     """Rainfall data should be parsed to rain DataFrame
     when loading multiple files adding a year and tag column"""
-    rainfall_data = load_rain_folder(rain_data_folder)
+    rainfall_data = load_rain_folder(rain_data_folder, load_rain_file_matlab_legacy)
     assert isinstance(rainfall_data, pd.DataFrame)
     assert list(rainfall_data.columns) == [
-        "minutes_since",
-        "rain_mm",
         "datetime",
         "station",
+        "rain_mm",
         "year",
         "tag",
     ]
     assert list(rainfall_data["station"].unique()) == ["station_0", "station_1"]
     assert list(rainfall_data.iloc[0].values) == [
-        1,
-        1.0,
         pd.to_datetime("2020-01-01 00:01:00"),
         "station_0",
+        1.0,
         2020,
         "station_0_2020",
     ]
     assert list(rainfall_data.iloc[-1].values) == [
-        525599,
-        10.00,
         pd.to_datetime("2021-12-31 23:59:00"),
         "station_1",
+        10.00,
         2021,
         "station_1_2021",
     ]
     with pytest.raises(FileNotFoundError) as excinfo:
-        load_rain_folder(data_folder_non_existing)
+        load_rain_folder(data_folder_non_existing, load_rain_file_matlab_legacy)
     assert f"Input folder '{data_folder_non_existing}' does not exists." in str(
         excinfo.value
     )
 
     with pytest.raises(FileNotFoundError) as excinfo:
-        load_rain_folder(data_folder_empty)
+        load_rain_folder(data_folder_empty, load_rain_file_matlab_legacy)
     assert (
         f"Input folder '{data_folder_empty}' does not contain any 'txt'-files."
         in str(excinfo.value)
@@ -240,7 +236,7 @@ def test_load_rain_folder(
 def test_load_rain_folder_with_file(rain_data_file):
     """When input is a file, should return ValueError to user"""
     with pytest.raises(ValueError) as excinfo:
-        load_rain_folder(rain_data_file)
+        load_rain_folder(rain_data_file, load_rain_file_matlab_legacy)
     assert "a directory instead of a file" in str(excinfo.value)
 
 
@@ -320,7 +316,7 @@ def test_rfactor_from_erosivity_subset_not_existing(dummy_erosivity):
 
 def test_rainfall_statistics(rain_data_folder):
     """"""
-    rainfall_data = load_rain_folder(rain_data_folder)
+    rainfall_data = load_rain_folder(rain_data_folder, load_rain_file_matlab_legacy)
     rf_stats = compute_rainfall_statistics(rainfall_data)
     assert set(rf_stats.columns) == set(["year", "records", "min", "median", "max"])
     assert isinstance(rf_stats["year"][0], list)
@@ -329,7 +325,7 @@ def test_rainfall_statistics(rain_data_folder):
 
 def test_rainfall_statistics_with_metadata(rain_data_folder, station_metadata):
     """Extend rain stats with metadata"""
-    rainfall_data = load_rain_folder(rain_data_folder)
+    rainfall_data = load_rain_folder(rain_data_folder, load_rain_file_matlab_legacy)
     rf_stats = compute_rainfall_statistics(rainfall_data, station_metadata)
     assert set(rf_stats.columns) == set(
         ["year", "station", "x", "y", "records", "min", "median", "max"]
