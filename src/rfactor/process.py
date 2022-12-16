@@ -251,7 +251,7 @@ def load_rain_file_csv_vmm(file_path):
         df = df[["Date/Time", "Value [millimeter]"]].rename(
             columns={"Date/Time": "datetime", "Value [millimeter]": "rain_mm"}
         )
-    df["datetime"] = pd.to_datetime(df["datetime"], format="%d/%m/%Y %H:%M:%S")
+    df["datetime"] = pd.to_datetime(df["datetime"], format="%d/%m/%Y %H:%M")
     df["start_year"] = pd.to_datetime(
         [f"01/01/{x} 00:00:00" for x in df["datetime"].dt.year],
         format="%d/%m/%Y %H:%M:%S",
