@@ -75,7 +75,7 @@ def rain_data_file(tmp_path):
 @pytest.fixture()
 def rain_data_file_csv_vmm():
     "Example rainfall CSV data file"
-    return Path("data") / "test_rainfalldata_vmm_format" / "P01_010.CSV"
+    return CURRENT_DIR / "data" / "test_rainfalldata_vmm_format" / "P01_010.CSV"
 
 
 @pytest.fixture()
