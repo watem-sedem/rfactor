@@ -5,7 +5,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from rfactor.process import load_rain_file, load_rain_folder
+from rfactor.process import load_rain_file, load_rain_folder, load_rain_file_matlab_legacy
 
 CURRENT_DIR = Path(os.path.dirname(__file__))
 
@@ -17,7 +17,8 @@ def rain_benchmark_closure():
     def rain_benchmark_year(station, year):
         """Get benchmark data for given year and station"""
         rain = load_rain_file(
-            CURRENT_DIR / "data" / "test_rainfalldata" / f"{station}_{year}.txt"
+            CURRENT_DIR / "data" / "test_rainfalldata" / f"{station}_{year}.txt",
+            load_rain_file_matlab_legacy
         )
         return rain
 
@@ -74,7 +75,7 @@ def rain_data_file(tmp_path):
 @pytest.fixture()
 def rain_data_file_csv_vmm():
     "Example rainfall CSV data file"
-    return Path("data") / "test_rainfalldata_vmm_format" / "P01_010.CSV"
+    return CURRENT_DIR / "data" / "test_rainfalldata_vmm_format" / "P01_010.CSV"
 
 
 @pytest.fixture()
