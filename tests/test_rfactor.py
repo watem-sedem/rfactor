@@ -129,6 +129,20 @@ def test_compute_erosivity_wrong_df():
     assert "contain data of a single year." in str(excinfo.value)
 
 
+def test_compute_0_or_NULL_rain_mm_warning(dummy_rain, recwarn):
+    """Test if 0 and NUll in 'rain_mm' column throws warning"""
+    df = dummy_rain.copy()
+    df.loc[[0, 1, 2], "rain_mm"] = [0, np.nan, 0]
+    compute_erosivity(df, maximum_intensity)
+    # test warning
+    w = recwarn.pop(UserWarning)
+    assert (
+        str(w.message)
+        == "Can only accept non-zero/non-NULL timeseries. Removing zero and/or "
+        "NULL-values detected in input 'rain_mm' column."
+    )
+
+
 def test_apply_rfactor(rain_benchmark_closure):
     """apply_rfactor adds the station/year data to dataframe"""
     station, year = "P01_001", 2018

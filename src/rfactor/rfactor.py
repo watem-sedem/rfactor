@@ -1,4 +1,5 @@
 import multiprocessing as mp
+import warnings
 from functools import partial
 
 import numpy as np
@@ -288,6 +289,13 @@ def compute_erosivity(rain, intensity_method=maximum_intensity):
         )
     if not pd.core.dtypes.common.is_float_dtype(rain["rain_mm"]):
         raise RFactorTypeError("The 'rain_mm' column needs to be of a float type.")
+
+    if ((rain["rain_mm"] == 0).sum() > 0) or (rain["rain_mm"].isnull().sum() > 0):
+        msg = (
+            "Can only accept non-zero/non-NULL timeseries. Removing zero and/or "
+            "NULL-values detected in input 'rain_mm' column."
+        )
+        warnings.warn(msg)
 
     rain["year"] = rain["datetime"].dt.year
     if "tag" not in rain.columns:

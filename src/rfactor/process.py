@@ -4,9 +4,15 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from pandas import Timedelta
-from tqdm import tqdm
 
 from rfactor.valid import valid_rainfall_timeseries
+
+
+class RainfallFilesIOMsg(str):
+    """Print message a string"""
+
+    def __repr__(self):
+        return str(self)
 
 
 def _days_since_start_year(series):
@@ -14,12 +20,12 @@ def _days_since_start_year(series):
 
     Parameters
     ----------
-    series : pd.Series
+    series : pandas.Series
         Series with Datetime values. All datetime values should be of the same year.
 
     Returns
     -------
-    days_since_start : pd.Series
+    days_since_start : pandas.Series
         Days since the start of the year as a float value.
 
     Notes
@@ -77,8 +83,192 @@ def _check_path(file_path):
             raise TypeError("`file_path` should be a pathlib.Path object")
 
 
-def load_rain_file(file_path):
-    """Load (legacy Matlab) file format of rainfall data of a single station/year.
+def load_rain_file(file_path, load_fun):
+    """Load file format of rainfall data with a given load function
+
+    Parameters
+    ----------
+    file_path : pathlib.Path
+        File path with rainfall data. Note that files in the folder should follow the
+        input data format defined in the ``load_fun``.
+
+    load_fun : Callable
+        Load function, current supported functions:
+
+        - :func:`rfactor.process.load_rain_file_matlab_legacy`.
+        - :func:`rfactor.process.load_rain_file_csv_vmm`
+
+        Please check the required input format for the files in the above listed
+        functions.
+
+
+    Returns
+    -------
+    rain : pandas.DataFrame
+        DataFrame with rainfall time series. Contains at least the following columns:
+
+        - *rain_mm* (float): Rain in mm
+        - *datetime* (pandas.Timestamp): Time stamp
+        - *minutes_since* (float): Minutes since start of year.
+        - *station* (str): station name
+        - *year* (int): year of the measurement
+        - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
+    """
+    if load_fun not in [load_rain_file_matlab_legacy, load_rain_file_csv_vmm]:
+        msg = f"Rainfall load  function {load_fun} not implemented in R-factor package."
+        raise IOError(msg)
+
+    rain = load_fun(file_path)
+    rain["year"] = rain["datetime"].dt.year
+    rain["tag"] = rain["station"].astype(str) + "_" + rain["year"].astype(str)
+
+    return rain
+
+
+def compute_diagnostics(rain):
+    """Compute diagnostics for input rainfall.
+
+    This function computes coverage (per year, station) and missing rainfall for each
+    month (per year, station).
+
+    Parameters
+    ----------
+    rain: pandas.DataFrame
+        DataFrame with rainfall time series. Contains at least the following columns:
+
+        - *rain_mm* (float): Rain in mm
+        - *datetime* (pandas.Timestamp): Time stamp
+        - *station* (str): station name
+        - *year* (int): year of the measurement
+        - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
+
+    Returns
+    -------
+    diagnostics: pandas.DataFrame
+        Diagnostics per station, year with coverage and identifier for no-rain per
+        month. Computed based on non-zero rainfall timeseries.
+
+        - *station* (str): station identifier.
+        - *year* (int): year.
+        - *coverage* (float): percentage coverage non-zero timeseries (see Notes).
+
+        Added with per month (id's 1 to 12):
+
+        - *months* (int):  1: no rain observed in month, 0: rain observed.
+
+
+    Notes
+    -----
+    The coverage is computed as:
+
+    .. math::
+
+        C = 100*[1-\\frac{\\text{number of NULL-data}}
+        {\\text{length of non-zero timeseries}}]
+    """
+    # compute coverage
+    diagnostics = rain.groupby([rain["datetime"].dt.year, "station"]).aggregate(
+        {"rain_mm": lambda x: 1 - np.sum(np.isnan(x)) / len(x)}
+    )
+    diagnostics = diagnostics.rename(columns={"rain_mm": "coverage"})
+
+    # no-rain for months
+    df = rain.groupby(
+        [rain["datetime"].dt.year, rain["datetime"].dt.month, "station"]
+    ).aggregate({"rain_mm": np.sum})
+    df.index.names = ["datetime", "month", "station"]
+    df["norain"] = 0
+    df.loc[df["rain_mm"] == 0, "norain"] = 1
+    df = df.pivot_table(
+        columns=["month"], index=["station", "datetime"], values=["norain"]
+    )
+    df = df["norain"].reset_index()
+    # check if months are in df reported
+    for month in range(1, 13, 1):
+        if month not in df.columns:
+            df[month] = 1
+
+    # couple
+    diagnostics = diagnostics.merge(df, how="left", on=["station", "datetime"])
+    diagnostics = diagnostics.rename(columns={"datetime": "year"})
+
+    return diagnostics
+
+
+def load_rain_file_csv_vmm(file_path):
+    """Load VMM CSV file format of rainfall data of a **single station**.
+
+    The input files are defined by comma delimited files (extension: ``.CSV``) that
+    hold rainfall timeseries. The data are split per monitoring station and the file
+    name should be the station identifier. The header should contain at least:
+
+    - *Date/Time*
+    - *Value [millimeter]*
+
+    Parameters
+    ----------
+    file_path : pathlib.Path
+        File path (comma delimited, .CSV-extension) with rainfall data according to
+        defined format:
+
+        - *Date/Time*: ``%d/%m/%Y %H:%M:%S``-format
+        - *Value [millimeter]*: str (containing floats and '---'-identifier)
+
+        Definition of additional columns are allowed.
+
+    Returns
+    -------
+    rain : pandas.DataFrame
+        DataFrame with rainfall time series. Contains the following columns:
+
+        - *datetime* (pandas.Timestamp): Time stamp.
+        - *minutes_since* (float): Minutes since start of year.
+        - *station* (str): station identifier.
+        - *rain_mm* (float): Rain in mm.
+
+    Example
+    -------
+    1. Example of a rainfall file:
+
+    ::
+
+        Date/Time,Value [millimeter]
+        01/01/2019 00:00,"0"
+        01/01/2019 00:05,"0.03"
+        01/01/2019 00:10,"0.04"
+        01/01/2019 00:15,"0"
+        01/01/2019 00:20,"0"
+        01/01/2019 00:25,"---"
+        01/01/2019 00:30,"0"
+
+    Notes
+    -----
+    Strings ``---`` in column *Value [millimeter]* -identifiers are converted to
+    NaN-values (np.nan). Note that the values in string should be convertable to float
+    (except ``---``).
+    """
+    df = pd.read_csv(file_path)
+    if not {"Date/Time", "Value [millimeter]"}.issubset(set(df.columns)):
+        msg = "Input dataframe should contain 'Date/Time' and 'Value [millimeter]'"
+        raise KeyError(msg)
+    else:
+        df = df[["Date/Time", "Value [millimeter]"]].rename(
+            columns={"Date/Time": "datetime", "Value [millimeter]": "rain_mm"}
+        )
+    df["datetime"] = pd.to_datetime(df["datetime"], format="%d/%m/%Y %H:%M")
+    df["start_year"] = pd.to_datetime(
+        [f"01/01/{x} 00:00:00" for x in df["datetime"].dt.year],
+        format="%d/%m/%Y %H:%M:%S",
+    )
+    df["station"] = file_path.stem
+    df.loc[df["rain_mm"] == "---", "rain_mm"] = np.nan
+    df["rain_mm"] = df["rain_mm"].astype(np.float64)
+
+    return df[["datetime", "station", "rain_mm"]]
+
+
+def load_rain_file_matlab_legacy(file_path):
+    """Load (legacy Matlab) file format of rainfall data of a **single station/year**.
 
     The input files are defined by text files (extension: ``.txt``) that hold
     non-zero rainfall timeseries. The data are split per station and per year with
@@ -90,19 +280,17 @@ def load_rain_file(file_path):
     Parameters
     ----------
     file_path : pathlib.Path
-        File path with rainfall data according to defined format.
+        File path with rainfall data according to defined format, see notes.
 
     Returns
     -------
-    rain : pd.DataFrame
+    rain : pandas.DataFrame
         DataFrame with rainfall time series. Contains the following columns:
 
         - *minutes_since* (int): Minutes since the start of the year
         - *rain_mm* (float): Rain in mm
-        - *datetime* (pd.Timestamp): Time stamp
+        - *datetime* (pandas.Timestamp): Time stamp
         - *station* (str): station name
-        - *year* (int): year of the measurement
-        - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
 
     Example
     -------
@@ -115,7 +303,6 @@ def load_rain_file(file_path):
        9480 0.50 \n
        10770 0.10 \n
        ...  ...
-
     """
     _check_path(file_path)
     if file_path.is_dir():
@@ -127,35 +314,45 @@ def load_rain_file(file_path):
     rain = pd.read_csv(
         file_path, delimiter=" ", header=None, names=["minutes_since", "rain_mm"]
     )
+    if np.sum(rain["minutes_since"].isnull()) > 0:
+        msg = (
+            "Timestamp (i.e. minutes from start of year) column contains "
+            "NaN-values. Input should be a (space-delimited) text file with the "
+            "first column being the timestamp from the start of the year (minutes),"
+            " and second the rainfall depth (in mm, non-zero series): \n \n9390 "
+            "1.00\n9470 0.20\n9480 0.50\n... ..."
+        )
+        raise IOError(RainfallFilesIOMsg(msg))
     rain["datetime"] = pd.Timestamp(f"{year}-01-01") + pd.to_timedelta(
         pd.to_numeric(rain["minutes_since"]), unit="min"
     )
+
     rain["station"] = station
-    rain["year"] = rain["datetime"].dt.year
-    rain["tag"] = rain["station"].astype(str) + "_" + rain["year"].astype(str)
-    return rain
+
+    return rain[["datetime", "station", "rain_mm"]]
 
 
-def load_rain_folder(folder_path):
+def load_rain_folder(folder_path, load_fun):
     """Load all (legacy Matlab format) files of rainfall data in a folder
 
     Parameters
     ----------
     folder_path : pathlib.Path
-        Folder path with rainfall data according to legacy Matlab format,
-        see :func:`rfactor.process.load_rain_file`.
+        Folder path with rainfall data, see also :func:`rfactor.process.load_rain_file`.
+
+    load_fun : Callable
+        Load function, current supported functions:
+
+        - :func:`rfactor.process.load_rain_file_matlab_legacy`.
+        - :func:`rfactor.process.load_rain_file_csv_vmm`
+
+        Please check the required input format for the files in the above listed
+        functions.
 
     Returns
     -------
-    rain : pd.DataFrame
-        DataFrame with rainfall time series. Contains the following columns:
-
-        - *minutes_since* (int): Minutes since the start of the year
-        - *rain_mm* (float): Rain in mm
-        - *datetime* (pd.Timestamp): Time stamp
-        - *station* (str): station name
-        - *year* (int): year of the measurement
-        - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
+    rain : pandas.DataFrame
+        See definition in :func:`rfactor.process.load_rain_file`
     """
     _check_path(folder_path)
     if not folder_path.exists():
@@ -167,17 +364,25 @@ def load_rain_folder(folder_path):
         )
 
     lst_df = []
-    files = list(folder_path.glob("*.txt"))
+    if load_fun.__name__ == "load_rain_file_csv_vmm":
+        files = list(folder_path.glob("*.CSV"))
+    elif load_fun.__name__ == "load_rain_file_matlab_legacy":
+        files = list(folder_path.glob("*.txt"))
+    else:
+        msg = f"Load function '{load_fun.__name__}' not recognized in R-factor package."
+        raise NotImplementedError(msg)
+
     if len(files) == 0:
         msg = f"Input folder '{folder_path}' does not contain any 'txt'-files."
         raise FileNotFoundError(msg)
 
-    for file_path in tqdm(files, total=len(files)):
-        lst_df.append(load_rain_file(file_path))
-
+    for file_path in files:
+        df = load_rain_file(file_path, load_fun)
+        lst_df.append(df)
     all_rain = pd.concat(lst_df)
-    all_rain = all_rain.sort_values(["station", "minutes_since"])
+    all_rain = all_rain.sort_values(["station", "datetime"])
     all_rain.index = range(len(all_rain))
+
     return all_rain
 
 
@@ -372,11 +577,11 @@ def resample_rainfall(rain, output_frequency="10T"):
 
     Parameters
     ----------
-    rain : pd.DataFrame
+    rain : pandas.DataFrame
         DataFrame with rainfall time series. Contains the following columns:
 
         - *rain_mm* (float): Rain in mm
-        - *datetime* (pd.Timestamp): Time stamp
+        - *datetime* (pandas.Timestamp): Time stamp
 
     output_frequency: pandas.DataFrame.resample, default "10T"
         For definition frequency, see :func:`pandas.DataFrame.resample`. Default
