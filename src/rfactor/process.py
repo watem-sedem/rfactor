@@ -183,6 +183,10 @@ def compute_diagnostics(rain):
         columns=["month"], index=["station", "datetime"], values=["norain"]
     )
     df = df["norain"].reset_index()
+    # check if months are in df reported
+    for month in range(1, 13, 1):
+        if month not in df.columns:
+            df[month] = 1
 
     # couple
     diagnostics = diagnostics.merge(df, how="left", on=["station", "datetime"])
@@ -251,18 +255,16 @@ def load_rain_file_csv_vmm(file_path):
         df = df[["Date/Time", "Value [millimeter]"]].rename(
             columns={"Date/Time": "datetime", "Value [millimeter]": "rain_mm"}
         )
-    df["datetime"] = pd.to_datetime(df["datetime"], format="%d/%m/%Y %H:%M:%S")
+    df["datetime"] = pd.to_datetime(df["datetime"], format="%d/%m/%Y %H:%M")
     df["start_year"] = pd.to_datetime(
         [f"01/01/{x} 00:00:00" for x in df["datetime"].dt.year],
         format="%d/%m/%Y %H:%M:%S",
     )
-    df["minutes_since"] = (df["datetime"] - df["start_year"]).dt.seconds / 60
     df["station"] = file_path.stem
     df.loc[df["rain_mm"] == "---", "rain_mm"] = np.nan
     df["rain_mm"] = df["rain_mm"].astype(np.float64)
-    df = df.loc[df["rain_mm"] != 0.0]
 
-    return df[["datetime", "minutes_since", "station", "rain_mm"]]
+    return df[["datetime", "station", "rain_mm"]]
 
 
 def load_rain_file_matlab_legacy(file_path):
