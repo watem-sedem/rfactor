@@ -114,10 +114,10 @@ def maximum_intensity_matlab_clone(df):
 
     for idx in range(len(df) - 1):
         eind_30min = timestamps[idx] + 20
-        begin_rain = rain_cum[idx] - rain[idx]
+        begin_rain = np.round(rain_cum[idx] - rain[idx])                    #handeling errors due to unstable digits
 
-        eind_rain = np.interp(eind_30min, timestamps, rain_cum)
-        precip_30min = eind_rain - begin_rain
+        eind_rain = np.round(np.interp(eind_30min, timestamps, rain_cum))   #handeling errors due to unstable digits
+        precip_30min = np.round(eind_rain - begin_rain)                     #handeling errors due to unstable digits
 
         if precip_30min > maxprecip_30min:
             maxprecip_30min = precip_30min
