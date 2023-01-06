@@ -109,10 +109,10 @@ def maximum_intensity_matlab_clone(df):
 
     maxprecip_30min = 0.0
 
-    if timestamps[-1] - timestamps[0] <= 30:
+    if timestamps[-1] - timestamps[0] < 30:     #timestamps contain rain from previous 10min, so the difference in timestamp != to accounted mins
         maxprecip_30min = np.sum(rain)   # *2 to mimick matlab
 
-    for idx in range(len(df) - 1):
+    for idx in range(len(df)):
         eind_30min = timestamps[idx] + 20
         begin_rain = np.round(rain_cum[idx] - rain[idx],2)                    #handeling errors due to unstable digits
 
