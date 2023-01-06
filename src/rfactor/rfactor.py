@@ -145,7 +145,7 @@ def maximum_intensity(df):
         Maximal 30-minute intensity during event (in mm/h).
     """
     # formula requires mm/hr, intensity is derived on half an hour
-    return df.rolling("30min", on="datetime")["rain_mm"].sum().max() * 2
+    return np.round(df.rolling("30min", on="datetime")["rain_mm"].sum().max() * 2,2)
 
 
 def _compute_erosivity(
