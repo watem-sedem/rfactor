@@ -110,7 +110,7 @@ def maximum_intensity_matlab_clone(df):
     maxprecip_30min = 0.0
 
     if timestamps[-1] - timestamps[0] <= 30:
-        maxprecip_30min = rain[0] * 2  # *2 to mimick matlab
+        maxprecip_30min = rain[0]   # *2 to mimick matlab
 
     for idx in range(len(df) - 1):
         eind_30min = timestamps[idx] + 20
