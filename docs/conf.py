@@ -294,7 +294,7 @@ intersphinx_mapping = {
 
 print(f"loading configurations for {project} {version} ...", file=sys.stderr)
 
-html_context = {
-    "source_url_prefix": "https://github.com/cn-ws/rfactor/tree/master/docs/",
-    "display_vcs_links": 1
-}
+# html_context = {
+#    "source_url_prefix": "https://github.com/cn-ws/rfactor/tree/master/docs/",
+#    "display_vcs_links": 1
+#}
