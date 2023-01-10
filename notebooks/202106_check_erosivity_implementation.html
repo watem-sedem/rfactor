@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Erosivity calculation &mdash; rfactor 0.0.post1.dev382+g9560456.d20221102 documentation</title>
+  <title>Erosivity calculation &mdash; rfactor 0.1.1.post1.dev56+gd27f747 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -14,12 +14,10 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" /> 
@@ -33,7 +31,7 @@
             <a href="../index.html" class="icon icon-home"> rfactor
           </a>
               <div class="version">
-                0.0.post1.dev382+g9560456.d20221102
+                0.1.1.post1.dev56+gd27f747
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -195,10 +193,11 @@ div.nboutput.container div.prompt > div {
     }
 }
 
-/* disable scrollbars on prompts */
+/* disable scrollbars and line breaks on prompts */
 div.nbinput.container div.prompt pre,
 div.nboutput.container div.prompt pre {
     overflow: hidden;
+    white-space: pre;
 }
 
 /* input/output area */
@@ -411,7 +410,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
  .reset_index()
  .rename(columns={"index":"datetime", "value": "rain_mm"})
  .to_csv("./tests/data/demo_rainfall.csv", index=False))<section id="Erosivity-calculation">
-<h1>Erosivity calculation<a class="headerlink" href="#Erosivity-calculation" title="Permalink to this heading"></a></h1>
+<h1>Erosivity calculation<a class="headerlink" href="#Erosivity-calculation" title="Permalink to this headline"></a></h1>
 <p>Input is a rainfall time series:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -492,9 +491,9 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 </div>
 </div>
 <section id="The-erosivity-implementation">
-<h2>The erosivity implementation<a class="headerlink" href="#The-erosivity-implementation" title="Permalink to this heading"></a></h2>
+<h2>The erosivity implementation<a class="headerlink" href="#The-erosivity-implementation" title="Permalink to this headline"></a></h2>
 <section id="1.-Define-starting-point-the-individual-rain-events">
-<h3>1. Define starting point the individual rain events<a class="headerlink" href="#1.-Define-starting-point-the-individual-rain-events" title="Permalink to this heading"></a></h3>
+<h3>1. Define starting point the individual rain events<a class="headerlink" href="#1.-Define-starting-point-the-individual-rain-events" title="Permalink to this headline"></a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -534,7 +533,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <p>-&gt; use is to define the size of the matrix in the next step to make sure the longest event fits;</p>
 </section>
 <section id="2.-Isolate-the-individual-rain-events--&gt;-I-add-an-event-idx">
-<h3>2. Isolate the individual rain events -&gt; I add an event idx<a class="headerlink" href="#2.-Isolate-the-individual-rain-events-->-I-add-an-event-idx" title="Permalink to this heading"></a></h3>
+<h3>2. Isolate the individual rain events -&gt; I add an event idx<a class="headerlink" href="#2.-Isolate-the-individual-rain-events-->-I-add-an-event-idx" title="Permalink to this headline"></a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -555,7 +554,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 <p>-&gt; probably not required if everything fits in groupby approach</p>
 </section>
 <section id="3a.-Cumulative-rain-for-each-event">
-<h3>3a. Cumulative rain for each event<a class="headerlink" href="#3a.-Cumulative-rain-for-each-event" title="Permalink to this heading"></a></h3>
+<h3>3a. Cumulative rain for each event<a class="headerlink" href="#3a.-Cumulative-rain-for-each-event" title="Permalink to this headline"></a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -574,7 +573,7 @@ erosivitydata.load_data(df_files)all_rainfall = erosivitydata.load_rainfall()
 </div>
 </section>
 <section id="3b.-Rain-energy">
-<h3>3b. Rain energy<a class="headerlink" href="#3b.-Rain-energy" title="Permalink to this heading"></a></h3>
+<h3>3b. Rain energy<a class="headerlink" href="#3b.-Rain-energy" title="Permalink to this headline"></a></h3>
 <p>Example with a single event</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -619,7 +618,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rain_energy_per_unit</span><span class="p">(</span><span class="n">rain</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
     <span class="n">rain_energy</span> <span class="o">=</span> <span class="mf">0.1112</span><span class="o">*</span><span class="p">((</span><span class="n">rain</span><span class="o">*</span><span class="mf">6.</span><span class="p">)</span><span class="o">**</span><span class="mf">0.31</span><span class="p">)</span><span class="o">*</span><span class="n">rain</span>
     <span class="k">return</span> <span class="n">rain_energy</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
@@ -652,7 +651,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 </div>
 </section>
 <section id="4.-Maximum-intensity-within-30-minutes">
-<h3>4. Maximum intensity within 30 minutes<a class="headerlink" href="#4.-Maximum-intensity-within-30-minutes" title="Permalink to this heading"></a></h3>
+<h3>4. Maximum intensity within 30 minutes<a class="headerlink" href="#4.-Maximum-intensity-within-30-minutes" title="Permalink to this headline"></a></h3>
 <p>First work on a subset of the data:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -680,7 +679,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">maximum_intensity_matlab_clone</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Apply for a single_event method of Matlab implementation (Verstraete)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply for a single_event method of Matlab implementation (Verstraete)&quot;&quot;&quot;</span>
 
     <span class="n">current_year</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_year</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -755,7 +754,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 </div>
 </div>
 <section id="intermezzo-?-Is-it-an-option-to-change-the-algorithm-on-defining-the-max-intensity-??">
-<h4>intermezzo <em>? Is it an option to change the algorithm on defining the max intensity ??</em><a class="headerlink" href="#intermezzo-?-Is-it-an-option-to-change-the-algorithm-on-defining-the-max-intensity-??" title="Permalink to this heading"></a></h4>
+<h4>intermezzo <em>? Is it an option to change the algorithm on defining the max intensity ??</em><a class="headerlink" href="#intermezzo-?-Is-it-an-option-to-change-the-algorithm-on-defining-the-max-intensity-??" title="Permalink to this headline"></a></h4>
 <p>Alternative implementations to extract the max intensity of a 30min interval:</p>
 <ol class="arabic simple">
 <li><p>Rely on linear interpolation (cfr. matlab implementation) -&gt; assume missing data is not zero</p></li>
@@ -782,7 +781,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">maximum_intensity_interpolate</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;30Min&quot;</span><span class="p">,</span> <span class="n">input_freq</span><span class="o">=</span><span class="s2">&quot;10Min&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Apply for a single_event method with linear interpolation&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply for a single_event method with linear interpolation&quot;&quot;&quot;</span>
     <span class="n">time_series_resampled</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">input_freq</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
     <span class="n">time_series_resampled_interp</span> <span class="o">=</span> <span class="n">time_series_resampled</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
     <span class="n">rolling_sum</span> <span class="o">=</span> <span class="n">time_series_resampled_interp</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">interval</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -812,7 +811,7 @@ pluviophase(5,j,i)=0.1112*(pluviophase(4,j,i)^0.31);  % berekenen van neerslagen
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">maximum_intensity_fillna</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;30Min&quot;</span><span class="p">,</span> <span class="n">input_freq</span><span class="o">=</span><span class="s2">&quot;10Min&quot;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Apply for a single_event method with zero values for no value&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply for a single_event method with zero values for no value&quot;&quot;&quot;</span>
     <span class="c1"># formula requires mm/hr, intensity is on half an hour</span>
     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="s2">&quot;30Min&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">*</span><span class="mi">2</span>
 </pre></div>
@@ -903,7 +902,7 @@ rolling_sum.max()
 </section>
 </section>
 <section id="5.-Gather-results-for-each-event">
-<h3>5. Gather results for each event<a class="headerlink" href="#5.-Gather-results-for-each-event" title="Permalink to this heading"></a></h3>
+<h3>5. Gather results for each event<a class="headerlink" href="#5.-Gather-results-for-each-event" title="Permalink to this headline"></a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -992,7 +991,7 @@ rolling_sum.max()
 <p><strong>?? Should all_events_cum include the events that were excluded as below threshold? A matter of order of execution that matters; if someone want to do cumul, this won’t be reproducible anymore</strong></p>
 </section>
 <section id="6.-Cumulative-erosivity">
-<h3>6. Cumulative erosivity<a class="headerlink" href="#6.-Cumulative-erosivity" title="Permalink to this heading"></a></h3>
+<h3>6. Cumulative erosivity<a class="headerlink" href="#6.-Cumulative-erosivity" title="Permalink to this headline"></a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -1011,10 +1010,10 @@ rolling_sum.max()
 </div>
 </section>
 <section id="Derived-stats">
-<h3>Derived stats<a class="headerlink" href="#Derived-stats" title="Permalink to this heading"></a></h3>
+<h3>Derived stats<a class="headerlink" href="#Derived-stats" title="Permalink to this headline"></a></h3>
 </section>
 <section id="Berekenen-van-maandelijkse-erosiviteit">
-<h3>Berekenen van maandelijkse erosiviteit<a class="headerlink" href="#Berekenen-van-maandelijkse-erosiviteit" title="Permalink to this heading"></a></h3>
+<h3>Berekenen van maandelijkse erosiviteit<a class="headerlink" href="#Berekenen-van-maandelijkse-erosiviteit" title="Permalink to this headline"></a></h3>
 <p><strong>?? line 212 what about leap years ?</strong></p>
 <p><strong>! the implementation is not returned by Matlab anyhow</strong></p>
 <p>TO CHECK -&gt; IS THIS correct interpretation of the description/implementation?</p>
@@ -1038,7 +1037,7 @@ rolling_sum.max()
 </div>
 </section>
 <section id="Use-the-new-package-implementation">
-<h3>Use the new package implementation<a class="headerlink" href="#Use-the-new-package-implementation" title="Permalink to this heading"></a></h3>
+<h3>Use the new package implementation<a class="headerlink" href="#Use-the-new-package-implementation" title="Permalink to this headline"></a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -1099,7 +1098,7 @@ rolling_sum.max()
 </div>
 </section>
 <section id="Apply-to-multiple-station/years---(parallel-application)">
-<h3>Apply to multiple station/years - (parallel application)<a class="headerlink" href="#Apply-to-multiple-station/years---(parallel-application)" title="Permalink to this heading"></a></h3>
+<h3>Apply to multiple station/years - (parallel application)<a class="headerlink" href="#Apply-to-multiple-station/years---(parallel-application)" title="Permalink to this headline"></a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -1162,7 +1161,7 @@ rolling_sum.max()
 
 
 <span class="k">def</span> <span class="nf">erosivity_apply</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">group</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Wrapper function for parallel execution of erosivity on groups&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper function for parallel execution of erosivity on groups&quot;&quot;&quot;</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">_compute_erosivity</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">maximum_intensity</span><span class="p">)</span>
     <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">name</span>
     <span class="k">return</span> <span class="n">df</span>
@@ -1184,7 +1183,7 @@ rolling_sum.max()
 <p><strong>?? ok to use joblib or should we use the tqdm ``process_map`` function of current package?</strong></p>
 </section>
 <section id="Integration-with-legacy-file/folder-setup">
-<h3>Integration with legacy file/folder setup<a class="headerlink" href="#Integration-with-legacy-file/folder-setup" title="Permalink to this heading"></a></h3>
+<h3>Integration with legacy file/folder setup<a class="headerlink" href="#Integration-with-legacy-file/folder-setup" title="Permalink to this headline"></a></h3>
 <ol class="arabic simple">
 <li><p>Read rainfall from the original format =&gt; from lots of files =&gt; single rain df</p></li>
 <li><p>Push output to the original output</p></li>
@@ -1194,7 +1193,7 @@ rolling_sum.max()
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_extract_metadata_from_file_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Get metadata from file format</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get metadata from file format</span>
 
 <span class="sd">    Parameter</span>
 <span class="sd">    ---------</span>
@@ -1204,7 +1203,7 @@ rolling_sum.max()
             <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">file_path</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
 
 <span class="k">def</span> <span class="nf">load_rain_data</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">station</span><span class="p">,</span> <span class="n">year</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Load rainfall data file -&gt; adjusted current package</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Load rainfall data file -&gt; adjusted current package</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">raw_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                            <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;minutes_since&quot;</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">])</span>
@@ -1306,7 +1305,7 @@ rolling_sum.max()
 </div>
 </section>
 <section id="New-workflow-proposal:">
-<h3>New workflow proposal:<a class="headerlink" href="#New-workflow-proposal:" title="Permalink to this heading"></a></h3>
+<h3>New workflow proposal:<a class="headerlink" href="#New-workflow-proposal:" title="Permalink to this headline"></a></h3>
 <ul class="simple">
 <li><p>Read in whatever files you want to read in; directly or legacy format ( -&gt; not part of the package ? sacha, ok)</p></li>
 <li><p>Filter resulting rain dataframe however you want (pandas is there for you)</p></li>
