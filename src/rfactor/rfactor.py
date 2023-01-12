@@ -69,22 +69,17 @@ def rain_energy_per_unit_depth(rain):
     rain_energy = 0.1112 * ((rain * 6.0) ** 0.31) * rain
     return rain_energy.sum()
 
-
 def maximum_intensity_matlab_clone(df):
     """Maximum rain intensity for 30-min interval (Matlab clone).
-
     The implementation is a direct Python-translation of the original Matlab
     implementation by Verstraeten.
-
     Parameters
     ----------
     df : pandas.DataFrame
         DataFrame with rainfall time series. Needs to contain the following columns:
-
         - *datetime* (pandas.Timestamp): Time stamp
         - *rain_mm* (float): Rain in mm
         - *event_rain_cum* (float): Cumulative rain in mm
-
     Returns
     -------
     maxprecip_30min : float
@@ -109,15 +104,15 @@ def maximum_intensity_matlab_clone(df):
 
     maxprecip_30min = 0.0
 
-    if timestamps[-1] - timestamps[0] < 30:     #timestamps contain rain from previous 10min, so the difference in timestamp != to accounted mins
-        maxprecip_30min = np.sum(rain)   # *2 to mimick matlab
+    if timestamps[-1] - timestamps[0] <= 30:
+        maxprecip_30min = np.sum(rain)
 
     for idx in range(len(df)):
         eind_30min = timestamps[idx] + 20
-        begin_rain = np.round(rain_cum[idx] - rain[idx],2)                    #handeling errors due to unstable digits
+        begin_rain = rain_cum[idx] - rain[idx]
 
-        eind_rain = np.round(np.interp(eind_30min, timestamps, rain_cum),2)   #handeling errors due to unstable digits
-        precip_30min = np.round(eind_rain - begin_rain,2)                     #handeling errors due to unstable digits
+        eind_rain = np.interp(eind_30min, timestamps, rain_cum)
+        precip_30min = eind_rain - begin_rain
 
         if precip_30min > maxprecip_30min:
             maxprecip_30min = precip_30min

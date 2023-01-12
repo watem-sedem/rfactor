@@ -4,6 +4,8 @@ from rfactor.rfactor import (
     compute_erosivity,
     maximum_intensity,
     maximum_intensity_matlab_clone,
+    maximum_intensity_matlab_clone_fix
+    
 )
 
 if sys.version_info[:2] >= (3, 8):
