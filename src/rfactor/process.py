@@ -559,6 +559,7 @@ def resample_rainfall(rain, output_frequency="10T"):
     1. Upsample to 1 minute and appoint to each record 1/(temporal resolution)*value
     samples,
     e.g. 1.5 mm on 00:15:00, and 3 mm on 00:30:00
+
         - 0.1 mm on 00:01:00
         - 0.1 mm on 00:02:00
         - ...

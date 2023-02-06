@@ -297,6 +297,7 @@ For example, consider one wants to compute the R-value for 2017 and 2018, for
 Ukkel (stations: KMI\_6447 and KMI\_FS3):
 
 .. code-block:: python
+
     erosivity_selected = erosivity[(erosivity["year"].isin([2017, 2018])) &
                        (erosivity["station"].isin(['KMI\_6447', 'KMI\_FS3']))]
 
