@@ -69,9 +69,60 @@ def rain_energy_per_unit_depth(rain):
     rain_energy = 0.1112 * ((rain * 6.0) ** 0.31) * rain
     return rain_energy.sum()
 
+
 def maximum_intensity_matlab_clone(df):
-    """Maximum rain intensity for 30-min interval (Matlab clone).
+    """Maximum rain intensity for 30-min interval (Matlab clone).   
     The implementation is a direct Python-translation of the original Matlab
+    implementation by Verstraeten.
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        DataFrame with rainfall time series. Needs to contain the following columns:
+        - *datetime* (pandas.Timestamp): Time stamp
+        - *rain_mm* (float): Rain in mm
+        - *event_rain_cum* (float): Cumulative rain in mm
+    Returns
+    -------
+    maxprecip_30min : float
+        Maximal 30-minute intensity during event (in mm/h).
+    """
+    if np.isnan(df["rain_mm"]).any():
+        raise Exception(
+            "Matlab intensity method does not support Nan values in rain" "time series."
+        )
+
+    current_year = df["datetime"].dt.year.unique()
+    if not len(current_year) == 1:
+        raise RFactorInputError("Data should all be in the same year.")
+
+    df["minutes_since"] = (
+        df["datetime"] - pd.Timestamp(f"{current_year[0]}-01-01")
+    ).dt.total_seconds().values / 60
+
+    timestamps = df["minutes_since"].values
+    rain = df["rain_mm"].values
+    rain_cum = df["event_rain_cum"].values
+
+    maxprecip_30min = 0.0
+
+    if timestamps[-1] - timestamps[0] <= 30:
+        maxprecip_30min = rain[0] * 2  # *2 to mimick matlab
+
+    for idx in range(len(df)):
+        eind_30min = timestamps[idx] + 20
+        begin_rain = rain_cum[idx] - rain[idx]
+
+        eind_rain = np.interp(eind_30min, timestamps, rain_cum)
+        precip_30min = eind_rain - begin_rain
+
+        if precip_30min > maxprecip_30min:
+            maxprecip_30min = precip_30min
+
+    return maxprecip_30min * 2
+
+def maximum_intensity_matlab_clone_fix(df):
+    """Fixed Maximum rain intensity for 30-min interval (Matlab clone).
+    The implementation is a fixed version of the Python-translation of the original Matlab
     implementation by Verstraeten.
     Parameters
     ----------
@@ -118,8 +169,7 @@ def maximum_intensity_matlab_clone(df):
             maxprecip_30min = precip_30min
 
     return maxprecip_30min * 2
-
-
+       
 def maximum_intensity(df):
     """Maximum rain intensity for 30-min interval (Pandas rolling) expressed as mm/hour
 
@@ -140,7 +190,7 @@ def maximum_intensity(df):
         Maximal 30-minute intensity during event (in mm/h).
     """
     # formula requires mm/hr, intensity is derived on half an hour
-    return np.round(df.rolling("30min", on="datetime")["rain_mm"].sum().max() * 2,2)
+    return df.rolling("30min", on="datetime")["rain_mm"].sum().max() * 2
 
 
 def _compute_erosivity(

@@ -28,5 +28,6 @@ finally:
 __all__ = [
     "compute_erosivity",
     "maximum_intensity_matlab_clone",
+    "maximum_intensity_matlab_clone_fix",
     "maximum_intensity",
 ]
