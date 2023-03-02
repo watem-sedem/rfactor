@@ -70,9 +70,9 @@ def rain_energy_per_unit_depth(rain):
     return rain_energy.sum()
 
 
-
 def maximum_intensity_matlab_clone(df):
     """Maximum rain intensity for 30-min interval (Matlab clone).
+
     The implementation is a direct Python-translation of the original Matlab
     implementation by Verstraeten.
     Parameters
@@ -82,6 +82,7 @@ def maximum_intensity_matlab_clone(df):
         - *datetime* (pandas.Timestamp): Time stamp
         - *rain_mm* (float): Rain in mm
         - *event_rain_cum* (float): Cumulative rain in mm
+
     Returns
     -------
     maxprecip_30min : float
@@ -121,17 +122,20 @@ def maximum_intensity_matlab_clone(df):
 
     return maxprecip_30min * 2
 
+
 def maximum_intensity_matlab_clone_fix(df):
     """Maximum rain intensity for 30-min interval (Matlab clone Fix).
-    This implementation is a fixed version of the Python-translation of the original Matlab
-    implementation by Verstraeten. 
-    
+    This implementation is a fixed version of the Python-translation of the original
+    Matlab implementation by Verstraeten.
+
     Changes to the original script are:
-    1.  in the if-statement 'if timestamps[-1] - timestamps[0] <= 30:' this methode calculates the total amount of rain during the interval
-        while the original method only looks at the first rainfall entry. 
-    2.  in the same if-statement, the *2 was removed, since this is already done in the 'return' step of the model. This *2 causes the model to 
-        steeply over estimate the rainfall during short rainfall events.
-    
+    1.  in the if-statement 'if timestamps[-1] - timestamps[0] <= 30:' this methode
+        calculates the total amount of rain during the interval while the original
+        method only looks at the first rainfall entry.
+    2.  in the same if-statement, the *2 was removed, since this is already done in
+        the 'return' step of the model. This *2 causes the model to steeply over
+        estimate the rainfall during short rainfall events.
+
     Parameters
     ----------
     df : pandas.DataFrame
@@ -139,6 +143,7 @@ def maximum_intensity_matlab_clone_fix(df):
         - *datetime* (pandas.Timestamp): Time stamp
         - *rain_mm* (float): Rain in mm
         - *event_rain_cum* (float): Cumulative rain in mm
+
     Returns
     -------
     maxprecip_30min : float
@@ -177,7 +182,8 @@ def maximum_intensity_matlab_clone_fix(df):
             maxprecip_30min = precip_30min
 
     return maxprecip_30min * 2
-       
+
+
 def maximum_intensity(df):
     """Maximum rain intensity for 30-min interval (Pandas rolling) expressed as mm/hour
 
