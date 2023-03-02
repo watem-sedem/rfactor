@@ -74,19 +74,33 @@ def maximum_intensity_matlab_clone(df):
     """Maximum rain intensity for 30-min interval (Matlab clone).
 
     The implementation is a direct Python-translation of the original Matlab
-    implementation by Verstraeten.
+    implementation by Verstraeten et al. (2006).
+
     Parameters
     ----------
     df : pandas.DataFrame
         DataFrame with rainfall time series. Needs to contain the following columns:
         - *datetime* (pandas.Timestamp): Time stamp
-        - *rain_mm* (float): Rain in mm
+        - *rain_mm* (float): Rain in mm. No NaN or 0-values allowed
         - *event_rain_cum* (float): Cumulative rain in mm
 
     Returns
     -------
     maxprecip_30min : float
         Maximal 30-minute intensity during event (in mm/h).
+
+    Notes
+    -----
+    The Python and original Matlab implementation linearly interpolate zero and
+    NaN-values within one event.
+
+    References
+    ----------
+    Verstraeten, G., Poesen, J., Demarée, G., Salles, C., 2006. Long-term (105 years)
+    variability in rain erosivity as derived from 10-min rainfall depth data for Ukkel
+    (Brussels, Belgium): Implications for assessing soil erosion rates. J. Geophys.
+    Res. 111, D22109. https://doi.org/10.1029/2006JD007169
+
     """
     if np.isnan(df["rain_mm"]).any():
         raise Exception(
@@ -141,13 +155,19 @@ def maximum_intensity_matlab_clone_fix(df):
     df : pandas.DataFrame
         DataFrame with rainfall time series. Needs to contain the following columns:
         - *datetime* (pandas.Timestamp): Time stamp
-        - *rain_mm* (float): Rain in mm
+        - *rain_mm* (float): Rain in mm.  No NaN or 0-values allowed
         - *event_rain_cum* (float): Cumulative rain in mm
 
     Returns
     -------
     maxprecip_30min : float
         Maximal 30-minute intensity during event (in mm/h).
+
+
+    Notes
+    -----
+    The Python and original Matlab implementation linearly interpolate zero and
+    NaN-values within one event.
     """
     if np.isnan(df["rain_mm"]).any():
         raise Exception(
@@ -196,12 +216,13 @@ def maximum_intensity(df):
         DataFrame with rainfall time series. Needs to contain the following columns:
 
         - *datetime* (pandas.Timestamp): Timestamp
-        - *rain_mm* (float): Rain in mm
+        - *rain_mm* (float): Rain in mm.  No NaN or 0-values allowed
 
     Returns
     -------
     maxprecip_30min : float
         Maximal 30-minute intensity during event (in mm/h).
+
     """
     # formula requires mm/hr, intensity is derived on half an hour
     return df.rolling("30min", on="datetime")["rain_mm"].sum().max() * 2
@@ -333,6 +354,10 @@ def compute_erosivity(rain, intensity_method=maximum_intensity):
         See :func:`rfactor.rfactor._compute_erosivity`, added with
 
         - *tag* (str): unique tag for year, station-couple.
+
+    Notes
+    -----
+    NaN- and 0-values are removed from the input timeseries.
     """
     if not {"station", "rain_mm", "datetime"}.issubset(rain.columns):
         raise RFactorKeyError(

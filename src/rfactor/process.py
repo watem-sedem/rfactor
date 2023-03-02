@@ -550,6 +550,40 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
     return df_statistics
 
 
+def interpolate(df_rainfall, interpolation="nearest"):
+    """Compute general statistics for rainfall timeseries.
+
+    Statistics (number of records, min, max, median and years data) are
+    computed for each measurement station
+
+    Parameters
+    ----------
+    df_rainfall: pandas.DataFrame
+        must contain:
+        - *rain_mm* (float): rainfall values
+
+    interpolation: str
+        - *nearest*: closest value
+        - *zero*: fill with 0's
+        - *linear*: linear interpolation
+
+    Returns
+    -------
+    df_rainfall: pandas.DataFrame
+    """
+    if interpolation == "zero":
+        df_rainfall["rain_mm"] = df_rainfall["rain_mm"].fillna(0)
+    elif interpolation == "nearest":
+        df_rainfall["rain_mm"] = df_rainfall["rain_mm"].interpolate(method="nearest")
+    elif interpolation == "linear":
+        df_rainfall["rain_mm"] = df_rainfall["rain_mm"].interpolate(method="linear")
+    else:
+        msg = f"Interpolation method '{interpolation}' not implemented"
+        raise NotImplementedError(msg)
+
+    return df_rainfall
+
+
 @valid_rainfall_timeseries(req_col={"datetime", "rain_mm"})
 def resample_rainfall(rain, output_frequency="10T"):
     """Resample rainfall dataset to 10 minutes resolution
