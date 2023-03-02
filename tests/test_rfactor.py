@@ -263,6 +263,7 @@ def test_rfactor_benchmark_single_year(
 
     # using support function provides the same output
     erosivity_support_func = _compute_erosivity(rain, intensity_method=intensity_method)
+
     erosivity_support_func.index = erosivity_support_func["datetime"]
     pd.testing.assert_frame_equal(
         erosivity.drop(columns=["tag", "station", "year"]), erosivity_support_func

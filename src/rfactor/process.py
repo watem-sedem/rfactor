@@ -550,6 +550,43 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
     return df_statistics
 
 
+def interpolate(df_rainfall, interpolation="nearest", remove_zero=True):
+    """Interpolate NaN values and remove 0's.
+
+    Parameters
+    ----------
+    df_rainfall: pandas.DataFrame
+        must contain:
+        - *rain_mm* (float): rainfall values
+
+    interpolation: str
+        - *nearest*: closest value
+        - *zero*: fill with 0's
+        - *linear*: linear interpolation
+
+    remove_zero: bool,
+        Default True
+
+    Returns
+    -------
+    df_rainfall: pandas.DataFrame
+    """
+    if interpolation == "zero":
+        df_rainfall["rain_mm"] = df_rainfall["rain_mm"].fillna(0)
+    elif interpolation == "nearest":
+        df_rainfall["rain_mm"] = df_rainfall["rain_mm"].interpolate(method="nearest")
+    elif interpolation == "linear":
+        df_rainfall["rain_mm"] = df_rainfall["rain_mm"].interpolate(method="linear")
+    else:
+        msg = f"Interpolation method '{interpolation}' not implemented"
+        raise NotImplementedError(msg)
+
+    if remove_zero is True:
+        df_rainfall = df_rainfall[df_rainfall["rain_mm"] != 0]
+
+    return df_rainfall
+
+
 @valid_rainfall_timeseries(req_col={"datetime", "rain_mm"})
 def resample_rainfall(rain, output_frequency="10T"):
     """Resample rainfall dataset to 10 minutes resolution

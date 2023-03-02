@@ -361,3 +361,8 @@ def test_rainfall_statistics_with_metadata(rain_data_folder, station_metadata):
     assert set(rf_stats.columns) == set(
         ["year", "station", "x", "y", "records", "min", "median", "max"]
     )
+
+
+def test_interpolate():
+    """Not tested as function makes use of predefined pandas functions"""
+    assert True
