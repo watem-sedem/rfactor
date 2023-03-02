@@ -550,11 +550,8 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
     return df_statistics
 
 
-def interpolate(df_rainfall, interpolation="nearest"):
-    """Compute general statistics for rainfall timeseries.
-
-    Statistics (number of records, min, max, median and years data) are
-    computed for each measurement station
+def interpolate(df_rainfall, interpolation="nearest", remove_zero=True):
+    """Interpolate NaN values and remove 0's.
 
     Parameters
     ----------
@@ -566,6 +563,9 @@ def interpolate(df_rainfall, interpolation="nearest"):
         - *nearest*: closest value
         - *zero*: fill with 0's
         - *linear*: linear interpolation
+
+    remove_zero: bool,
+        Default True
 
     Returns
     -------
@@ -580,6 +580,9 @@ def interpolate(df_rainfall, interpolation="nearest"):
     else:
         msg = f"Interpolation method '{interpolation}' not implemented"
         raise NotImplementedError(msg)
+
+    if remove_zero is True:
+        df_rainfall = df_rainfall[df_rainfall["rain_mm"] != 0]
 
     return df_rainfall
 
