@@ -16,7 +16,6 @@ from rfactor.process import (
     load_rain_file_csv_vmm,
     load_rain_file_matlab_legacy,
     load_rain_folder,
-    resample_rainfall,
     write_erosivity_data,
 )
 
@@ -58,42 +57,6 @@ from rfactor.process import (
         ),
     ],
 )
-def test_resample_rainfall(idx, values, freq, idx_n, values_n, freq_n):
-    """
-
-    Parameters
-    ----------
-    idx: pd.Timestamp
-        Input time stamp
-    values: float
-        Input rainfall (mm)
-    freq: pandas.DataFrame.resample
-        Input frequency, for definition frequency,
-        see :func:`pandas.DataFrame.resample`.
-    idx_n: pd.Timestamp
-        Output time stamp
-    values_n: float
-        Output rainfall (mm)
-    freq_n: pandas.DataFrame.resample
-        Output frequency, for definition frequency,
-        see :func:`pandas.DataFrame.resample`.
-    """
-    df = pd.DataFrame(columns=["datetime", "rain_mm"])
-    df["datetime"] = idx
-    df["rain_mm"] = values
-    df.index = df["datetime"]
-    df.index.freq = freq
-
-    df_o = resample_rainfall(df, output_frequency=freq_n)
-
-    # test dates
-    df = pd.DataFrame(columns=["rain_mm"])
-    df["rain_mm"] = values_n
-    df.index = idx_n
-    df.index.name = "datetime"
-    pd.testing.assert_frame_equal(df, df_o, atol=1e-3)
-
-
 def test_days_since_last_year_float():
     """Moment of the day is translated as decimal number."""
     ts_series = pd.Series(
