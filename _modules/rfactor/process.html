@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor.process &mdash; rfactor 0.1.1.post1.dev56+gd27f747 documentation</title>
+  <title>rfactor.process &mdash; rfactor 0.1.2 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -25,14 +25,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> rfactor
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            rfactor
           </a>
               <div class="version">
-                0.1.1.post1.dev56+gd27f747
+                0.1.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -69,7 +73,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
       <li class="breadcrumb-item active">rfactor.process</li>
       <li class="wy-breadcrumbs-aside">
@@ -86,9 +90,6 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">Timedelta</span>
-
-<span class="kn">from</span> <span class="nn">rfactor.valid</span> <span class="kn">import</span> <span class="n">valid_rainfall_timeseries</span>
 
 
 <div class="viewcode-block" id="RainfallFilesIOMsg"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.RainfallFilesIOMsg">[docs]</a><span class="k">class</span> <span class="nc">RainfallFilesIOMsg</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
@@ -338,14 +339,16 @@
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;Date/Time&quot;</span><span class="p">,</span> <span class="s2">&quot;Value [millimeter]&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
             <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Date/Time&quot;</span><span class="p">:</span> <span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="s2">&quot;Value [millimeter]&quot;</span><span class="p">:</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">}</span>
         <span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y %H:%M&quot;</span><span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;start_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
-        <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;01/01/</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2"> 00:00:00&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">],</span>
-        <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y %H:%M:%S&quot;</span><span class="p">,</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">datetime</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y %H:%M&quot;</span><span class="p">))</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+        <span class="n">start_year</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
+            <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;01/01/</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2"> 00:00:00&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">],</span>
+            <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y %H:%M:%S&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
     <span class="p">)</span>
-    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_path</span><span class="o">.</span><span class="n">stem</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">station</span><span class="o">=</span><span class="n">file_path</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span>
     <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;---&quot;</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">rain_mm</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">]]</span></div>
 
@@ -406,11 +409,12 @@
             <span class="s2">&quot;1.00</span><span class="se">\n</span><span class="s2">9470 0.20</span><span class="se">\n</span><span class="s2">9480 0.50</span><span class="se">\n</span><span class="s2">... ...&quot;</span>
         <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">RainfallFilesIOMsg</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span>
-    <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">-01-01&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span>
-        <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;minutes_since&quot;</span><span class="p">]),</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;min&quot;</span>
+    <span class="n">rain</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+        <span class="n">datetime</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">-01-01&quot;</span><span class="p">)</span>
+        <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;minutes_since&quot;</span><span class="p">]),</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;min&quot;</span><span class="p">)</span>
     <span class="p">)</span>
 
-    <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">station</span>
+    <span class="n">rain</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">station</span><span class="o">=</span><span class="n">station</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">rain</span><span class="p">[[</span><span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">]]</span></div>
 
@@ -501,7 +505,9 @@
     <span class="n">folder_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="p">(</span><span class="n">station</span><span class="p">,</span> <span class="n">year</span><span class="p">),</span> <span class="n">df_group</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">]):</span>
-        <span class="n">df_group</span><span class="p">[</span><span class="s2">&quot;days_since&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_days_since_start_year</span><span class="p">(</span><span class="n">df_group</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">])</span>
+        <span class="n">df_group</span> <span class="o">=</span> <span class="n">df_group</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+            <span class="n">days_since</span><span class="o">=</span><span class="n">_days_since_start_year</span><span class="p">(</span><span class="n">df_group</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
         <span class="n">formats</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;days_since&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="s2">&quot;erosivity_cum&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="p">,</span>
@@ -631,67 +637,6 @@
         <span class="n">df_statistics</span> <span class="o">=</span> <span class="n">df_statistics</span><span class="p">[[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;records&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">]]</span>
 
     <span class="k">return</span> <span class="n">df_statistics</span></div>
-
-
-<div class="viewcode-block" id="resample_rainfall"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.resample_rainfall">[docs]</a><span class="nd">@valid_rainfall_timeseries</span><span class="p">(</span><span class="n">req_col</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">})</span>
-<span class="k">def</span> <span class="nf">resample_rainfall</span><span class="p">(</span><span class="n">rain</span><span class="p">,</span> <span class="n">output_frequency</span><span class="o">=</span><span class="s2">&quot;10T&quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Resample rainfall dataset to 10 minutes resolution</span>
-
-<span class="sd">    Resampling is done in two steps:</span>
-
-<span class="sd">    1. Upsample to 1 minute and appoint to each record 1/(temporal resolution)*value</span>
-<span class="sd">    samples,</span>
-<span class="sd">    e.g. 1.5 mm on 00:15:00, and 3 mm on 00:30:00</span>
-<span class="sd">        - 0.1 mm on 00:01:00</span>
-<span class="sd">        - 0.1 mm on 00:02:00</span>
-<span class="sd">        - ...</span>
-<span class="sd">        - 0.1 mm on 00:15:00</span>
-<span class="sd">        - 0.2 mm on 00:16:00</span>
-<span class="sd">        - 0.2 mm on 00:17:00</span>
-<span class="sd">        - ...</span>
-<span class="sd">        - 0.2 mm on 00:30:00</span>
-
-<span class="sd">    2. Downsample to 10 minutes and sommate rain volume for two sequential records, e.g.</span>
-<span class="sd">    timeseries above will resample to:</span>
-
-<span class="sd">        - 1 mm  on 00:10:00</span>
-<span class="sd">        - 1.5 mm on 00:20:00</span>
-<span class="sd">        - 2 mm on 00:30:00</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    rain : pandas.DataFrame</span>
-<span class="sd">        DataFrame with rainfall time series. Contains the following columns:</span>
-
-<span class="sd">        - *rain_mm* (float): Rain in mm</span>
-<span class="sd">        - *datetime* (pandas.Timestamp): Time stamp</span>
-
-<span class="sd">    output_frequency: pandas.DataFrame.resample, default &quot;10T&quot;</span>
-<span class="sd">        For definition frequency, see :func:`pandas.DataFrame.resample`. Default</span>
-<span class="sd">        10 minutes.</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    The resample procedure can only take rainfall inputdata with a resolution larger</span>
-<span class="sd">    than or equal to one minute.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">freq</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">freq</span><span class="o">.</span><span class="n">nanos</span> <span class="o">/</span> <span class="mi">60000000000</span>  <span class="c1"># in minutes</span>
-
-    <span class="c1"># resample to 1 minute</span>
-    <span class="n">bdate</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="c1"># check boundary condition</span>
-    <span class="c1"># if first value is not 0, than an additional record is needed for backward filling</span>
-    <span class="n">fvalue</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">bdate</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">fvalue</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">bound</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
-            <span class="p">[</span><span class="n">fvalue</span><span class="p">],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">bdate</span> <span class="o">-</span> <span class="n">Timedelta</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;T&quot;</span><span class="p">)]</span>
-        <span class="p">)</span>
-        <span class="n">rain</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">bound</span><span class="p">,</span> <span class="n">rain</span><span class="p">])</span>
-    <span class="n">df1</span> <span class="o">=</span> <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="s2">&quot;1T&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">bfill</span><span class="p">()</span> <span class="o">/</span> <span class="n">freq</span>
-    <span class="n">dfx</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">output_frequency</span><span class="p">,</span> <span class="n">closed</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span>
-    <span class="n">dfx</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;datetime&quot;</span>
-
-    <span class="k">return</span> <span class="n">dfx</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">bdate</span><span class="p">:]</span></div>
 </pre></div>
 
            </div>

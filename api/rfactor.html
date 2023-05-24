@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor package &mdash; rfactor 0.1.1.post1.dev56+gd27f747 documentation</title>
+  <title>rfactor package &mdash; rfactor 0.1.2 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -30,14 +30,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> rfactor
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            rfactor
           </a>
               <div class="version">
-                0.1.1.post1.dev56+gd27f747
+                0.1.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -77,11 +81,11 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="modules.html">rfactor</a></li>
       <li class="breadcrumb-item active">rfactor package</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="https://github.com/cn-ws/rfactor/tree/master/docs/api/rfactor.rst">View page source</a>
+              <a href="https://github.com/cn-ws/rfactor/blob/master/docs/api/rfactor.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul>
   <hr/>
@@ -89,31 +93,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="rfactor-package">
+  <section id="rfactor-package">
 <h1>rfactor package<a class="headerlink" href="#rfactor-package" title="Permalink to this headline"></a></h1>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
@@ -135,7 +115,7 @@
 month (per year, station).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>rain</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Contains at least the following columns:</p>
+<dd class="field-odd"><p><strong>rain</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Contains at least the following columns:</p>
 <ul class="simple">
 <li><p><em>rain_mm</em> (float): Rain in mm</p></li>
 <li><p><em>datetime</em> (pandas.Timestamp): Time stamp</p></li>
@@ -160,7 +140,7 @@ month. Computed based on non-zero rainfall timeseries.</p>
 </p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -179,8 +159,8 @@ computed for each measurement station</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>df_rainfall</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><em>pandas.DataFrame</em></a>) – See <a class="reference internal" href="#rfactor.process.load_rain_file" title="rfactor.process.load_rain_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_rain_file()</span></code></a></p></li>
-<li><p><strong>df_station_metadata</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><em>pandas.DataFrame</em></a>) – <p>Dataframe holding station metadata. This dataframe has one mandatory
+<li><p><strong>df_rainfall</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)"><em>pandas.DataFrame</em></a>) – See <a class="reference internal" href="#rfactor.process.load_rain_file" title="rfactor.process.load_rain_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_rain_file()</span></code></a></p></li>
+<li><p><strong>df_station_metadata</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)"><em>pandas.DataFrame</em></a>) – <p>Dataframe holding station metadata. This dataframe has one mandatory
 column:</p>
 <ul>
 <li><p><em>station</em> (str): Name or code of the measurement station</p></li>
@@ -203,7 +183,7 @@ provided, the following columns are returned:</p>
 </p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -215,7 +195,7 @@ provided, the following columns are returned:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>erosivity</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><em>pandas.DataFrame</em></a>) – See <a class="reference internal" href="#rfactor.rfactor.compute_erosivity" title="rfactor.rfactor.compute_erosivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.rfactor.compute_erosivity()</span></code></a></p></li>
+<li><p><strong>erosivity</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)"><em>pandas.DataFrame</em></a>) – See <a class="reference internal" href="#rfactor.rfactor.compute_erosivity" title="rfactor.rfactor.compute_erosivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.rfactor.compute_erosivity()</span></code></a></p></li>
 <li><p><strong>stations</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of stations to extract R for.</p></li>
 <li><p><strong>years</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of years to extract R for.</p></li>
 </ul>
@@ -231,7 +211,7 @@ end of <em>year</em> and at <em>station</em>.</p></li>
 </p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -268,7 +248,7 @@ functions.</p>
 </p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -306,7 +286,7 @@ defined format:</p>
 </p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -354,7 +334,7 @@ start of the year’ and the second as the rainfall depth during the t last minu
 </p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -396,57 +376,9 @@ functions.</p>
 <dd class="field-even"><p><strong>rain</strong> – See definition in <a class="reference internal" href="#rfactor.process.load_rain_file" title="rfactor.process.load_rain_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_rain_file()</span></code></a></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="rfactor.process.resample_rainfall">
-<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">resample_rainfall</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'10T'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#resample_rainfall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.resample_rainfall" title="Permalink to this definition"></a></dt>
-<dd><p>Resample rainfall dataset to 10 minutes resolution</p>
-<p>Resampling is done in two steps:</p>
-<p>1. Upsample to 1 minute and appoint to each record 1/(temporal resolution)*value
-samples,
-e.g. 1.5 mm on 00:15:00, and 3 mm on 00:30:00</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>0.1 mm on 00:01:00</p></li>
-<li><p>0.1 mm on 00:02:00</p></li>
-<li><p>…</p></li>
-<li><p>0.1 mm on 00:15:00</p></li>
-<li><p>0.2 mm on 00:16:00</p></li>
-<li><p>0.2 mm on 00:17:00</p></li>
-<li><p>…</p></li>
-<li><p>0.2 mm on 00:30:00</p></li>
-</ul>
-</div></blockquote>
-<p>2. Downsample to 10 minutes and sommate rain volume for two sequential records, e.g.
-timeseries above will resample to:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>1 mm  on 00:10:00</p></li>
-<li><p>1.5 mm on 00:20:00</p></li>
-<li><p>2 mm on 00:30:00</p></li>
-</ul>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>rain</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Contains the following columns:</p>
-<ul>
-<li><p><em>rain_mm</em> (float): Rain in mm</p></li>
-<li><p><em>datetime</em> (pandas.Timestamp): Time stamp</p></li>
-</ul>
-</p></li>
-<li><p><strong>output_frequency</strong> (<em>pandas.DataFrame.resample</em><em>, </em><em>default &quot;10T&quot;</em>) – For definition frequency, see <code class="xref py py-func docutils literal notranslate"><span class="pre">pandas.DataFrame.resample()</span></code>. Default
-10 minutes.</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The resample procedure can only take rainfall inputdata with a resolution larger
-than or equal to one minute.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -464,7 +396,7 @@ The columns (no header!) in the written text files represent the following:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rfactor/erosivity time series. Can contain multiple columns,
+<li><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rfactor/erosivity time series. Can contain multiple columns,
 but should have at least the following:</p>
 <ul>
 <li><p><em>datetime</em> (pandas.Timestamp): Time stamp</p></li>
@@ -511,7 +443,7 @@ see <a class="reference internal" href="#rfactor.process.load_rain_file" title="
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>rain</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Need to contain the following columns:</p>
+<li><p><strong>rain</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Need to contain the following columns:</p>
 <ul>
 <li><p><em>datetime</em> (pandas.Timestamp): Time stamp</p></li>
 <li><p><em>rain_mm</em> (float): Rain in mm</p></li>
@@ -529,7 +461,7 @@ see <a class="reference internal" href="#rfactor.process.load_rain_file" title="
 </p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -542,7 +474,7 @@ see <a class="reference internal" href="#rfactor.process.load_rain_file" title="
 maximal intensity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Needs to contain the following columns:</p>
+<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Needs to contain the following columns:</p>
 <ul class="simple">
 <li><p><em>datetime</em> (pandas.Timestamp): Timestamp</p></li>
 <li><p><em>rain_mm</em> (float): Rain in mm</p></li>
@@ -566,7 +498,7 @@ maximal intensity.</p>
 implementation by Verstraeten.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Needs to contain the following columns:</p>
+<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Needs to contain the following columns:</p>
 <ul class="simple">
 <li><p><em>datetime</em> (pandas.Timestamp): Time stamp</p></li>
 <li><p><em>rain_mm</em> (float): Rain in mm</p></li>
@@ -656,7 +588,7 @@ erosion rates. Journal Geophysysical Research, 111, D22109.
 <dd><p>Check if rainfall inputdata has constant frequency</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>rain</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><em>pandas.DataFrame</em></a>) – </p>
+<dd class="field-odd"><p><strong>rain</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)"><em>pandas.DataFrame</em></a>) – </p>
 </dd>
 </dl>
 </dd></dl>
@@ -714,7 +646,7 @@ usage R-factor package to above 1-minute resolution.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>rain</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Need to contain the following columns:</p>
+<li><p><strong>rain</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Need to contain the following columns:</p>
 <ul>
 <li><p><em>datetime</em> (pandas.Timestamp): Time stamp</p></li>
 <li><p><em>rain_mm</em> (float): Rain in mm</p></li>
@@ -732,7 +664,7 @@ usage R-factor package to above 1-minute resolution.</p>
 </p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)">pandas.DataFrame</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)">pandas.DataFrame</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -745,7 +677,7 @@ usage R-factor package to above 1-minute resolution.</p>
 maximal intensity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Needs to contain the following columns:</p>
+<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Needs to contain the following columns:</p>
 <ul class="simple">
 <li><p><em>datetime</em> (pandas.Timestamp): Timestamp</p></li>
 <li><p><em>rain_mm</em> (float): Rain in mm</p></li>
@@ -769,7 +701,7 @@ maximal intensity.</p>
 implementation by Verstraeten.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Needs to contain the following columns:</p>
+<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.1)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Needs to contain the following columns:</p>
 <ul class="simple">
 <li><p><em>datetime</em> (pandas.Timestamp): Time stamp</p></li>
 <li><p><em>rain_mm</em> (float): Rain in mm</p></li>

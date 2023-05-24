@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor.rfactor &mdash; rfactor 0.1.1.post1.dev56+gd27f747 documentation</title>
+  <title>rfactor.rfactor &mdash; rfactor 0.1.2 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -25,14 +25,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> rfactor
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            rfactor
           </a>
               <div class="version">
-                0.1.1.post1.dev56+gd27f747
+                0.1.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -69,7 +73,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
       <li class="breadcrumb-item active">rfactor.rfactor</li>
       <li class="wy-breadcrumbs-aside">
@@ -273,19 +277,21 @@
 
     <span class="c1"># mark start of each rain event</span>
     <span class="n">rain</span> <span class="o">=</span> <span class="n">rain</span><span class="p">[</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">]</span>  <span class="c1"># Only keep measurements with rain</span>
-    <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;event_start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">rain</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">event_start</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">rain</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">event_split</span><span class="p">,</span> <span class="s2">&quot;event_start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">rain</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rain</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;event_start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="c1"># add an event identifier</span>
-    <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;event_idx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;event_start&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+    <span class="n">rain</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">event_idx</span><span class="o">=</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;event_start&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">())</span>
 
     <span class="c1"># add cumulative rain for each event</span>
-    <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;event_rain_cum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+    <span class="n">rain</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">event_rain_cum</span><span class="o">=</span><span class="n">rain</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">())</span>
 
     <span class="c1"># add rain energy for each event</span>
-    <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;event_energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
-        <span class="n">rain_energy_per_unit_depth</span>
+    <span class="n">rain</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+        <span class="n">event_energy</span><span class="o">=</span><span class="n">rain</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
+            <span class="n">rain_energy_per_unit_depth</span>
+        <span class="p">)</span>
     <span class="p">)</span>
 
     <span class="c1"># calculate the maximal rain intensity in 30minutes interval</span>
@@ -309,22 +315,22 @@
     <span class="p">)</span>
 
     <span class="c1"># calculate the erosivity</span>
-    <span class="n">rain_events</span><span class="p">[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">rain_events</span><span class="p">[</span><span class="s2">&quot;event_energy&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">rain_events</span><span class="p">[</span><span class="s2">&quot;max_30min_intensity&quot;</span><span class="p">]</span>
+    <span class="n">rain_events</span> <span class="o">=</span> <span class="n">rain_events</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+        <span class="n">erosivity</span><span class="o">=</span><span class="n">rain_events</span><span class="p">[</span><span class="s2">&quot;event_energy&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">rain_events</span><span class="p">[</span><span class="s2">&quot;max_30min_intensity&quot;</span><span class="p">]</span>
     <span class="p">)</span>
 
     <span class="c1"># cumulative rain over all events</span>
-    <span class="n">rain_events</span><span class="p">[</span><span class="s2">&quot;all_event_rain_cum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">rain_events</span><span class="p">[</span><span class="s2">&quot;event_rain_cum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+    <span class="n">rain_events</span> <span class="o">=</span> <span class="n">rain_events</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+        <span class="n">all_event_rain_cum</span><span class="o">=</span><span class="p">(</span>
+            <span class="n">rain_events</span><span class="p">[</span><span class="s2">&quot;event_rain_cum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+        <span class="p">)</span>
     <span class="p">)</span>
 
     <span class="c1"># remove events below threshold</span>
-    <span class="n">events</span> <span class="o">=</span> <span class="n">rain_events</span><span class="p">[</span>
-        <span class="nb">round</span><span class="p">(</span><span class="n">rain_events</span><span class="p">[</span><span class="s2">&quot;event_rain_cum&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">event_threshold</span>
-    <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">events</span> <span class="o">=</span> <span class="n">rain_events</span><span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">rain_events</span><span class="p">[</span><span class="s2">&quot;event_rain_cum&quot;</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">event_threshold</span><span class="p">]</span>
 
     <span class="c1"># add cumulative erosivity</span>
-    <span class="n">events</span><span class="p">[</span><span class="s2">&quot;erosivity_cum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">events</span><span class="p">[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+    <span class="n">events</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">erosivity_cum</span><span class="o">=</span><span class="n">events</span><span class="p">[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">())</span>
 
     <span class="k">return</span> <span class="n">events</span>
 
@@ -380,9 +386,12 @@
         <span class="p">)</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-    <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span>
+    <span class="n">rain</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">))</span>
+
     <span class="k">if</span> <span class="s2">&quot;tag&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">rain</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;tag&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">rain</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+            <span class="n">tag</span><span class="o">=</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="p">)</span>
 
     <span class="n">fun_with_method</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">_apply_rfactor</span><span class="p">,</span> <span class="n">intensity_method</span><span class="o">=</span><span class="n">intensity_method</span><span class="p">)</span>
     <span class="n">grouped</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">])</span>
