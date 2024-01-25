@@ -111,8 +111,13 @@ def load_rain_file(file_path, load_fun):
         - *year* (int): year of the measurement
         - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
     """
-    if load_fun.__name__ not in ["load_rain_file_matlab_legacy", "load_rain_file_csv_vmm"]:
-        msg = f"Rainfall load  function {load_fun} not implemented in R-factor package."
+    if load_fun.__name__ not in [
+        "load_rain_file_matlab_legacy",
+        "load_rain_file_csv_vmm",
+    ]:
+        msg = (
+            f"Rainfall load  function '{load_fun}' not implemented in R-factor package."
+        )
         raise IOError(msg)
 
     rain = load_fun(file_path)
@@ -252,7 +257,7 @@ def load_rain_file_csv_vmm(file_path):
         df = df[["Date/Time", "Value [millimeter]"]].rename(
             columns={"Date/Time": "datetime", "Value [millimeter]": "rain_mm"}
         )
-    df = df.assign(datetime=pd.to_datetime(df["datetime"], format="%d/%m/%Y %H:%M"))
+    df = df.assign(datetime=pd.to_datetime(df["datetime"], format="%d/%m/%Y %H:%M:%S"))
     df = df.assign(
         start_year=pd.to_datetime(
             [f"01/01/{x} 00:00:00" for x in df["datetime"].dt.year],
