@@ -49,12 +49,12 @@ for Flanders.
 Documentation
 -------------
 The documentation can be found on the
-`R-factor documentation page <https://cn-ws.github.io/rfactor/index.html>`_.
+`R-factor documentation page <https://watem-sedem.github.io/rfactor/index.html>`_.
 
 Code
 ----
 The open-source code can be found on
-`GitHub <https://github.com/cn-ws/rfactor/>`_.
+`GitHub <https://github.com/watem-sedem/rfactor/>`_.
 
 License
 -------
