@@ -525,6 +525,8 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
         "year<lambda>": "year",
         "rain_mmamin": "min",
         "rain_mmamax": "max",
+        "rain_mmmin": "min",
+        "rain_mmmax": "max",
         "rain_mmmedian": "median",
         "rain_mmcount": "records",
     }
