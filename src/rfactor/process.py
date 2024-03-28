@@ -3,6 +3,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 
 
 class RainfallFilesIOMsg(str):
@@ -376,7 +377,7 @@ def load_rain_folder(folder_path, load_fun):
         msg = f"Input folder '{folder_path}' does not contain any 'txt'-files."
         raise FileNotFoundError(msg)
 
-    for file_path in files:
+    for file_path in tqdm(files, desc="Processing input files"):
         df = load_rain_file(file_path, load_fun)
         lst_df.append(df)
     all_rain = pd.concat(lst_df)
