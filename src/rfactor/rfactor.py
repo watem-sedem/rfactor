@@ -189,7 +189,6 @@ def _compute_erosivity(
         raise RFactorInputError("DataFrame should contain data of a single year.")
 
     # mark start of each rain event
-    rain = rain[rain["rain_mm"] > 0.0]  # Only keep measurements with rain
     rain = rain.assign(event_start=False)
     rain.loc[rain["datetime"].diff() >= event_split, "event_start"] = True
     rain.loc[rain.index[0], "event_start"] = True
