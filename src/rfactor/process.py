@@ -112,10 +112,6 @@ def load_rain_file(file_path, load_fun):
         - *year* (int): year of the measurement
         - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
     """
-    if load_fun not in [load_rain_file_matlab_legacy, load_rain_file_csv_vmm]:
-        msg = f"Rainfall load  function {load_fun} not implemented in R-factor package."
-        raise IOError(msg)
-
     rain = load_fun(file_path)
     rain["year"] = rain["datetime"].dt.year
     rain["tag"] = rain["station"].astype(str) + "_" + rain["year"].astype(str)
