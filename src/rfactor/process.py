@@ -3,6 +3,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 
 
 class RainfallFilesIOMsg(str):
@@ -111,10 +112,6 @@ def load_rain_file(file_path, load_fun):
         - *year* (int): year of the measurement
         - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
     """
-    if load_fun not in [load_rain_file_matlab_legacy, load_rain_file_csv_vmm]:
-        msg = f"Rainfall load  function {load_fun} not implemented in R-factor package."
-        raise IOError(msg)
-
     rain = load_fun(file_path)
     rain["year"] = rain["datetime"].dt.year
     rain["tag"] = rain["station"].astype(str) + "_" + rain["year"].astype(str)
@@ -376,7 +373,7 @@ def load_rain_folder(folder_path, load_fun):
         msg = f"Input folder '{folder_path}' does not contain any 'txt'-files."
         raise FileNotFoundError(msg)
 
-    for file_path in files:
+    for file_path in tqdm(files, desc="Processing input files"):
         df = load_rain_file(file_path, load_fun)
         lst_df.append(df)
     all_rain = pd.concat(lst_df)
