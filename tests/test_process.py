@@ -14,82 +14,8 @@ from rfactor.process import (
     load_rain_file,
     load_rain_file_matlab_legacy,
     load_rain_folder,
-    resample_rainfall,
     write_erosivity_data,
 )
-
-
-@pytest.mark.parametrize(
-    "idx,values,freq,idx_n,values_n,freq_n",
-    [
-        (
-            pd.date_range("2018-01-01 03:30", periods=4, freq="1H"),
-            [0.06, 0.08, 0.21, 0.05],
-            "1H",
-            pd.date_range("2018-01-01 03:30", periods=19, freq="10T"),
-            [0.01] + [0.0133] * 6 + [0.035] * 6 + [0.0083] * 6,
-            "10T",
-        ),
-        (
-            pd.date_range("2018-01-01 03:30", periods=6, freq="15T"),
-            [0, 0.08, 0, 0.21, 0.05, 0],
-            "15T",
-            pd.date_range("2018-01-01 03:30", periods=9, freq="10T"),
-            [0, 0.026667 * 2, 0.026667, 0, 0.14, 0.0866667, 0.016667 * 2, 0, 0],
-            "10T",
-        ),
-        (
-            pd.date_range("2018-01-01 03:30", periods=6, freq="15T"),
-            [0, 0.08, 0, 0.21, 0.05, 0],
-            "15T",
-            pd.date_range("2018-01-01 03:40", periods=5, freq="20T"),
-            [0.026667 * 2, 0.026667, 0.14 + 0.0866667, 0.016667 * 2, 0],
-            "20T",
-        ),
-        (
-            pd.date_range("2018-01-01 03:30", periods=5, freq="15T"),
-            [0.08, 0, 0.21, 0.05, 0],
-            "15T",
-            pd.date_range("2018-01-01 03:30", periods=7, freq="10T"),
-            [0.026667 * 2, 0, 0.07, 0.14, 0.016667 * 2, 0.016667, 0],
-            "10T",
-        ),
-    ],
-)
-def test_resample_rainfall(idx, values, freq, idx_n, values_n, freq_n):
-    """
-
-    Parameters
-    ----------
-    idx: pd.Timestamp
-        Input time stamp
-    values: float
-        Input rainfall (mm)
-    freq: pandas.DataFrame.resample
-        Input frequency, for definition frequency,
-        see :func:`pandas.DataFrame.resample`.
-    idx_n: pd.Timestamp
-        Output time stamp
-    values_n: float
-        Output rainfall (mm)
-    freq_n: pandas.DataFrame.resample
-        Output frequency, for definition frequency,
-        see :func:`pandas.DataFrame.resample`.
-    """
-    df = pd.DataFrame(columns=["datetime", "rain_mm"])
-    df["datetime"] = idx
-    df["rain_mm"] = values
-    df.index = df["datetime"]
-    df.index.freq = freq
-
-    df_o = resample_rainfall(df, output_frequency=freq_n)
-
-    # test dates
-    df = pd.DataFrame(columns=["rain_mm"])
-    df["rain_mm"] = values_n
-    df.index = idx_n
-    df.index.name = "datetime"
-    pd.testing.assert_frame_equal(df, df_o, atol=1e-3)
 
 
 def test_days_since_last_year_float():

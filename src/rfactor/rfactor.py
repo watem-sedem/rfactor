@@ -270,19 +270,21 @@ def _compute_erosivity(
 
     # mark start of each rain event
     rain = rain[rain["rain_mm"] > 0.0]  # Only keep measurements with rain
-    rain["event_start"] = False
+    rain = rain.assign(event_start=False)
     rain.loc[rain["datetime"].diff() >= event_split, "event_start"] = True
     rain.loc[rain.index[0], "event_start"] = True
 
     # add an event identifier
-    rain["event_idx"] = rain["event_start"].cumsum()
+    rain = rain.assign(event_idx=rain["event_start"].cumsum())
 
     # add cumulative rain for each event
-    rain["event_rain_cum"] = rain.groupby("event_idx")["rain_mm"].cumsum()
+    rain = rain.assign(event_rain_cum=rain.groupby("event_idx")["rain_mm"].cumsum())
 
     # add rain energy for each event
-    rain["event_energy"] = rain.groupby("event_idx")["rain_mm"].transform(
-        rain_energy_per_unit_depth
+    rain = rain.assign(
+        event_energy=rain.groupby("event_idx")["rain_mm"].transform(
+            rain_energy_per_unit_depth
+        )
     )
 
     # calculate the maximal rain intensity in 30minutes interval
@@ -306,22 +308,22 @@ def _compute_erosivity(
     )
 
     # calculate the erosivity
-    rain_events["erosivity"] = (
-        rain_events["event_energy"] * rain_events["max_30min_intensity"]
+    rain_events = rain_events.assign(
+        erosivity=rain_events["event_energy"] * rain_events["max_30min_intensity"]
     )
 
     # cumulative rain over all events
-    rain_events["all_event_rain_cum"] = (
-        rain_events["event_rain_cum"].shift(1, fill_value=0.0).cumsum()
+    rain_events = rain_events.assign(
+        all_event_rain_cum=(
+            rain_events["event_rain_cum"].shift(1, fill_value=0.0).cumsum()
+        )
     )
 
     # remove events below threshold
-    events = rain_events[
-        round(rain_events["event_rain_cum"], 2) > event_threshold
-    ].copy()
+    events = rain_events[round(rain_events["event_rain_cum"], 2) > event_threshold]
 
     # add cumulative erosivity
-    events["erosivity_cum"] = events["erosivity"].cumsum()
+    events = events.assign(erosivity_cum=events["erosivity"].cumsum())
 
     return events
 
@@ -381,9 +383,12 @@ def compute_erosivity(rain, intensity_method=maximum_intensity):
         )
         warnings.warn(msg)
 
-    rain["year"] = rain["datetime"].dt.year
+    rain = rain.assign(year=rain["datetime"].dt.year.astype(np.int64))
+
     if "tag" not in rain.columns:
-        rain["tag"] = rain["station"].astype(str) + "_" + rain["year"].astype(str)
+        rain = rain.assign(
+            tag=rain["station"].astype(str) + "_" + rain["year"].astype(str)
+        )
 
     fun_with_method = partial(_apply_rfactor, intensity_method=intensity_method)
     grouped = rain.groupby(["station", "year"])

@@ -235,7 +235,7 @@ htmlhelp_basename = "rfactor-doc"
 
 html_context = {
     "display_github": True,
-    "github_user": "cn-ws",
+    "github_user": "watem-sedem",
     "github_repo": "rfactor",
     "github_version": "master",
     "conf_py_path": "/docs/",
@@ -294,7 +294,7 @@ intersphinx_mapping = {
 
 print(f"loading configurations for {project} {version} ...", file=sys.stderr)
 
-html_context = {
-    "source_url_prefix": "https://github.com/cn-ws/rfactor/tree/master/docs/",
-    "display_vcs_links": 1
-}
+# html_context = {
+#    "source_url_prefix": "https://github.com/watem-sedem/rfactor/tree/master/docs/",
+#    "display_vcs_links": 1
+#}

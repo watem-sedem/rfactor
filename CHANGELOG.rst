@@ -2,6 +2,16 @@
 Changelog
 =========
 
+Version 0.1.2
+=============
+ - Small updates to documentation
+ - Improved warning/errors
+ - Added lightweight ```compute_diagnostics`` that computes diagnostics for input
+   rainfall timeseries, see 1f0a7f5.
+ - Fix pandas warnings:
+   - Use pandas assign to create new columns.
+   - Use pandas concat instead of pandas append.
+
 Version 0.1.1
 =============
  - Cleaned up data-files avaible in repo.

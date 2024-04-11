@@ -30,7 +30,7 @@ __Note__
 > In the earlier versions (\<0.1.0) of the R-factor package, Matlab was
 > used for the core computations. Since version 0.1.0, a faster Python
 > implementation is provided. Using the version 0.0.x will provide other
-> results compared to version \>0.1.0, as explained in the [package documentation](https://cn-ws.github.io/rfactor/).
+> results compared to version \>0.1.0, as explained in the [package documentation](https://watem-sedem.github.io/rfactor/).
 
 Get started
 -----------
@@ -42,7 +42,7 @@ pip install rfactor
 ```
 
 Make sure to check out the installation instructions and follow the example in
-the _Get started section_ of the [package documentation](https://cn-ws.github.io/rfactor/).
+the _Get started section_ of the [package documentation](https://watem-sedem.github.io/rfactor/).
 
 Rainfall and erosivity data
 ---------------------------
@@ -61,13 +61,13 @@ the R-factor for Flanders.
 
 Code
 ----
-The open-source code can be found on [GitHub](https://github.com/cn-ws/rfactor).
+The open-source code can be found on [GitHub](https://github.com/watem-sedem/rfactor).
 
 Documentation
 -------------
 
 The documentation can be found on the [R-factor documentation
-page](https://cn-ws.github.io/rfactor/index.html).
+page](https://watem-sedem.github.io/rfactor/index.html).
 
 License
 -------

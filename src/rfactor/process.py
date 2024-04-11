@@ -3,9 +3,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from pandas import Timedelta
-
-from rfactor.valid import valid_rainfall_timeseries
+from tqdm import tqdm
 
 
 class RainfallFilesIOMsg(str):
@@ -336,11 +334,12 @@ def load_rain_file_matlab_legacy(file_path):
             "1.00\n9470 0.20\n9480 0.50\n... ..."
         )
         raise IOError(RainfallFilesIOMsg(msg))
-    rain["datetime"] = pd.Timestamp(f"{year}-01-01") + pd.to_timedelta(
-        pd.to_numeric(rain["minutes_since"]), unit="min"
+    rain = rain.assign(
+        datetime=pd.Timestamp(f"{year}-01-01")
+        + pd.to_timedelta(pd.to_numeric(rain["minutes_since"]), unit="min")
     )
 
-    rain["station"] = station
+    rain = rain.assign(station=station)
 
     return rain[["datetime", "station", "rain_mm"]]
 
@@ -389,7 +388,7 @@ def load_rain_folder(folder_path, load_fun):
         msg = f"Input folder '{folder_path}' does not contain any 'txt'-files."
         raise FileNotFoundError(msg)
 
-    for file_path in files:
+    for file_path in tqdm(files, desc="Processing input files"):
         df = load_rain_file(file_path, load_fun)
         lst_df.append(df)
     all_rain = pd.concat(lst_df)
@@ -431,7 +430,9 @@ def write_erosivity_data(df, folder_path):
     folder_path.mkdir(exist_ok=True, parents=True)
 
     for (station, year), df_group in df.groupby(["station", df["datetime"].dt.year]):
-        df_group["days_since"] = _days_since_start_year(df_group["datetime"])
+        df_group = df_group.assign(
+            days_since=_days_since_start_year(df_group["datetime"])
+        )
         formats = {
             "days_since": "{:.3f}",
             "erosivity_cum": "{:.2f}",
@@ -534,6 +535,8 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
     df_statistics.columns = df_statistics.columns.map("".join)
     rename_cols = {
         "year<lambda>": "year",
+        "rain_mmamin": "min",
+        "rain_mmamax": "max",
         "rain_mmmin": "min",
         "rain_mmmax": "max",
         "rain_mmmedian": "median",
@@ -561,64 +564,3 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
         df_statistics = df_statistics[["year", "records", "min", "median", "max"]]
 
     return df_statistics
-
-
-@valid_rainfall_timeseries(req_col={"datetime", "rain_mm"})
-def resample_rainfall(rain, output_frequency="10T"):
-    """Resample rainfall dataset to 10 minutes resolution
-
-    Resampling is done in two steps:
-
-    1. Upsample to 1 minute and appoint to each record 1/(temporal resolution)*value
-    samples,
-    e.g. 1.5 mm on 00:15:00, and 3 mm on 00:30:00
-        - 0.1 mm on 00:01:00
-        - 0.1 mm on 00:02:00
-        - ...
-        - 0.1 mm on 00:15:00
-        - 0.2 mm on 00:16:00
-        - 0.2 mm on 00:17:00
-        - ...
-        - 0.2 mm on 00:30:00
-
-    2. Downsample to 10 minutes and sommate rain volume for two sequential records, e.g.
-    timeseries above will resample to:
-
-        - 1 mm  on 00:10:00
-        - 1.5 mm on 00:20:00
-        - 2 mm on 00:30:00
-
-    Parameters
-    ----------
-    rain : pandas.DataFrame
-        DataFrame with rainfall time series. Contains the following columns:
-
-        - *rain_mm* (float): Rain in mm
-        - *datetime* (pandas.Timestamp): Time stamp
-
-    output_frequency: pandas.DataFrame.resample, default "10T"
-        For definition frequency, see :func:`pandas.DataFrame.resample`. Default
-        10 minutes.
-
-    Notes
-    -----
-    The resample procedure can only take rainfall inputdata with a resolution larger
-    than or equal to one minute.
-    """
-    freq = rain.index.freq.nanos / 60000000000  # in minutes
-
-    # resample to 1 minute
-    bdate = rain.index[0]
-    # check boundary condition
-    # if first value is not 0, than an additional record is needed for backward filling
-    fvalue = rain.loc[bdate, "rain_mm"]
-    if fvalue != 0:
-        bound = pd.DataFrame(
-            [fvalue], columns=["rain_mm"], index=[bdate - Timedelta(freq, unit="T")]
-        )
-        rain = pd.concat([bound, rain])
-    df1 = rain["rain_mm"].resample("1T").bfill() / freq
-    dfx = df1.resample(output_frequency, closed="right", label="right").sum().to_frame()
-    dfx.index.name = "datetime"
-
-    return dfx.loc[bdate:]
