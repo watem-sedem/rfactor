@@ -114,7 +114,7 @@ def load_rain_file(file_path, load_fun):
         - *year* (int): year of the measurement
         - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
     """
-    if load_fun not in [load_rain_file_matlab_legacy, load_rain_file_csv_vmm, load_rain_file_txt]:
+    if load_fun not in [load_rain_file_matlab_legacy, load_rain_file_txt]:
         msg = f"Rainfall load  function {load_fun} not implemented in R-factor package."
         raise IOError(msg)
 
@@ -195,7 +195,7 @@ def compute_diagnostics(rain):
     return diagnostics
 
 
-def load_rain_file_txt(file_path):
+def load_rain_file_txt(file_path, interpolate=False):
     """Load any txt file which is formatted in the correct format.
 
     The input files are defined by tab delimited files (extension: ``.txt``) that
@@ -214,6 +214,8 @@ def load_rain_file_txt(file_path):
         - *datetime*: ``%d-%m-%Y %H:%M:%S``-format
         - *Value [millimeter]*: str (containing floats and '---'-identifier)
 
+    interpolate: bool
+        Interpolate NaN yes/no
 
     Returns
     -------
@@ -246,20 +248,14 @@ def load_rain_file_txt(file_path):
     NaN-values (np.nan). Note that the values in string should be convertable to float
     (except ``---``).
     """
-    df = pd.read_csv(file_path, sep='\t', header=None)
+    df = pd.read_csv(file_path, sep="\t", header=None)
 
-    ###
-    # if not {"Date/Time", "Value [millimeter]"}.issubset(set(df.columns)):
-    #     msg = "Input dataframe should contain 'Date/Time' and 'Value [millimeter]'"
-    #     raise KeyError(msg)
-
-    # check should be rethought
-    ###
-    if not True:
-        msg = "Test"
+    if not {"datetime", "Value [millimeter]"}.issubset(df.columns):
+        msg = (
+            f"File '{file_path}' should have headers 'datetime' and "
+            f"'Value [millimeter]'"
+        )
         raise KeyError(msg)
-    else:
-        df.columns = ["datetime", "rain_mm"]
 
     df["datetime"] = pd.to_datetime(df["datetime"])
     df["start_year"] = pd.to_datetime(
@@ -272,89 +268,13 @@ def load_rain_file_txt(file_path):
     df.loc[df["rain_mm"].isin(nan), "rain_mm"] = np.nan
     df.loc[df["rain_mm"] < 0, "rain_mm"] = np.nan
 
-    # if interp != None:
-    '''I want to make an additional input to directly give the
-        interpolation method in the function so that the output is directly
-        interpolated (if wanted) in the chosen manner
-        '''
-    if np.sum(df["rain_mm"].isna()) > 0:
-        # maybe options for tweaking interpolation should be added in function
-        df = interpolate(df, interpolation='linear', remove_zero=True)
+    if interpolate:
+        df["rain_mm"] = df["rain_mm"].interpolate(method="linear")
 
+    # remove 0
     df = df[df["rain_mm"] != 0]
+    # remove NaN
     df = df[df["rain_mm"] != np.nan]
-    df["rain_mm"] = df["rain_mm"].astype(np.float64)
-
-    return df[["datetime", "station", "rain_mm"]]
-
-
-def load_rain_file_csv_vmm(file_path):
-    """Load VMM CSV file format of rainfall data of a **single station**.
-
-    The input files are defined by comma delimited files (extension: ``.CSV``) that
-    hold rainfall timeseries. The data are split per monitoring station and the file
-    name should be the station identifier. The header should contain at least:
-
-    - *Date/Time*
-    - *Value [millimeter]*
-
-    Parameters
-    ----------
-    file_path : pathlib.Path
-        File path (comma delimited, .CSV-extension) with rainfall data according to
-        defined format:
-
-        - *Date/Time*: ``%d/%m/%Y %H:%M:%S``-format
-        - *Value [millimeter]*: str (containing floats and '---'-identifier)
-
-        Definition of additional columns are allowed.
-
-    Returns
-    -------
-    rain : pandas.DataFrame
-        DataFrame with rainfall time series. Contains the following columns:
-
-        - *datetime* (pandas.Timestamp): Time stamp.
-        - *minutes_since* (float): Minutes since start of year.
-        - *station* (str): station identifier.
-        - *rain_mm* (float): Rain in mm.
-
-    Example
-    -------
-    1. Example of a rainfall file:
-
-    ::
-
-        Date/Time,Value [millimeter]
-        01/01/2019 00:00,"0"
-        01/01/2019 00:05,"0.03"
-        01/01/2019 00:10,"0.04"
-        01/01/2019 00:15,"0"
-        01/01/2019 00:20,"0"
-        01/01/2019 00:25,"---"
-        01/01/2019 00:30,"0"
-
-    Notes
-    -----
-    Strings ``---`` in column *Value [millimeter]* -identifiers are converted to
-    NaN-values (np.nan). Note that the values in string should be convertable to float
-    (except ``---``).
-    """
-    df = pd.read_csv(file_path)
-    if not {"Date/Time", "Value [millimeter]"}.issubset(set(df.columns)):
-        msg = "Input dataframe should contain 'Date/Time' and 'Value [millimeter]'"
-        raise KeyError(msg)
-    else:
-        df = df[["Date/Time", "Value [millimeter]"]].rename(
-            columns={"Date/Time": "datetime", "Value [millimeter]": "rain_mm"}
-        )
-    df["datetime"] = pd.to_datetime(df["datetime"], format="%d/%m/%Y %H:%M")
-    df["start_year"] = pd.to_datetime(
-        [f"01/01/{x} 00:00:00" for x in df["datetime"].dt.year],
-        format="%d/%m/%Y %H:%M:%S",
-    )
-    df["station"] = file_path.stem
-    df.loc[df["rain_mm"] == "---", "rain_mm"] = np.nan
     df["rain_mm"] = df["rain_mm"].astype(np.float64)
 
     return df[["datetime", "station", "rain_mm"]]
@@ -457,9 +377,7 @@ def load_rain_folder(folder_path, load_fun):
         )
 
     lst_df = []
-    if load_fun.__name__ == "load_rain_file_csv_vmm":
-        files = list(folder_path.glob("*.CSV"))
-    elif load_fun.__name__ == "load_rain_file_matlab_legacy":
+    if load_fun.__name__ == "load_rain_file_matlab_legacy":
         files = list(folder_path.glob("*.txt"))
     elif load_fun.__name__ == "load_rain_file_txt":
         files = list(folder_path.glob("*.txt"))
@@ -520,8 +438,7 @@ def write_erosivity_data(df, folder_path):
             "all_event_rain_cum": "{:.1f}",
         }
         for column, fformat in formats.items():
-            df_group[column] = df_group[column].map(
-                lambda x: fformat.format(x))
+            df_group[column] = df_group[column].map(lambda x: fformat.format(x))
         df_group[["days_since", "erosivity_cum", "all_event_rain_cum"]].to_csv(
             folder_path / f"{station}_{year}.csv", header=None, index=None, sep=" "
         )
@@ -561,15 +478,12 @@ def get_rfactor_station_year(erosivity, stations=None, years=None):
             )
         erosivity = erosivity.loc[erosivity["station"].isin(stations)]
     if years is not None:
-        unexisting_years = set(years).difference(
-            set(erosivity["year"].unique()))
+        unexisting_years = set(years).difference(set(erosivity["year"].unique()))
         if unexisting_years:
-            raise KeyError(
-                f"Year(s): {unexisting_years} not part of data set.")
+            raise KeyError(f"Year(s): {unexisting_years} not part of data set.")
         erosivity = erosivity.loc[erosivity["year"].isin(years)]
 
-    erosivity = erosivity.groupby(
-        ["year", "station"]).aggregate("erosivity_cum").last()
+    erosivity = erosivity.groupby(["year", "station"]).aggregate("erosivity_cum").last()
     erosivity = erosivity.reset_index().sort_values(["station", "year"])
     erosivity.index = range(len(erosivity))
     return erosivity
@@ -644,49 +558,9 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
             ]
         ]
     else:
-        df_statistics = df_statistics[[
-            "year", "records", "min", "median", "max"]]
+        df_statistics = df_statistics[["year", "records", "min", "median", "max"]]
 
     return df_statistics
-
-
-def interpolate(df_rainfall, interpolation="nearest", remove_zero=True):
-    """Interpolate NaN values and remove 0's.
-
-    Parameters
-    ----------
-    df_rainfall: pandas.DataFrame
-        must contain:
-        - *rain_mm* (float): rainfall values
-
-    interpolation: str
-        - *nearest*: closest value
-        - *zero*: fill with 0's
-        - *linear*: linear interpolation
-
-    remove_zero: bool,
-        Default True
-
-    Returns
-    -------
-    df_rainfall: pandas.DataFrame
-    """
-    if interpolation == "zero":
-        df_rainfall["rain_mm"] = df_rainfall["rain_mm"].fillna(0)
-    elif interpolation == "nearest":
-        df_rainfall["rain_mm"] = df_rainfall["rain_mm"].interpolate(
-            method="nearest")
-    elif interpolation == "linear":
-        df_rainfall["rain_mm"] = df_rainfall["rain_mm"].interpolate(
-            method="linear")
-    else:
-        msg = f"Interpolation method '{interpolation}' not implemented"
-        raise NotImplementedError(msg)
-
-    if remove_zero is True:
-        df_rainfall = df_rainfall[df_rainfall["rain_mm"] != 0]
-
-    return df_rainfall
 
 
 @valid_rainfall_timeseries(req_col={"datetime", "rain_mm"})
@@ -744,8 +618,7 @@ def resample_rainfall(rain, output_frequency="10T"):
         )
         rain = pd.concat([bound, rain])
     df1 = rain["rain_mm"].resample("1T").bfill() / freq
-    dfx = df1.resample(output_frequency, closed="right",
-                       label="right").sum().to_frame()
+    dfx = df1.resample(output_frequency, closed="right", label="right").sum().to_frame()
     dfx.index.name = "datetime"
 
     return dfx.loc[bdate:]
