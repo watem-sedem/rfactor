@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor.process &mdash; rfactor 0.1.2 documentation</title>
+  <title>rfactor.process &mdash; rfactor 0.1.2.post1.dev6+g8512302 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             rfactor
           </a>
               <div class="version">
-                0.1.2
+                0.1.2.post1.dev6+g8512302
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -90,6 +90,7 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
 
 <div class="viewcode-block" id="RainfallFilesIOMsg"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.RainfallFilesIOMsg">[docs]</a><span class="k">class</span> <span class="nc">RainfallFilesIOMsg</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
@@ -198,10 +199,6 @@
 <span class="sd">        - *year* (int): year of the measurement</span>
 <span class="sd">        - *tag* (str): tag identifier, formatted as ``STATION_YEAR``</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">load_fun</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">load_rain_file_matlab_legacy</span><span class="p">,</span> <span class="n">load_rain_file_csv_vmm</span><span class="p">]:</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Rainfall load  function </span><span class="si">{</span><span class="n">load_fun</span><span class="si">}</span><span class="s2"> not implemented in R-factor package.&quot;</span>
-        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-
     <span class="n">rain</span> <span class="o">=</span> <span class="n">load_fun</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
     <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span>
     <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;tag&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
@@ -463,7 +460,7 @@
         <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Input folder &#39;</span><span class="si">{</span><span class="n">folder_path</span><span class="si">}</span><span class="s2">&#39; does not contain any &#39;txt&#39;-files.&quot;</span>
         <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">file_path</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Processing input files&quot;</span><span class="p">):</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">load_rain_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">load_fun</span><span class="p">)</span>
         <span class="n">lst_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
     <span class="n">all_rain</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">lst_df</span><span class="p">)</span>
@@ -612,6 +609,8 @@
         <span class="s2">&quot;year&lt;lambda&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span>
         <span class="s2">&quot;rain_mmamin&quot;</span><span class="p">:</span> <span class="s2">&quot;min&quot;</span><span class="p">,</span>
         <span class="s2">&quot;rain_mmamax&quot;</span><span class="p">:</span> <span class="s2">&quot;max&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;rain_mmmin&quot;</span><span class="p">:</span> <span class="s2">&quot;min&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;rain_mmmax&quot;</span><span class="p">:</span> <span class="s2">&quot;max&quot;</span><span class="p">,</span>
         <span class="s2">&quot;rain_mmmedian&quot;</span><span class="p">:</span> <span class="s2">&quot;median&quot;</span><span class="p">,</span>
         <span class="s2">&quot;rain_mmcount&quot;</span><span class="p">:</span> <span class="s2">&quot;records&quot;</span><span class="p">,</span>
     <span class="p">}</span>
