@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor.rfactor &mdash; rfactor 0.1.2.post1.dev6+g8512302 documentation</title>
+  <title>rfactor.rfactor &mdash; rfactor 0.1.2.post1.dev27+g70cd4a5 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             rfactor
           </a>
               <div class="version">
-                0.1.2.post1.dev6+g8512302
+                0.1.2.post1.dev27+g70cd4a5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -161,21 +161,33 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Maximum rain intensity for 30-min interval (Matlab clone).</span>
 
 <span class="sd">    The implementation is a direct Python-translation of the original Matlab</span>
-<span class="sd">    implementation by Verstraeten.</span>
+<span class="sd">    implementation by Verstraeten et al. (2006).</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    df : pandas.DataFrame</span>
 <span class="sd">        DataFrame with rainfall time series. Needs to contain the following columns:</span>
-
 <span class="sd">        - *datetime* (pandas.Timestamp): Time stamp</span>
-<span class="sd">        - *rain_mm* (float): Rain in mm</span>
+<span class="sd">        - *rain_mm* (float): Rain in mm. No NaN or 0-values allowed</span>
 <span class="sd">        - *event_rain_cum* (float): Cumulative rain in mm</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    maxprecip_30min : float</span>
 <span class="sd">        Maximal 30-minute intensity during event (in mm/h).</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The Python and original Matlab implementation linearly interpolate zero and</span>
+<span class="sd">    NaN-values within one event.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Verstraeten, G., Poesen, J., Demarée, G., Salles, C., 2006. Long-term (105 years)</span>
+<span class="sd">    variability in rain erosivity as derived from 10-min rainfall depth data for Ukkel</span>
+<span class="sd">    (Brussels, Belgium): Implications for assessing soil erosion rates. J. Geophys.</span>
+<span class="sd">    Res. 111, D22109. https://doi.org/10.1029/2006JD007169</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
@@ -199,7 +211,74 @@
     <span class="k">if</span> <span class="n">timestamps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">timestamps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">30</span><span class="p">:</span>
         <span class="n">maxprecip_30min</span> <span class="o">=</span> <span class="n">rain</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># *2 to mimick matlab</span>
 
-    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)):</span>
+        <span class="n">eind_30min</span> <span class="o">=</span> <span class="n">timestamps</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+</span> <span class="mi">20</span>
+        <span class="n">begin_rain</span> <span class="o">=</span> <span class="n">rain_cum</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">rain</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+        <span class="n">eind_rain</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">eind_30min</span><span class="p">,</span> <span class="n">timestamps</span><span class="p">,</span> <span class="n">rain_cum</span><span class="p">)</span>
+        <span class="n">precip_30min</span> <span class="o">=</span> <span class="n">eind_rain</span> <span class="o">-</span> <span class="n">begin_rain</span>
+
+        <span class="k">if</span> <span class="n">precip_30min</span> <span class="o">&gt;</span> <span class="n">maxprecip_30min</span><span class="p">:</span>
+            <span class="n">maxprecip_30min</span> <span class="o">=</span> <span class="n">precip_30min</span>
+
+    <span class="k">return</span> <span class="n">maxprecip_30min</span> <span class="o">*</span> <span class="mi">2</span></div>
+
+
+<div class="viewcode-block" id="maximum_intensity_matlab_clone_fix"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.maximum_intensity_matlab_clone_fix">[docs]</a><span class="k">def</span> <span class="nf">maximum_intensity_matlab_clone_fix</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Maximum rain intensity for 30-min interval (Matlab clone Fix).</span>
+<span class="sd">    This implementation is a fixed version of the Python-translation of the original</span>
+<span class="sd">    Matlab implementation by Verstraeten.</span>
+
+<span class="sd">    Changes to the original script are:</span>
+<span class="sd">    1.  in the if-statement &#39;if timestamps[-1] - timestamps[0] &lt;= 30:&#39; this methode</span>
+<span class="sd">        calculates the total amount of rain during the interval while the original</span>
+<span class="sd">        method only looks at the first rainfall entry.</span>
+<span class="sd">    2.  in the same if-statement, the *2 was removed, since this is already done in</span>
+<span class="sd">        the &#39;return&#39; step of the model. This *2 causes the model to steeply over</span>
+<span class="sd">        estimate the rainfall during short rainfall events.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : pandas.DataFrame</span>
+<span class="sd">        DataFrame with rainfall time series. Needs to contain the following columns:</span>
+<span class="sd">        - *datetime* (pandas.Timestamp): Time stamp</span>
+<span class="sd">        - *rain_mm* (float): Rain in mm.  No NaN or 0-values allowed</span>
+<span class="sd">        - *event_rain_cum* (float): Cumulative rain in mm</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    maxprecip_30min : float</span>
+<span class="sd">        Maximal 30-minute intensity during event (in mm/h).</span>
+
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The Python and original Matlab implementation linearly interpolate zero and</span>
+<span class="sd">    NaN-values within one event.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+            <span class="s2">&quot;Matlab intensity method does not support Nan values in rain&quot;</span> <span class="s2">&quot;time series.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">current_year</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_year</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">RFactorInputError</span><span class="p">(</span><span class="s2">&quot;Data should all be in the same year.&quot;</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;minutes_since&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">current_year</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">-01-01&quot;</span><span class="p">)</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span><span class="o">.</span><span class="n">values</span> <span class="o">/</span> <span class="mi">60</span>
+
+    <span class="n">timestamps</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;minutes_since&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">rain</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">rain_cum</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;event_rain_cum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="n">maxprecip_30min</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="k">if</span> <span class="n">timestamps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">timestamps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">30</span><span class="p">:</span>
+        <span class="n">maxprecip_30min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">rain</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)):</span>
         <span class="n">eind_30min</span> <span class="o">=</span> <span class="n">timestamps</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+</span> <span class="mi">20</span>
         <span class="n">begin_rain</span> <span class="o">=</span> <span class="n">rain_cum</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">rain</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
 
@@ -224,12 +303,13 @@
 <span class="sd">        DataFrame with rainfall time series. Needs to contain the following columns:</span>
 
 <span class="sd">        - *datetime* (pandas.Timestamp): Timestamp</span>
-<span class="sd">        - *rain_mm* (float): Rain in mm</span>
+<span class="sd">        - *rain_mm* (float): Rain in mm.  No NaN or 0-values allowed</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    maxprecip_30min : float</span>
 <span class="sd">        Maximal 30-minute intensity during event (in mm/h).</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># formula requires mm/hr, intensity is derived on half an hour</span>
     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="s2">&quot;30min&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span></div>
@@ -363,6 +443,10 @@
 <span class="sd">        See :func:`rfactor.rfactor._compute_erosivity`, added with</span>
 
 <span class="sd">        - *tag* (str): unique tag for year, station-couple.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    NaN- and 0-values are removed from the input timeseries.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="p">{</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">,</span> <span class="s2">&quot;datetime&quot;</span><span class="p">}</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">rain</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">RFactorKeyError</span><span class="p">(</span>

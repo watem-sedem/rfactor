@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Get started &mdash; rfactor 0.1.2.post1.dev6+g8512302 documentation</title>
+  <title>Get started &mdash; rfactor 0.1.2.post1.dev27+g70cd4a5 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -37,7 +37,7 @@
             rfactor
           </a>
               <div class="version">
-                0.1.2.post1.dev6+g8512302
+                0.1.2.post1.dev27+g70cd4a5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -97,6 +97,11 @@
 years.</p></li>
 <li><p>Use the computed <span class="math notranslate nohighlight">\(EI_{30}\)</span> values to compute an R-value.</p></li>
 </ol>
+<p>On this page, an example application can be found. Pandas is used as package
+to format input data for the computations, for which a default is defined in
+the section below. The package holds two specific example functions
+to load files (see KU Leuven and VMM legacy) to the pandas format
+(see section <em>File handling</em>).</p>
 <section id="from-10-rain-data-to-ei-for-a-single-station-year">
 <h2>From 10’ rain data to EI for a single station/year<a class="headerlink" href="#from-10-rain-data-to-ei-for-a-single-station-year" title="Permalink to this headline"></a></h2>
 <p>The input of the erosivity algorithm is a rainfall time series with a 10’
@@ -144,6 +149,11 @@ measurement station identifier), but the <code class="docutils literal notransla
 contain both data of a single year/station  as multiple years/stations (see
 further to calculate multiple stations together. Make sure that the
 <code class="docutils literal notranslate"><span class="pre">station</span></code> column is present also for the single station case.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The pandas input data can not hold NULL (NaN) or 0! The user needs to
+delete/interpolate these values beforehand.</p>
+</div>
 <p>Erosivity (EI30-values) for a single station/year combination can be computed
 (make sure to activating the conda environment, <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">rfactor</span></code>).
 The <a class="reference internal" href="api/rfactor.html#rfactor.compute_erosivity" title="rfactor.compute_erosivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.compute_erosivity()</span></code></a> function applies the algorithm to a
@@ -399,14 +409,14 @@ existing Pandas functionalities:</p>
 <section id="file-handling">
 <h2>File handling<a class="headerlink" href="#file-handling" title="Permalink to this headline"></a></h2>
 <p>This package provides a number of processing functions in the
-<a class="reference internal" href="api/rfactor.html#module-rfactor.process" title="rfactor.process"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rfactor.process</span></code></a> module to enable compatibility of the input formar with
+<a class="reference internal" href="api/rfactor.html#module-rfactor.process" title="rfactor.process"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rfactor.process</span></code></a> module to enable compatibility of the input format with
 the required data format defined in this package (see previous section).
 Currently, next processing functions are implemented:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="api/rfactor.html#rfactor.process.load_rain_file_matlab_legacy" title="rfactor.process.load_rain_file_matlab_legacy"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_rain_file_matlab_legacy()</span></code></a>: This is the processing
 function used to process the <code class="docutils literal notranslate"><span class="pre">Matlab</span> <span class="pre">KU-Leuven</span></code> file legacy.</p></li>
-<li><p><a class="reference internal" href="api/rfactor.html#rfactor.process.load_rain_file_csv_vmm" title="rfactor.process.load_rain_file_csv_vmm"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_rain_file_csv_vmm()</span></code></a>: This is the processing
-function used to process the <code class="docutils literal notranslate"><span class="pre">VMM</span> <span class="pre">CSV</span></code> file legacy.</p></li>
+<li><p><a class="reference internal" href="api/rfactor.html#rfactor.process.load_rain_file_txt" title="rfactor.process.load_rain_file_txt"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_rain_file_txt()</span></code></a>: This is the processing
+function used to process the <code class="docutils literal notranslate"><span class="pre">VMM</span></code> file legacy.</p></li>
 </ul>
 <p>Both file-formats can be loaded with the defined processing function, i.e.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
@@ -418,7 +428,7 @@ function used to process the <code class="docutils literal notranslate"><span cl
 
 <span class="c1"># Load a VMM CSV</span>
 <span class="n">fname</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/PATH/TO/YOUR/RAINFALL/DATA/FOLDER/P01_001.CSV&quot;</span><span class="p">)</span>
-<span class="n">from_vmm</span> <span class="o">=</span> <span class="n">load_rain_file_csv_vmm</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+<span class="n">from_vmm</span> <span class="o">=</span> <span class="n">load_rain_file_txt</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Or a folder containing multiple files can be loaded:</p>
@@ -431,7 +441,7 @@ function used to process the <code class="docutils literal notranslate"><span cl
 <span class="n">from_matlab</span> <span class="o">=</span> <span class="n">load_rain_folder</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">load_rain_file_matlab_legacy</span><span class="p">)</span>
 
 <span class="c1"># Load an entire set of VMM CSV-legacy files</span>
-<span class="n">folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/PATH/FOLDER/CONTAINING/VMMCSVFORMAT/FILES&quot;</span><span class="p">)</span>
+<span class="n">folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/PATH/FOLDER/CONTAINING/VMMTEXTFORMAT/FILES&quot;</span><span class="p">)</span>
 <span class="n">from_matlab</span> <span class="o">=</span> <span class="n">load_rain_file_csv_vmm</span><span class="p">(</span><span class="n">folder</span><span class="p">,</span> <span class="n">load_rain_file_matlab_legacy</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -467,8 +477,8 @@ per year with a specific datafile tag (format: <strong>SOURCE_STATION_YEAR.txt</
 <p>with the first column being the timestamp from the start of the year
 (minutes) , and second the rainfall depth (in mm).</p>
 </section>
-<section id="vmm-csv-legacy">
-<h3>VMM CSV legacy<a class="headerlink" href="#vmm-csv-legacy" title="Permalink to this headline"></a></h3>
+<section id="vmm-legacy">
+<h3>VMM legacy<a class="headerlink" href="#vmm-legacy" title="Permalink to this headline"></a></h3>
 <p>Starting from 2018, a new input format is defined and used for the analysis of
 flanders. The reason for this is two-folded:</p>
 <ol class="arabic simple">
