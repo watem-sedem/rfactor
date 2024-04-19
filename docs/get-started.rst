@@ -9,6 +9,12 @@ The R-factor scripts can be used to:
    years.
 2. Use the computed :math:`EI_{30}` values to compute an R-value.
 
+On this page, an example application can be found. Pandas is used as package
+to format input data for the computations, for which a default is defined in
+the section below. The package holds two specific example functions
+to load files (see KU Leuven and VMM legacy) to the pandas format
+(see section *File handling*).
+
 
 From 10' rain data to EI for a single station/year
 --------------------------------------------------
@@ -34,6 +40,11 @@ measurement station identifier), but the ``datetime``, ``rain_mm`` and
 contain both data of a single year/station  as multiple years/stations (see
 further to calculate multiple stations together. Make sure that the
 ``station`` column is present also for the single station case.
+
+.. note::
+
+    The pandas input data can not hold NULL (NaN) or 0! The user needs to
+    delete/interpolate these values beforehand.
 
 Erosivity (EI30-values) for a single station/year combination can be computed
 (make sure to activating the conda environment, ``conda activate rfactor``).
@@ -87,6 +98,8 @@ R-factor can be calculated using the existing Pandas functionalities:
 
     erosivity.resample("M", on="datetime")["erosivity"].sum()  # Monthly value
     erosivity.resample("SM", on="datetime")["erosivity"].sum()  # Biweekly value
+
+
 
 
 Calculating multiple station/year combinations
@@ -159,14 +172,14 @@ File handling
 -------------
 
 This package provides a number of processing functions in the
-:mod:`rfactor.process` module to enable compatibility of the input formar with
+:mod:`rfactor.process` module to enable compatibility of the input format with
 the required data format defined in this package (see previous section).
 Currently, next processing functions are implemented:
 
 - :func:`rfactor.process.load_rain_file_matlab_legacy`: This is the processing
   function used to process the ``Matlab KU-Leuven`` file legacy.
-- :func:`rfactor.process.load_rain_file_csv_vmm`: This is the processing
-  function used to process the ``VMM CSV`` file legacy.
+- :func:`rfactor.process.load_rain_file_txt`: This is the processing
+  function used to process the ``VMM`` file legacy.
 
 Both file-formats can be loaded with the defined processing function, i.e.
 
@@ -181,7 +194,7 @@ Both file-formats can be loaded with the defined processing function, i.e.
 
     # Load a VMM CSV
     fname = Path("/PATH/TO/YOUR/RAINFALL/DATA/FOLDER/P01_001.CSV")
-    from_vmm = load_rain_file_csv_vmm(fname)
+    from_vmm = load_rain_file_txt(fname)
 
 Or a folder containing multiple files can be loaded:
 
@@ -196,7 +209,7 @@ Or a folder containing multiple files can be loaded:
     from_matlab = load_rain_folder(folder, load_rain_file_matlab_legacy)
 
     # Load an entire set of VMM CSV-legacy files
-    folder = Path("/PATH/FOLDER/CONTAINING/VMMCSVFORMAT/FILES")
+    folder = Path("/PATH/FOLDER/CONTAINING/VMMTEXTFORMAT/FILES")
     from_matlab = load_rain_file_csv_vmm(folder, load_rain_file_matlab_legacy)
 
 .. note::
@@ -235,8 +248,8 @@ The content of each of this file is a **non-zero** rainfall timeseries
 with the first column being the timestamp from the start of the year
 (minutes) , and second the rainfall depth (in mm).
 
-VMM CSV legacy
-~~~~~~~~~~~~~~
+VMM legacy
+~~~~~~~~~~
 
 Starting from 2018, a new input format is defined and used for the analysis of
 flanders. The reason for this is two-folded:
