@@ -1,5 +1,4 @@
 import multiprocessing as mp
-import warnings
 from functools import partial
 
 import numpy as np
@@ -269,7 +268,6 @@ def _compute_erosivity(
         raise RFactorInputError("DataFrame should contain data of a single year.")
 
     # mark start of each rain event
-    rain = rain[rain["rain_mm"] > 0.0]  # Only keep measurements with rain
     rain = rain.assign(event_start=False)
     rain.loc[rain["datetime"].diff() >= event_split, "event_start"] = True
     rain.loc[rain.index[0], "event_start"] = True
@@ -378,10 +376,10 @@ def compute_erosivity(rain, intensity_method=maximum_intensity):
 
     if ((rain["rain_mm"] == 0).sum() > 0) or (rain["rain_mm"].isnull().sum() > 0):
         msg = (
-            "Can only accept non-zero/non-NULL timeseries. Removing zero and/or "
-            "NULL-values detected in input 'rain_mm' column."
+            "Can only accept non-zero/non-NULL timeseries. Please remove/interpolate"
+            " zero and/or NULL-values in input 'rain_mm' column."
         )
-        warnings.warn(msg)
+        raise RFactorInputError(msg)
 
     rain = rain.assign(year=rain["datetime"].dt.year.astype(np.int64))
 
