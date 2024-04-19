@@ -1,0 +1,53 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: rfactor
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Sacha
+    family-names: Gobeyn
+    email: sacha@fluves.com
+    orcid: 'https://orcid.org/0000-0002-4615-6655'
+    affiliation: Fluves
+  - given-names: Stijn
+    family-names: Van Hoey
+    email: stijn@fluves.com
+    affiliation: Fluves
+    orcid: 'https://orcid.org/0000-0001-6413-3185'
+  - given-names: 'Johan '
+    family-names: Van de Wauw
+    email: johan@fluves.com
+    affiliation: Fluves
+  - given-names: Daan
+    family-names: Renders
+    email: Daan@fluves.com
+    affiliation: Fluves
+  - given-names: Seth
+    family-names: Callewaert
+    email: seth.callewaert@vlaanderen.be
+    affiliation: Departement Omgeving
+  - given-names: Dries
+    family-names: Luts
+    email: dries.luts@vlaanderen.be
+    affiliation: Departement Omgeving
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.7966606
+repository-code: 'https://github.com/watem-sedem/rfactor'
+url: 'https://watem-sedem.github.io/rfactor'
+abstract: >-
+  The R-factor is a measure used in erosion and (overland)
+  sediment modelling to quantify the effect of rainfall on
+  soil erosion. It is typically defined in the context of
+  the RUSLE equation, in which gross erosion for an
+  agricultural parcel is estimated. This Python package
+  enables an interface with a number of functions to compute
+  this factor
+license: LGPL-3.0
+commit: eaad6295d87e4c642245a155de6cb83951e7390f
+version: 0.1.2
+date-released: '2023-05-24'
