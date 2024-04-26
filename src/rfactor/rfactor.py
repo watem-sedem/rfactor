@@ -21,7 +21,7 @@ class RFactorTypeError(Exception):
     """Raise when input data data type of a data column is wrong."""
 
 
-def rain_energy_per_unit_depth(rain):
+def rain_energy_per_unit_depth_verstraeten2006(rain):
     """Calculate rain energy per unit depth according to Salles/Verstraeten.
 
     Parameters
@@ -229,6 +229,7 @@ def maximum_intensity(df):
 
 def _compute_erosivity(
     rain,
+    energy_method,
     intensity_method,
     event_split=TIME_BETWEEN_EVENTS,
     event_threshold=MIN_CUMUL_EVENT,
@@ -242,6 +243,8 @@ def _compute_erosivity(
 
         - *datetime* (pd.Timestamp): Time stamp
         - *rain_mm* (float): Rain in mm
+    energy_method: Callable
+        Function to compute the rain energy per unit depth
     intensity_method : Callable
         Function to derive the maximal rain intensity (over 30min)
     event_split : str
@@ -280,9 +283,7 @@ def _compute_erosivity(
 
     # add rain energy for each event
     rain = rain.assign(
-        event_energy=rain.groupby("event_idx")["rain_mm"].transform(
-            rain_energy_per_unit_depth
-        )
+        event_energy=rain.groupby("event_idx")["rain_mm"].transform(energy_method)
     )
 
     # calculate the maximal rain intensity in 30minutes interval
@@ -326,15 +327,19 @@ def _compute_erosivity(
     return events
 
 
-def _apply_rfactor(name, group, intensity_method):
+def _apply_rfactor(name, group, energy_method, intensity_method):
     """Wrapper helper function for parallel execution of erosivity on groups"""
-    df = _compute_erosivity(group, intensity_method)
+    df = _compute_erosivity(group, energy_method, intensity_method)
     df[["station", "year"]] = name
     return df
 
 
-def compute_erosivity(rain, intensity_method=maximum_intensity):
-    """Calculate erosivity according to Verstraeten G. for each year/station combination
+def compute_erosivity(
+    rain,
+    energy_method=rain_energy_per_unit_depth_verstraeten2006,
+    intensity_method=maximum_intensity,
+):
+    """Calculate erosivity  for each year/station combination
 
     Parameters
     ----------
@@ -345,6 +350,8 @@ def compute_erosivity(rain, intensity_method=maximum_intensity):
         - *rain_mm* (float): Rain in mm
         - *station* (str): Measurement station identifier
 
+    energy_method: Callable, default rain_energy_per_unit_depth_verstraeten2006
+        Function to compute the rain energy per unit depth
     intensity_method : Callable, default maximum_intensity
         Function to derive the maximal rain intensity (over 30min).
 
@@ -388,7 +395,9 @@ def compute_erosivity(rain, intensity_method=maximum_intensity):
             tag=rain["station"].astype(str) + "_" + rain["year"].astype(str)
         )
 
-    fun_with_method = partial(_apply_rfactor, intensity_method=intensity_method)
+    fun_with_method = partial(
+        _apply_rfactor, energy_method=energy_method, intensity_method=intensity_method
+    )
     grouped = rain.groupby(["station", "year"])
     results = Parallel(n_jobs=mp.cpu_count() - 1)(
         delayed(fun_with_method)(name, group) for name, group in grouped
