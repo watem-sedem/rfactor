@@ -55,7 +55,7 @@ DataFrame ``df_rain``.
 .. code-block:: python
 
     from rfactor import compute_erosivity, maximum_intensity
-    erosivity = compute_erosivity(df_rain, maximum_intensity)
+    erosivity = compute_erosivity(df_rain, rain_energy_per_unit_depth_verstraeten2006, maximum_intensity)
 
 .. note::
 
@@ -65,6 +65,14 @@ DataFrame ``df_rain``.
     implementation version
     :func:`rfactor.rfactor.maximum_intensity_matlab_clone` can be used to
     compare with the corrected Matlab implementation.
+
+.. note::
+
+    Equally to note above, the
+    :func:`rfactor.rfactor.rain_energy_per_unit_depth_verstraeten2006` is the
+    default method to deriver rain energy per unit depth for an event. Also
+    here, users can implement their custom function.
+
 
 The output is a DataFrame with the intermediate results and the cumulative
 erosivity of each of the defined events:
