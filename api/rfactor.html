@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor package &mdash; rfactor 0.1.2.post1.dev46+g8e6fe33 documentation</title>
+  <title>rfactor package &mdash; rfactor 0.1.2.post1.dev48+g9581f8b documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=597b0ea2"></script>
+        <script src="../_static/documentation_options.js?v=56f7ad38"></script>
         <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -25,7 +25,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Application of rfactor on data det Flanders" href="../notebooks/analysis_flanders.html" />
-    <link rel="prev" title="rfactor" href="modules.html" /> 
+    <link rel="prev" title="Module Reference" href="modules.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,7 +40,7 @@
             rfactor
           </a>
               <div class="version">
-                0.1.2.post1.dev46+g8e6fe33
+                0.1.2.post1.dev48+g9581f8b
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -85,7 +85,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="modules.html">rfactor</a></li>
+          <li class="breadcrumb-item"><a href="modules.html">Module Reference</a></li>
       <li class="breadcrumb-item active">rfactor package</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/watem-sedem/rfactor/blob/master/docs/api/rfactor.rst" class="fa fa-github"> Edit on GitHub</a>
@@ -98,8 +98,207 @@
              
   <section id="rfactor-package">
 <h1>rfactor package<a class="headerlink" href="#rfactor-package" title="Link to this heading"></a></h1>
-<section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+<section id="module-rfactor.rfactor">
+<span id="rfactor-rfactor-module"></span><h2>rfactor.rfactor module<a class="headerlink" href="#module-rfactor.rfactor" title="Link to this heading"></a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="rfactor.rfactor.RFactorInputError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">RFactorInputError</span></span><a class="reference internal" href="../_modules/rfactor/rfactor.html#RFactorInputError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.RFactorInputError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.11/library/exceptions.html#Exception" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Raise when input data are not conform the rfactor required input format.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="rfactor.rfactor.RFactorKeyError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">RFactorKeyError</span></span><a class="reference internal" href="../_modules/rfactor/rfactor.html#RFactorKeyError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.RFactorKeyError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.11/library/exceptions.html#Exception" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Raise when input data missing required column names.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="rfactor.rfactor.RFactorTypeError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">RFactorTypeError</span></span><a class="reference internal" href="../_modules/rfactor/rfactor.html#RFactorTypeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.RFactorTypeError" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.11/library/exceptions.html#Exception" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Raise when input data data type of a data column is wrong.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rfactor.rfactor.compute_erosivity">
+<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">compute_erosivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_method=&lt;function</span> <span class="pre">rain_energy_per_unit_depth_verstraeten2006&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensity_method=&lt;function</span> <span class="pre">maximum_intensity&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#compute_erosivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.compute_erosivity" title="Link to this definition"></a></dt>
+<dd><p>Calculate erosivity  for each year/station combination</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rain</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Need to contain the following columns:</p>
+<ul>
+<li><p><em>datetime</em> (pandas.Timestamp): Time stamp</p></li>
+<li><p><em>rain_mm</em> (float): Rain in mm</p></li>
+<li><p><em>station</em> (str): Measurement station identifier</p></li>
+</ul>
+</p></li>
+<li><p><strong>energy_method</strong> (<em>Callable</em><em>, </em><em>default rain_energy_per_unit_depth_verstraeten2006</em>) – Function to compute the rain energy per unit depth</p></li>
+<li><p><strong>intensity_method</strong> (<em>Callable</em><em>, </em><em>default maximum_intensity</em>) – Function to derive the maximal rain intensity (over 30min).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>all_erosivity</strong> – DataFrame with erosivity output for each event.</p>
+<ul class="simple">
+<li><p><em>datetime</em> (pandas.Timestamp): Time stamp</p></li>
+<li><p><em>datetime</em> (pandas.Timestamp): Time stamp</p></li>
+<li><p><em>event_rain_cum</em> (float): Cumulative rain for each event</p></li>
+<li><p><em>max_30min_intensity</em> (float): Maximal 30min intensity for each event</p></li>
+<li><p><em>event_energy</em> (float): Rain energy per unit depth for each event</p></li>
+<li><p><em>erosivity</em> (float): Erosivity for each event</p></li>
+<li><p><em>all_events_cum</em> (float): Cumulative rain over all events together</p></li>
+<li><p><em>erosivity_cum</em> (float): Cumulative erosivity over all events together</p></li>
+<li><p><em>tag</em> (str): unique tag for year, station-couple.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>NaN- and 0-values are removed from the input timeseries.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rfactor.rfactor.maximum_intensity">
+<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">maximum_intensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#maximum_intensity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.maximum_intensity" title="Link to this definition"></a></dt>
+<dd><p>Maximum rain intensity for 30-min interval (Pandas rolling) expressed as mm/hour</p>
+<p>The implementation uses a rolling window of the chosen interval to derive the
+maximal intensity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Needs to contain the following columns:</p>
+<ul class="simple">
+<li><p><em>datetime</em> (pandas.Timestamp): Timestamp</p></li>
+<li><p><em>rain_mm</em> (float): Rain in mm.  No NaN or 0-values allowed</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>maxprecip_30min</strong> – Maximal 30-minute intensity during event (in mm/h).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#float" title="(in Python v3.11)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rfactor.rfactor.maximum_intensity_matlab_clone">
+<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">maximum_intensity_matlab_clone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#maximum_intensity_matlab_clone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.maximum_intensity_matlab_clone" title="Link to this definition"></a></dt>
+<dd><p>Maximum rain intensity for 30-min interval (Matlab clone).</p>
+<p>The implementation is a direct Python-translation of the original Matlab
+implementation by Verstraeten et al. (2006) <a class="footnote-reference brackets" href="#id12" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)"><em>pandas.DataFrame</em></a>) – DataFrame with rainfall time series. Needs to contain the following columns:
+- <em>datetime</em> (pandas.Timestamp): Time stamp
+- <em>rain_mm</em> (float): Rain in mm. No NaN or 0-values allowed
+- <em>event_rain_cum</em> (float): Cumulative rain in mm</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>maxprecip_30min</strong> – Maximal 30-minute intensity during event (in mm/h).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#float" title="(in Python v3.11)">float</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Python and original Matlab implementation linearly interpolate zero and
+NaN-values within one event.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rfactor.rfactor.maximum_intensity_matlab_clone_fix">
+<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">maximum_intensity_matlab_clone_fix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#maximum_intensity_matlab_clone_fix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.maximum_intensity_matlab_clone_fix" title="Link to this definition"></a></dt>
+<dd><p>Maximum rain intensity for 30-min interval (Matlab clone Fix).
+This implementation is a fixed version of the Python-translation of the original
+Matlab implementation by <a class="footnote-reference brackets" href="#id12" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
+<dl class="simple">
+<dt>Changes to the original script are:</dt><dd><ul class="simple">
+<li><p>In the if-statement ‘if timestamps[-1] - timestamps[0] &lt;= 30:’ this methode
+calculates the total amount of rain during the interval while the original
+method only looks at the first rainfall entry.</p></li>
+<li><p>In the same if-statement, the <a href="#id3"><span class="problematic" id="id4">*</span></a>2 was removed, since this is already done in
+the ‘return’ step of the model. This <a href="#id5"><span class="problematic" id="id6">*</span></a>2 causes the model to steeply over
+estimate the rainfall during short rainfall events.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)"><em>pandas.DataFrame</em></a>) – DataFrame with rainfall time series. Needs to contain the following columns:
+- <em>datetime</em> (pandas.Timestamp): Time stamp
+- <em>rain_mm</em> (float): Rain in mm.  No NaN or 0-values allowed
+- <em>event_rain_cum</em> (float): Cumulative rain in mm</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>maxprecip_30min</strong> – Maximal 30-minute intensity during event (in mm/h).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#float" title="(in Python v3.11)">float</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Python and original Matlab implementation linearly interpolate zero and
+NaN-values within one event.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rfactor.rfactor.rain_energy_per_unit_depth_verstraeten2006">
+<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">rain_energy_per_unit_depth_verstraeten2006</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rain</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#rain_energy_per_unit_depth_verstraeten2006"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.rain_energy_per_unit_depth_verstraeten2006" title="Link to this definition"></a></dt>
+<dd><p>Calculate rain energy per unit depth according to Salles/Verstraeten.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rain</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><em>numpy.ndarray</em></a>) – Rain (mm)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>energy</strong> – Energy per unit depth.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#float" title="(in Python v3.11)">float</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The rain energy per unit depth <span class="math notranslate nohighlight">\(e_r\)</span> (<span class="math notranslate nohighlight">\(\text{J}.\text{mm}^{-1}.
+\text{m}^{-2}\)</span>) for an application for Flanders/Belgium is defined
+by <a class="footnote-reference brackets" href="#id10" id="id7" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> , <a class="footnote-reference brackets" href="#id11" id="id8" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> and <a class="footnote-reference brackets" href="#id12" id="id9" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>:</p>
+<div class="math notranslate nohighlight">
+\[e_r = 11.12i_r^{0.31}\]</div>
+<p>with</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(i_r\)</span> the rain intensity for every 10-min
+increment (mm <span class="math notranslate nohighlight">\(\text{h}^{-1}\)</span> ).</p></li>
+</ul>
+</div></blockquote>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id10" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">1</a><span class="fn-bracket">]</span></span>
+<p>Salles, C., Poesen, J., Pissart, A., 1999, Rain erosivity indices and drop
+size distribution for central Belgium. Presented at the General Assembly of
+the European Geophysical Society, The Hague, The Netherlands, p. 280.</p>
+</aside>
+<aside class="footnote brackets" id="id11" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">2</a><span class="fn-bracket">]</span></span>
+<p>Salles, C., Poesen, J., Sempere-Torres, D., 2002. Kinetic energy of rain and
+its functional relationship with intensity. Journal of Hydrology 257, 256–270.</p>
+</aside>
+<aside class="footnote brackets" id="id12" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>,<a role="doc-backlink" href="#id9">3</a>)</span>
+<p>Verstraeten, G., Poesen, J., Demarée, G., Salles, C., 2006, Long-term
+(105 years) variability in rain erosivity as derived from 10-min rainfall
+depth data for Ukkel (Brussels, Belgium): Implications for assessing soil
+erosion rates. Journal Geophysysical Research, 111, D22109.</p>
+</aside>
+</aside>
+</dd></dl>
+
 </section>
 <section id="module-rfactor.process">
 <span id="rfactor-process-module"></span><h2>rfactor.process module<a class="headerlink" href="#module-rfactor.process" title="Link to this heading"></a></h2>
@@ -416,207 +615,6 @@ see <a class="reference internal" href="#rfactor.process.load_rain_file" title="
 </dd></dl>
 
 </section>
-<section id="module-rfactor.rfactor">
-<span id="rfactor-rfactor-module"></span><h2>rfactor.rfactor module<a class="headerlink" href="#module-rfactor.rfactor" title="Link to this heading"></a></h2>
-<dl class="py exception">
-<dt class="sig sig-object py" id="rfactor.rfactor.RFactorInputError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">RFactorInputError</span></span><a class="reference internal" href="../_modules/rfactor/rfactor.html#RFactorInputError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.RFactorInputError" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.11/library/exceptions.html#Exception" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
-<p>Raise when input data are not conform the rfactor required input format.</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="rfactor.rfactor.RFactorKeyError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">RFactorKeyError</span></span><a class="reference internal" href="../_modules/rfactor/rfactor.html#RFactorKeyError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.RFactorKeyError" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.11/library/exceptions.html#Exception" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
-<p>Raise when input data missing required column names.</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt class="sig sig-object py" id="rfactor.rfactor.RFactorTypeError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">RFactorTypeError</span></span><a class="reference internal" href="../_modules/rfactor/rfactor.html#RFactorTypeError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.RFactorTypeError" title="Link to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.11/library/exceptions.html#Exception" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
-<p>Raise when input data data type of a data column is wrong.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="rfactor.rfactor.compute_erosivity">
-<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">compute_erosivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_method=&lt;function</span> <span class="pre">rain_energy_per_unit_depth_verstraeten2006&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensity_method=&lt;function</span> <span class="pre">maximum_intensity&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#compute_erosivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.compute_erosivity" title="Link to this definition"></a></dt>
-<dd><p>Calculate erosivity  for each year/station combination</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>rain</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Need to contain the following columns:</p>
-<ul>
-<li><p><em>datetime</em> (pandas.Timestamp): Time stamp</p></li>
-<li><p><em>rain_mm</em> (float): Rain in mm</p></li>
-<li><p><em>station</em> (str): Measurement station identifier</p></li>
-</ul>
-</p></li>
-<li><p><strong>energy_method</strong> (<em>Callable</em><em>, </em><em>default rain_energy_per_unit_depth_verstraeten2006</em>) – Function to compute the rain energy per unit depth</p></li>
-<li><p><strong>intensity_method</strong> (<em>Callable</em><em>, </em><em>default maximum_intensity</em>) – Function to derive the maximal rain intensity (over 30min).</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p><strong>all_erosivity</strong> – DataFrame with erosivity output for each event.</p>
-<ul class="simple">
-<li><p><em>datetime</em> (pandas.Timestamp): Time stamp</p></li>
-<li><p><em>datetime</em> (pandas.Timestamp): Time stamp</p></li>
-<li><p><em>event_rain_cum</em> (float): Cumulative rain for each event</p></li>
-<li><p><em>max_30min_intensity</em> (float): Maximal 30min intensity for each event</p></li>
-<li><p><em>event_energy</em> (float): Rain energy per unit depth for each event</p></li>
-<li><p><em>erosivity</em> (float): Erosivity for each event</p></li>
-<li><p><em>all_events_cum</em> (float): Cumulative rain over all events together</p></li>
-<li><p><em>erosivity_cum</em> (float): Cumulative erosivity over all events together</p></li>
-<li><p><em>tag</em> (str): unique tag for year, station-couple.</p></li>
-</ul>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)">pandas.DataFrame</a></p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>NaN- and 0-values are removed from the input timeseries.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="rfactor.rfactor.maximum_intensity">
-<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">maximum_intensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#maximum_intensity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.maximum_intensity" title="Link to this definition"></a></dt>
-<dd><p>Maximum rain intensity for 30-min interval (Pandas rolling) expressed as mm/hour</p>
-<p>The implementation uses a rolling window of the chosen interval to derive the
-maximal intensity.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Needs to contain the following columns:</p>
-<ul class="simple">
-<li><p><em>datetime</em> (pandas.Timestamp): Timestamp</p></li>
-<li><p><em>rain_mm</em> (float): Rain in mm.  No NaN or 0-values allowed</p></li>
-</ul>
-</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>maxprecip_30min</strong> – Maximal 30-minute intensity during event (in mm/h).</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#float" title="(in Python v3.11)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="rfactor.rfactor.maximum_intensity_matlab_clone">
-<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">maximum_intensity_matlab_clone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#maximum_intensity_matlab_clone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.maximum_intensity_matlab_clone" title="Link to this definition"></a></dt>
-<dd><p>Maximum rain intensity for 30-min interval (Matlab clone).</p>
-<p>The implementation is a direct Python-translation of the original Matlab
-implementation by Verstraeten et al. (2006) <a href="#id25"><span class="problematic" id="id1">[3]_</span></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)"><em>pandas.DataFrame</em></a>) – DataFrame with rainfall time series. Needs to contain the following columns:
-- <em>datetime</em> (pandas.Timestamp): Time stamp
-- <em>rain_mm</em> (float): Rain in mm. No NaN or 0-values allowed
-- <em>event_rain_cum</em> (float): Cumulative rain in mm</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>maxprecip_30min</strong> – Maximal 30-minute intensity during event (in mm/h).</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#float" title="(in Python v3.11)">float</a></p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The Python and original Matlab implementation linearly interpolate zero and
-NaN-values within one event.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="rfactor.rfactor.maximum_intensity_matlab_clone_fix">
-<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">maximum_intensity_matlab_clone_fix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#maximum_intensity_matlab_clone_fix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.maximum_intensity_matlab_clone_fix" title="Link to this definition"></a></dt>
-<dd><p>Maximum rain intensity for 30-min interval (Matlab clone Fix).
-This implementation is a fixed version of the Python-translation of the original
-Matlab implementation by <a href="#id26"><span class="problematic" id="id2">[3]_</span></a>.</p>
-<dl class="simple">
-<dt>Changes to the original script are:</dt><dd><ul class="simple">
-<li><p>In the if-statement ‘if timestamps[-1] - timestamps[0] &lt;= 30:’ this methode
-calculates the total amount of rain during the interval while the original
-method only looks at the first rainfall entry.</p></li>
-<li><p>In the same if-statement, the <a href="#id3"><span class="problematic" id="id4">*</span></a>2 was removed, since this is already done in
-the ‘return’ step of the model. This <a href="#id5"><span class="problematic" id="id6">*</span></a>2 causes the model to steeply over
-estimate the rainfall during short rainfall events.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)"><em>pandas.DataFrame</em></a>) – DataFrame with rainfall time series. Needs to contain the following columns:
-- <em>datetime</em> (pandas.Timestamp): Time stamp
-- <em>rain_mm</em> (float): Rain in mm.  No NaN or 0-values allowed
-- <em>event_rain_cum</em> (float): Cumulative rain in mm</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>maxprecip_30min</strong> – Maximal 30-minute intensity during event (in mm/h).</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#float" title="(in Python v3.11)">float</a></p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The Python and original Matlab implementation linearly interpolate zero and
-NaN-values within one event.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="rfactor.rfactor.rain_energy_per_unit_depth_verstraeten2006">
-<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">rain_energy_per_unit_depth_verstraeten2006</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rain</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#rain_energy_per_unit_depth_verstraeten2006"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.rain_energy_per_unit_depth_verstraeten2006" title="Link to this definition"></a></dt>
-<dd><p>Calculate rain energy per unit depth according to Salles/Verstraeten.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>rain</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><em>numpy.ndarray</em></a>) – Rain (mm)</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>energy</strong> – Energy per unit depth.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#float" title="(in Python v3.11)">float</a></p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The rain energy per unit depth <span class="math notranslate nohighlight">\(e_r\)</span> (<span class="math notranslate nohighlight">\(\text{J}.\text{mm}^{-1}.
-\text{m}^{-2}\)</span>) for an application for Flanders/Belgium is defined
-by <a href="#id27"><span class="problematic" id="id7">[1]_</span></a> , <a href="#id28"><span class="problematic" id="id8">[2]_</span></a> and <a href="#id29"><span class="problematic" id="id9">[3]_</span></a>:</p>
-<div class="math notranslate nohighlight">
-\[e_r = 11.12i_r^{0.31}\]</div>
-<p>with</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(i_r\)</span> the rain intensity for every 10-min
-increment (mm <span class="math notranslate nohighlight">\(\text{h}^{-1}\)</span> ).</p></li>
-</ul>
-</div></blockquote>
-<p class="rubric">References</p>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id10" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<p>Salles, C., Poesen, J., Pissart, A., 1999, Rain erosivity indices and drop
-size distribution for central Belgium. Presented at the General Assembly of
-the European Geophysical Society, The Hague, The Netherlands, p. 280.</p>
-</aside>
-<aside class="footnote brackets" id="id11" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
-<p>Salles, C., Poesen, J., Sempere-Torres, D., 2002. Kinetic energy of rain and
-its functional relationship with intensity. Journal of Hydrology 257, 256–270.</p>
-</aside>
-<aside class="footnote brackets" id="id12" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
-<p>Verstraeten, G., Poesen, J., Demarée, G., Salles, C., 2006, Long-term
-(105 years) variability in rain erosivity as derived from 10-min rainfall
-depth data for Ukkel (Brussels, Belgium): Implications for assessing soil
-erosion rates. Journal Geophysysical Research, 111, D22109.</p>
-</aside>
-</aside>
-</dd></dl>
-
-</section>
 <section id="module-rfactor.valid">
 <span id="rfactor-valid-module"></span><h2>rfactor.valid module<a class="headerlink" href="#module-rfactor.valid" title="Link to this heading"></a></h2>
 <dl class="py function">
@@ -688,193 +686,13 @@ usage R-factor package to above 1-minute resolution.</p>
 </dd></dl>
 
 </section>
-<section id="module-rfactor">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-rfactor" title="Link to this heading"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="rfactor.compute_erosivity">
-<span class="sig-prename descclassname"><span class="pre">rfactor.</span></span><span class="sig-name descname"><span class="pre">compute_erosivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_method=&lt;function</span> <span class="pre">rain_energy_per_unit_depth_verstraeten2006&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensity_method=&lt;function</span> <span class="pre">maximum_intensity&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#compute_erosivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.compute_erosivity" title="Link to this definition"></a></dt>
-<dd><p>Calculate erosivity  for each year/station combination</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>rain</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Need to contain the following columns:</p>
-<ul>
-<li><p><em>datetime</em> (pandas.Timestamp): Time stamp</p></li>
-<li><p><em>rain_mm</em> (float): Rain in mm</p></li>
-<li><p><em>station</em> (str): Measurement station identifier</p></li>
-</ul>
-</p></li>
-<li><p><strong>energy_method</strong> (<em>Callable</em><em>, </em><em>default rain_energy_per_unit_depth_verstraeten2006</em>) – Function to compute the rain energy per unit depth</p></li>
-<li><p><strong>intensity_method</strong> (<em>Callable</em><em>, </em><em>default maximum_intensity</em>) – Function to derive the maximal rain intensity (over 30min).</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p><strong>all_erosivity</strong> – DataFrame with erosivity output for each event.</p>
-<ul class="simple">
-<li><p><em>datetime</em> (pandas.Timestamp): Time stamp</p></li>
-<li><p><em>datetime</em> (pandas.Timestamp): Time stamp</p></li>
-<li><p><em>event_rain_cum</em> (float): Cumulative rain for each event</p></li>
-<li><p><em>max_30min_intensity</em> (float): Maximal 30min intensity for each event</p></li>
-<li><p><em>event_energy</em> (float): Rain energy per unit depth for each event</p></li>
-<li><p><em>erosivity</em> (float): Erosivity for each event</p></li>
-<li><p><em>all_events_cum</em> (float): Cumulative rain over all events together</p></li>
-<li><p><em>erosivity_cum</em> (float): Cumulative erosivity over all events together</p></li>
-<li><p><em>tag</em> (str): unique tag for year, station-couple.</p></li>
-</ul>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)">pandas.DataFrame</a></p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>NaN- and 0-values are removed from the input timeseries.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="rfactor.maximum_intensity">
-<span class="sig-prename descclassname"><span class="pre">rfactor.</span></span><span class="sig-name descname"><span class="pre">maximum_intensity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#maximum_intensity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.maximum_intensity" title="Link to this definition"></a></dt>
-<dd><p>Maximum rain intensity for 30-min interval (Pandas rolling) expressed as mm/hour</p>
-<p>The implementation uses a rolling window of the chosen interval to derive the
-maximal intensity.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)"><em>pandas.DataFrame</em></a>) – <p>DataFrame with rainfall time series. Needs to contain the following columns:</p>
-<ul class="simple">
-<li><p><em>datetime</em> (pandas.Timestamp): Timestamp</p></li>
-<li><p><em>rain_mm</em> (float): Rain in mm.  No NaN or 0-values allowed</p></li>
-</ul>
-</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>maxprecip_30min</strong> – Maximal 30-minute intensity during event (in mm/h).</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#float" title="(in Python v3.11)">float</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="rfactor.maximum_intensity_matlab_clone">
-<span class="sig-prename descclassname"><span class="pre">rfactor.</span></span><span class="sig-name descname"><span class="pre">maximum_intensity_matlab_clone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#maximum_intensity_matlab_clone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.maximum_intensity_matlab_clone" title="Link to this definition"></a></dt>
-<dd><p>Maximum rain intensity for 30-min interval (Matlab clone).</p>
-<p>The implementation is a direct Python-translation of the original Matlab
-implementation by Verstraeten et al. (2006) <a href="#id30"><span class="problematic" id="id13">[3]_</span></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)"><em>pandas.DataFrame</em></a>) – DataFrame with rainfall time series. Needs to contain the following columns:
-- <em>datetime</em> (pandas.Timestamp): Time stamp
-- <em>rain_mm</em> (float): Rain in mm. No NaN or 0-values allowed
-- <em>event_rain_cum</em> (float): Cumulative rain in mm</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>maxprecip_30min</strong> – Maximal 30-minute intensity during event (in mm/h).</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#float" title="(in Python v3.11)">float</a></p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The Python and original Matlab implementation linearly interpolate zero and
-NaN-values within one event.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="rfactor.maximum_intensity_matlab_clone_fix">
-<span class="sig-prename descclassname"><span class="pre">rfactor.</span></span><span class="sig-name descname"><span class="pre">maximum_intensity_matlab_clone_fix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#maximum_intensity_matlab_clone_fix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.maximum_intensity_matlab_clone_fix" title="Link to this definition"></a></dt>
-<dd><p>Maximum rain intensity for 30-min interval (Matlab clone Fix).
-This implementation is a fixed version of the Python-translation of the original
-Matlab implementation by <a href="#id31"><span class="problematic" id="id14">[3]_</span></a>.</p>
-<dl class="simple">
-<dt>Changes to the original script are:</dt><dd><ul class="simple">
-<li><p>In the if-statement ‘if timestamps[-1] - timestamps[0] &lt;= 30:’ this methode
-calculates the total amount of rain during the interval while the original
-method only looks at the first rainfall entry.</p></li>
-<li><p>In the same if-statement, the <a href="#id15"><span class="problematic" id="id16">*</span></a>2 was removed, since this is already done in
-the ‘return’ step of the model. This <a href="#id17"><span class="problematic" id="id18">*</span></a>2 causes the model to steeply over
-estimate the rainfall during short rainfall events.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)"><em>pandas.DataFrame</em></a>) – DataFrame with rainfall time series. Needs to contain the following columns:
-- <em>datetime</em> (pandas.Timestamp): Time stamp
-- <em>rain_mm</em> (float): Rain in mm.  No NaN or 0-values allowed
-- <em>event_rain_cum</em> (float): Cumulative rain in mm</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>maxprecip_30min</strong> – Maximal 30-minute intensity during event (in mm/h).</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#float" title="(in Python v3.11)">float</a></p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The Python and original Matlab implementation linearly interpolate zero and
-NaN-values within one event.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="rfactor.rain_energy_per_unit_depth_verstraeten2006">
-<span class="sig-prename descclassname"><span class="pre">rfactor.</span></span><span class="sig-name descname"><span class="pre">rain_energy_per_unit_depth_verstraeten2006</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rain</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#rain_energy_per_unit_depth_verstraeten2006"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rain_energy_per_unit_depth_verstraeten2006" title="Link to this definition"></a></dt>
-<dd><p>Calculate rain energy per unit depth according to Salles/Verstraeten.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>rain</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><em>numpy.ndarray</em></a>) – Rain (mm)</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>energy</strong> – Energy per unit depth.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#float" title="(in Python v3.11)">float</a></p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The rain energy per unit depth <span class="math notranslate nohighlight">\(e_r\)</span> (<span class="math notranslate nohighlight">\(\text{J}.\text{mm}^{-1}.
-\text{m}^{-2}\)</span>) for an application for Flanders/Belgium is defined
-by <a href="#id32"><span class="problematic" id="id19">[1]_</span></a> , <a href="#id33"><span class="problematic" id="id20">[2]_</span></a> and <a href="#id34"><span class="problematic" id="id21">[3]_</span></a>:</p>
-<div class="math notranslate nohighlight">
-\[e_r = 11.12i_r^{0.31}\]</div>
-<p>with</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(i_r\)</span> the rain intensity for every 10-min
-increment (mm <span class="math notranslate nohighlight">\(\text{h}^{-1}\)</span> ).</p></li>
-</ul>
-</div></blockquote>
-<p class="rubric">References</p>
-<aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id22" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
-<p>Salles, C., Poesen, J., Pissart, A., 1999, Rain erosivity indices and drop
-size distribution for central Belgium. Presented at the General Assembly of
-the European Geophysical Society, The Hague, The Netherlands, p. 280.</p>
-</aside>
-<aside class="footnote brackets" id="id23" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
-<p>Salles, C., Poesen, J., Sempere-Torres, D., 2002. Kinetic energy of rain and
-its functional relationship with intensity. Journal of Hydrology 257, 256–270.</p>
-</aside>
-<aside class="footnote brackets" id="id24" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
-<p>Verstraeten, G., Poesen, J., Demarée, G., Salles, C., 2006, Long-term
-(105 years) variability in rain erosivity as derived from 10-min rainfall
-depth data for Ukkel (Brussels, Belgium): Implications for assessing soil
-erosion rates. Journal Geophysysical Research, 111, D22109.</p>
-</aside>
-</aside>
-</dd></dl>
-
-</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="modules.html" class="btn btn-neutral float-left" title="rfactor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-left" title="Module Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../notebooks/analysis_flanders.html" class="btn btn-neutral float-right" title="Application of rfactor on data det Flanders" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

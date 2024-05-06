@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Get started &mdash; rfactor 0.1.2.post1.dev46+g8e6fe33 documentation</title>
+  <title>Get started &mdash; rfactor 0.1.2.post1.dev48+g9581f8b documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=597b0ea2"></script>
+        <script src="_static/documentation_options.js?v=56f7ad38"></script>
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -24,7 +24,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="rfactor" href="api/modules.html" />
+    <link rel="next" title="Module Reference" href="api/modules.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
 </head>
 
@@ -40,7 +40,7 @@
             rfactor
           </a>
               <div class="version">
-                0.1.2.post1.dev46+g8e6fe33
+                0.1.2.post1.dev48+g9581f8b
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -153,7 +153,7 @@ delete/interpolate these values beforehand.</p>
 </div>
 <p>Erosivity (EI30-values) for a single station/year combination can be computed
 (make sure to activating the conda environment, <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">rfactor</span></code>).
-The <a class="reference internal" href="api/rfactor.html#rfactor.compute_erosivity" title="rfactor.compute_erosivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.compute_erosivity()</span></code></a> function applies the algorithm to a
+The <code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.compute_erosivity()</span></code> function applies the algorithm to a
 DataFrame containing data for a single station/year, e.g. for the data in
 DataFrame <code class="docutils literal notranslate"><span class="pre">df_rain</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor</span> <span class="kn">import</span> <span class="n">compute_erosivity</span><span class="p">,</span> <span class="n">rain_energy_per_unit_depth_verstraeten2006</span><span class="p">,</span> <span class="n">maximum_intensity</span>
@@ -247,7 +247,7 @@ R-factor can be calculated using the existing Pandas functionalities:</p>
 <section id="calculating-multiple-station-year-combinations">
 <h2>Calculating multiple station/year combinations<a class="headerlink" href="#calculating-multiple-station-year-combinations" title="Link to this heading"></a></h2>
 <p>When data are available from multiple stations over multiple years in a single
-DataFrame, the <a class="reference internal" href="api/rfactor.html#rfactor.compute_erosivity" title="rfactor.compute_erosivity"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.compute_erosivity()</span></code></a> function applies the
+DataFrame, the <code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.compute_erosivity()</span></code> function applies the
 erosivity algorithm on each year/station combination in the input rain
 DataFrame. To do so, an additional column with the <code class="docutils literal notranslate"><span class="pre">station</span></code> name is
 required:</p>
@@ -477,7 +477,7 @@ Ukkel (stations: KMI_6447 and KMI_FS3):</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="api/modules.html" class="btn btn-neutral float-right" title="rfactor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="api/modules.html" class="btn btn-neutral float-right" title="Module Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

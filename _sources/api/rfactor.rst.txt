@@ -1,8 +1,13 @@
 rfactor package
 ===============
 
-Submodules
-----------
+rfactor.rfactor module
+----------------------
+
+.. automodule:: rfactor.rfactor
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 rfactor.process module
 ----------------------
@@ -12,26 +17,10 @@ rfactor.process module
    :undoc-members:
    :show-inheritance:
 
-rfactor.rfactor module
-----------------------
-
-.. automodule:: rfactor.rfactor
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 rfactor.valid module
 --------------------
 
 .. automodule:: rfactor.valid
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: rfactor
    :members:
    :undoc-members:
    :show-inheritance:
