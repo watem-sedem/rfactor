@@ -94,7 +94,6 @@ def load_rain_file(file_path, load_fun):
         Load function, current supported functions:
 
         - :func:`rfactor.process.load_rain_file_matlab_legacy`.
-        - :func:`rfactor.process.load_rain_file_csv_vmm`
 
         Please check the required input format for the files in the above listed
         functions.
@@ -356,7 +355,6 @@ def load_rain_folder(folder_path, load_fun):
         Load function, current supported functions:
 
         - :func:`rfactor.process.load_rain_file_matlab_legacy`.
-        - :func:`rfactor.process.load_rain_file_csv_vmm`
 
         Please check the required input format for the files in the above listed
         functions.
@@ -548,6 +546,7 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
         df_statistics = df_statistics.merge(
             df_station_metadata, on="station", how="left"
         )
+
         df_statistics = df_statistics[
             [
                 "year",

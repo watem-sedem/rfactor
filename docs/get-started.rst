@@ -182,43 +182,33 @@ File handling
 This package provides a number of processing functions in the
 :mod:`rfactor.process` module to enable compatibility of the input format with
 the required data format defined in this package (see previous section).
-Currently, next processing functions are implemented:
+Currently, next processing function is implemented:
 
 - :func:`rfactor.process.load_rain_file_matlab_legacy`: This is the processing
   function used to process the ``Matlab KU-Leuven`` file legacy.
-- :func:`rfactor.process.load_rain_file_txt`: This is the processing
-  function used to process the ``VMM`` file legacy.
 
-Both file-formats can be loaded with the defined processing function, i.e.
+This file-format can be loaded with the defined processing function, i.e.
 
 .. code-block:: python
 
     from pathlib import Path
     from rfactor.process import load_rain_file_matlab_legacy,
-                                    load_rain_file_csv_vmm
+
     # Load a Matlab-file
     fname = Path("/PATH/TO/YOUR/RAINFALL/DATA/FOLDER/P01_001_2018.txt")
     from_matlab = load_rain_file_matlab_legacy(fname)
-
-    # Load a VMM CSV
-    fname = Path("/PATH/TO/YOUR/RAINFALL/DATA/FOLDER/P01_001.CSV")
-    from_vmm = load_rain_file_txt(fname)
 
 Or a folder containing multiple files can be loaded:
 
 .. code-block:: python
 
     from pathlib import Path
-    from rfactor.process import load_rain_file_matlab_legacy,
-                                    load_rain_file_csv_vmm, load_rain_folder
+    from rfactor.process import load_rain_file_matlab_legacy, load_rain_folder
 
     # Load an entire set of Matlab-legacy files
     folder = Path("/PATH/FOLDER/CONTAINING/MATLABFORMAT/FILES")
     from_matlab = load_rain_folder(folder, load_rain_file_matlab_legacy)
 
-    # Load an entire set of VMM CSV-legacy files
-    folder = Path("/PATH/FOLDER/CONTAINING/VMMTEXTFORMAT/FILES")
-    from_matlab = load_rain_file_csv_vmm(folder, load_rain_file_matlab_legacy)
 
 .. note::
 
