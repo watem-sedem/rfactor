@@ -12,7 +12,7 @@ The R-factor scripts can be used to:
 On this page, an example application can be found. Pandas is used as package
 to format input data for the computations, for which a default is defined in
 the section below. The package holds two specific example functions
-to load files (see KU Leuven and VMM legacy) to the pandas format
+to load files (see Matlab KU Leuven) to the pandas format
 (see section *File handling*).
 
 
@@ -54,7 +54,7 @@ DataFrame ``df_rain``.
 
 .. code-block:: python
 
-    from rfactor import compute_erosivity, maximum_intensity
+    from rfactor import compute_erosivity, rain_energy_per_unit_depth_verstraeten2006, maximum_intensity
     erosivity = compute_erosivity(df_rain, rain_energy_per_unit_depth_verstraeten2006, maximum_intensity)
 
 .. note::
@@ -182,43 +182,33 @@ File handling
 This package provides a number of processing functions in the
 :mod:`rfactor.process` module to enable compatibility of the input format with
 the required data format defined in this package (see previous section).
-Currently, next processing functions are implemented:
+Currently, next processing function is implemented:
 
 - :func:`rfactor.process.load_rain_file_matlab_legacy`: This is the processing
   function used to process the ``Matlab KU-Leuven`` file legacy.
-- :func:`rfactor.process.load_rain_file_txt`: This is the processing
-  function used to process the ``VMM`` file legacy.
 
-Both file-formats can be loaded with the defined processing function, i.e.
+This file-format can be loaded with the defined processing function, i.e.
 
 .. code-block:: python
 
     from pathlib import Path
     from rfactor.process import load_rain_file_matlab_legacy,
-                                    load_rain_file_csv_vmm
+
     # Load a Matlab-file
     fname = Path("/PATH/TO/YOUR/RAINFALL/DATA/FOLDER/P01_001_2018.txt")
     from_matlab = load_rain_file_matlab_legacy(fname)
-
-    # Load a VMM CSV
-    fname = Path("/PATH/TO/YOUR/RAINFALL/DATA/FOLDER/P01_001.CSV")
-    from_vmm = load_rain_file_txt(fname)
 
 Or a folder containing multiple files can be loaded:
 
 .. code-block:: python
 
     from pathlib import Path
-    from rfactor.process import load_rain_file_matlab_legacy,
-                                    load_rain_file_csv_vmm, load_rain_folder
+    from rfactor.process import load_rain_file_matlab_legacy, load_rain_folder
 
     # Load an entire set of Matlab-legacy files
     folder = Path("/PATH/FOLDER/CONTAINING/MATLABFORMAT/FILES")
     from_matlab = load_rain_folder(folder, load_rain_file_matlab_legacy)
 
-    # Load an entire set of VMM CSV-legacy files
-    folder = Path("/PATH/FOLDER/CONTAINING/VMMTEXTFORMAT/FILES")
-    from_matlab = load_rain_file_csv_vmm(folder, load_rain_file_matlab_legacy)
 
 .. note::
 
@@ -255,42 +245,6 @@ The content of each of this file is a **non-zero** rainfall timeseries
 
 with the first column being the timestamp from the start of the year
 (minutes) , and second the rainfall depth (in mm).
-
-VMM legacy
-~~~~~~~~~~
-
-Starting from 2018, a new input format is defined and used for the analysis of
-flanders. The reason for this is two-folded:
-
-1. The new format is compatible with the VMM output from VMM's WISKI-system.
-2. The format allows to compute timeseries coverage (see ``diagnostics`` in
-   :func:`rfactor.process.load_rain_file`). This was not possible with the
-   Matlab-format as required to be a **non-zero**-timeseries.
-
-The input files are defined by text files (extension: ``.CSV``) that hold
-rainfall timeseries. The data are split per station with a specific datafile
-tag (format: **IDENTIFIER_STATION.CSV**):
-
--  KMI\_6414.CSV
--  KMI\_6434.CSV
--  ...
--  P07\_006.CSV
--  ...
-
-The content of each of this file is a rainfall timeseries (comma delimited):
-
-::
-
-    Date/Time,Value [millimeter]
-    01/01/2019 00:00,"0"
-    01/01/2019 00:05,"0.03"
-    01/01/2019 00:10,"0.04"
-    01/01/2019 00:15,"0"
-    01/01/2019 00:20,"0"
-    01/01/2019 00:25,"---"
-    01/01/2019 00:30,"0"
-
-     ... ...
 
 Output erosivity
 ~~~~~~~~~~~~~~~~
