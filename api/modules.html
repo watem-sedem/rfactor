@@ -1,21 +1,26 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor &mdash; rfactor 0.1.2.post1.dev27+g70cd4a5 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <title>rfactor &mdash; rfactor 0.1.2.post1.dev46+g8e6fe33 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=597b0ea2"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -35,7 +40,7 @@
             rfactor
           </a>
               <div class="version">
-                0.1.2.post1.dev27+g70cd4a5
+                0.1.2.post1.dev46+g8e6fe33
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -91,15 +96,49 @@
            <div itemprop="articleBody">
              
   <section id="rfactor">
-<h1>rfactor<a class="headerlink" href="#rfactor" title="Permalink to this headline"></a></h1>
+<h1>rfactor<a class="headerlink" href="#rfactor" title="Link to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="rfactor.html">rfactor package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="rfactor.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rfactor.html#module-rfactor.process">rfactor.process module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rfactor.html#module-rfactor.rfactor">rfactor.rfactor module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rfactor.html#module-rfactor.valid">rfactor.valid module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rfactor.html#module-rfactor">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rfactor.html#module-rfactor.process">rfactor.process module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.process.RainfallFilesIOMsg"><code class="docutils literal notranslate"><span class="pre">RainfallFilesIOMsg</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.process.compute_diagnostics"><code class="docutils literal notranslate"><span class="pre">compute_diagnostics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.process.compute_rainfall_statistics"><code class="docutils literal notranslate"><span class="pre">compute_rainfall_statistics()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.process.get_rfactor_station_year"><code class="docutils literal notranslate"><span class="pre">get_rfactor_station_year()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.process.load_rain_file"><code class="docutils literal notranslate"><span class="pre">load_rain_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.process.load_rain_file_matlab_legacy"><code class="docutils literal notranslate"><span class="pre">load_rain_file_matlab_legacy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.process.load_rain_file_txt"><code class="docutils literal notranslate"><span class="pre">load_rain_file_txt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.process.load_rain_folder"><code class="docutils literal notranslate"><span class="pre">load_rain_folder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.process.write_erosivity_data"><code class="docutils literal notranslate"><span class="pre">write_erosivity_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rfactor.html#module-rfactor.rfactor">rfactor.rfactor module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.rfactor.RFactorInputError"><code class="docutils literal notranslate"><span class="pre">RFactorInputError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.rfactor.RFactorKeyError"><code class="docutils literal notranslate"><span class="pre">RFactorKeyError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.rfactor.RFactorTypeError"><code class="docutils literal notranslate"><span class="pre">RFactorTypeError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.rfactor.compute_erosivity"><code class="docutils literal notranslate"><span class="pre">compute_erosivity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.rfactor.maximum_intensity"><code class="docutils literal notranslate"><span class="pre">maximum_intensity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.rfactor.maximum_intensity_matlab_clone"><code class="docutils literal notranslate"><span class="pre">maximum_intensity_matlab_clone()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.rfactor.maximum_intensity_matlab_clone_fix"><code class="docutils literal notranslate"><span class="pre">maximum_intensity_matlab_clone_fix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.rfactor.rain_energy_per_unit_depth_verstraeten2006"><code class="docutils literal notranslate"><span class="pre">rain_energy_per_unit_depth_verstraeten2006()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rfactor.html#module-rfactor.valid">rfactor.valid module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.valid.valid_column"><code class="docutils literal notranslate"><span class="pre">valid_column()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.valid.valid_const_freq"><code class="docutils literal notranslate"><span class="pre">valid_const_freq()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.valid.valid_freq"><code class="docutils literal notranslate"><span class="pre">valid_freq()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.valid.valid_rainfall_timeseries"><code class="docutils literal notranslate"><span class="pre">valid_rainfall_timeseries()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rfactor.html#module-rfactor">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.compute_erosivity"><code class="docutils literal notranslate"><span class="pre">compute_erosivity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.maximum_intensity"><code class="docutils literal notranslate"><span class="pre">maximum_intensity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.maximum_intensity_matlab_clone"><code class="docutils literal notranslate"><span class="pre">maximum_intensity_matlab_clone()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.maximum_intensity_matlab_clone_fix"><code class="docutils literal notranslate"><span class="pre">maximum_intensity_matlab_clone_fix()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rfactor.html#rfactor.rain_energy_per_unit_depth_verstraeten2006"><code class="docutils literal notranslate"><span class="pre">rain_energy_per_unit_depth_verstraeten2006()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

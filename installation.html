@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Installation &mdash; rfactor 0.1.2.post1.dev27+g70cd4a5 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>Installation &mdash; rfactor 0.1.2.post1.dev46+g8e6fe33 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=597b0ea2"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -35,7 +38,7 @@
             rfactor
           </a>
               <div class="version">
-                0.1.2.post1.dev27+g70cd4a5
+                0.1.2.post1.dev46+g8e6fe33
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -88,7 +91,7 @@
            <div itemprop="articleBody">
              
   <section id="installation">
-<span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
+<span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
 <p>Python is used in this package.</p>
 <p>We strongly recommend to make use of the seperate <code class="docutils literal notranslate"><span class="pre">rfactor</span></code> Python
 environment to install the dependencies (by using <code class="docutils literal notranslate"><span class="pre">tox</span></code> or <code class="docutils literal notranslate"><span class="pre">conda</span></code>,
@@ -101,19 +104,19 @@ See <a class="reference internal" href="codelegacy.html#codelegacy"><span class=
 Python environment.</p>
 </div>
 <section id="latest-release">
-<h2>Latest release<a class="headerlink" href="#latest-release" title="Permalink to this headline"></a></h2>
+<h2>Latest release<a class="headerlink" href="#latest-release" title="Link to this heading"></a></h2>
 <p>The rfactor package is available on <a class="reference external" href="https://pypi.org/project/rfactor/">PyPI</a>. Make sure to setup an environment (either virtualenv, conda,….) first with <code class="docutils literal notranslate"><span class="pre">pip</span></code> installed. To install the rfactor package, run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">rfactor</span>
 </pre></div>
 </div>
 </section>
 <section id="install-from-source">
-<span id="installfromsource"></span><h2>Install from source<a class="headerlink" href="#install-from-source" title="Permalink to this headline"></a></h2>
+<span id="installfromsource"></span><h2>Install from source<a class="headerlink" href="#install-from-source" title="Link to this heading"></a></h2>
 <p>To install from source, <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span></code> the repository somewhere on your local
 machine and install the code from source.</p>
 <p>Make sure to setup a new environment  in either conda or venv (using tox):</p>
 <section id="using-conda">
-<h3>Using conda<a class="headerlink" href="#using-conda" title="Permalink to this headline"></a></h3>
+<h3>Using conda<a class="headerlink" href="#using-conda" title="Link to this heading"></a></h3>
 <p>Make sure you have Python, via
 <a class="reference external" href="https://docs.conda.io/en/latest/miniconda.html">Miniconda</a>, installed.
 The Python dependencies are handled in the <code class="docutils literal notranslate"><span class="pre">environment.yml</span></code> file, so
@@ -136,7 +139,7 @@ developer dependencies as well (using pip):</p>
 </div>
 </section>
 <section id="using-venv">
-<h3>Using venv<a class="headerlink" href="#using-venv" title="Permalink to this headline"></a></h3>
+<h3>Using venv<a class="headerlink" href="#using-venv" title="Link to this heading"></a></h3>
 <p>Make sure to have <a class="reference external" href="https://tox.readthedocs.io/en/latest/">tox</a> available.
 Run the <code class="docutils literal notranslate"><span class="pre">dev</span></code> tox command, which will create a <code class="docutils literal notranslate"><span class="pre">venv</span></code> with a development
 install of the package and it will register the environment as a ipykernel
@@ -147,7 +150,7 @@ install of the package and it will register the environment as a ipykernel
 </section>
 </section>
 <section id="development">
-<h2>Development<a class="headerlink" href="#development" title="Permalink to this headline"></a></h2>
+<h2>Development<a class="headerlink" href="#development" title="Link to this heading"></a></h2>
 <p>Want to contribute code or functionalities to the <code class="docutils literal notranslate"><span class="pre">rfactor</span></code> package? Great
 and welcome on board! Check out the <a class="reference internal" href="contributing.html#dev-guidelines"><span class="std std-ref">Development guidelines</span></a> to get you up and
 running.</p>

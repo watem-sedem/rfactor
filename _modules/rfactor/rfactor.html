@@ -1,19 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor.rfactor &mdash; rfactor 0.1.2.post1.dev27+g70cd4a5 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>rfactor.rfactor &mdash; rfactor 0.1.2.post1.dev46+g8e6fe33 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=597b0ea2"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -32,7 +35,7 @@
             rfactor
           </a>
               <div class="version">
-                0.1.2.post1.dev27+g70cd4a5
+                0.1.2.post1.dev46+g8e6fe33
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -86,7 +89,6 @@
              
   <h1>Source code for rfactor.rfactor</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -97,19 +99,30 @@
 <span class="n">MIN_CUMUL_EVENT</span> <span class="o">=</span> <span class="mf">1.27</span>
 
 
-<div class="viewcode-block" id="RFactorInputError"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.RFactorInputError">[docs]</a><span class="k">class</span> <span class="nc">RFactorInputError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="RFactorInputError">
+<a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.RFactorInputError">[docs]</a>
+<span class="k">class</span> <span class="nc">RFactorInputError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise when input data are not conform the rfactor required input format.&quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="RFactorKeyError"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.RFactorKeyError">[docs]</a><span class="k">class</span> <span class="nc">RFactorKeyError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+
+<div class="viewcode-block" id="RFactorKeyError">
+<a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.RFactorKeyError">[docs]</a>
+<span class="k">class</span> <span class="nc">RFactorKeyError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise when input data missing required column names.&quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="RFactorTypeError"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.RFactorTypeError">[docs]</a><span class="k">class</span> <span class="nc">RFactorTypeError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+
+<div class="viewcode-block" id="RFactorTypeError">
+<a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.RFactorTypeError">[docs]</a>
+<span class="k">class</span> <span class="nc">RFactorTypeError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise when input data data type of a data column is wrong.&quot;&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="rain_energy_per_unit_depth"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.rain_energy_per_unit_depth">[docs]</a><span class="k">def</span> <span class="nf">rain_energy_per_unit_depth</span><span class="p">(</span><span class="n">rain</span><span class="p">):</span>
+
+<div class="viewcode-block" id="rain_energy_per_unit_depth_verstraeten2006">
+<a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.rain_energy_per_unit_depth_verstraeten2006">[docs]</a>
+<span class="k">def</span> <span class="nf">rain_energy_per_unit_depth_verstraeten2006</span><span class="p">(</span><span class="n">rain</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate rain energy per unit depth according to Salles/Verstraeten.</span>
 
 <span class="sd">    Parameters</span>
@@ -126,7 +139,7 @@
 <span class="sd">    -----</span>
 <span class="sd">    The rain energy per unit depth :math:`e_r` (:math:`\\text{J}.\\text{mm}^{-1}.</span>
 <span class="sd">    \\text{m}^{-2}`) for an application for Flanders/Belgium is defined</span>
-<span class="sd">    by [1]_ [2]_ [3]_:</span>
+<span class="sd">    by [1]_ , [2]_ and [3]_:</span>
 
 <span class="sd">    .. math::</span>
 
@@ -142,26 +155,25 @@
 <span class="sd">    .. [1] Salles, C., Poesen, J., Pissart, A., 1999, Rain erosivity indices and drop</span>
 <span class="sd">        size distribution for central Belgium. Presented at the General Assembly of</span>
 <span class="sd">        the European Geophysical Society, The Hague, The Netherlands, p. 280.</span>
-
 <span class="sd">    .. [2] Salles, C., Poesen, J., Sempere-Torres, D., 2002. Kinetic energy of rain and</span>
 <span class="sd">        its functional relationship with intensity. Journal of Hydrology 257, 256–270.</span>
-<span class="sd">        https://doi.org/10.1016/S0022-1694(01)00555-8</span>
-
-<span class="sd">    .. [3]  Verstraeten, G., Poesen, J., Demarée, G., Salles, C., 2006, Long-term</span>
+<span class="sd">    .. [3] Verstraeten, G., Poesen, J., Demarée, G., Salles, C., 2006, Long-term</span>
 <span class="sd">        (105 years) variability in rain erosivity as derived from 10-min rainfall</span>
 <span class="sd">        depth data for Ukkel (Brussels, Belgium): Implications for assessing soil</span>
 <span class="sd">        erosion rates. Journal Geophysysical Research, 111, D22109.</span>
-<span class="sd">        https://doi.org/10.1029/2006JD007169</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">rain_energy</span> <span class="o">=</span> <span class="mf">0.1112</span> <span class="o">*</span> <span class="p">((</span><span class="n">rain</span> <span class="o">*</span> <span class="mf">6.0</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.31</span><span class="p">)</span> <span class="o">*</span> <span class="n">rain</span>
     <span class="k">return</span> <span class="n">rain_energy</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="maximum_intensity_matlab_clone"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.maximum_intensity_matlab_clone">[docs]</a><span class="k">def</span> <span class="nf">maximum_intensity_matlab_clone</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+
+<div class="viewcode-block" id="maximum_intensity_matlab_clone">
+<a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.maximum_intensity_matlab_clone">[docs]</a>
+<span class="k">def</span> <span class="nf">maximum_intensity_matlab_clone</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Maximum rain intensity for 30-min interval (Matlab clone).</span>
 
 <span class="sd">    The implementation is a direct Python-translation of the original Matlab</span>
-<span class="sd">    implementation by Verstraeten et al. (2006).</span>
+<span class="sd">    implementation by Verstraeten et al. (2006) [3]_.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -180,14 +192,6 @@
 <span class="sd">    -----</span>
 <span class="sd">    The Python and original Matlab implementation linearly interpolate zero and</span>
 <span class="sd">    NaN-values within one event.</span>
-
-<span class="sd">    References</span>
-<span class="sd">    ----------</span>
-<span class="sd">    Verstraeten, G., Poesen, J., Demarée, G., Salles, C., 2006. Long-term (105 years)</span>
-<span class="sd">    variability in rain erosivity as derived from 10-min rainfall depth data for Ukkel</span>
-<span class="sd">    (Brussels, Belgium): Implications for assessing soil erosion rates. J. Geophys.</span>
-<span class="sd">    Res. 111, D22109. https://doi.org/10.1029/2006JD007169</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
         <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
@@ -224,18 +228,21 @@
     <span class="k">return</span> <span class="n">maxprecip_30min</span> <span class="o">*</span> <span class="mi">2</span></div>
 
 
-<div class="viewcode-block" id="maximum_intensity_matlab_clone_fix"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.maximum_intensity_matlab_clone_fix">[docs]</a><span class="k">def</span> <span class="nf">maximum_intensity_matlab_clone_fix</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+
+<div class="viewcode-block" id="maximum_intensity_matlab_clone_fix">
+<a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.maximum_intensity_matlab_clone_fix">[docs]</a>
+<span class="k">def</span> <span class="nf">maximum_intensity_matlab_clone_fix</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Maximum rain intensity for 30-min interval (Matlab clone Fix).</span>
 <span class="sd">    This implementation is a fixed version of the Python-translation of the original</span>
-<span class="sd">    Matlab implementation by Verstraeten.</span>
+<span class="sd">    Matlab implementation by [3]_.</span>
 
 <span class="sd">    Changes to the original script are:</span>
-<span class="sd">    1.  in the if-statement &#39;if timestamps[-1] - timestamps[0] &lt;= 30:&#39; this methode</span>
-<span class="sd">        calculates the total amount of rain during the interval while the original</span>
-<span class="sd">        method only looks at the first rainfall entry.</span>
-<span class="sd">    2.  in the same if-statement, the *2 was removed, since this is already done in</span>
-<span class="sd">        the &#39;return&#39; step of the model. This *2 causes the model to steeply over</span>
-<span class="sd">        estimate the rainfall during short rainfall events.</span>
+<span class="sd">        - In the if-statement &#39;if timestamps[-1] - timestamps[0] &lt;= 30:&#39; this methode</span>
+<span class="sd">          calculates the total amount of rain during the interval while the original</span>
+<span class="sd">          method only looks at the first rainfall entry.</span>
+<span class="sd">        - In the same if-statement, the *2 was removed, since this is already done in</span>
+<span class="sd">          the &#39;return&#39; step of the model. This *2 causes the model to steeply over</span>
+<span class="sd">          estimate the rainfall during short rainfall events.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -291,7 +298,10 @@
     <span class="k">return</span> <span class="n">maxprecip_30min</span> <span class="o">*</span> <span class="mi">2</span></div>
 
 
-<div class="viewcode-block" id="maximum_intensity"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.maximum_intensity">[docs]</a><span class="k">def</span> <span class="nf">maximum_intensity</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+
+<div class="viewcode-block" id="maximum_intensity">
+<a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.maximum_intensity">[docs]</a>
+<span class="k">def</span> <span class="nf">maximum_intensity</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Maximum rain intensity for 30-min interval (Pandas rolling) expressed as mm/hour</span>
 
 <span class="sd">    The implementation uses a rolling window of the chosen interval to derive the</span>
@@ -315,13 +325,15 @@
     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="s2">&quot;30min&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;datetime&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span></div>
 
 
+
 <span class="k">def</span> <span class="nf">_compute_erosivity</span><span class="p">(</span>
     <span class="n">rain</span><span class="p">,</span>
+    <span class="n">energy_method</span><span class="p">,</span>
     <span class="n">intensity_method</span><span class="p">,</span>
     <span class="n">event_split</span><span class="o">=</span><span class="n">TIME_BETWEEN_EVENTS</span><span class="p">,</span>
     <span class="n">event_threshold</span><span class="o">=</span><span class="n">MIN_CUMUL_EVENT</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate erosivity according to Verstraeten G. for a single year/station combi</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate erosivity for a single year/station combination</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -330,13 +342,15 @@
 
 <span class="sd">        - *datetime* (pd.Timestamp): Time stamp</span>
 <span class="sd">        - *rain_mm* (float): Rain in mm</span>
+<span class="sd">    energy_method: Callable</span>
+<span class="sd">        Function to compute the rain energy per unit depth</span>
 <span class="sd">    intensity_method : Callable</span>
 <span class="sd">        Function to derive the maximal rain intensity (over 30min)</span>
 <span class="sd">    event_split : str</span>
 <span class="sd">        Time interval to split into individual rain events</span>
 <span class="sd">    event_threshold : float</span>
 <span class="sd">        Minimal cumulative rain of an event to take into account for erosivity</span>
-<span class="sd">        derivationevent_rain_cum</span>
+<span class="sd">        derivation event_rain_cum</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -356,7 +370,6 @@
         <span class="k">raise</span> <span class="n">RFactorInputError</span><span class="p">(</span><span class="s2">&quot;DataFrame should contain data of a single year.&quot;</span><span class="p">)</span>
 
     <span class="c1"># mark start of each rain event</span>
-    <span class="n">rain</span> <span class="o">=</span> <span class="n">rain</span><span class="p">[</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">]</span>  <span class="c1"># Only keep measurements with rain</span>
     <span class="n">rain</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">event_start</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">rain</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">event_split</span><span class="p">,</span> <span class="s2">&quot;event_start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">rain</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rain</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;event_start&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
@@ -369,9 +382,7 @@
 
     <span class="c1"># add rain energy for each event</span>
     <span class="n">rain</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
-        <span class="n">event_energy</span><span class="o">=</span><span class="n">rain</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
-            <span class="n">rain_energy_per_unit_depth</span>
-        <span class="p">)</span>
+        <span class="n">event_energy</span><span class="o">=</span><span class="n">rain</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;event_idx&quot;</span><span class="p">)[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">energy_method</span><span class="p">)</span>
     <span class="p">)</span>
 
     <span class="c1"># calculate the maximal rain intensity in 30minutes interval</span>
@@ -415,15 +426,21 @@
     <span class="k">return</span> <span class="n">events</span>
 
 
-<span class="k">def</span> <span class="nf">_apply_rfactor</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">intensity_method</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_apply_rfactor</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">energy_method</span><span class="p">,</span> <span class="n">intensity_method</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper helper function for parallel execution of erosivity on groups&quot;&quot;&quot;</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">_compute_erosivity</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">intensity_method</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">_compute_erosivity</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">energy_method</span><span class="p">,</span> <span class="n">intensity_method</span><span class="p">)</span>
     <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">name</span>
     <span class="k">return</span> <span class="n">df</span>
 
 
-<div class="viewcode-block" id="compute_erosivity"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.compute_erosivity">[docs]</a><span class="k">def</span> <span class="nf">compute_erosivity</span><span class="p">(</span><span class="n">rain</span><span class="p">,</span> <span class="n">intensity_method</span><span class="o">=</span><span class="n">maximum_intensity</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate erosivity according to Verstraeten G. for each year/station combination</span>
+<div class="viewcode-block" id="compute_erosivity">
+<a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.compute_erosivity">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_erosivity</span><span class="p">(</span>
+    <span class="n">rain</span><span class="p">,</span>
+    <span class="n">energy_method</span><span class="o">=</span><span class="n">rain_energy_per_unit_depth_verstraeten2006</span><span class="p">,</span>
+    <span class="n">intensity_method</span><span class="o">=</span><span class="n">maximum_intensity</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate erosivity  for each year/station combination</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -434,14 +451,24 @@
 <span class="sd">        - *rain_mm* (float): Rain in mm</span>
 <span class="sd">        - *station* (str): Measurement station identifier</span>
 
+<span class="sd">    energy_method: Callable, default rain_energy_per_unit_depth_verstraeten2006</span>
+<span class="sd">        Function to compute the rain energy per unit depth</span>
 <span class="sd">    intensity_method : Callable, default maximum_intensity</span>
 <span class="sd">        Function to derive the maximal rain intensity (over 30min).</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    all_erosivity: pandas.DataFrame</span>
-<span class="sd">        See :func:`rfactor.rfactor._compute_erosivity`, added with</span>
+<span class="sd">        DataFrame with erosivity output for each event.</span>
 
+<span class="sd">        - *datetime* (pandas.Timestamp): Time stamp</span>
+<span class="sd">        - *datetime* (pandas.Timestamp): Time stamp</span>
+<span class="sd">        - *event_rain_cum* (float): Cumulative rain for each event</span>
+<span class="sd">        - *max_30min_intensity* (float): Maximal 30min intensity for each event</span>
+<span class="sd">        - *event_energy* (float): Rain energy per unit depth for each event</span>
+<span class="sd">        - *erosivity* (float): Erosivity for each event</span>
+<span class="sd">        - *all_events_cum* (float): Cumulative rain over all events together</span>
+<span class="sd">        - *erosivity_cum* (float): Cumulative erosivity over all events together</span>
 <span class="sd">        - *tag* (str): unique tag for year, station-couple.</span>
 
 <span class="sd">    Notes</span>
@@ -465,10 +492,10 @@
 
     <span class="k">if</span> <span class="p">((</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">&quot;Can only accept non-zero/non-NULL timeseries. Removing zero and/or &quot;</span>
-            <span class="s2">&quot;NULL-values detected in input &#39;rain_mm&#39; column.&quot;</span>
+            <span class="s2">&quot;Can only accept non-zero/non-NULL timeseries. Please remove/interpolate&quot;</span>
+            <span class="s2">&quot; zero and/or NULL-values in input &#39;rain_mm&#39; column.&quot;</span>
         <span class="p">)</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">RFactorInputError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="n">rain</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">))</span>
 
@@ -477,7 +504,9 @@
             <span class="n">tag</span><span class="o">=</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
         <span class="p">)</span>
 
-    <span class="n">fun_with_method</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">_apply_rfactor</span><span class="p">,</span> <span class="n">intensity_method</span><span class="o">=</span><span class="n">intensity_method</span><span class="p">)</span>
+    <span class="n">fun_with_method</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+        <span class="n">_apply_rfactor</span><span class="p">,</span> <span class="n">energy_method</span><span class="o">=</span><span class="n">energy_method</span><span class="p">,</span> <span class="n">intensity_method</span><span class="o">=</span><span class="n">intensity_method</span>
+    <span class="p">)</span>
     <span class="n">grouped</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">])</span>
     <span class="n">results</span> <span class="o">=</span> <span class="n">Parallel</span><span class="p">(</span><span class="n">n_jobs</span><span class="o">=</span><span class="n">mp</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)(</span>
         <span class="n">delayed</span><span class="p">(</span><span class="n">fun_with_method</span><span class="p">)(</span><span class="n">name</span><span class="p">,</span> <span class="n">group</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">grouped</span>
@@ -491,6 +520,7 @@
     <span class="n">all_erosivity</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">all_erosivity</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">all_erosivity</span></div>
+
 </pre></div>
 
            </div>

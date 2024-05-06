@@ -1,19 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor.process &mdash; rfactor 0.1.2.post1.dev27+g70cd4a5 documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <title>rfactor.process &mdash; rfactor 0.1.2.post1.dev46+g8e6fe33 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=597b0ea2"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -32,7 +35,7 @@
             rfactor
           </a>
               <div class="version">
-                0.1.2.post1.dev27+g70cd4a5
+                0.1.2.post1.dev46+g8e6fe33
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -93,11 +96,14 @@
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
 
-<div class="viewcode-block" id="RainfallFilesIOMsg"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.RainfallFilesIOMsg">[docs]</a><span class="k">class</span> <span class="nc">RainfallFilesIOMsg</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="RainfallFilesIOMsg">
+<a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.RainfallFilesIOMsg">[docs]</a>
+<span class="k">class</span> <span class="nc">RainfallFilesIOMsg</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Print message a string&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
 
 
 <span class="k">def</span> <span class="nf">_days_since_start_year</span><span class="p">(</span><span class="n">series</span><span class="p">):</span>
@@ -168,7 +174,9 @@
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`file_path` should be a pathlib.Path object&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="load_rain_file"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.load_rain_file">[docs]</a><span class="k">def</span> <span class="nf">load_rain_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">load_fun</span><span class="p">):</span>
+<div class="viewcode-block" id="load_rain_file">
+<a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.load_rain_file">[docs]</a>
+<span class="k">def</span> <span class="nf">load_rain_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">load_fun</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load file format of rainfall data with a given load function</span>
 
 <span class="sd">    Parameters</span>
@@ -181,7 +189,6 @@
 <span class="sd">        Load function, current supported functions:</span>
 
 <span class="sd">        - :func:`rfactor.process.load_rain_file_matlab_legacy`.</span>
-<span class="sd">        - :func:`rfactor.process.load_rain_file_csv_vmm`</span>
 
 <span class="sd">        Please check the required input format for the files in the above listed</span>
 <span class="sd">        functions.</span>
@@ -210,7 +217,10 @@
     <span class="k">return</span> <span class="n">rain</span></div>
 
 
-<div class="viewcode-block" id="compute_diagnostics"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.compute_diagnostics">[docs]</a><span class="k">def</span> <span class="nf">compute_diagnostics</span><span class="p">(</span><span class="n">rain</span><span class="p">):</span>
+
+<div class="viewcode-block" id="compute_diagnostics">
+<a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.compute_diagnostics">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_diagnostics</span><span class="p">(</span><span class="n">rain</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute diagnostics for input rainfall.</span>
 
 <span class="sd">    This function computes coverage (per year, station) and missing rainfall for each</span>
@@ -280,7 +290,10 @@
     <span class="k">return</span> <span class="n">diagnostics</span></div>
 
 
-<div class="viewcode-block" id="load_rain_file_txt"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.load_rain_file_txt">[docs]</a><span class="k">def</span> <span class="nf">load_rain_file_txt</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="load_rain_file_txt">
+<a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.load_rain_file_txt">[docs]</a>
+<span class="k">def</span> <span class="nf">load_rain_file_txt</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load any txt file which is formatted in the correct format.</span>
 
 <span class="sd">    The input files are defined by tab delimited files (extension: ``.txt``) that</span>
@@ -365,7 +378,10 @@
     <span class="k">return</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">]]</span></div>
 
 
-<div class="viewcode-block" id="load_rain_file_matlab_legacy"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.load_rain_file_matlab_legacy">[docs]</a><span class="k">def</span> <span class="nf">load_rain_file_matlab_legacy</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+
+<div class="viewcode-block" id="load_rain_file_matlab_legacy">
+<a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.load_rain_file_matlab_legacy">[docs]</a>
+<span class="k">def</span> <span class="nf">load_rain_file_matlab_legacy</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load (legacy Matlab) file format of rainfall data of a **single station/year**.</span>
 
 <span class="sd">    The input files are defined by text files (extension: ``.txt``) that hold</span>
@@ -431,7 +447,10 @@
     <span class="k">return</span> <span class="n">rain</span><span class="p">[[</span><span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">]]</span></div>
 
 
-<div class="viewcode-block" id="load_rain_folder"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.load_rain_folder">[docs]</a><span class="k">def</span> <span class="nf">load_rain_folder</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">load_fun</span><span class="p">):</span>
+
+<div class="viewcode-block" id="load_rain_folder">
+<a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.load_rain_folder">[docs]</a>
+<span class="k">def</span> <span class="nf">load_rain_folder</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">load_fun</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load all (legacy Matlab format) files of rainfall data in a folder</span>
 
 <span class="sd">    Parameters</span>
@@ -443,7 +462,6 @@
 <span class="sd">        Load function, current supported functions:</span>
 
 <span class="sd">        - :func:`rfactor.process.load_rain_file_matlab_legacy`.</span>
-<span class="sd">        - :func:`rfactor.process.load_rain_file_csv_vmm`</span>
 
 <span class="sd">        Please check the required input format for the files in the above listed</span>
 <span class="sd">        functions.</span>
@@ -485,7 +503,10 @@
     <span class="k">return</span> <span class="n">all_rain</span></div>
 
 
-<div class="viewcode-block" id="write_erosivity_data"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.write_erosivity_data">[docs]</a><span class="k">def</span> <span class="nf">write_erosivity_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">):</span>
+
+<div class="viewcode-block" id="write_erosivity_data">
+<a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.write_erosivity_data">[docs]</a>
+<span class="k">def</span> <span class="nf">write_erosivity_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Write output erosivity to (legacy Matlab format) in folder.</span>
 
 <span class="sd">    Written data are split-up for each year and station</span>
@@ -532,7 +553,10 @@
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_rfactor_station_year"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.get_rfactor_station_year">[docs]</a><span class="k">def</span> <span class="nf">get_rfactor_station_year</span><span class="p">(</span><span class="n">erosivity</span><span class="p">,</span> <span class="n">stations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">years</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="get_rfactor_station_year">
+<a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.get_rfactor_station_year">[docs]</a>
+<span class="k">def</span> <span class="nf">get_rfactor_station_year</span><span class="p">(</span><span class="n">erosivity</span><span class="p">,</span> <span class="n">stations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">years</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get R-factor at end of every year for each station from cumulative erosivity.</span>
 
 <span class="sd">    Parameters</span>
@@ -577,7 +601,10 @@
     <span class="k">return</span> <span class="n">erosivity</span></div>
 
 
-<div class="viewcode-block" id="compute_rainfall_statistics"><a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.compute_rainfall_statistics">[docs]</a><span class="k">def</span> <span class="nf">compute_rainfall_statistics</span><span class="p">(</span><span class="n">df_rainfall</span><span class="p">,</span> <span class="n">df_station_metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="compute_rainfall_statistics">
+<a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.compute_rainfall_statistics">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_rainfall_statistics</span><span class="p">(</span><span class="n">df_rainfall</span><span class="p">,</span> <span class="n">df_station_metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute general statistics for rainfall timeseries.</span>
 
 <span class="sd">    Statistics (number of records, min, max, median and years data) are</span>
@@ -635,6 +662,7 @@
         <span class="n">df_statistics</span> <span class="o">=</span> <span class="n">df_statistics</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
             <span class="n">df_station_metadata</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span>
         <span class="p">)</span>
+
         <span class="n">df_statistics</span> <span class="o">=</span> <span class="n">df_statistics</span><span class="p">[</span>
             <span class="p">[</span>
                 <span class="s2">&quot;year&quot;</span><span class="p">,</span>
@@ -651,6 +679,7 @@
         <span class="n">df_statistics</span> <span class="o">=</span> <span class="n">df_statistics</span><span class="p">[[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;records&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="s2">&quot;median&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">]]</span>
 
     <span class="k">return</span> <span class="n">df_statistics</span></div>
+
 </pre></div>
 
            </div>
