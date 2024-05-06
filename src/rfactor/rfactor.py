@@ -21,7 +21,7 @@ class RFactorTypeError(Exception):
     """Raise when input data data type of a data column is wrong."""
 
 
-def rain_energy_per_unit_depth(rain):
+def rain_energy_per_unit_depth_verstraeten2006(rain):
     """Calculate rain energy per unit depth according to Salles/Verstraeten.
 
     Parameters
@@ -38,7 +38,7 @@ def rain_energy_per_unit_depth(rain):
     -----
     The rain energy per unit depth :math:`e_r` (:math:`\\text{J}.\\text{mm}^{-1}.
     \\text{m}^{-2}`) for an application for Flanders/Belgium is defined
-    by [1]_ [2]_ [3]_:
+    by [1]_ , [2]_ and [3]_:
 
     .. math::
 
@@ -54,16 +54,12 @@ def rain_energy_per_unit_depth(rain):
     .. [1] Salles, C., Poesen, J., Pissart, A., 1999, Rain erosivity indices and drop
         size distribution for central Belgium. Presented at the General Assembly of
         the European Geophysical Society, The Hague, The Netherlands, p. 280.
-
     .. [2] Salles, C., Poesen, J., Sempere-Torres, D., 2002. Kinetic energy of rain and
         its functional relationship with intensity. Journal of Hydrology 257, 256–270.
-        https://doi.org/10.1016/S0022-1694(01)00555-8
-
-    .. [3]  Verstraeten, G., Poesen, J., Demarée, G., Salles, C., 2006, Long-term
+    .. [3] Verstraeten, G., Poesen, J., Demarée, G., Salles, C., 2006, Long-term
         (105 years) variability in rain erosivity as derived from 10-min rainfall
         depth data for Ukkel (Brussels, Belgium): Implications for assessing soil
         erosion rates. Journal Geophysysical Research, 111, D22109.
-        https://doi.org/10.1029/2006JD007169
     """
     rain_energy = 0.1112 * ((rain * 6.0) ** 0.31) * rain
     return rain_energy.sum()
@@ -73,7 +69,7 @@ def maximum_intensity_matlab_clone(df):
     """Maximum rain intensity for 30-min interval (Matlab clone).
 
     The implementation is a direct Python-translation of the original Matlab
-    implementation by Verstraeten et al. (2006).
+    implementation by Verstraeten et al. (2006) [3]_.
 
     Parameters
     ----------
@@ -92,14 +88,6 @@ def maximum_intensity_matlab_clone(df):
     -----
     The Python and original Matlab implementation linearly interpolate zero and
     NaN-values within one event.
-
-    References
-    ----------
-    Verstraeten, G., Poesen, J., Demarée, G., Salles, C., 2006. Long-term (105 years)
-    variability in rain erosivity as derived from 10-min rainfall depth data for Ukkel
-    (Brussels, Belgium): Implications for assessing soil erosion rates. J. Geophys.
-    Res. 111, D22109. https://doi.org/10.1029/2006JD007169
-
     """
     if np.isnan(df["rain_mm"]).any():
         raise Exception(
@@ -139,15 +127,15 @@ def maximum_intensity_matlab_clone(df):
 def maximum_intensity_matlab_clone_fix(df):
     """Maximum rain intensity for 30-min interval (Matlab clone Fix).
     This implementation is a fixed version of the Python-translation of the original
-    Matlab implementation by Verstraeten.
+    Matlab implementation by [3]_.
 
     Changes to the original script are:
-    1.  in the if-statement 'if timestamps[-1] - timestamps[0] <= 30:' this methode
-        calculates the total amount of rain during the interval while the original
-        method only looks at the first rainfall entry.
-    2.  in the same if-statement, the *2 was removed, since this is already done in
-        the 'return' step of the model. This *2 causes the model to steeply over
-        estimate the rainfall during short rainfall events.
+        - In the if-statement 'if timestamps[-1] - timestamps[0] <= 30:' this methode
+          calculates the total amount of rain during the interval while the original
+          method only looks at the first rainfall entry.
+        - In the same if-statement, the *2 was removed, since this is already done in
+          the 'return' step of the model. This *2 causes the model to steeply over
+          estimate the rainfall during short rainfall events.
 
     Parameters
     ----------
@@ -229,11 +217,12 @@ def maximum_intensity(df):
 
 def _compute_erosivity(
     rain,
+    energy_method,
     intensity_method,
     event_split=TIME_BETWEEN_EVENTS,
     event_threshold=MIN_CUMUL_EVENT,
 ):
-    """Calculate erosivity according to Verstraeten G. for a single year/station combi
+    """Calculate erosivity for a single year/station combination
 
     Parameters
     ----------
@@ -242,13 +231,15 @@ def _compute_erosivity(
 
         - *datetime* (pd.Timestamp): Time stamp
         - *rain_mm* (float): Rain in mm
+    energy_method: Callable
+        Function to compute the rain energy per unit depth
     intensity_method : Callable
         Function to derive the maximal rain intensity (over 30min)
     event_split : str
         Time interval to split into individual rain events
     event_threshold : float
         Minimal cumulative rain of an event to take into account for erosivity
-        derivationevent_rain_cum
+        derivation event_rain_cum
 
     Returns
     -------
@@ -280,9 +271,7 @@ def _compute_erosivity(
 
     # add rain energy for each event
     rain = rain.assign(
-        event_energy=rain.groupby("event_idx")["rain_mm"].transform(
-            rain_energy_per_unit_depth
-        )
+        event_energy=rain.groupby("event_idx")["rain_mm"].transform(energy_method)
     )
 
     # calculate the maximal rain intensity in 30minutes interval
@@ -326,15 +315,19 @@ def _compute_erosivity(
     return events
 
 
-def _apply_rfactor(name, group, intensity_method):
+def _apply_rfactor(name, group, energy_method, intensity_method):
     """Wrapper helper function for parallel execution of erosivity on groups"""
-    df = _compute_erosivity(group, intensity_method)
+    df = _compute_erosivity(group, energy_method, intensity_method)
     df[["station", "year"]] = name
     return df
 
 
-def compute_erosivity(rain, intensity_method=maximum_intensity):
-    """Calculate erosivity according to Verstraeten G. for each year/station combination
+def compute_erosivity(
+    rain,
+    energy_method=rain_energy_per_unit_depth_verstraeten2006,
+    intensity_method=maximum_intensity,
+):
+    """Calculate erosivity  for each year/station combination
 
     Parameters
     ----------
@@ -345,14 +338,24 @@ def compute_erosivity(rain, intensity_method=maximum_intensity):
         - *rain_mm* (float): Rain in mm
         - *station* (str): Measurement station identifier
 
+    energy_method: Callable, default rain_energy_per_unit_depth_verstraeten2006
+        Function to compute the rain energy per unit depth
     intensity_method : Callable, default maximum_intensity
         Function to derive the maximal rain intensity (over 30min).
 
     Returns
     -------
     all_erosivity: pandas.DataFrame
-        See :func:`rfactor.rfactor._compute_erosivity`, added with
+        DataFrame with erosivity output for each event.
 
+        - *datetime* (pandas.Timestamp): Time stamp
+        - *datetime* (pandas.Timestamp): Time stamp
+        - *event_rain_cum* (float): Cumulative rain for each event
+        - *max_30min_intensity* (float): Maximal 30min intensity for each event
+        - *event_energy* (float): Rain energy per unit depth for each event
+        - *erosivity* (float): Erosivity for each event
+        - *all_events_cum* (float): Cumulative rain over all events together
+        - *erosivity_cum* (float): Cumulative erosivity over all events together
         - *tag* (str): unique tag for year, station-couple.
 
     Notes
@@ -388,7 +391,9 @@ def compute_erosivity(rain, intensity_method=maximum_intensity):
             tag=rain["station"].astype(str) + "_" + rain["year"].astype(str)
         )
 
-    fun_with_method = partial(_apply_rfactor, intensity_method=intensity_method)
+    fun_with_method = partial(
+        _apply_rfactor, energy_method=energy_method, intensity_method=intensity_method
+    )
     grouped = rain.groupby(["station", "year"])
     results = Parallel(n_jobs=mp.cpu_count() - 1)(
         delayed(fun_with_method)(name, group) for name, group in grouped
