@@ -1,8 +1,8 @@
 name: Upload Python Package
 
 on:
-  release:
-    types: [created]
+  create:
+    tags:
 
 jobs:
   deploy:
@@ -38,3 +38,6 @@ jobs:
       run: |
         tox -e build
         twine upload dist/*
+    - uses: ncipollo/release-action@v1
+      artifacts: "dist/*,docs/notebooks/analysis_flanders.ipynb"
+      omitBody: true
