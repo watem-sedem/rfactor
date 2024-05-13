@@ -114,7 +114,7 @@ def load_rain_file(file_path, load_fun, **kwargs):
         - *year* (int): year of the measurement
         - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
     """
-    if load_fun not in [load_rain_file_matlab_legacy, load_rain_file_txt]:
+    if load_fun not in [load_rain_file_matlab_legacy, load_rain_file_flanders]:
         msg = f"Rainfall load  function {load_fun} not implemented in R-factor package."
         raise IOError(msg)
 
@@ -195,7 +195,7 @@ def compute_diagnostics(rain):
     return diagnostics
 
 
-def load_rain_file_txt(file_path, interpolate=False):
+def load_rain_file_flanders(file_path, interpolate=False):
     """Load any txt file which is formatted in the correct format.
 
     The input files are defined by tab delimited files (extension: ``.txt``) that
@@ -213,6 +213,8 @@ def load_rain_file_txt(file_path, interpolate=False):
 
         - *datetime*: ``%d-%m-%Y %H:%M:%S``-format
         - *Value [millimeter]*: str (containing floats and '---'-identifier)
+        
+        Headers are not necessary for the columns.
 
     interpolate: bool
         Interpolate NaN yes/no
@@ -233,14 +235,13 @@ def load_rain_file_txt(file_path, interpolate=False):
 
     ::
 
-        Date/Time,Value [millimeter]
-        01/01/2019 00:00,"0"
-        01/01/2019 00:05,"0.03"
-        01/01/2019 00:10,"0.04"
-        01/01/2019 00:15,"0"
-        01/01/2019 00:20,"0"
-        01/01/2019 00:25,"---"
-        01/01/2019 00:30,"0"
+        01-01-2019 00:00,"0"
+        01-01-2019 00:05,"0.03"
+        01-01-2019 00:10,"0.04"
+        01-01-2019 00:15,"0"
+        01-01-2019 00:20,"0"
+        01-01-2019 00:25,"---"
+        01-01-2019 00:30,"0"
 
     Notes
     -----
@@ -248,11 +249,11 @@ def load_rain_file_txt(file_path, interpolate=False):
     NaN-values (np.nan). Note that the values in string should be convertable to float
     (except ``---``).
     """
-    df = pd.read_csv(file_path, sep="\t", header=None)
+    df = pd.read_csv(file_path, sep="\t", header=None, names=['datetime', 'rain_mm'])
 
-    if not {"datetime", "Value [millimeter]"}.issubset(df.columns):
+    if not {"datetime", "rain_mm"}.issubset(df.columns):
         msg = (
-            f"File '{file_path}' should have headers 'datetime' and "
+            f"File '{file_path}' should should contain columns 'datetime' and "
             f"'Value [millimeter]'"
         )
         raise KeyError(msg)
@@ -274,7 +275,7 @@ def load_rain_file_txt(file_path, interpolate=False):
     # remove 0
     df = df[df["rain_mm"] != 0]
     # remove NaN
-    df = df[df["rain_mm"] != np.nan]
+    df = df[~df["rain_mm"].isna()]
     df["rain_mm"] = df["rain_mm"].astype(np.float64)
 
     return df[["datetime", "station", "rain_mm"]]
@@ -382,7 +383,7 @@ def load_rain_folder(folder_path, load_fun, **kwargs):
     lst_df = []
     if load_fun.__name__ == "load_rain_file_matlab_legacy":
         files = list(folder_path.glob("*.txt"))
-    elif load_fun.__name__ == "load_rain_file_txt":
+    elif load_fun.__name__ == "load_rain_file_flanders":
         files = list(folder_path.glob("*.txt"))
     else:
         msg = f"Load function '{load_fun.__name__}' not recognized in R-factor package."
