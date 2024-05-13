@@ -81,7 +81,7 @@ def _check_path(file_path):
             raise TypeError("`file_path` should be a pathlib.Path object")
 
 
-def load_rain_file(file_path, load_fun):
+def load_rain_file(file_path, load_fun, **kwargs):
     """Load file format of rainfall data with a given load function
 
     Parameters
@@ -97,6 +97,9 @@ def load_rain_file(file_path, load_fun):
 
         Please check the required input format for the files in the above listed
         functions.
+
+    kwargs:
+        Keyword arguments for load_fun
 
 
     Returns
@@ -115,7 +118,7 @@ def load_rain_file(file_path, load_fun):
         msg = f"Rainfall load  function {load_fun} not implemented in R-factor package."
         raise IOError(msg)
 
-    rain = load_fun(file_path)
+    rain = load_fun(file_path, **kwargs)
     rain["year"] = rain["datetime"].dt.year
     rain["tag"] = rain["station"].astype(str) + "_" + rain["year"].astype(str)
 
@@ -343,7 +346,7 @@ def load_rain_file_matlab_legacy(file_path):
     return rain[["datetime", "station", "rain_mm"]]
 
 
-def load_rain_folder(folder_path, load_fun):
+def load_rain_folder(folder_path, load_fun, **kwargs):
     """Load all (legacy Matlab format) files of rainfall data in a folder
 
     Parameters
@@ -358,6 +361,9 @@ def load_rain_folder(folder_path, load_fun):
 
         Please check the required input format for the files in the above listed
         functions.
+
+    kwargs:
+        Keyword arguments for load_fun
 
     Returns
     -------
@@ -387,7 +393,7 @@ def load_rain_folder(folder_path, load_fun):
         raise FileNotFoundError(msg)
 
     for file_path in tqdm(files, desc="Processing input files"):
-        df = load_rain_file(file_path, load_fun)
+        df = load_rain_file(file_path, load_fun, **kwargs)
         lst_df.append(df)
     all_rain = pd.concat(lst_df)
     all_rain = all_rain.sort_values(["station", "datetime"])
