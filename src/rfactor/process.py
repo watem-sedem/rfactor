@@ -151,7 +151,7 @@ def load_rain_file(file_path, load_fun, **kwargs):
     return rain
 
 
-def load_rain_file_example(file_path, interpolate=False):
+def load_rain_file_flanders(file_path, interpolate=False):
     """Load any txt file which is formatted in the correct format.
 
     The input files are defined by tab delimited files (extension: ``.txt``) that
