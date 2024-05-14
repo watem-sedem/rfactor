@@ -91,16 +91,16 @@ def load_rain_file(file_path, load_fun, **kwargs):
         input data format defined in the ``load_fun``.
 
     load_fun : Callable
-        Load function, current supported functions:
+        Please check the required input/output format for the files of the used load
+        functions. The output of this function must comply with:
 
-        - :func:`rfactor.process.load_rain_file_matlab_legacy`.
-
-        Please check the required input format for the files in the above listed
-        functions.
+            - *datetime* (datetime64[ns]): timestamp, timezone naive
+            - *station* (object): name of station, must be formatting accoring to a
+              string.
+            - *value* (float): in mm
 
     kwargs:
         Keyword arguments for load_fun
-
 
     Returns
     -------
@@ -114,11 +114,28 @@ def load_rain_file(file_path, load_fun, **kwargs):
         - *year* (int): year of the measurement
         - *tag* (str): tag identifier, formatted as ``STATION_YEAR``
     """
-    if load_fun not in [load_rain_file_matlab_legacy, load_rain_file_txt]:
-        msg = f"Rainfall load  function {load_fun} not implemented in R-factor package."
-        raise IOError(msg)
-
     rain = load_fun(file_path, **kwargs)
+    if not {"datetime", "station", "rain_mm"}.issubset(rain.columns):
+        msg = (
+            f"Load function '{load_fun}' must return columns 'datetime', 'station' "
+            f"and 'rain'."
+        )
+        raise IOError(RainfallFilesIOMsg(msg))
+    if not pd.api.types.is_datetime64_ns_dtype(rain["datetime"]):
+        msg = (
+            f"Load function '{load_fun}' must return datetime64[ns] type for "
+            f"column 'datetime'."
+        )
+        raise IOError(RainfallFilesIOMsg(msg))
+    if not pd.api.types.is_object_dtype(rain["station"]):
+        msg = (
+            f"Load function '{load_fun}' must return object (str) type for "
+            f"column 'station'."
+        )
+        raise IOError(RainfallFilesIOMsg(msg))
+    if not pd.api.types.is_float_dtype(rain["station"]):
+        msg = f"Load function '{load_fun} must return float for column 'value'."
+        raise IOError(RainfallFilesIOMsg(msg))
     rain["year"] = rain["datetime"].dt.year
     rain["tag"] = rain["station"].astype(str) + "_" + rain["year"].astype(str)
 
@@ -195,91 +212,6 @@ def compute_diagnostics(rain):
     return diagnostics
 
 
-def load_rain_file_txt(file_path, interpolate=False):
-    """Load any txt file which is formatted in the correct format.
-
-    The input files are defined by tab delimited files (extension: ``.txt``) that
-    hold rainfall timeseries. The data are split per monitoring station and the file
-    name should be the station identifier. The file should contain two columns:
-
-    - *Date/Time*
-    - *Value [millimeter]*
-
-    Parameters
-    ----------
-    file_path : pathlib.Path
-        File path (comma delimited, .CSV-extension) with rainfall data according to
-        defined format:
-
-        - *datetime*: ``%d-%m-%Y %H:%M:%S``-format
-        - *Value [millimeter]*: str (containing floats and '---'-identifier)
-
-    interpolate: bool
-        Interpolate NaN yes/no
-
-    Returns
-    -------
-    rain : pandas.DataFrame
-        DataFrame with rainfall time series. Contains the following columns:
-
-        - *datetime* (pandas.Timestamp): Time stamp.
-        - *minutes_since* (float): Minutes since start of year.
-        - *station* (str): station identifier.
-        - *rain_mm* (float): Rain in mm.
-
-    Example
-    -------
-    1. Example of a rainfall file:
-
-    ::
-
-        Date/Time,Value [millimeter]
-        01/01/2019 00:00,"0"
-        01/01/2019 00:05,"0.03"
-        01/01/2019 00:10,"0.04"
-        01/01/2019 00:15,"0"
-        01/01/2019 00:20,"0"
-        01/01/2019 00:25,"---"
-        01/01/2019 00:30,"0"
-
-    Notes
-    -----
-    Strings ``---`` in column *Value [millimeter]* -identifiers are converted to
-    NaN-values (np.nan). Note that the values in string should be convertable to float
-    (except ``---``).
-    """
-    df = pd.read_csv(file_path, sep="\t", header=None)
-
-    if not {"datetime", "Value [millimeter]"}.issubset(df.columns):
-        msg = (
-            f"File '{file_path}' should have headers 'datetime' and "
-            f"'Value [millimeter]'"
-        )
-        raise KeyError(msg)
-
-    df["datetime"] = pd.to_datetime(df["datetime"])
-    df["start_year"] = pd.to_datetime(
-        [f"01-01-{x} 00:00:00" for x in df["datetime"].dt.year],
-    )
-    station, year = _extract_metadata_from_file_path(file_path)
-    df["station"] = station
-
-    nan = ["---", ""]
-    df.loc[df["rain_mm"].isin(nan), "rain_mm"] = np.nan
-    df.loc[df["rain_mm"] < 0, "rain_mm"] = np.nan
-
-    if interpolate:
-        df["rain_mm"] = df["rain_mm"].interpolate(method="linear")
-
-    # remove 0
-    df = df[df["rain_mm"] != 0]
-    # remove NaN
-    df = df[df["rain_mm"] != np.nan]
-    df["rain_mm"] = df["rain_mm"].astype(np.float64)
-
-    return df[["datetime", "station", "rain_mm"]]
-
-
 def load_rain_file_matlab_legacy(file_path):
     """Load (legacy Matlab) file format of rainfall data of a **single station/year**.
 
@@ -353,14 +285,15 @@ def load_rain_folder(folder_path, load_fun, **kwargs):
     ----------
     folder_path : pathlib.Path
         Folder path with rainfall data, see also :func:`rfactor.process.load_rain_file`.
+        Folder must contain txt files.
 
     load_fun : Callable
-        Load function, current supported functions:
-
-        - :func:`rfactor.process.load_rain_file_matlab_legacy`.
-
         Please check the required input format for the files in the above listed
-        functions.
+        functions. The (custom) function must output:
+
+        - *datetime* (datetime64[ns]): timestamp, timezone naive
+        - *station* (object): name of station, must be formatting accoring to a string.
+        - *value* (float): in mm
 
     kwargs:
         Keyword arguments for load_fun
@@ -380,13 +313,7 @@ def load_rain_folder(folder_path, load_fun, **kwargs):
         )
 
     lst_df = []
-    if load_fun.__name__ == "load_rain_file_matlab_legacy":
-        files = list(folder_path.glob("*.txt"))
-    elif load_fun.__name__ == "load_rain_file_txt":
-        files = list(folder_path.glob("*.txt"))
-    else:
-        msg = f"Load function '{load_fun.__name__}' not recognized in R-factor package."
-        raise NotImplementedError(msg)
+    files = list(folder_path.glob("*.txt"))
 
     if len(files) == 0:
         msg = f"Input folder '{folder_path}' does not contain any 'txt'-files."

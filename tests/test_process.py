@@ -108,6 +108,68 @@ def test_load_rain_file(rain_data_file):
     ]
 
 
+class TestCustomLoadRainFile:
+    """Test column name/type checking for custom load functions."""
+
+    def test_custom_wrong_columns(self, rain_data_file):
+        """Wrong column names return IOError"""
+
+        def function_wrong_columns(_):
+            """Return wrong columns"""
+            return pd.DataFrame(columns=["test"])
+
+        with pytest.raises(IOError) as excinfo:
+            load_rain_file(rain_data_file, function_wrong_columns)
+        assert "must return columns 'datetime', 'station' and 'rain'." in str(
+            excinfo.value
+        )
+
+    def function_wrong_datetime(self, rain_data_file):
+        """Wrong datetime column format (must be datetime64[ns])"""
+
+        def function_wrong_datetime(_):
+            """Return datetime type"""
+            return pd.DataFrame({"value": [0.0], "datetime": [0.0], "station": ["str"]})
+
+        with pytest.raises(IOError) as excinfo:
+            load_rain_file(rain_data_file, function_wrong_datetime)
+        assert "must return datetime64[ns] type" in str(excinfo.value)
+
+    def function_wrong_station(self, rain_data_file):
+        """Wrong station column format (must be str)"""
+
+        def function_wrong_station(_):
+            """Return station type"""
+            return pd.DataFrame(
+                {
+                    "value": [0.0],
+                    "datetime": pd.to_datetime("01/01/2024 00:00:00"),
+                    "station": [0.0],
+                }
+            )
+
+        with pytest.raises(IOError) as excinfo:
+            load_rain_file(rain_data_file, function_wrong_station)
+        assert "must return object (str) type" in str(excinfo.value)
+
+    def function_wrong_value(self, rain_data_file):
+        """Wrong value column format (must be float)"""
+
+        def function_wrong_value(_):
+            """Return value type"""
+            return pd.DataFrame(
+                {
+                    "value": [""],
+                    "datetime": pd.to_datetime("01/01/2024 00:00:00"),
+                    "station": [""],
+                }
+            )
+
+        with pytest.raises(IOError) as excinfo:
+            load_rain_file(rain_data_file, function_wrong_value)
+        assert " must return float for column" in str(excinfo.value)
+
+
 def test_load_rain_file_with_folder(rain_data_folder):
     """When input is a file, should return ValueError to user"""
 
