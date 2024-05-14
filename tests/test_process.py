@@ -119,7 +119,7 @@ class TestCustomLoadRainFile:
 
         with pytest.raises(IOError) as excinfo:
             load_rain_file(rain_data_file, function_no_dataframe)
-        assert "return pandas.DataFrame." in str(excinfo.value)
+        assert "return pandas.DataFrame" in str(excinfo.value)
 
     def test_custom_wrong_columns(self, rain_data_file):
         """Wrong column names return IOError"""

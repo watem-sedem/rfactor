@@ -116,30 +116,33 @@ def load_rain_file(file_path, load_fun, **kwargs):
     """
     rain = load_fun(file_path, **kwargs)
 
-    if not isinstance(rain.dtype, pd.DataFrame):
-        msg = f"Load function must '{load_fun}' return pandas.DataFrame"
+    if not isinstance(rain, pd.core.frame.DataFrame):
+        msg = f"Load function must '{load_fun.__name__}' return pandas.DataFrame"
         raise IOError(RainfallFilesIOMsg(msg))
 
     if not {"datetime", "station", "rain_mm"}.issubset(rain.columns):
         msg = (
-            f"Load function '{load_fun}' must return columns 'datetime', 'station' "
-            f"and 'rain'."
+            f"Load function '{load_fun.__name__}' must return columns 'datetime', "
+            f"'station' and 'rain'."
         )
         raise IOError(RainfallFilesIOMsg(msg))
     if not pd.api.types.is_datetime64_ns_dtype(rain["datetime"]):
         msg = (
-            f"Load function '{load_fun}' must return datetime64[ns] type for "
+            f"Load function '{load_fun.__name__}' must return datetime64[ns] type for "
             f"column 'datetime'."
         )
         raise IOError(RainfallFilesIOMsg(msg))
     if not pd.api.types.is_object_dtype(rain["station"]):
         msg = (
-            f"Load function '{load_fun}' must return object (str) type for "
+            f"Load function '{load_fun.__name__}' must return object (str) type for "
             f"column 'station'."
         )
         raise IOError(RainfallFilesIOMsg(msg))
     if not pd.api.types.is_float_dtype(rain["station"]):
-        msg = f"Load function '{load_fun} must return float for column 'value'."
+        msg = (
+            f"Load function '{load_fun.__name__}' must return float for column "
+            f"'value'."
+        )
         raise IOError(RainfallFilesIOMsg(msg))
     rain["year"] = rain["datetime"].dt.year
     rain["tag"] = rain["station"].astype(str) + "_" + rain["year"].astype(str)

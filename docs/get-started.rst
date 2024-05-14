@@ -182,7 +182,6 @@ File handling
 This package provides an example processing function in the
 :mod:`rfactor.process` module to enable compatibility of the input format with
 the required data format defined in this package (see previous section).
-Currently, next processing function is implemented:
 
 - :func:`rfactor.process.load_rain_file_matlab_legacy`: This is the processing
   function used to process the ``Matlab KU-Leuven`` file legacy.
@@ -196,7 +195,20 @@ This file-format can be loaded with the defined processing function, i.e.
 
     # Load a Matlab-file
     fname = Path("/PATH/TO/YOUR/RAINFALL/DATA/FOLDER/P01_001_2018.txt")
+    from_matlab = load_rain_file_matlab_legacy(fname)
+
+    # or
+    fname = Path("/PATH/TO/YOUR/RAINFALL/DATA/FOLDER/P01_001_2018.txt")
     from_matlab = load_rain_file(fname, load_rain_file_matlab_legacy)
+
+The load_rain_file function is a helper function that checks if the output
+format of the processing function is valid. This implies
+users can implement custom load functions that return dataframes with
+following definition (column name: type):
+
+- *datetime*: datetime64[ns]
+- *station*: str
+- *value*: float
 
 Or a folder containing multiple files can be loaded:
 
@@ -209,14 +221,6 @@ Or a folder containing multiple files can be loaded:
     folder = Path("/PATH/FOLDER/CONTAINING/MATLABFORMAT/FILES")
     from_matlab = load_rain_folder(folder, load_rain_file_matlab_legacy)
 
-This package does not support a library of load functions, however it does
-column name/type checking in the ``load_rain_file``-function. This implies
-users can implement custom load functions that return dataframes with
-following definition (column name: type):
-
-- *datetime*: datetime64[ns]
-- *station*: str
-- *value*: float
 
 .. note::
 
