@@ -70,7 +70,7 @@ Renard et al., 1997):
 
 .. math::
 
-    e_r = 29(1-0.72e^{-0.05i_r})
+    e_r = 0.29(1-0.72e^{-0.05i_r})
 
 The use of the type of relation has an important implication on the
 computation of the R-factor, as the sensitivity of the R-factor for extreme
