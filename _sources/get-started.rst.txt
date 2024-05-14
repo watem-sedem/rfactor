@@ -179,10 +179,9 @@ existing Pandas functionalities:
 File handling
 -------------
 
-This package provides a number of processing functions in the
+This package provides an example processing function in the
 :mod:`rfactor.process` module to enable compatibility of the input format with
 the required data format defined in this package (see previous section).
-Currently, next processing function is implemented:
 
 - :func:`rfactor.process.load_rain_file_matlab_legacy`: This is the processing
   function used to process the ``Matlab KU-Leuven`` file legacy.
@@ -192,11 +191,24 @@ This file-format can be loaded with the defined processing function, i.e.
 .. code-block:: python
 
     from pathlib import Path
-    from rfactor.process import load_rain_file_matlab_legacy,
+    from rfactor.process import load_rain_file, load_rain_file_matlab_legacy
 
     # Load a Matlab-file
     fname = Path("/PATH/TO/YOUR/RAINFALL/DATA/FOLDER/P01_001_2018.txt")
     from_matlab = load_rain_file_matlab_legacy(fname)
+
+    # or
+    fname = Path("/PATH/TO/YOUR/RAINFALL/DATA/FOLDER/P01_001_2018.txt")
+    from_matlab = load_rain_file(fname, load_rain_file_matlab_legacy)
+
+The load_rain_file function is a helper function that checks if the output
+format of the processing function is valid. This implies
+users can implement custom load functions that return dataframes with
+following definition (column name: type):
+
+- *datetime*: datetime64[ns]
+- *station*: str
+- *value*: float
 
 Or a folder containing multiple files can be loaded:
 
@@ -215,8 +227,7 @@ Or a folder containing multiple files can be loaded:
     Do not forget to use a :py:class:`pathlib.Path` defined file name or
     folder name.
 
-In the next subsections, the specifics for every file-legacy format are
-explained.
+In the next subsection, an example is provided.
 
 Matlab KU-Leuven legacy
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -245,6 +256,104 @@ The content of each of this file is a **non-zero** rainfall timeseries
 
 with the first column being the timestamp from the start of the year
 (minutes) , and second the rainfall depth (in mm).
+
+Custom example
+~~~~~~~~~~~~~~
+
+An example of a custom function is posted below, holding removal of 0 and NaN
+values and an example for interpolation:
+
+.. code-block:: python
+
+    def load_rain_file_example(file_path, interpolate=False):
+        """Load any txt file which is formatted in the correct format.
+
+        The input files are defined by tab delimited files (extension: ``.txt``) that
+        hold rainfall timeseries. The data are split per monitoring station and the file
+        name should be the station identifier. The file should contain two columns:
+
+        - *Date/Time*
+        - *Value [millimeter]*
+
+        Parameters
+        ----------
+        file_path : pathlib.Path
+            File path (comma delimited, .CSV-extension) with rainfall data according to
+            defined format:
+
+            - *datetime*: ``%d-%m-%Y %H:%M:%S``-format
+            - *Value [millimeter]*: str (containing floats and '---'-identifier)
+
+            Headers are not necessary for the columns.
+
+        interpolate: bool
+            Interpolate NaN yes/no
+
+        Returns
+        -------
+        rain : pandas.DataFrame
+            DataFrame with rainfall time series. Contains the following columns:
+
+            - *datetime* (pandas.Timestamp): Time stamp.
+            - *minutes_since* (float): Minutes since start of year.
+            - *station* (str): station identifier.
+            - *rain_mm* (float): Rain in mm.
+
+        Example
+        -------
+        1. Example of a rainfall file:
+
+        ::
+
+            01-01-2019 00:00,"0"
+            01-01-2019 00:05,"0.03"
+            01-01-2019 00:10,"0.04"
+            01-01-2019 00:15,"0"
+            01-01-2019 00:20,"0"
+            01-01-2019 00:25,"---"
+            01-01-2019 00:30,"0"
+
+        Notes
+        -----
+        Strings ``---`` in column *Value [millimeter]* -identifiers are converted to
+        NaN-values (np.nan). Note that the values in string should be convertable to float
+        (except ``---``).
+        """
+        df = pd.read_csv(file_path, sep="\t", header=None, names=['datetime', 'rain_mm'])
+
+        if not {"datetime", "rain_mm"}.issubset(df.columns):
+            msg = (
+                f"File '{file_path}' should should contain columns 'datetime' and "
+                f"'Value [millimeter]'"
+            )
+            raise KeyError(msg)
+
+        df["datetime"] = pd.to_datetime(df["datetime"])
+        df["start_year"] = pd.to_datetime(
+            [f"01-01-{x} 00:00:00" for x in df["datetime"].dt.year],
+        )
+        station, year = _extract_metadata_from_file_path(file_path)
+        df["station"] = station
+
+        nan = ["---", ""]
+        df.loc[df["rain_mm"].isin(nan), "rain_mm"] = np.nan
+        df.loc[df["rain_mm"] < 0, "rain_mm"] = np.nan
+
+        if interpolate:
+            df["rain_mm"] = df["rain_mm"].interpolate(method="linear")
+
+        # remove 0
+        df = df[df["rain_mm"] != 0]
+        # remove NaN
+        df = df[~df["rain_mm"].isna()]
+        df["rain_mm"] = df["rain_mm"].astype(np.float64)
+
+        return df[["datetime", "station", "rain_mm"]]
+
+    folder = Path("/PATH/FOLDER/CONTAINING/CUSTOMFORMAT/FILES")
+    from_matlab = load_rain_folder(folder, load_rain_file_example, interpolate=True)
+
+
 
 Output erosivity
 ~~~~~~~~~~~~~~~~

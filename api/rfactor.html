@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor package &mdash; rfactor 0.1.2.post1.dev50+gfd81dfb documentation</title>
+  <title>rfactor package &mdash; rfactor 0.1.2.post1.dev62+g560a336 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=4f519757"></script>
+        <script src="../_static/documentation_options.js?v=ada7da62"></script>
         <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -40,7 +40,7 @@
             rfactor
           </a>
               <div class="version">
-                0.1.2.post1.dev50+gfd81dfb
+                0.1.2.post1.dev62+g560a336
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -263,11 +263,11 @@ NaN-values within one event.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The rain energy per unit depth <span class="math notranslate nohighlight">\(e_r\)</span> (<span class="math notranslate nohighlight">\(\text{MJ}.\text{mm}^{-1}.
-\text{ha}^{-2}\)</span>) for an application for Flanders/Belgium is defined
+<p>The rain energy per unit depth <span class="math notranslate nohighlight">\(e_r\)</span> (<span class="math notranslate nohighlight">\(\text{J}.\text{mm}^{-1}.
+\text{m}^{-2}\)</span>) for an application for Flanders/Belgium is defined
 by <a class="footnote-reference brackets" href="#id10" id="id7" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> , <a class="footnote-reference brackets" href="#id11" id="id8" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> and <a class="footnote-reference brackets" href="#id12" id="id9" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>:</p>
 <div class="math notranslate nohighlight">
-\[e_r = 0.1112i_r^{0.31}\]</div>
+\[e_r = 11.12i_r^{0.31}\]</div>
 <p>with</p>
 <blockquote>
 <div><ul class="simple">
@@ -420,20 +420,25 @@ end of <em>year</em> and at <em>station</em>.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="rfactor.process.load_rain_file">
-<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">load_rain_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_fun</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_rain_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_rain_file" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">load_rain_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_fun</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_rain_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_rain_file" title="Link to this definition"></a></dt>
 <dd><p>Load file format of rainfall data with a given load function</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.11/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><em>pathlib.Path</em></a>) – File path with rainfall data. Note that files in the folder should follow the
 input data format defined in the <code class="docutils literal notranslate"><span class="pre">load_fun</span></code>.</p></li>
-<li><p><strong>load_fun</strong> (<em>Callable</em>) – <p>Load function, current supported functions:</p>
-<ul>
-<li><p><a class="reference internal" href="#rfactor.process.load_rain_file_matlab_legacy" title="rfactor.process.load_rain_file_matlab_legacy"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_rain_file_matlab_legacy()</span></code></a>.</p></li>
+<li><p><strong>load_fun</strong> (<em>Callable</em>) – <p>Please check the required input/output format for the files of the used load
+functions. The output of this function must comply with:</p>
+<blockquote>
+<div><ul>
+<li><p><em>datetime</em> (datetime64[ns]): timestamp, timezone naive</p></li>
+<li><p><em>station</em> (object): name of station, must be formatting accoring to a
+string.</p></li>
+<li><p><em>value</em> (float): in mm</p></li>
 </ul>
-<p>Please check the required input format for the files in the above listed
-functions.</p>
+</div></blockquote>
 </p></li>
+<li><p><strong>kwargs</strong> – Keyword arguments for load_fun</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -452,6 +457,67 @@ functions.</p>
 <dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)">pandas.DataFrame</a></p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rfactor.process.load_rain_file_flanders">
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">load_rain_file_flanders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_rain_file_flanders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_rain_file_flanders" title="Link to this definition"></a></dt>
+<dd><p>Load any txt file which is formatted in the correct format.</p>
+<p>The input files are defined by tab delimited files (extension: <code class="docutils literal notranslate"><span class="pre">.txt</span></code>) that
+hold rainfall timeseries. The data are split per monitoring station and the file
+name should be the station identifier. The file should contain two columns:</p>
+<ul class="simple">
+<li><p><em>Date/Time</em></p></li>
+<li><p><em>Value [millimeter]</em></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.11/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><em>pathlib.Path</em></a>) – <p>File path (comma delimited, .CSV-extension) with rainfall data according to
+defined format:</p>
+<ul>
+<li><p><em>datetime</em>: <code class="docutils literal notranslate"><span class="pre">%d-%m-%Y</span> <span class="pre">%H:%M:%S</span></code>-format</p></li>
+<li><p><em>Value [millimeter]</em>: str (containing floats and ‘—‘-identifier)</p></li>
+</ul>
+<p>Headers are not necessary for the columns.</p>
+</p></li>
+<li><p><strong>interpolate</strong> (<a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Interpolate NaN yes/no</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>rain</strong> – DataFrame with rainfall time series. Contains the following columns:</p>
+<ul class="simple">
+<li><p><em>datetime</em> (pandas.Timestamp): Time stamp.</p></li>
+<li><p><em>minutes_since</em> (float): Minutes since start of year.</p></li>
+<li><p><em>station</em> (str): station identifier.</p></li>
+<li><p><em>rain_mm</em> (float): Rain in mm.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)">pandas.DataFrame</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<ol class="arabic simple">
+<li><p>Example of a rainfall file:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">,</span><span class="s2">&quot;0&quot;</span>
+<span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">05</span><span class="p">,</span><span class="s2">&quot;0.03&quot;</span>
+<span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="s2">&quot;0.04&quot;</span>
+<span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span><span class="s2">&quot;0&quot;</span>
+<span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span><span class="s2">&quot;0&quot;</span>
+<span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">25</span><span class="p">,</span><span class="s2">&quot;---&quot;</span>
+<span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span><span class="s2">&quot;0&quot;</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<ol class="arabic simple">
+<li><p>Strings <code class="docutils literal notranslate"><span class="pre">---</span></code> in column <em>Value [millimeter]</em> -identifiers are converted to
+NaN-values (np.nan). Note that the values in string should be convertable to
+float (except <code class="docutils literal notranslate"><span class="pre">---</span></code>).</p></li>
+<li><p>Current function is not maintained in unit test until further notice.</p></li>
+</ol>
 </dd></dl>
 
 <dl class="py function">
@@ -500,78 +566,23 @@ start of the year’ and the second as the rainfall depth during the t last minu
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="rfactor.process.load_rain_file_txt">
-<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">load_rain_file_txt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_rain_file_txt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_rain_file_txt" title="Link to this definition"></a></dt>
-<dd><p>Load any txt file which is formatted in the correct format.</p>
-<p>The input files are defined by tab delimited files (extension: <code class="docutils literal notranslate"><span class="pre">.txt</span></code>) that
-hold rainfall timeseries. The data are split per monitoring station and the file
-name should be the station identifier. The file should contain two columns:</p>
-<ul class="simple">
-<li><p><em>Date/Time</em></p></li>
-<li><p><em>Value [millimeter]</em></p></li>
-</ul>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.11/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><em>pathlib.Path</em></a>) – <p>File path (comma delimited, .CSV-extension) with rainfall data according to
-defined format:</p>
-<ul>
-<li><p><em>datetime</em>: <code class="docutils literal notranslate"><span class="pre">%d-%m-%Y</span> <span class="pre">%H:%M:%S</span></code>-format</p></li>
-<li><p><em>Value [millimeter]</em>: str (containing floats and ‘—‘-identifier)</p></li>
-</ul>
-</p></li>
-<li><p><strong>interpolate</strong> (<a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Interpolate NaN yes/no</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p><strong>rain</strong> – DataFrame with rainfall time series. Contains the following columns:</p>
-<ul class="simple">
-<li><p><em>datetime</em> (pandas.Timestamp): Time stamp.</p></li>
-<li><p><em>minutes_since</em> (float): Minutes since start of year.</p></li>
-<li><p><em>station</em> (str): station identifier.</p></li>
-<li><p><em>rain_mm</em> (float): Rain in mm.</p></li>
-</ul>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)">pandas.DataFrame</a></p>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<ol class="arabic simple">
-<li><p>Example of a rainfall file:</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Date</span><span class="o">/</span><span class="n">Time</span><span class="p">,</span><span class="n">Value</span> <span class="p">[</span><span class="n">millimeter</span><span class="p">]</span>
-<span class="mi">01</span><span class="o">/</span><span class="mi">01</span><span class="o">/</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">,</span><span class="s2">&quot;0&quot;</span>
-<span class="mi">01</span><span class="o">/</span><span class="mi">01</span><span class="o">/</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">05</span><span class="p">,</span><span class="s2">&quot;0.03&quot;</span>
-<span class="mi">01</span><span class="o">/</span><span class="mi">01</span><span class="o">/</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="s2">&quot;0.04&quot;</span>
-<span class="mi">01</span><span class="o">/</span><span class="mi">01</span><span class="o">/</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span><span class="s2">&quot;0&quot;</span>
-<span class="mi">01</span><span class="o">/</span><span class="mi">01</span><span class="o">/</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span><span class="s2">&quot;0&quot;</span>
-<span class="mi">01</span><span class="o">/</span><span class="mi">01</span><span class="o">/</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">25</span><span class="p">,</span><span class="s2">&quot;---&quot;</span>
-<span class="mi">01</span><span class="o">/</span><span class="mi">01</span><span class="o">/</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span><span class="s2">&quot;0&quot;</span>
-</pre></div>
-</div>
-<p class="rubric">Notes</p>
-<p>Strings <code class="docutils literal notranslate"><span class="pre">---</span></code> in column <em>Value [millimeter]</em> -identifiers are converted to
-NaN-values (np.nan). Note that the values in string should be convertable to float
-(except <code class="docutils literal notranslate"><span class="pre">---</span></code>).</p>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="rfactor.process.load_rain_folder">
-<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">load_rain_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_fun</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_rain_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_rain_folder" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">load_rain_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">load_fun</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_rain_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_rain_folder" title="Link to this definition"></a></dt>
 <dd><p>Load all (legacy Matlab format) files of rainfall data in a folder</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_path</strong> (<a class="reference external" href="https://docs.python.org/3.11/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><em>pathlib.Path</em></a>) – Folder path with rainfall data, see also <a class="reference internal" href="#rfactor.process.load_rain_file" title="rfactor.process.load_rain_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_rain_file()</span></code></a>.</p></li>
-<li><p><strong>load_fun</strong> (<em>Callable</em>) – <p>Load function, current supported functions:</p>
+<li><p><strong>folder_path</strong> (<a class="reference external" href="https://docs.python.org/3.11/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><em>pathlib.Path</em></a>) – Folder path with rainfall data, see also <a class="reference internal" href="#rfactor.process.load_rain_file" title="rfactor.process.load_rain_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_rain_file()</span></code></a>.
+Folder must contain txt files.</p></li>
+<li><p><strong>load_fun</strong> (<em>Callable</em>) – <p>Please check the required input format for the files in the above listed
+functions. The (custom) function must output:</p>
 <ul>
-<li><p><a class="reference internal" href="#rfactor.process.load_rain_file_matlab_legacy" title="rfactor.process.load_rain_file_matlab_legacy"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.process.load_rain_file_matlab_legacy()</span></code></a>.</p></li>
+<li><p><em>datetime</em> (datetime64[ns]): timestamp, timezone naive</p></li>
+<li><p><em>station</em> (object): name of station, must be formatting accoring to a string.</p></li>
+<li><p><em>value</em> (float): in mm</p></li>
 </ul>
-<p>Please check the required input format for the files in the above listed
-functions.</p>
 </p></li>
+<li><p><strong>kwargs</strong> – Keyword arguments for load_fun</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
