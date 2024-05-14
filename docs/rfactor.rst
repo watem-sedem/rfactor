@@ -52,11 +52,12 @@ Energy per unit depth of rain
 There are number of ways to compute the rain energy per unit depth
 :math:`e_r`, depending on the area for which the R-factor is computed. For an
 application for Flanders/Belgium, the rain energy per unit is defined by
-(Salles et al., 1999, 2002, Verstraeten et al., 2006):
+(Salles et al., 1999, 2002, Verstraeten et al., 2006) (:math:`\text{MJ}.\text{mm}^{-1}.
+    \text{ha}^{-1}`):
 
 .. math::
 
-    e_r = 11.12i_r^{0.31}
+    e_r = 0.1112i_r^{0.31}
 
 with
 
