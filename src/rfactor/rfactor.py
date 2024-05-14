@@ -36,13 +36,13 @@ def rain_energy_per_unit_depth_verstraeten2006(rain):
 
     Notes
     -----
-    The rain energy per unit depth :math:`e_r` (:math:`\\text{J}.\\text{mm}^{-1}.
-    \\text{m}^{-2}`) for an application for Flanders/Belgium is defined
+    The rain energy per unit depth :math:`e_r` (:math:`\\text{MJ}.\\text{mm}^{-1}.
+    \\text{ha}^{-1}`) for an application for Flanders/Belgium is defined
     by [1]_ , [2]_ and [3]_:
 
     .. math::
 
-        e_r = 11.12i_r^{0.31}
+        e_r = 0.1112i_r^{0.31}
 
     with
 
