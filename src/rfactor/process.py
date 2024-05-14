@@ -151,6 +151,93 @@ def load_rain_file(file_path, load_fun, **kwargs):
     return rain
 
 
+def load_rain_file_example(file_path, interpolate=False):
+    """Load any txt file which is formatted in the correct format.
+
+    The input files are defined by tab delimited files (extension: ``.txt``) that
+    hold rainfall timeseries. The data are split per monitoring station and the file
+    name should be the station identifier. The file should contain two columns:
+
+    - *Date/Time*
+    - *Value [millimeter]*
+
+    Parameters
+    ----------
+    file_path : pathlib.Path
+        File path (comma delimited, .CSV-extension) with rainfall data according to
+        defined format:
+
+        - *datetime*: ``%d-%m-%Y %H:%M:%S``-format
+        - *Value [millimeter]*: str (containing floats and '---'-identifier)
+
+        Headers are not necessary for the columns.
+
+    interpolate: bool
+        Interpolate NaN yes/no
+
+    Returns
+    -------
+    rain : pandas.DataFrame
+        DataFrame with rainfall time series. Contains the following columns:
+
+        - *datetime* (pandas.Timestamp): Time stamp.
+        - *minutes_since* (float): Minutes since start of year.
+        - *station* (str): station identifier.
+        - *rain_mm* (float): Rain in mm.
+
+    Example
+    -------
+    1. Example of a rainfall file:
+
+    ::
+
+        01-01-2019 00:00,"0"
+        01-01-2019 00:05,"0.03"
+        01-01-2019 00:10,"0.04"
+        01-01-2019 00:15,"0"
+        01-01-2019 00:20,"0"
+        01-01-2019 00:25,"---"
+        01-01-2019 00:30,"0"
+
+    Notes
+    -----
+    1. Strings ``---`` in column *Value [millimeter]* -identifiers are converted to
+       NaN-values (np.nan). Note that the values in string should be convertable to
+       float (except ``---``).
+    2. Current function is not maintained in unit test until further notice.
+    """
+    df = pd.read_csv(file_path, sep="\t", header=None, names=["datetime", "rain_mm"])
+
+    if not {"datetime", "rain_mm"}.issubset(df.columns):
+        msg = (
+            f"File '{file_path}' should should contain columns 'datetime' and "
+            f"'Value [millimeter]'"
+        )
+        raise KeyError(msg)
+
+    df["datetime"] = pd.to_datetime(df["datetime"])
+    df["start_year"] = pd.to_datetime(
+        [f"01-01-{x} 00:00:00" for x in df["datetime"].dt.year],
+    )
+    station, year = _extract_metadata_from_file_path(file_path)
+    df["station"] = station
+
+    nan = ["---", ""]
+    df.loc[df["rain_mm"].isin(nan), "rain_mm"] = np.nan
+    df.loc[df["rain_mm"] < 0, "rain_mm"] = np.nan
+
+    if interpolate:
+        df["rain_mm"] = df["rain_mm"].interpolate(method="linear")
+
+    # remove 0
+    df = df[df["rain_mm"] != 0]
+    # remove NaN
+    df = df[~df["rain_mm"].isna()]
+    df["rain_mm"] = df["rain_mm"].astype(np.float64)
+
+    return df[["datetime", "station", "rain_mm"]]
+
+
 def compute_diagnostics(rain):
     """Compute diagnostics for input rainfall.
 
