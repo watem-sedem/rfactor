@@ -179,7 +179,7 @@ existing Pandas functionalities:
 File handling
 -------------
 
-This package provides a number of processing functions in the
+This package provides an example processing function in the
 :mod:`rfactor.process` module to enable compatibility of the input format with
 the required data format defined in this package (see previous section).
 Currently, next processing function is implemented:
@@ -192,11 +192,11 @@ This file-format can be loaded with the defined processing function, i.e.
 .. code-block:: python
 
     from pathlib import Path
-    from rfactor.process import load_rain_file_matlab_legacy,
+    from rfactor.process import load_rain_file, load_rain_file_matlab_legacy
 
     # Load a Matlab-file
     fname = Path("/PATH/TO/YOUR/RAINFALL/DATA/FOLDER/P01_001_2018.txt")
-    from_matlab = load_rain_file_matlab_legacy(fname)
+    from_matlab = load_rain_file(fname, load_rain_file_matlab_legacy)
 
 Or a folder containing multiple files can be loaded:
 
@@ -209,14 +209,21 @@ Or a folder containing multiple files can be loaded:
     folder = Path("/PATH/FOLDER/CONTAINING/MATLABFORMAT/FILES")
     from_matlab = load_rain_folder(folder, load_rain_file_matlab_legacy)
 
+This package does not support a library of load functions, however it does
+column name/type checking in the ``load_rain_file``-function. This implies
+users can implement custom load functions that return dataframes with
+following definition (column name: type):
+
+- *datetime*: datetime64[ns]
+- *station*: str
+- *value*: float
 
 .. note::
 
     Do not forget to use a :py:class:`pathlib.Path` defined file name or
     folder name.
 
-In the next subsections, the specifics for every file-legacy format are
-explained.
+In the next subsection, an example is provided.
 
 Matlab KU-Leuven legacy
 ~~~~~~~~~~~~~~~~~~~~~~~
