@@ -123,7 +123,7 @@ def load_rain_file(file_path, load_fun, **kwargs):
     if not {"datetime", "station", "rain_mm"}.issubset(rain.columns):
         msg = (
             f"Load function '{load_fun.__name__}' must return columns 'datetime', "
-            f"'station' and 'rain'."
+            f"'station' and 'rain_mm'."
         )
         raise IOError(RainfallFilesIOMsg(msg))
     if not pd.api.types.is_datetime64_ns_dtype(rain["datetime"]):
@@ -138,10 +138,10 @@ def load_rain_file(file_path, load_fun, **kwargs):
             f"column 'station'."
         )
         raise IOError(RainfallFilesIOMsg(msg))
-    if not pd.api.types.is_float_dtype(rain["station"]):
+    if not pd.api.types.is_float_dtype(rain["rain_mm"]):
         msg = (
             f"Load function '{load_fun.__name__}' must return float for column "
-            f"'value'."
+            f"'rain_mm'."
         )
         raise IOError(RainfallFilesIOMsg(msg))
     rain["year"] = rain["datetime"].dt.year
@@ -282,7 +282,7 @@ def load_rain_file_matlab_legacy(file_path):
     )
 
     rain = rain.assign(station=station)
-
+    rain
     return rain[["datetime", "station", "rain_mm"]]
 
 

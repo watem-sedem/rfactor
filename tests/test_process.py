@@ -130,7 +130,7 @@ class TestCustomLoadRainFile:
 
         with pytest.raises(IOError) as excinfo:
             load_rain_file(rain_data_file, function_wrong_columns)
-        assert "must return columns 'datetime', 'station' and 'rain'." in str(
+        assert "must return columns 'datetime', 'station' and 'rain_mm'." in str(
             excinfo.value
         )
 
@@ -139,7 +139,9 @@ class TestCustomLoadRainFile:
 
         def function_wrong_datetime(_):
             """Return datetime type"""
-            return pd.DataFrame({"value": [0.0], "datetime": [0.0], "station": ["str"]})
+            return pd.DataFrame(
+                {"rain_mm": [0.0], "datetime": [0.0], "station": ["str"]}
+            )
 
         with pytest.raises(IOError) as excinfo:
             load_rain_file(rain_data_file, function_wrong_datetime)
@@ -152,7 +154,7 @@ class TestCustomLoadRainFile:
             """Return station type"""
             return pd.DataFrame(
                 {
-                    "value": [0.0],
+                    "rain_mm": [0.0],
                     "datetime": pd.to_datetime("01/01/2024 00:00:00"),
                     "station": [0.0],
                 }
@@ -169,7 +171,7 @@ class TestCustomLoadRainFile:
             """Return value type"""
             return pd.DataFrame(
                 {
-                    "value": [""],
+                    "rain_mm": [""],
                     "datetime": pd.to_datetime("01/01/2024 00:00:00"),
                     "station": [""],
                 }
