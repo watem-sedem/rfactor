@@ -3,8 +3,8 @@ import sys
 from rfactor.rfactor import (
     compute_erosivity,
     maximum_intensity,
+    maximum_intensity_interpolate,
     maximum_intensity_matlab_clone,
-    maximum_intensity_matlab_clone_fix,
     rain_energy_verstraeten,
 )
 
@@ -28,7 +28,7 @@ finally:
 __all__ = [
     "compute_erosivity",
     "maximum_intensity_matlab_clone",
-    "maximum_intensity_matlab_clone_fix",
+    "maximum_intensity_interpolate",
     "maximum_intensity",
     "rain_energy_verstraeten",
     "rain_energy_mcgregor",

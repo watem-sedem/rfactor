@@ -3,6 +3,7 @@ from functools import partial
 
 import numpy as np
 import pandas as pd
+from deprecated import deprecated
 from joblib import Parallel, delayed
 
 TIME_BETWEEN_EVENTS = "6 hours"
@@ -146,6 +147,10 @@ def rain_energy_mcgregor(rain):
     return rain_energy.sum()
 
 
+@deprecated(
+    version="0.1.3",
+    reason="Please use 'maximum_intensity' or " "'maximum_intensity_interpolate'.",
+)
 def maximum_intensity_matlab_clone(df):
     """Maximum rain intensity for 30-min interval (Matlab clone).
 
@@ -205,7 +210,7 @@ def maximum_intensity_matlab_clone(df):
     return maxprecip_30min * 2
 
 
-def maximum_intensity_matlab_clone_fix(df):
+def maximum_intensity_interpolate(df):
     """Maximum rain intensity for 30-min interval (Matlab clone Fix).
     This implementation is a fixed version of the Python-translation of the original
     Matlab implementation by [3]_.
