@@ -1,9 +1,9 @@
 import multiprocessing as mp
+import warnings
 from functools import partial
 
 import numpy as np
 import pandas as pd
-from deprecated import deprecated
 from joblib import Parallel, delayed
 
 TIME_BETWEEN_EVENTS = "6 hours"
@@ -147,10 +147,6 @@ def rain_energy_mcgregor(rain):
     return rain_energy.sum()
 
 
-@deprecated(
-    version="0.1.3",
-    reason="Please use 'maximum_intensity' or " "'maximum_intensity_interpolate'.",
-)
 def maximum_intensity_matlab_clone(df):
     """Maximum rain intensity for 30-min interval (Matlab clone).
 
@@ -175,6 +171,11 @@ def maximum_intensity_matlab_clone(df):
     The Python and original Matlab implementation linearly interpolate zero and
     NaN-values within one event.
     """
+    warnings.warn(
+        "This function is no longer supported. Please use 'maximum_intensity' "
+        "or "
+        "'maximum_intensity_interpolate'.)"
+    )
     if np.isnan(df["rain_mm"]).any():
         raise Exception(
             "Matlab intensity method does not support Nan values in rain" "time series."
