@@ -21,7 +21,7 @@ class RFactorTypeError(Exception):
     """Raise when input data data type of a data column is wrong."""
 
 
-def rain_energy_per_unit_depth_verstraeten2006(rain):
+def rain_energy_verstraeten(rain):
     """Calculate rain energy per unit depth according to Salles/Verstraeten.
 
     Parameters
@@ -65,7 +65,7 @@ def rain_energy_per_unit_depth_verstraeten2006(rain):
     return rain_energy.sum()
 
 
-def rain_energy_per_unit_depth_brown_and_foster(rain):
+def rain_energy_brown_and_foster(rain):
     """Calculate rain energy per unit depth according to Brown and Foster.
 
     Parameters
@@ -108,7 +108,7 @@ def rain_energy_per_unit_depth_brown_and_foster(rain):
     return rain_energy.sum()
 
 
-def rain_energy_per_unit_depth_mcgregor(rain):
+def rain_energy_mcgregor(rain):
     """Calculate rain energy per unit depth according to McGregor.
 
     Parameters
@@ -405,7 +405,7 @@ def _apply_rfactor(name, group, energy_method, intensity_method):
 
 def compute_erosivity(
     rain,
-    energy_method=rain_energy_per_unit_depth_verstraeten2006,
+    energy_method=rain_energy_verstraeten,
     intensity_method=maximum_intensity,
 ):
     """Calculate erosivity  for each year/station combination
