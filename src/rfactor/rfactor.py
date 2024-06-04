@@ -50,6 +50,9 @@ def rain_energy_verstraeten(rain):
      - :math:`i_r` the rain intensity for every 10-min
        increment (mm :math:`\\text{h}^{-1}` ).
 
+    The rain energy is multiplied by the volume of rain (per 10 minutes) and summed per
+    event to compute the total energy of the event.
+
     References
     ----------
     .. [1] Salles, C., Poesen, J., Pissart, A., 1999, Rain erosivity indices and drop
@@ -93,6 +96,9 @@ def rain_energy_brown_and_foster(rain):
      - :math:`i_r` the rain intensity for every 10-min
        increment (mm :math:`\\text{h}^{-1}` ).
 
+    The rain energy is multiplied by the volume of rain (per 10 minutes) and summed per
+    event to compute the total energy of the event.
+
     References
     ----------
     .. [4] Brown, L.C., Foster, G.R., 1987. Storm erosivity using idealized intensity
@@ -105,7 +111,7 @@ def rain_energy_brown_and_foster(rain):
         Department of Agriculture, Washington.
         https://www.ars.usda.gov/ARSUserFiles/64080530/RUSLE/AH_703.pdf
     """
-    rain_energy = 0.29 * (1 - 0.72 * np.exp(-0.05 * rain))
+    rain_energy = 0.29 * (1 - 0.72 * np.exp(-0.05 * rain * 6)) * rain
     return rain_energy.sum()
 
 
@@ -136,6 +142,9 @@ def rain_energy_mcgregor(rain):
      - :math:`i_r` the rain intensity for every 10-min
        increment (mm :math:`\\text{h}^{-1}` ).
 
+    The rain energy is multiplied by the volume of rain (per 10 minutes) and summed per
+    event to compute the total energy of the event.
+
     References
     ----------
     .. [6] McGregor, K.C., Bingner, R.L., Bowie, A.J. and Foster, G.R., 1995.
@@ -143,7 +152,7 @@ def rain_energy_mcgregor(rain):
          38(4), pp.1039-1047. 10.13031/2013.27921
 
     """
-    rain_energy = 0.29 * (1 - 0.72 * np.exp(-0.08 * rain))
+    rain_energy = 0.29 * (1 - 0.72 * np.exp(-0.08 * rain * 6)) * rain
     return rain_energy.sum()
 
 
