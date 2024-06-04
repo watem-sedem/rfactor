@@ -5,7 +5,9 @@ from rfactor.rfactor import (
     maximum_intensity,
     maximum_intensity_interpolate,
     maximum_intensity_matlab_clone,
-    rain_energy_verstraeten,
+    rain_energy_brown_and_foster1987,
+    rain_energy_mcgregor1995,
+    rain_energy_verstraeten2006,
 )
 
 if sys.version_info[:2] >= (3, 8):
@@ -30,7 +32,7 @@ __all__ = [
     "maximum_intensity_matlab_clone",
     "maximum_intensity_interpolate",
     "maximum_intensity",
-    "rain_energy_verstraeten",
-    "rain_energy_mcgregor",
-    "rain_energy_brown_and_foster",
+    "rain_energy_brown_and_foster1987",
+    "rain_energy_verstraeten2006",
+    "rain_energy_mcgregor1995",
 ]

@@ -54,20 +54,23 @@ DataFrame ``df_rain``.
 
 .. code-block:: python
 
-    from rfactor import compute_erosivity, rain_energy_verstraeten, maximum_intensity
-    erosivity = compute_erosivity(df_rain, rain_energy_verstraeten, maximum_intensity)
+    from rfactor import compute_erosivity, rain_energy_verstraeten2006, maximum_intensity
+    erosivity = compute_erosivity(df_rain, rain_energy_verstraeten2006, maximum_intensity)
 
 
 .. note::
 
     1. Other rain energy functions that are implemented are Brown and Foster
-    (see :func:`rfactor.rfactor.rain_energy_brown_and_foster`) and McGregor
-    (see :func:`rfactor.rfactor.rain_energy_mcgregor`)
+    (see :func:`rfactor.rfactor.rain_energy_brown_and_foster1987`) and McGregor
+    (see :func:`rfactor.rfactor.rain_energy_mcgregor1995`)
 
     2. Equally to note above, the
-    :func:`rfactor.rfactor.rain_energy_verstraeten` is the
+    :func:`rfactor.rfactor.rain_energy_verstraeten2006` is the
     default method to deriver rain energy per unit depth for an event. Also
     here, users can implement their custom function.
+
+    3. Note that preimplemented energy functions are valid for ten minute
+    rainfall input data.
 
 
 The output is a DataFrame with the intermediate results and the cumulative
