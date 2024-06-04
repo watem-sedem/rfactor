@@ -22,8 +22,10 @@ class RFactorTypeError(Exception):
     """Raise when input data data type of a data column is wrong."""
 
 
-def rain_energy_verstraeten(rain):
-    """Calculate rain energy per unit depth according to Salles/Verstraeten.
+def rain_energy_verstraeten2006(rain):
+    """Calculate rain energy per unit depth according to Salles/Verstraeten with 10
+    minute interval data.
+
 
     Parameters
     ----------
@@ -69,8 +71,9 @@ def rain_energy_verstraeten(rain):
     return rain_energy.sum()
 
 
-def rain_energy_brown_and_foster(rain):
-    """Calculate rain energy per unit depth according to Brown and Foster.
+def rain_energy_brown_and_foster1987(rain):
+    """Calculate rain energy per unit depth according to Brown and Foster with 10
+    minute interval input rainfall data.
 
     Parameters
     ----------
@@ -84,20 +87,22 @@ def rain_energy_brown_and_foster(rain):
 
     Notes
     -----
-    The rain energy per unit depth :math:`e_r` (:math:`\\text{MJ}.\\text{mm}^{-1}.
-    \\text{ha}^{-1}`) is defined by [4] and [5]:
+    1. The formula applies for 10-minute rainfall input data.
 
-    .. math::
+    2. The rain energy per unit depth :math:`e_r` (:math:`\\text{MJ}.\\text{mm}^{-1}.
+        \\text{ha}^{-1}`) is defined by [4] and [5]:
 
-        e_r = 0.29*(1-0.72*exp(-0.05*i_r)
+        .. math::
 
-    with
+            e_r = 0.29*(1-0.72*exp(-0.05*i_r)
 
-     - :math:`i_r` the rain intensity for every 10-min
-       increment (mm :math:`\\text{h}^{-1}` ).
+        with
 
-    The rain energy is multiplied by the volume of rain (per 10 minutes) and summed per
-    event to compute the total energy of the event.
+         - :math:`i_r` the rain intensity for every 10-min
+           increment (mm :math:`\\text{h}^{-1}` ).
+
+        The rain energy is multiplied by the volume of rain (per 10 minutes) and summed
+        per event to compute the total energy of the event.
 
     References
     ----------
@@ -115,8 +120,9 @@ def rain_energy_brown_and_foster(rain):
     return rain_energy.sum()
 
 
-def rain_energy_mcgregor(rain):
-    """Calculate rain energy per unit depth according to McGregor.
+def rain_energy_mcgregor1995(rain):
+    """Calculate rain energy per unit depth according to McGregor with 10
+    minute interval data.
 
     Parameters
     ----------
@@ -420,7 +426,7 @@ def _apply_rfactor(name, group, energy_method, intensity_method):
 
 def compute_erosivity(
     rain,
-    energy_method=rain_energy_verstraeten,
+    energy_method=rain_energy_verstraeten2006,
     intensity_method=maximum_intensity,
 ):
     """Calculate erosivity  for each year/station combination
