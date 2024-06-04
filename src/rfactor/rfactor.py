@@ -92,17 +92,19 @@ def rain_energy_brown_and_foster1987(rain):
 
     Notes
     -----
-    The rain energy per unit depth :math:`e_r` (:math:`\\text{MJ}.\\text{mm}^{-1}.
-    \\text{ha}^{-1}`) is defined by [4] and [5]:
+    1. The formula applies for 10-minute rainfall input data.
 
-    .. math::
+    2. The rain energy per unit depth :math:`e_r` (:math:`\\text{MJ}.\\text{mm}^{-1}.
+        \\text{ha}^{-1}`) is defined by [4] and [5]:
 
-        e_r = 0.29*(1-0.72*exp(-0.05*i_r)
+        .. math::
 
-    with
+            e_r = 0.29*(1-0.72*exp(-0.05*i_r)
 
-     - :math:`i_r` the rain intensity for every 10-min
-       increment (mm :math:`\\text{h}^{-1}` ).
+        with
+
+         - :math:`i_r` the rain intensity for every 10-min
+           increment (mm :math:`\\text{h}^{-1}` ).
 
     The rain energy is multiplied by the volume of rain (per 10 minutes) and summed
     per event to compute the total energy of the event. The formula applies for a 10
