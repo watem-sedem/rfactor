@@ -7,7 +7,7 @@ from rfactor import (
     compute_erosivity,
     maximum_intensity,
     maximum_intensity_matlab_clone,
-    rain_energy_verstraeten,
+    rain_energy_verstraeten2006,
 )
 from rfactor.rfactor import (
     RFactorInputError,
@@ -30,7 +30,7 @@ from rfactor.rfactor import (
 )
 def test_rain_energy_per_unit_depth(rain, energy):
     """Rain energy calculation can handle zero arrays, zero values and nan."""
-    assert energy == approx(rain_energy_verstraeten(rain), nan_ok=True, abs=1e-5)
+    assert energy == approx(rain_energy_verstraeten2006(rain), nan_ok=True, abs=1e-5)
 
 
 @pytest.mark.parametrize(
@@ -129,7 +129,7 @@ def test_compute_erosivity_wrong_df():
         }
     )
     with pytest.raises(RFactorInputError) as excinfo:
-        _compute_erosivity(df, rain_energy_verstraeten, maximum_intensity)
+        _compute_erosivity(df, rain_energy_verstraeten2006, maximum_intensity)
     assert "contain data of a single year." in str(excinfo.value)
 
 
@@ -140,7 +140,7 @@ def test_compute_0_or_NULL_rain_mm_error(dummy_rain, recwarn):
 
     # test warning
     with pytest.raises(RFactorInputError) as excinfo:
-        compute_erosivity(df, rain_energy_verstraeten, maximum_intensity)
+        compute_erosivity(df, rain_energy_verstraeten2006, maximum_intensity)
     assert "Can only accept non-zero/non-NULL timeseries" in str(excinfo.value)
 
 
@@ -149,12 +149,12 @@ def test_apply_rfactor(rain_benchmark_closure):
     station, year = "P01_001", 2018
     rain = rain_benchmark_closure(station, year)
     erosivity_support_func = _compute_erosivity(
-        rain, rain_energy_verstraeten, maximum_intensity
+        rain, rain_energy_verstraeten2006, maximum_intensity
     )
     erosivity_apply_rfactor = _apply_rfactor(
         (station, year),
         rain,
-        rain_energy_verstraeten,
+        rain_energy_verstraeten2006,
         maximum_intensity,
     )
 
@@ -262,7 +262,7 @@ def test_rfactor_benchmark_single_year(
     else:
         eros_benchmark = erosivity_benchmark_matlab_clone_data
 
-    erosivity = compute_erosivity(rain, rain_energy_verstraeten, intensity_method)
+    erosivity = compute_erosivity(rain, rain_energy_verstraeten2006, intensity_method)
     erosivity_reference = eros_benchmark[
         (eros_benchmark["year"] == year) & (eros_benchmark["station"] == station)
     ]
@@ -272,7 +272,7 @@ def test_rfactor_benchmark_single_year(
     # using support function provides the same output
     erosivity_support_func = _compute_erosivity(
         rain,
-        rain_energy_verstraeten,
+        rain_energy_verstraeten2006,
         intensity_method=intensity_method,
     )
 
