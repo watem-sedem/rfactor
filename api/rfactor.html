@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor package &mdash; rfactor 0.1.2.post1.dev67+gd447049 documentation</title>
+  <title>rfactor package &mdash; rfactor 0.1.2.post1.dev79+g2584d21 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=adc3f46e"></script>
+        <script src="../_static/documentation_options.js?v=4ebc1e48"></script>
         <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -40,7 +40,7 @@
             rfactor
           </a>
               <div class="version">
-                0.1.2.post1.dev67+gd447049
+                0.1.2.post1.dev79+g2584d21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -123,7 +123,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="rfactor.rfactor.compute_erosivity">
-<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">compute_erosivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_method=&lt;function</span> <span class="pre">rain_energy_per_unit_depth_verstraeten2006&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensity_method=&lt;function</span> <span class="pre">maximum_intensity&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#compute_erosivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.compute_erosivity" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">compute_erosivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_method=&lt;function</span> <span class="pre">rain_energy_verstraeten2006&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensity_method=&lt;function</span> <span class="pre">maximum_intensity&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#compute_erosivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.compute_erosivity" title="Link to this definition"></a></dt>
 <dd><p>Calculate erosivity  for each year/station combination</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -187,43 +187,18 @@ maximal intensity.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="rfactor.rfactor.maximum_intensity_matlab_clone">
-<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">maximum_intensity_matlab_clone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#maximum_intensity_matlab_clone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.maximum_intensity_matlab_clone" title="Link to this definition"></a></dt>
-<dd><p>Maximum rain intensity for 30-min interval (Matlab clone).</p>
-<p>The implementation is a direct Python-translation of the original Matlab
-implementation by Verstraeten et al. (2006) <a class="footnote-reference brackets" href="#id12" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)"><em>pandas.DataFrame</em></a>) – DataFrame with rainfall time series. Needs to contain the following columns:
-- <em>datetime</em> (pandas.Timestamp): Time stamp
-- <em>rain_mm</em> (float): Rain in mm. No NaN or 0-values allowed
-- <em>event_rain_cum</em> (float): Cumulative rain in mm</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>maxprecip_30min</strong> – Maximal 30-minute intensity during event (in mm/h).</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#float" title="(in Python v3.11)">float</a></p>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>The Python and original Matlab implementation linearly interpolate zero and
-NaN-values within one event.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="rfactor.rfactor.maximum_intensity_matlab_clone_fix">
-<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">maximum_intensity_matlab_clone_fix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#maximum_intensity_matlab_clone_fix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.maximum_intensity_matlab_clone_fix" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="rfactor.rfactor.maximum_intensity_interpolate">
+<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">maximum_intensity_interpolate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#maximum_intensity_interpolate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.maximum_intensity_interpolate" title="Link to this definition"></a></dt>
 <dd><p>Maximum rain intensity for 30-min interval (Matlab clone Fix).
 This implementation is a fixed version of the Python-translation of the original
-Matlab implementation by <a class="footnote-reference brackets" href="#id12" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
+Matlab implementation by <a class="footnote-reference brackets" href="#id17" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
 <dl class="simple">
 <dt>Changes to the original script are:</dt><dd><ul class="simple">
 <li><p>In the if-statement ‘if timestamps[-1] - timestamps[0] &lt;= 30:’ this methode
 calculates the total amount of rain during the interval while the original
 method only looks at the first rainfall entry.</p></li>
-<li><p>In the same if-statement, the <a href="#id3"><span class="problematic" id="id4">*</span></a>2 was removed, since this is already done in
-the ‘return’ step of the model. This <a href="#id5"><span class="problematic" id="id6">*</span></a>2 causes the model to steeply over
+<li><p>In the same if-statement, the <a href="#id2"><span class="problematic" id="id3">*</span></a>2 was removed, since this is already done in
+the ‘return’ step of the model. This <a href="#id4"><span class="problematic" id="id5">*</span></a>2 causes the model to steeply over
 estimate the rainfall during short rainfall events.</p></li>
 </ul>
 </dd>
@@ -248,9 +223,133 @@ NaN-values within one event.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="rfactor.rfactor.rain_energy_per_unit_depth_verstraeten2006">
-<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">rain_energy_per_unit_depth_verstraeten2006</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rain</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#rain_energy_per_unit_depth_verstraeten2006"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.rain_energy_per_unit_depth_verstraeten2006" title="Link to this definition"></a></dt>
-<dd><p>Calculate rain energy per unit depth according to Salles/Verstraeten.</p>
+<dt class="sig sig-object py" id="rfactor.rfactor.maximum_intensity_matlab_clone">
+<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">maximum_intensity_matlab_clone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#maximum_intensity_matlab_clone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.maximum_intensity_matlab_clone" title="Link to this definition"></a></dt>
+<dd><p>Maximum rain intensity for 30-min interval (Matlab clone).</p>
+<p>The implementation is a direct Python-translation of the original Matlab
+implementation by Verstraeten et al. (2006) <a class="footnote-reference brackets" href="#id17" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.2)"><em>pandas.DataFrame</em></a>) – DataFrame with rainfall time series. Needs to contain the following columns:
+- <em>datetime</em> (pandas.Timestamp): Time stamp
+- <em>rain_mm</em> (float): Rain in mm. No NaN or 0-values allowed
+- <em>event_rain_cum</em> (float): Cumulative rain in mm</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>maxprecip_30min</strong> – Maximal 30-minute intensity during event (in mm/h).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#float" title="(in Python v3.11)">float</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The Python and original Matlab implementation linearly interpolate zero and
+NaN-values within one event.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rfactor.rfactor.rain_energy_brown_and_foster1987">
+<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">rain_energy_brown_and_foster1987</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rain</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#rain_energy_brown_and_foster1987"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.rain_energy_brown_and_foster1987" title="Link to this definition"></a></dt>
+<dd><p>Calculate rain energy per unit depth according to Brown and Foster with 10
+minute interval input rainfall data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rain</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><em>numpy.ndarray</em></a>) – Rain (mm)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>energy</strong> – Energy per unit depth.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#float" title="(in Python v3.11)">float</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ol class="arabic">
+<li><p>The formula applies for 10-minute rainfall input data.</p></li>
+<li><dl>
+<dt>The rain energy per unit depth <span class="math notranslate nohighlight">\(e_r\)</span> (:math:<a href="#id7"><span class="problematic" id="id8">`</span></a>text{MJ}.text{mm}^{-1}.</dt><dd><p>text{ha}^{-1}`) is defined by [4] and [5]:</p>
+<div class="math notranslate nohighlight">
+\[e_r = 0.29*(1-0.72*exp(-0.05*i_r)\]</div>
+<p>with</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(i_r\)</span> the rain intensity for every 10-min
+increment (mm <span class="math notranslate nohighlight">\(\text{h}^{-1}\)</span> ).</p></li>
+</ul>
+</div></blockquote>
+<p>The rain energy is multiplied by the volume of rain (per 10 minutes) and summed
+per event to compute the total energy of the event.</p>
+</dd>
+</dl>
+</li>
+</ol>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id9" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></span>
+<p>Brown, L.C., Foster, G.R., 1987. Storm erosivity using idealized intensity
+distributions. Transactions of the ASAE 30, 0379–0386.
+<a class="reference external" href="https://doi.org/10.13031/2013.31957">https://doi.org/10.13031/2013.31957</a>.</p>
+</aside>
+<aside class="footnote brackets" id="id10" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></span>
+<p>Renard, K.G., Foster, G.R., Weesies, G.A., McCool, D.K., Yoder, D.C., 1997,
+Predicting soil erosion by water: a guide to conservation planning with the
+revised universal soil loss equation (RUSLE),  Agriculture Handbook. U.S.
+Department of Agriculture, Washington.
+<a class="reference external" href="https://www.ars.usda.gov/ARSUserFiles/64080530/RUSLE/AH_703.pdf">https://www.ars.usda.gov/ARSUserFiles/64080530/RUSLE/AH_703.pdf</a></p>
+</aside>
+</aside>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rfactor.rfactor.rain_energy_mcgregor1995">
+<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">rain_energy_mcgregor1995</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rain</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#rain_energy_mcgregor1995"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.rain_energy_mcgregor1995" title="Link to this definition"></a></dt>
+<dd><p>Calculate rain energy per unit depth according to McGregor with 10
+minute interval data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>rain</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><em>numpy.ndarray</em></a>) – Rain (mm)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>energy</strong> – Energy per unit depth.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#float" title="(in Python v3.11)">float</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The rain energy per unit depth <span class="math notranslate nohighlight">\(e_r\)</span> (<span class="math notranslate nohighlight">\(\text{MJ}.\text{mm}^{-1}.
+\text{ha}^{-1}\)</span>) is defined by [6]:</p>
+<div class="math notranslate nohighlight">
+\[e_r = 0.29*(1-0.72*exp(-0.08*i_r)\]</div>
+<p>with</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(i_r\)</span> the rain intensity for every 10-min
+increment (mm <span class="math notranslate nohighlight">\(\text{h}^{-1}\)</span> ).</p></li>
+</ul>
+</div></blockquote>
+<p>The rain energy is multiplied by the volume of rain (per 10 minutes) and summed per
+event to compute the total energy of the event.</p>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id11" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></span>
+<p>McGregor, K.C., Bingner, R.L., Bowie, A.J. and Foster, G.R., 1995.
+Erosivity index values for northern Mississippi. Transactions of the ASAE,</p>
+<blockquote>
+<div><p>38(4), pp.1039-1047. 10.13031/2013.27921</p>
+</div></blockquote>
+</aside>
+</aside>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rfactor.rfactor.rain_energy_verstraeten2006">
+<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">rain_energy_verstraeten2006</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rain</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#rain_energy_verstraeten2006"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.rain_energy_verstraeten2006" title="Link to this definition"></a></dt>
+<dd><p>Calculate rain energy per unit depth according to Salles/Verstraeten with 10
+minute interval data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>rain</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><em>numpy.ndarray</em></a>) – Rain (mm)</p>
@@ -265,7 +364,7 @@ NaN-values within one event.</p>
 <p class="rubric">Notes</p>
 <p>The rain energy per unit depth <span class="math notranslate nohighlight">\(e_r\)</span> (<span class="math notranslate nohighlight">\(\text{MJ}.\text{mm}^{-1}.
 \text{ha}^{-1}\)</span>) for an application for Flanders/Belgium is defined
-by <a class="footnote-reference brackets" href="#id10" id="id7" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> , <a class="footnote-reference brackets" href="#id11" id="id8" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> and <a class="footnote-reference brackets" href="#id12" id="id9" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>:</p>
+by <a class="footnote-reference brackets" href="#id15" id="id12" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> , <a class="footnote-reference brackets" href="#id16" id="id13" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> and <a class="footnote-reference brackets" href="#id17" id="id14" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>:</p>
 <div class="math notranslate nohighlight">
 \[e_r = 0.1112i_r^{0.31}\]</div>
 <p>with</p>
@@ -275,22 +374,24 @@ by <a class="footnote-reference brackets" href="#id10" id="id7" role="doc-notere
 increment (mm <span class="math notranslate nohighlight">\(\text{h}^{-1}\)</span> ).</p></li>
 </ul>
 </div></blockquote>
+<p>The rain energy is multiplied by the volume of rain (per 10 minutes) and summed per
+event to compute the total energy of the event.</p>
 <p class="rubric">References</p>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id10" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">1</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="id15" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id12">1</a><span class="fn-bracket">]</span></span>
 <p>Salles, C., Poesen, J., Pissart, A., 1999, Rain erosivity indices and drop
 size distribution for central Belgium. Presented at the General Assembly of
 the European Geophysical Society, The Hague, The Netherlands, p. 280.</p>
 </aside>
-<aside class="footnote brackets" id="id11" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">2</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="id16" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">2</a><span class="fn-bracket">]</span></span>
 <p>Salles, C., Poesen, J., Sempere-Torres, D., 2002. Kinetic energy of rain and
 its functional relationship with intensity. Journal of Hydrology 257, 256–270.</p>
 </aside>
-<aside class="footnote brackets" id="id12" role="doc-footnote">
+<aside class="footnote brackets" id="id17" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>,<a role="doc-backlink" href="#id9">3</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id6">2</a>,<a role="doc-backlink" href="#id14">3</a>)</span>
 <p>Verstraeten, G., Poesen, J., Demarée, G., Salles, C., 2006, Long-term
 (105 years) variability in rain erosivity as derived from 10-min rainfall
 depth data for Ukkel (Brussels, Belgium): Implications for assessing soil

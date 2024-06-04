@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Get started &mdash; rfactor 0.1.2.post1.dev67+gd447049 documentation</title>
+  <title>Get started &mdash; rfactor 0.1.2.post1.dev79+g2584d21 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -15,7 +15,7 @@
   
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=adc3f46e"></script>
+        <script src="_static/documentation_options.js?v=4ebc1e48"></script>
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -40,7 +40,7 @@
             rfactor
           </a>
               <div class="version">
-                0.1.2.post1.dev67+gd447049
+                0.1.2.post1.dev79+g2584d21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -156,23 +156,17 @@ delete/interpolate these values beforehand.</p>
 The <code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.compute_erosivity()</span></code> function applies the algorithm to a
 DataFrame containing data for a single station/year, e.g. for the data in
 DataFrame <code class="docutils literal notranslate"><span class="pre">df_rain</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor</span> <span class="kn">import</span> <span class="n">compute_erosivity</span><span class="p">,</span> <span class="n">rain_energy_per_unit_depth_verstraeten2006</span><span class="p">,</span> <span class="n">maximum_intensity</span>
-<span class="n">erosivity</span> <span class="o">=</span> <span class="n">compute_erosivity</span><span class="p">(</span><span class="n">df_rain</span><span class="p">,</span> <span class="n">rain_energy_per_unit_depth_verstraeten2006</span><span class="p">,</span> <span class="n">maximum_intensity</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor</span> <span class="kn">import</span> <span class="n">compute_erosivity</span><span class="p">,</span> <span class="n">rain_energy_verstraeten</span><span class="p">,</span> <span class="n">maximum_intensity</span>
+<span class="n">erosivity</span> <span class="o">=</span> <span class="n">compute_erosivity</span><span class="p">(</span><span class="n">df_rain</span><span class="p">,</span> <span class="n">rain_energy_verstraeten</span><span class="p">,</span> <span class="n">maximum_intensity</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The <a class="reference internal" href="api/rfactor.html#rfactor.rfactor.maximum_intensity" title="rfactor.rfactor.maximum_intensity"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.rfactor.maximum_intensity()</span></code></a> is the default method to
-derive the maximum 30min interval rain intensity of an event, but the user
-can provide a custom function as well or the original Matlab
-implementation version
-<a class="reference internal" href="api/rfactor.html#rfactor.rfactor.maximum_intensity_matlab_clone" title="rfactor.rfactor.maximum_intensity_matlab_clone"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.rfactor.maximum_intensity_matlab_clone()</span></code></a> can be used to
-compare with the corrected Matlab implementation.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Equally to note above, the
-<a class="reference internal" href="api/rfactor.html#rfactor.rfactor.rain_energy_per_unit_depth_verstraeten2006" title="rfactor.rfactor.rain_energy_per_unit_depth_verstraeten2006"><code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.rfactor.rain_energy_per_unit_depth_verstraeten2006()</span></code></a> is the
+<p>1. Other rain energy functions that are implemented are Brown and Foster
+(see <code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.rfactor.rain_energy_brown_and_foster()</span></code>) and McGregor
+(see <code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.rfactor.rain_energy_mcgregor()</span></code>)</p>
+<p>2. Equally to note above, the
+<code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.rfactor.rain_energy_verstraeten()</span></code> is the
 default method to deriver rain energy per unit depth for an event. Also
 here, users can implement their custom function.</p>
 </div>
