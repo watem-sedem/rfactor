@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application of rfactor on data det Flanders &mdash; rfactor 0.1.2.post1.dev79+g2584d21 documentation</title>
+  <title>Application of rfactor on data det Flanders &mdash; rfactor 0.1.2.post1.dev83+g7662d73 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
@@ -16,7 +16,7 @@
   
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=4ebc1e48"></script>
+        <script src="../_static/documentation_options.js?v=68cc4365"></script>
         <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -41,7 +41,7 @@
             rfactor
           </a>
               <div class="version">
-                0.1.2.post1.dev79+g2584d21
+                0.1.2.post1.dev83+g7662d73
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -127,7 +127,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor</span> <span class="kn">import</span> <span class="n">compute_erosivity</span><span class="p">,</span> <span class="n">maximum_intensity_matlab_clone</span><span class="p">,</span> <span class="n">rain_energy_verstraeten</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor</span> <span class="kn">import</span> <span class="n">compute_erosivity</span><span class="p">,</span> <span class="n">maximum_intensity_matlab_clone</span><span class="p">,</span> <span class="n">rain_energy_verstraeten2006</span>
 <span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">load_rain_folder</span> <span class="p">,</span> <span class="n">load_rain_file_matlab_legacy</span><span class="p">,</span> <span class="n">compute_rainfall_statistics</span><span class="p">,</span> <span class="n">get_rfactor_station_year</span>
 </pre></div>
 </div>
@@ -215,7 +215,7 @@ original Matlab one:</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">erosivity</span> <span class="o">=</span> <span class="n">compute_erosivity</span><span class="p">(</span><span class="n">all_rainfall</span><span class="p">,</span> <span class="n">rain_energy_verstraeten</span><span class="p">,</span> <span class="n">maximum_intensity_matlab_clone</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">erosivity</span> <span class="o">=</span> <span class="n">compute_erosivity</span><span class="p">(</span><span class="n">all_rainfall</span><span class="p">,</span> <span class="n">rain_energy_verstraeten2006</span><span class="p">,</span> <span class="n">maximum_intensity_matlab_clone</span><span class="p">)</span>
 <span class="n">erosivity</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -248,7 +248,7 @@ original Matlab one:</p>
 <h2>References<a class="headerlink" href="#References" title="Link to this heading"></a></h2>
 <p>Brown, L.C., Foster, G.R., 1987. Storm erosivity using idealized intensity distributions. Transactions of the ASAE 30, 0379–0386. <a class="reference external" href="https://doi.org/10.13031/2013.31957">https://doi.org/10.13031/2013.31957</a>.</p>
 <p>Renard, K.G., Foster, G.R., Weesies, G.A., McCool, D.K., Yoder, D.C., 1997, Predicting soil erosion by water: a guide to conservation planning with the revised universal soil loss equation (RUSLE), Agriculture Handbook. U.S. Department of Agriculture, Washington. <a class="reference external" href="https://www.ars.usda.gov/ARSUserFiles/64080530/RUSLE/AH_703.pdf">https://www.ars.usda.gov/ARSUserFiles/64080530/RUSLE/AH_703.pdf</a></p>
-<p>“”” rain_energy = 29 * (1 - 0.72 * np.exp(-0.05*rain)) return rain_energy.sum()</p>
+<p>“”” rain_energy = 29 * (1 - 0.72 * np.exp(-0.05<em>rain</em>6))*rain return rain_energy.sum()</p>
 </section>
 <section id="Analysis">
 <h2>Analysis<a class="headerlink" href="#Analysis" title="Link to this heading"></a></h2>

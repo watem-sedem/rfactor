@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor.rfactor &mdash; rfactor 0.1.2.post1.dev79+g2584d21 documentation</title>
+  <title>rfactor.rfactor &mdash; rfactor 0.1.2.post1.dev83+g7662d73 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
 
@@ -14,7 +14,7 @@
   
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=4ebc1e48"></script>
+        <script src="../../_static/documentation_options.js?v=68cc4365"></script>
         <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -35,7 +35,7 @@
             rfactor
           </a>
               <div class="version">
-                0.1.2.post1.dev79+g2584d21
+                0.1.2.post1.dev83+g7662d73
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -127,6 +127,8 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate rain energy per unit depth according to Salles/Verstraeten with 10</span>
 <span class="sd">    minute interval data.</span>
 
+<span class="sd">    Verstraeten is applied considering a 10-minute interval input rainfall data</span>
+<span class="sd">    set.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -154,7 +156,8 @@
 <span class="sd">       increment (mm :math:`\\text{h}^{-1}` ).</span>
 
 <span class="sd">    The rain energy is multiplied by the volume of rain (per 10 minutes) and summed per</span>
-<span class="sd">    event to compute the total energy of the event.</span>
+<span class="sd">    event to compute the total energy of the event. The formula applies for a 10</span>
+<span class="sd">    minute rainfall input data set.</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
@@ -176,8 +179,10 @@
 <div class="viewcode-block" id="rain_energy_brown_and_foster1987">
 <a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.rain_energy_brown_and_foster1987">[docs]</a>
 <span class="k">def</span> <span class="nf">rain_energy_brown_and_foster1987</span><span class="p">(</span><span class="n">rain</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate rain energy per unit depth according to Brown and Foster with 10</span>
-<span class="sd">    minute interval input rainfall data.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate rain energy per unit depth according to Brown and Foster.</span>
+
+<span class="sd">    Brown and Foster is applied considering a 10-minute interval input rainfall data</span>
+<span class="sd">    set.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -191,22 +196,21 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    1. The formula applies for 10-minute rainfall input data.</span>
+<span class="sd">    The rain energy per unit depth :math:`e_r` (:math:`\\text{MJ}.\\text{mm}^{-1}.</span>
+<span class="sd">    \\text{ha}^{-1}`) is defined by [4] and [5]:</span>
 
-<span class="sd">    2. The rain energy per unit depth :math:`e_r` (:math:`\\text{MJ}.\\text{mm}^{-1}.</span>
-<span class="sd">        \\text{ha}^{-1}`) is defined by [4] and [5]:</span>
+<span class="sd">    .. math::</span>
 
-<span class="sd">        .. math::</span>
+<span class="sd">        e_r = 0.29*(1-0.72*exp(-0.05*i_r)</span>
 
-<span class="sd">            e_r = 0.29*(1-0.72*exp(-0.05*i_r)</span>
+<span class="sd">    with</span>
 
-<span class="sd">        with</span>
+<span class="sd">    - :math:`i_r` the rain intensity for every 10-min</span>
+<span class="sd">      increment (mm :math:`\\text{h}^{-1}` ).</span>
 
-<span class="sd">         - :math:`i_r` the rain intensity for every 10-min</span>
-<span class="sd">           increment (mm :math:`\\text{h}^{-1}` ).</span>
-
-<span class="sd">        The rain energy is multiplied by the volume of rain (per 10 minutes) and summed</span>
-<span class="sd">        per event to compute the total energy of the event.</span>
+<span class="sd">    The rain energy is multiplied by the volume of rain (per 10 minutes) and summed</span>
+<span class="sd">    per event to compute the total energy of the event. The formula applies for a 10</span>
+<span class="sd">    minute rainfall input data set.</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>
@@ -230,6 +234,9 @@
 <span class="k">def</span> <span class="nf">rain_energy_mcgregor1995</span><span class="p">(</span><span class="n">rain</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate rain energy per unit depth according to McGregor with 10</span>
 <span class="sd">    minute interval data.</span>
+
+<span class="sd">    McGregor is applied considering a 10-minute interval input rainfall data</span>
+<span class="sd">    set.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -256,7 +263,8 @@
 <span class="sd">       increment (mm :math:`\\text{h}^{-1}` ).</span>
 
 <span class="sd">    The rain energy is multiplied by the volume of rain (per 10 minutes) and summed per</span>
-<span class="sd">    event to compute the total energy of the event.</span>
+<span class="sd">    event to compute the total energy of the event. The formula applies for a 10</span>
+<span class="sd">    minute rainfall input data set.</span>
 
 <span class="sd">    References</span>
 <span class="sd">    ----------</span>

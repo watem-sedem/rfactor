@@ -71,7 +71,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "from rfactor import compute_erosivity, maximum_intensity_matlab_clone, rain_energy_verstraeten\n",
+    "from rfactor import compute_erosivity, maximum_intensity_matlab_clone, rain_energy_verstraeten2006\n",
     "from rfactor.process import load_rain_folder , load_rain_file_matlab_legacy, compute_rainfall_statistics, get_rfactor_station_year"
    ]
   },
@@ -203,7 +203,7 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "erosivity = compute_erosivity(all_rainfall, rain_energy_verstraeten, maximum_intensity_matlab_clone)\n",
+    "erosivity = compute_erosivity(all_rainfall, rain_energy_verstraeten2006, maximum_intensity_matlab_clone)\n",
     "erosivity.head()"
    ]
   },
@@ -253,7 +253,7 @@
     "https://www.ars.usda.gov/ARSUserFiles/64080530/RUSLE/AH_703.pdf\n",
     "\n",
     "\"\"\"\n",
-    "rain_energy = 29 * (1 - 0.72 * np.exp(-0.05*rain))\n",
+    "rain_energy = 29 * (1 - 0.72 * np.exp(-0.05*rain*6))*rain\n",
     "return rain_energy.sum()\n"
    ]
   },
