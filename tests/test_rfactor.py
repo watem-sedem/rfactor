@@ -7,6 +7,8 @@ from rfactor import (
     compute_erosivity,
     maximum_intensity,
     maximum_intensity_matlab_clone,
+    rain_energy_brown_and_foster1987,
+    rain_energy_mcgregor1995,
     rain_energy_verstraeten2006,
 )
 from rfactor.rfactor import (
@@ -229,7 +231,15 @@ def test_erosivity_existing_tag(dummy_rain):
 
 
 @pytest.mark.parametrize(
-    "intensity_method", [(maximum_intensity), (maximum_intensity_matlab_clone)]
+    "intensity_method,energy_method",
+    [
+        (maximum_intensity, rain_energy_verstraeten2006),
+        (maximum_intensity, rain_energy_mcgregor1995),
+        (maximum_intensity, rain_energy_brown_and_foster1987),
+        (maximum_intensity_matlab_clone, rain_energy_verstraeten2006),
+        (maximum_intensity_matlab_clone, rain_energy_mcgregor1995),
+        (maximum_intensity_matlab_clone, rain_energy_brown_and_foster1987),
+    ],
 )
 @pytest.mark.parametrize(
     "station,year",
@@ -249,20 +259,16 @@ def test_erosivity_existing_tag(dummy_rain):
 def test_rfactor_benchmark_single_year(
     station,
     year,
-    rain_benchmark_closure,
     intensity_method,
-    erosivity_benchmark_data,
-    erosivity_benchmark_matlab_clone_data,
+    energy_method,
+    rain_benchmark_closure,
+    erosivity_benchmark_closure,
 ):
     """Run the erosivity/rfactor calculation for single year/station combinations"""
     rain = rain_benchmark_closure(station, year)
+    eros_benchmark = erosivity_benchmark_closure(energy_method, intensity_method)
 
-    if intensity_method == maximum_intensity:
-        eros_benchmark = erosivity_benchmark_data
-    else:
-        eros_benchmark = erosivity_benchmark_matlab_clone_data
-
-    erosivity = compute_erosivity(rain, rain_energy_verstraeten2006, intensity_method)
+    erosivity = compute_erosivity(rain, energy_method, intensity_method)
     erosivity_reference = eros_benchmark[
         (eros_benchmark["year"] == year) & (eros_benchmark["station"] == station)
     ]
@@ -272,8 +278,8 @@ def test_rfactor_benchmark_single_year(
     # using support function provides the same output
     erosivity_support_func = _compute_erosivity(
         rain,
-        rain_energy_verstraeten2006,
-        intensity_method=intensity_method,
+        energy_method,
+        intensity_method,
     )
 
     erosivity_support_func.index = erosivity_support_func["datetime"]
