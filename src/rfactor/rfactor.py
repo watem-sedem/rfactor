@@ -1,4 +1,5 @@
 import multiprocessing as mp
+import warnings
 from functools import partial
 
 import numpy as np
@@ -21,8 +22,12 @@ class RFactorTypeError(Exception):
     """Raise when input data data type of a data column is wrong."""
 
 
-def rain_energy_per_unit_depth_verstraeten2006(rain):
-    """Calculate rain energy per unit depth according to Salles/Verstraeten.
+def rain_energy_verstraeten2006(rain):
+    """Calculate rain energy per unit depth according to Salles/Verstraeten with 10
+    minute interval data.
+
+    Verstraeten is applied considering a 10-minute interval input rainfall data
+    set.
 
     Parameters
     ----------
@@ -49,6 +54,10 @@ def rain_energy_per_unit_depth_verstraeten2006(rain):
      - :math:`i_r` the rain intensity for every 10-min
        increment (mm :math:`\\text{h}^{-1}` ).
 
+    The rain energy is multiplied by the volume of rain (per 10 minutes) and summed per
+    event to compute the total energy of the event. The formula applies for a 10
+    minute rainfall input data set.
+
     References
     ----------
     .. [1] Salles, C., Poesen, J., Pissart, A., 1999, Rain erosivity indices and drop
@@ -62,6 +71,102 @@ def rain_energy_per_unit_depth_verstraeten2006(rain):
         erosion rates. Journal Geophysysical Research, 111, D22109.
     """
     rain_energy = 0.1112 * ((rain * 6.0) ** 0.31) * rain
+    return rain_energy.sum()
+
+
+def rain_energy_brown_and_foster1987(rain):
+    """Calculate rain energy per unit depth according to Brown and Foster.
+
+    Brown and Foster is applied considering a 10-minute interval input rainfall data
+    set.
+
+    Parameters
+    ----------
+    rain : numpy.ndarray
+        Rain (mm)
+
+    Returns
+    -------
+    energy : float
+        Energy per unit depth.
+
+    Notes
+    -----
+    The rain energy per unit depth :math:`e_r` (:math:`\\text{MJ}.\\text{mm}^{-1}.
+    \\text{ha}^{-1}`) is defined by [4] and [5]:
+
+    .. math::
+
+        e_r = 0.29*(1-0.72*exp(-0.05*i_r)
+
+    with
+
+    - :math:`i_r` the rain intensity for every 10-min
+      increment (mm :math:`\\text{h}^{-1}` ).
+
+    The rain energy is multiplied by the volume of rain (per 10 minutes) and summed
+    per event to compute the total energy of the event. The formula applies for a 10
+    minute rainfall input data set.
+
+    References
+    ----------
+    .. [4] Brown, L.C., Foster, G.R., 1987. Storm erosivity using idealized intensity
+        distributions. Transactions of the ASAE 30, 0379–0386.
+        https://doi.org/10.13031/2013.31957.
+
+    .. [5] Renard, K.G., Foster, G.R., Weesies, G.A., McCool, D.K., Yoder, D.C., 1997,
+        Predicting soil erosion by water: a guide to conservation planning with the
+        revised universal soil loss equation (RUSLE),  Agriculture Handbook. U.S.
+        Department of Agriculture, Washington.
+        https://www.ars.usda.gov/ARSUserFiles/64080530/RUSLE/AH_703.pdf
+    """
+    rain_energy = 0.29 * (1 - 0.72 * np.exp(-0.05 * rain * 6)) * rain
+    return rain_energy.sum()
+
+
+def rain_energy_mcgregor1995(rain):
+    """Calculate rain energy per unit depth according to McGregor with 10
+    minute interval data.
+
+    McGregor is applied considering a 10-minute interval input rainfall data
+    set.
+
+    Parameters
+    ----------
+    rain : numpy.ndarray
+        Rain (mm)
+
+    Returns
+    -------
+    energy : float
+        Energy per unit depth.
+
+    Notes
+    -----
+    The rain energy per unit depth :math:`e_r` (:math:`\\text{MJ}.\\text{mm}^{-1}.
+    \\text{ha}^{-1}`) is defined by [6]:
+
+    .. math::
+
+        e_r = 0.29*(1-0.72*exp(-0.08*i_r)
+
+    with
+
+     - :math:`i_r` the rain intensity for every 10-min
+       increment (mm :math:`\\text{h}^{-1}` ).
+
+    The rain energy is multiplied by the volume of rain (per 10 minutes) and summed per
+    event to compute the total energy of the event. The formula applies for a 10
+    minute rainfall input data set.
+
+    References
+    ----------
+    .. [6] McGregor, K.C., Bingner, R.L., Bowie, A.J. and Foster, G.R., 1995.
+        Erosivity index values for northern Mississippi. Transactions of the ASAE,
+         38(4), pp.1039-1047. 10.13031/2013.27921
+
+    """
+    rain_energy = 0.29 * (1 - 0.72 * np.exp(-0.08 * rain * 6)) * rain
     return rain_energy.sum()
 
 
@@ -89,6 +194,11 @@ def maximum_intensity_matlab_clone(df):
     The Python and original Matlab implementation linearly interpolate zero and
     NaN-values within one event.
     """
+    warnings.warn(
+        "This function is no longer supported. Please use 'maximum_intensity' "
+        "or "
+        "'maximum_intensity_interpolate'.)"
+    )
     if np.isnan(df["rain_mm"]).any():
         raise Exception(
             "Matlab intensity method does not support Nan values in rain" "time series."
@@ -124,7 +234,7 @@ def maximum_intensity_matlab_clone(df):
     return maxprecip_30min * 2
 
 
-def maximum_intensity_matlab_clone_fix(df):
+def maximum_intensity_interpolate(df):
     """Maximum rain intensity for 30-min interval (Matlab clone Fix).
     This implementation is a fixed version of the Python-translation of the original
     Matlab implementation by [3]_.
@@ -324,7 +434,7 @@ def _apply_rfactor(name, group, energy_method, intensity_method):
 
 def compute_erosivity(
     rain,
-    energy_method=rain_energy_per_unit_depth_verstraeten2006,
+    energy_method=rain_energy_verstraeten2006,
     intensity_method=maximum_intensity,
 ):
     """Calculate erosivity  for each year/station combination

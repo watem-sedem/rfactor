@@ -10,6 +10,13 @@ from rfactor.process import (
     load_rain_file_matlab_legacy,
     load_rain_folder,
 )
+from rfactor.rfactor import (
+    maximum_intensity,
+    maximum_intensity_matlab_clone,
+    rain_energy_brown_and_foster1987,
+    rain_energy_mcgregor1995,
+    rain_energy_verstraeten2006,
+)
 
 CURRENT_DIR = Path(os.path.dirname(__file__))
 
@@ -36,15 +43,62 @@ def rain_benchmark_data():
 
 
 @pytest.fixture()
-def erosivity_benchmark_data():
-    """Erosivity output used for benchmark reference case"""
-    erosivity = pd.read_csv(
-        CURRENT_DIR / "data" / "test_erosivitydata" / "test_data_maximum_intensity.csv",
-        index_col=0,
-        parse_dates=[0, 1],
-    )
-    erosivity = erosivity.rename(columns={"datetime.1": "datetime"})
-    return erosivity
+def erosivity_benchmark_closure():
+    """Erosivity data used for benchmark reference case"""
+
+    def erosivity_benchmark_energy_intensity(energy_method, intensity_method):
+        """Erosivity output used for benchmark reference case
+
+        Parameters
+        ----------
+        energy_method: callable
+            Energy function from source package
+
+            - :func:`rfactor.rfactor.rain_energy_verstraeten2006`
+            - :func:`rfactor.rfactor.rain_energy_mcgregor1995`
+            - :func:`rfactor.rfactor.rain_energy_brown_and_foster1987`
+
+        intensity_method: callable
+            Energy function from source package
+
+            - :func:`rfactor.rfactor.maximum_intensity`
+            - :func:`rfactor.rfactor.maximum_intensity_matlab_clone`
+        """
+        msg = f"Intensity function '{intensity_method}' not implemented"
+        if energy_method is rain_energy_verstraeten2006:
+            if intensity_method is maximum_intensity:
+                file = "test_data_verstraeten_maximum_intensity.csv"
+            elif intensity_method is maximum_intensity_matlab_clone:
+                file = "test_data_verstraeten_maximum_intensity_matlab_clone.csv"
+            else:
+                NotImplementedError(msg)
+        elif energy_method is rain_energy_mcgregor1995:
+            if intensity_method is maximum_intensity:
+                file = "test_data_mcgregor_maximum_intensity.csv"
+            elif intensity_method is maximum_intensity_matlab_clone:
+                file = "test_data_mcgregor_maximum_intensity_matlab_clone.csv"
+            else:
+                NotImplementedError(msg)
+        elif energy_method is rain_energy_brown_and_foster1987:
+            if intensity_method is maximum_intensity:
+                file = "test_data_brown_and_foster_maximum_intensity.csv"
+            elif intensity_method is maximum_intensity_matlab_clone:
+                file = "test_data_brown_and_foster_maximum_intensity_matlab_clone.csv"
+            else:
+                NotImplementedError(msg)
+        else:
+            msg = f"Energy function '{energy_method}' not implemented"
+            NotImplementedError(msg)
+
+        erosivity = pd.read_csv(
+            CURRENT_DIR / "data" / "test_erosivitydata" / file,
+            index_col=0,
+            parse_dates=[0, 1],
+        )
+        erosivity = erosivity.rename(columns={"datetime.1": "datetime"})
+        return erosivity
+
+    return erosivity_benchmark_energy_intensity
 
 
 @pytest.fixture()
@@ -54,7 +108,7 @@ def erosivity_benchmark_matlab_clone_data():
         CURRENT_DIR
         / "data"
         / "test_erosivitydata"
-        / "test_data_maximum_intensity_matlab_clone.csv",
+        / "test_data_verstraeten_maximum_intensity_matlab_clone.csv",
         index_col=0,
         parse_dates=[0, 1],
     )

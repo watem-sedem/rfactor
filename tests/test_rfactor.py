@@ -7,7 +7,9 @@ from rfactor import (
     compute_erosivity,
     maximum_intensity,
     maximum_intensity_matlab_clone,
-    rain_energy_per_unit_depth_verstraeten2006,
+    rain_energy_brown_and_foster1987,
+    rain_energy_mcgregor1995,
+    rain_energy_verstraeten2006,
 )
 from rfactor.rfactor import (
     RFactorInputError,
@@ -30,9 +32,7 @@ from rfactor.rfactor import (
 )
 def test_rain_energy_per_unit_depth(rain, energy):
     """Rain energy calculation can handle zero arrays, zero values and nan."""
-    assert energy == approx(
-        rain_energy_per_unit_depth_verstraeten2006(rain), nan_ok=True, abs=1e-5
-    )
+    assert energy == approx(rain_energy_verstraeten2006(rain), nan_ok=True, abs=1e-5)
 
 
 @pytest.mark.parametrize(
@@ -131,9 +131,7 @@ def test_compute_erosivity_wrong_df():
         }
     )
     with pytest.raises(RFactorInputError) as excinfo:
-        _compute_erosivity(
-            df, rain_energy_per_unit_depth_verstraeten2006, maximum_intensity
-        )
+        _compute_erosivity(df, rain_energy_verstraeten2006, maximum_intensity)
     assert "contain data of a single year." in str(excinfo.value)
 
 
@@ -144,9 +142,7 @@ def test_compute_0_or_NULL_rain_mm_error(dummy_rain, recwarn):
 
     # test warning
     with pytest.raises(RFactorInputError) as excinfo:
-        compute_erosivity(
-            df, rain_energy_per_unit_depth_verstraeten2006, maximum_intensity
-        )
+        compute_erosivity(df, rain_energy_verstraeten2006, maximum_intensity)
     assert "Can only accept non-zero/non-NULL timeseries" in str(excinfo.value)
 
 
@@ -155,12 +151,12 @@ def test_apply_rfactor(rain_benchmark_closure):
     station, year = "P01_001", 2018
     rain = rain_benchmark_closure(station, year)
     erosivity_support_func = _compute_erosivity(
-        rain, rain_energy_per_unit_depth_verstraeten2006, maximum_intensity
+        rain, rain_energy_verstraeten2006, maximum_intensity
     )
     erosivity_apply_rfactor = _apply_rfactor(
         (station, year),
         rain,
-        rain_energy_per_unit_depth_verstraeten2006,
+        rain_energy_verstraeten2006,
         maximum_intensity,
     )
 
@@ -235,7 +231,15 @@ def test_erosivity_existing_tag(dummy_rain):
 
 
 @pytest.mark.parametrize(
-    "intensity_method", [(maximum_intensity), (maximum_intensity_matlab_clone)]
+    "intensity_method,energy_method",
+    [
+        (maximum_intensity, rain_energy_verstraeten2006),
+        (maximum_intensity, rain_energy_mcgregor1995),
+        (maximum_intensity, rain_energy_brown_and_foster1987),
+        (maximum_intensity_matlab_clone, rain_energy_verstraeten2006),
+        (maximum_intensity_matlab_clone, rain_energy_mcgregor1995),
+        (maximum_intensity_matlab_clone, rain_energy_brown_and_foster1987),
+    ],
 )
 @pytest.mark.parametrize(
     "station,year",
@@ -255,22 +259,16 @@ def test_erosivity_existing_tag(dummy_rain):
 def test_rfactor_benchmark_single_year(
     station,
     year,
-    rain_benchmark_closure,
     intensity_method,
-    erosivity_benchmark_data,
-    erosivity_benchmark_matlab_clone_data,
+    energy_method,
+    rain_benchmark_closure,
+    erosivity_benchmark_closure,
 ):
     """Run the erosivity/rfactor calculation for single year/station combinations"""
     rain = rain_benchmark_closure(station, year)
+    eros_benchmark = erosivity_benchmark_closure(energy_method, intensity_method)
 
-    if intensity_method == maximum_intensity:
-        eros_benchmark = erosivity_benchmark_data
-    else:
-        eros_benchmark = erosivity_benchmark_matlab_clone_data
-
-    erosivity = compute_erosivity(
-        rain, rain_energy_per_unit_depth_verstraeten2006, intensity_method
-    )
+    erosivity = compute_erosivity(rain, energy_method, intensity_method)
     erosivity_reference = eros_benchmark[
         (eros_benchmark["year"] == year) & (eros_benchmark["station"] == station)
     ]
@@ -280,8 +278,8 @@ def test_rfactor_benchmark_single_year(
     # using support function provides the same output
     erosivity_support_func = _compute_erosivity(
         rain,
-        rain_energy_per_unit_depth_verstraeten2006,
-        intensity_method=intensity_method,
+        energy_method,
+        intensity_method,
     )
 
     erosivity_support_func.index = erosivity_support_func["datetime"]

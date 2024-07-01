@@ -3,9 +3,11 @@ import sys
 from rfactor.rfactor import (
     compute_erosivity,
     maximum_intensity,
+    maximum_intensity_interpolate,
     maximum_intensity_matlab_clone,
-    maximum_intensity_matlab_clone_fix,
-    rain_energy_per_unit_depth_verstraeten2006,
+    rain_energy_brown_and_foster1987,
+    rain_energy_mcgregor1995,
+    rain_energy_verstraeten2006,
 )
 
 if sys.version_info[:2] >= (3, 8):
@@ -28,7 +30,9 @@ finally:
 __all__ = [
     "compute_erosivity",
     "maximum_intensity_matlab_clone",
-    "maximum_intensity_matlab_clone_fix",
+    "maximum_intensity_interpolate",
     "maximum_intensity",
-    "rain_energy_per_unit_depth_verstraeten2006",
+    "rain_energy_brown_and_foster1987",
+    "rain_energy_verstraeten2006",
+    "rain_energy_mcgregor1995",
 ]
