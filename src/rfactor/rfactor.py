@@ -65,6 +65,87 @@ def rain_energy_per_unit_depth_verstraeten2006(rain):
     return rain_energy.sum()
 
 
+def rain_energy_per_unit_depth_brown_and_foster(rain):
+    """Calculate rain energy per unit depth according to Brown and Foster.
+
+    Parameters
+    ----------
+    rain : numpy.ndarray
+        Rain (mm)
+
+    Returns
+    -------
+    energy : float
+        Energy per unit depth.
+
+    Notes
+    -----
+    The rain energy per unit depth :math:`e_r` (:math:`\\text{MJ}.\\text{mm}^{-1}.
+    \\text{ha}^{-1}`) is defined by [4] and [5]:
+
+    .. math::
+
+        e_r = 0.29*(1-0.72*exp(-0.05*i_r)
+
+    with
+
+     - :math:`i_r` the rain intensity for every 10-min
+       increment (mm :math:`\\text{h}^{-1}` ).
+
+    References
+    ----------
+    .. [4] Brown, L.C., Foster, G.R., 1987. Storm erosivity using idealized intensity
+        distributions. Transactions of the ASAE 30, 0379–0386.
+        https://doi.org/10.13031/2013.31957.
+
+    .. [5] Renard, K.G., Foster, G.R., Weesies, G.A., McCool, D.K., Yoder, D.C., 1997,
+        Predicting soil erosion by water: a guide to conservation planning with the
+        revised universal soil loss equation (RUSLE),  Agriculture Handbook. U.S.
+        Department of Agriculture, Washington.
+        https://www.ars.usda.gov/ARSUserFiles/64080530/RUSLE/AH_703.pdf
+    """
+    rain_energy = 0.29 * (1 - 0.72 * np.exp(-0.05 * rain))
+    return rain_energy.sum()
+
+
+def rain_energy_per_unit_depth_mcgregor(rain):
+    """Calculate rain energy per unit depth according to McGregor.
+
+    Parameters
+    ----------
+    rain : numpy.ndarray
+        Rain (mm)
+
+    Returns
+    -------
+    energy : float
+        Energy per unit depth.
+
+    Notes
+    -----
+    The rain energy per unit depth :math:`e_r` (:math:`\\text{MJ}.\\text{mm}^{-1}.
+    \\text{ha}^{-1}`) is defined by [6]:
+
+    .. math::
+
+        e_r = 0.29*(1-0.72*exp(-0.08*i_r)
+
+    with
+
+     - :math:`i_r` the rain intensity for every 10-min
+       increment (mm :math:`\\text{h}^{-1}` ).
+
+    References
+    ----------
+    .. [6] McGregor, K.C., Bingner, R.L., Bowie, A.J. and Foster, G.R., 1995.
+        Erosivity index values for northern Mississippi. Transactions of the ASAE,
+         38(4), pp.1039-1047. 10.13031/2013.27921
+
+    """
+    rain_energy = 0.29 * (1 - 0.72 * np.exp(-0.08 * rain))
+    return rain_energy.sum()
+
+
 def maximum_intensity_matlab_clone(df):
     """Maximum rain intensity for 30-min interval (Matlab clone).
 
