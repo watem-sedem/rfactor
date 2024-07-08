@@ -54,24 +54,23 @@ DataFrame ``df_rain``.
 
 .. code-block:: python
 
-    from rfactor import compute_erosivity, rain_energy_per_unit_depth_verstraeten2006, maximum_intensity
-    erosivity = compute_erosivity(df_rain, rain_energy_per_unit_depth_verstraeten2006, maximum_intensity)
+    from rfactor import compute_erosivity, rain_energy_verstraeten2006, maximum_intensity
+    erosivity = compute_erosivity(df_rain, rain_energy_verstraeten2006, maximum_intensity)
+
 
 .. note::
 
-    The :func:`rfactor.rfactor.maximum_intensity` is the default method to
-    derive the maximum 30min interval rain intensity of an event, but the user
-    can provide a custom function as well or the original Matlab
-    implementation version
-    :func:`rfactor.rfactor.maximum_intensity_matlab_clone` can be used to
-    compare with the corrected Matlab implementation.
+    1. Other rain energy functions that are implemented are Brown and Foster
+    (see :func:`rfactor.rfactor.rain_energy_brown_and_foster1987`) and McGregor
+    (see :func:`rfactor.rfactor.rain_energy_mcgregor1995`)
 
-.. note::
-
-    Equally to note above, the
-    :func:`rfactor.rfactor.rain_energy_per_unit_depth_verstraeten2006` is the
+    2. Equally to note above, the
+    :func:`rfactor.rfactor.rain_energy_verstraeten2006` is the
     default method to deriver rain energy per unit depth for an event. Also
     here, users can implement their custom function.
+
+    3. Note that preimplemented energy functions are valid for ten minute
+    rainfall input data.
 
 
 The output is a DataFrame with the intermediate results and the cumulative

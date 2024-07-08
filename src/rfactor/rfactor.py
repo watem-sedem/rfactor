@@ -1,4 +1,5 @@
 import multiprocessing as mp
+import warnings
 from functools import partial
 
 import numpy as np
@@ -21,8 +22,12 @@ class RFactorTypeError(Exception):
     """Raise when input data data type of a data column is wrong."""
 
 
-def rain_energy_per_unit_depth_verstraeten2006(rain):
-    """Calculate rain energy per unit depth according to Salles/Verstraeten.
+def rain_energy_verstraeten2006(rain):
+    """Calculate rain energy per unit depth according to Salles/Verstraeten with 10
+    minute interval data.
+
+    Verstraeten is applied considering a 10-minute interval input rainfall data
+    set.
 
     Parameters
     ----------
@@ -49,6 +54,10 @@ def rain_energy_per_unit_depth_verstraeten2006(rain):
      - :math:`i_r` the rain intensity for every 10-min
        increment (mm :math:`\\text{h}^{-1}` ).
 
+    The rain energy is multiplied by the volume of rain (per 10 minutes) and summed per
+    event to compute the total energy of the event. The formula applies for a 10
+    minute rainfall input data set.
+
     References
     ----------
     .. [1] Salles, C., Poesen, J., Pissart, A., 1999, Rain erosivity indices and drop
@@ -65,8 +74,11 @@ def rain_energy_per_unit_depth_verstraeten2006(rain):
     return rain_energy.sum()
 
 
-def rain_energy_per_unit_depth_brown_and_foster(rain):
+def rain_energy_brown_and_foster1987(rain):
     """Calculate rain energy per unit depth according to Brown and Foster.
+
+    Brown and Foster is applied considering a 10-minute interval input rainfall data
+    set.
 
     Parameters
     ----------
@@ -89,8 +101,12 @@ def rain_energy_per_unit_depth_brown_and_foster(rain):
 
     with
 
-     - :math:`i_r` the rain intensity for every 10-min
-       increment (mm :math:`\\text{h}^{-1}` ).
+    - :math:`i_r` the rain intensity for every 10-min
+      increment (mm :math:`\\text{h}^{-1}` ).
+
+    The rain energy is multiplied by the volume of rain (per 10 minutes) and summed
+    per event to compute the total energy of the event. The formula applies for a 10
+    minute rainfall input data set.
 
     References
     ----------
@@ -104,12 +120,16 @@ def rain_energy_per_unit_depth_brown_and_foster(rain):
         Department of Agriculture, Washington.
         https://www.ars.usda.gov/ARSUserFiles/64080530/RUSLE/AH_703.pdf
     """
-    rain_energy = 0.29 * (1 - 0.72 * np.exp(-0.05 * rain))
+    rain_energy = 0.29 * (1 - 0.72 * np.exp(-0.05 * rain * 6)) * rain
     return rain_energy.sum()
 
 
-def rain_energy_per_unit_depth_mcgregor(rain):
-    """Calculate rain energy per unit depth according to McGregor.
+def rain_energy_mcgregor1995(rain):
+    """Calculate rain energy per unit depth according to McGregor with 10
+    minute interval data.
+
+    McGregor is applied considering a 10-minute interval input rainfall data
+    set.
 
     Parameters
     ----------
@@ -135,6 +155,10 @@ def rain_energy_per_unit_depth_mcgregor(rain):
      - :math:`i_r` the rain intensity for every 10-min
        increment (mm :math:`\\text{h}^{-1}` ).
 
+    The rain energy is multiplied by the volume of rain (per 10 minutes) and summed per
+    event to compute the total energy of the event. The formula applies for a 10
+    minute rainfall input data set.
+
     References
     ----------
     .. [6] McGregor, K.C., Bingner, R.L., Bowie, A.J. and Foster, G.R., 1995.
@@ -142,7 +166,7 @@ def rain_energy_per_unit_depth_mcgregor(rain):
          38(4), pp.1039-1047. 10.13031/2013.27921
 
     """
-    rain_energy = 0.29 * (1 - 0.72 * np.exp(-0.08 * rain))
+    rain_energy = 0.29 * (1 - 0.72 * np.exp(-0.08 * rain * 6)) * rain
     return rain_energy.sum()
 
 
@@ -170,6 +194,11 @@ def maximum_intensity_matlab_clone(df):
     The Python and original Matlab implementation linearly interpolate zero and
     NaN-values within one event.
     """
+    warnings.warn(
+        "This function is no longer supported. Please use 'maximum_intensity' "
+        "or "
+        "'maximum_intensity_interpolate'.)"
+    )
     if np.isnan(df["rain_mm"]).any():
         raise Exception(
             "Matlab intensity method does not support Nan values in rain" "time series."
@@ -205,7 +234,7 @@ def maximum_intensity_matlab_clone(df):
     return maxprecip_30min * 2
 
 
-def maximum_intensity_matlab_clone_fix(df):
+def maximum_intensity_interpolate(df):
     """Maximum rain intensity for 30-min interval (Matlab clone Fix).
     This implementation is a fixed version of the Python-translation of the original
     Matlab implementation by [3]_.
@@ -405,7 +434,7 @@ def _apply_rfactor(name, group, energy_method, intensity_method):
 
 def compute_erosivity(
     rain,
-    energy_method=rain_energy_per_unit_depth_verstraeten2006,
+    energy_method=rain_energy_verstraeten2006,
     intensity_method=maximum_intensity,
 ):
     """Calculate erosivity  for each year/station combination
