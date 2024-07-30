@@ -2,6 +2,14 @@
 Changelog
 =========
 
+Version 0.1.3
+=============
+ - New ``energy functions`` from McGregor (1995) and Brown & Foster (1987)  implemented.
+ - Enable to feed custom energy functions to ``compute_erosivity``.
+ - Name changes in available intensity functions.
+ - Updates to documentation.
+ - Add support for Python 3.10, 3.11 and 3.12
+
 Version 0.1.2
 =============
  - Small updates to documentation
