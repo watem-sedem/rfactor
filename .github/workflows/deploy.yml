@@ -39,5 +39,6 @@ jobs:
         tox -e build
         twine upload dist/*
     - uses: ncipollo/release-action@v1
-      artifacts: "dist/*,docs/notebooks/analysis_flanders.ipynb"
-      omitBody: true
+      with:
+        artifacts: "dist/*,docs/notebooks/analysis_flanders.ipynb"
+        omitBody: true
