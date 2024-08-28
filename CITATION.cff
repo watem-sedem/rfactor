@@ -34,6 +34,10 @@ authors:
     family-names: Luts
     email: dries.luts@vlaanderen.be
     affiliation: Departement Omgeving
+  - family-names: Verstraeten
+    given-names: Gert
+    orcid: https://orcid.org/0000-0002-6529-7381
+    affiliation: KU Leuven
 identifiers:
   - type: doi
     value: 10.5281/zenodo.7966606
@@ -48,6 +52,3 @@ abstract: >-
   enables an interface with a number of functions to compute
   this factor
 license: LGPL-3.0
-commit: eaad6295d87e4c642245a155de6cb83951e7390f
-version: 0.1.2
-date-released: '2023-05-24'
