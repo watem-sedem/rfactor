@@ -151,7 +151,7 @@ def load_rain_file(file_path, load_fun, **kwargs):
     return rain
 
 
-def load_rain_file_flanders(file_path, interpolate=False):
+def load_rain_file_flanders(file_path, interpolate=True, limit = None):
     """Load any txt file which is formatted in the correct format.
 
     The input files are defined by tab delimited files (extension: ``.txt``) that
@@ -226,8 +226,22 @@ def load_rain_file_flanders(file_path, interpolate=False):
     df.loc[df["rain_mm"].isin(nan), "rain_mm"] = np.nan
     df.loc[df["rain_mm"] < 0, "rain_mm"] = np.nan
 
+    if limit is not None:
+        df.loc[df["rain_mm"] > limit, "rain_mm"] = np.nan
+
     if interpolate:
-        df["rain_mm"] = df["rain_mm"].interpolate(method="linear")
+        if df["rain_mm"].isna().any():
+            loc_nan = np.where(df['rain_mm'].isna())[0].tolist()
+
+            temp = [loc_nan[0]]
+
+            for i in range(1, len(loc_nan)):
+                if loc_nan[i] == loc_nan[i - 1] + 1:
+                    temp.append(loc_nan[i])
+                elif len(temp) > 36:
+                    df.loc[loc_nan, "rain_mm"] = 0.00
+
+            df["rain_mm"] = df["rain_mm"].interpolate(method="pchip")
 
     # remove 0
     df = df[df["rain_mm"] != 0]
