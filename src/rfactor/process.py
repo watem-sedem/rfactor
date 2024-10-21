@@ -74,11 +74,11 @@ def _check_path(file_path):
     if not isinstance(file_path, Path):
         if isinstance(file_path, str):
             raise TypeError(
-                f"`file_path` should be a `pathlib.Path` object, use "
-                f"`Path({file_path})` to convert string file_path to valid `Path`."
+                f"'file_path' should be a 'pathlib.Path' object, use "
+                f"'Path({file_path})' to convert string file_path to valid 'Path'."
             )
         else:
-            raise TypeError("`file_path` should be a pathlib.Path object")
+            raise TypeError("'file_path' should be a pathlib.Path object")
 
 
 def load_rain_file(file_path, load_fun, **kwargs):
@@ -217,7 +217,7 @@ def load_rain_file_flanders(file_path, interpolate=False):
 
     df["datetime"] = pd.to_datetime(df["datetime"])
     df["start_year"] = pd.to_datetime(
-        [f"01-01-{x} 00:00:00" for x in df["datetime"].dt.year],
+        [f"01-01-{x} 00:00:00" for x in df["datetime"].dt.year]
     )
     station, year = _extract_metadata_from_file_path(file_path)
     df["station"] = station
@@ -555,7 +555,7 @@ def compute_rainfall_statistics(df_rainfall, df_station_metadata=None):
         .aggregate(
             {
                 "year": lambda x: sorted(set(x)),
-                "rain_mm": [np.min, np.max, np.median, "count"],
+                "rain_mm": ["min", "max", "median", "count"],
             }
         )
     ).reset_index()
