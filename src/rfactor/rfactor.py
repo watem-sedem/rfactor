@@ -409,13 +409,6 @@ def _compute_erosivity(
         erosivity=rain_events["event_energy"] * rain_events["max_30min_intensity"]
     )
 
-    # cumulative rain over all events
-    rain_events = rain_events.assign(
-        all_event_rain_cum=(
-            rain_events["event_rain_cum"].shift(1, fill_value=0.0).cumsum()
-        )
-    )
-
     # remove events below threshold
     events = rain_events[round(rain_events["event_rain_cum"], 2) > event_threshold]
 
