@@ -268,6 +268,7 @@ def test_rfactor_benchmark_single_year(
     erosivity_benchmark_closure,
 ):
     """Run the erosivity/rfactor calculation for single year/station combinations"""
+    rfactor.SHIFT_STAT = True  # handler for output format
     rain = rain_benchmark_closure(station, year)
     eros_benchmark = erosivity_benchmark_closure(energy_method, intensity_method)
 
