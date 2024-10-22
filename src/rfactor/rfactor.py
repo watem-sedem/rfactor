@@ -8,6 +8,7 @@ from joblib import Parallel, delayed
 
 TIME_BETWEEN_EVENTS = "6 hours"
 MIN_CUMUL_EVENT = 1.27
+SHIFT_STAT = False
 
 
 class RFactorInputError(Exception):
@@ -350,6 +351,9 @@ def _compute_erosivity(
     event_threshold : float
         Minimal cumulative rain of an event to take into account for erosivity
         derivation event_rain_cum
+    shift: bool
+        Shift the computation of 'all_event_rain_cum', so first element is sum of rain
+        before first erosive event is a seperate value.
 
     Returns
     -------
@@ -409,6 +413,19 @@ def _compute_erosivity(
         erosivity=rain_events["event_energy"] * rain_events["max_30min_intensity"]
     )
 
+    # cumulative rain over all events
+    # note: first line includes shift so rainfall sum before first erosive rainfall
+    # event is in a separate row.
+    if SHIFT_STAT:
+        rain_events = rain_events.assign(
+            all_event_rain_cum=(
+                rain_events["event_rain_cum"].shift(1, fill_value=0.0).cumsum()
+            )
+        )
+    else:
+        rain_events = rain_events.assign(
+            all_event_rain_cum=(rain_events["event_rain_cum"].cumsum())
+        )
     # remove events below threshold
     events = rain_events[round(rain_events["event_rain_cum"], 2) > event_threshold]
 

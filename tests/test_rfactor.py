@@ -10,6 +10,7 @@ from rfactor import (
     rain_energy_brown_and_foster1987,
     rain_energy_mcgregor1995,
     rain_energy_verstraeten2006,
+    rfactor,
 )
 from rfactor.rfactor import (
     RFactorInputError,
@@ -18,6 +19,8 @@ from rfactor.rfactor import (
     _apply_rfactor,
     _compute_erosivity,
 )
+
+rfactor.SHIFT_STAT = True
 
 
 @pytest.mark.parametrize(
