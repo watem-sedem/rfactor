@@ -173,7 +173,18 @@ def load_rain_file_flanders(file_path, interpolate=True, limit = None):
         Headers are not necessary for the columns.
 
     interpolate: bool
-        Interpolate NaN yes/no
+        Interpolate NaN yes/no. This option can be used to fill timeserie gaps
+        based on the surrounding measurements. The interpolation will only take
+        into account data gaps of less than 6 hours (36*10 min intervals) which is
+        the chosen minimal period between two rainfall events.
+        The method for interpolating NaN values is 'pchip' which uses the surrounding
+        data to estimate an accurate function of the rainfall data.
+
+    limit: int
+        value indicating the amount of maximum rainfall amount that should be taken
+        into account. This can be used if exceptionally high values of rainfall are
+        detected in the data sets, and can be considered as errorous measurements.
+        Rainfall values greater than the limit value will be converted to NaN-values.
 
     Returns
     -------
@@ -235,11 +246,13 @@ def load_rain_file_flanders(file_path, interpolate=True, limit = None):
 
             temp = [loc_nan[0]]
 
-            for i in range(1, len(loc_nan)):
-                if loc_nan[i] == loc_nan[i - 1] + 1:
-                    temp.append(loc_nan[i])
-                elif len(temp) > 36:
-                    df.loc[loc_nan, "rain_mm"] = 0.00
+            for i in loc_nan[1:]:
+                if i == temp[-1] + 1:
+                    temp.append(i)
+                else:
+                    if len(temp) > 36:
+                        df.loc[temp, "rain_mm"] = 0.00
+                    temp = [i]
 
             df["rain_mm"] = df["rain_mm"].interpolate(method="pchip")
 
