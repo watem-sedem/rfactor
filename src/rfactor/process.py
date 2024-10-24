@@ -151,7 +151,7 @@ def load_rain_file(file_path, load_fun, **kwargs):
     return rain
 
 
-def load_rain_file_flanders(file_path, interpolate=True, limit = None):
+def load_rain_file_flanders(file_path, interpolate=True, interval=36, limit = None):
     """Load any txt file which is formatted in the correct format.
 
     The input files are defined by tab delimited files (extension: ``.txt``) that
@@ -179,12 +179,19 @@ def load_rain_file_flanders(file_path, interpolate=True, limit = None):
         the chosen minimal period between two rainfall events.
         The method for interpolating NaN values is 'pchip' which uses the surrounding
         data to estimate an accurate function of the rainfall data.
+        Default: True
+
+    interval : int
+        Gives the max interval length over which NaN values are interpolated.
+        Default: 36
 
     limit: int
         value indicating the amount of maximum rainfall amount that should be taken
         into account. This can be used if exceptionally high values of rainfall are
         detected in the data sets, and can be considered as errorous measurements.
         Rainfall values greater than the limit value will be converted to NaN-values.
+        Default: None
+
 
     Returns
     -------
@@ -242,15 +249,18 @@ def load_rain_file_flanders(file_path, interpolate=True, limit = None):
 
     if interpolate:
         if df["rain_mm"].isna().any():
-            loc_nan = np.where(df['rain_mm'].isna())[0].tolist()
+            loc_nan = np.where(df['rain_mm'].isna())[0].tolist()    #find indices for all NaN-values
 
             temp = [loc_nan[0]]
 
-            for i in loc_nan[1:]:
-                if i == temp[-1] + 1:
+            for i in loc_nan[1:]:                                   #loop over all NaN-indices
+                if i == temp[-1] + 1:                               #check if indices are consequetive
                     temp.append(i)
                 else:
-                    if len(temp) > 36:
+                    if len(temp) > interval:                        #check if lenght of consequetive indices > interval
+                        # NaN-values serie > interval are set to 0.00 so they will not be interpolated and will
+                        # be removed from the timeseries. NaN-value series <= interval will be kept as NaN-values
+                        # which allows them to be interpolated.
                         df.loc[temp, "rain_mm"] = 0.00
                     temp = [i]
 
