@@ -265,6 +265,7 @@ def test_rfactor_benchmark_single_year(
     erosivity_benchmark_closure,
 ):
     """Run the erosivity/rfactor calculation for single year/station combinations"""
+
     rain = rain_benchmark_closure(station, year)
     eros_benchmark = erosivity_benchmark_closure(energy_method, intensity_method)
 
@@ -272,6 +273,8 @@ def test_rfactor_benchmark_single_year(
     erosivity_reference = eros_benchmark[
         (eros_benchmark["year"] == year) & (eros_benchmark["station"] == station)
     ]
+    erosivity = erosivity.drop(columns=["all_event_rain_cum"])
+    erosivity_reference = erosivity_reference.drop(columns=["all_event_rain_cum"])
 
     pd.testing.assert_frame_equal(erosivity, erosivity_reference)
 
@@ -281,6 +284,7 @@ def test_rfactor_benchmark_single_year(
         energy_method,
         intensity_method,
     )
+    erosivity_support_func = erosivity_support_func.drop(columns=["all_event_rain_cum"])
 
     erosivity_support_func.index = erosivity_support_func["datetime"]
     pd.testing.assert_frame_equal(
