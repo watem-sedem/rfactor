@@ -436,7 +436,7 @@ def compute_erosivity(
     rain,
     energy_method=rain_energy_verstraeten2006,
     intensity_method=maximum_intensity,
-    **kwargs
+    **kwargs,
 ):
     """Calculate erosivity  for each year/station combination
 
