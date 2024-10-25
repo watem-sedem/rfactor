@@ -131,9 +131,13 @@ def rain_data_file(tmp_path):
 
 
 @pytest.fixture()
-def rain_data_file_csv_vmm():
-    "Example rainfall CSV data file"
-    return CURRENT_DIR / "data" / "test_rainfalldata_vmm_format" / "P01_010.CSV"
+def rain_data_file_flanders():
+    """Example rainfall CSV data file
+    #TODO: add test rainfall file to tests/data/test_rainfall_file_flanders.csv
+    #NOTE: keep size test_rainfall_file_flanders.csv to couple of kb. See examples
+           test_rainfalldata for size of file. I would go for a file of 20 records
+    """
+    return CURRENT_DIR / "data" / "test_rainfall_file_flanders.csv"
 
 
 @pytest.fixture()

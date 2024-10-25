@@ -12,6 +12,7 @@ from rfactor.process import (
     compute_rainfall_statistics,
     get_rfactor_station_year,
     load_rain_file,
+    load_rain_file_flanders,
     load_rain_file_matlab_legacy,
     load_rain_folder,
     write_erosivity_data,
@@ -106,6 +107,52 @@ def test_load_rain_file(rain_data_file):
         2021,
         "station_name_2021",
     ]
+
+
+def test_load_rain_file_flanders(rain_data_file_flanders):
+
+    """Valid rainfall data should be parsed to rain DataFrame"""
+    rainfall_data = load_rain_file(rain_data_file_flanders, load_rain_file_flanders)
+    # TODO: add kwargs
+    assert isinstance(rainfall_data, pd.DataFrame)
+
+    assert list(rainfall_data.columns) == [
+        "datetime",
+        "station",
+        "rain_mm",
+        "year",
+        "tag",
+    ]
+    # TODO: normally this should be fine
+    assert list(rainfall_data["station"].unique()) == ["station_name"]
+    assert list(rainfall_data.iloc[0].values) == [
+        pd.to_datetime("2021-01-01 00:01:00"),
+        "station_name",
+        1.0,
+        2021,
+        "station_name_2021",
+    ]
+    # TODO: change this to output you expect for rain (first record)
+    assert list(rainfall_data.iloc[-1].values) == [
+        pd.to_datetime("2021-12-31 23:59:00"),
+        "station_name",
+        10.00,
+        2021,
+        "station_name_2021",
+    ]  # TODO: change this to output you expect for rain (first record)
+
+    # TODO: assert df_rain for different options of
+    # - interpolate=True
+    #       for this you can only test True / False
+    # - interval
+    #        for this you could test 5 and 10, check if output is correct, check if
+    #        output rain_mm is correct
+    # - limit
+    #        for this you could also test two limit and None, check if output rain_mm
+    #        is correct
+    # Note: you can hardcode implement expected rain_mm output in this function.
+    # Note2: make sure your 'rain_data_file_flanders' is not to many records as you
+    #        will have to hardcode expected output.
 
 
 class TestCustomLoadRainFile:
