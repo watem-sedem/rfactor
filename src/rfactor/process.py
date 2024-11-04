@@ -151,7 +151,7 @@ def load_rain_file(file_path, load_fun, **kwargs):
     return rain
 
 
-def load_rain_file_flanders(file_path, interpolate=True, interval=36, limit=None):
+def load_rain_file_flanders(file_path, interpolate=None, interval=np.inf, limit=None):
     """Load any txt file which is formatted in the correct format.
 
     The input files are defined by tab delimited files (extension: ``.txt``) that
@@ -172,18 +172,26 @@ def load_rain_file_flanders(file_path, interpolate=True, interval=36, limit=None
 
         Headers are not necessary for the columns.
 
-    interpolate: bool
-        Interpolate NaN yes/no. This option can be used to fill timeserie gaps
-        based on the surrounding measurements. The interpolation will only take
-        into account data gaps of less than 6 hours (36*10 min intervals) which is
-        the chosen minimal period between two rainfall events.
-        The method for interpolating NaN values is 'pchip' which uses the surrounding
-        data to estimate an accurate function of the rainfall data.
-        Default: True
+    interpolate: str
+        Interpolation method to use for NaN-Values. see pd.DataFrame.interpolate() for
+        possible interpolation methods. The argument of 'interpolate' in this function
+        should be the same as the argument of the 'method' keyword for the
+        pd.Dataframe.interpolate() function.
+        This option can be used to fill timeserie gaps based on the surrounding
+        measurements. The interpolation will only take into account data gaps of less
+        'param:interval'. If no interpolation of the data is required pass 'None' as
+        argument (default).
+        Default: None
 
     interval : int
-        Gives the max interval length over which NaN values are interpolated.
-        Default: 36
+        Gives the max interval length over which NaN values are interpolated. The
+        interval is based on index places and should thus be multiplied by the
+        timestep of each measurement to get the timeinterval over which will be
+        interpolated. For example, a timeseries with resolution of 10 min will have a
+        maximum interval length of 6 hours if the interval value is set to 36 (36 *
+        10 min = 6 hours). If there is no need to confine the interval length the
+        interval parameter can be set to np.inf (default).
+        Default: np.inf
 
     limit: int
         value indicating the amount of maximum rainfall amount that should be taken
@@ -247,32 +255,35 @@ def load_rain_file_flanders(file_path, interpolate=True, interval=36, limit=None
     if limit is not None:
         df.loc[df["rain_mm"] > limit, "rain_mm"] = np.nan
 
-    if interpolate:
+    if interpolate is not None:
         if df["rain_mm"].isna().any():
-            loc_nan = np.where(df["rain_mm"].isna())[
-                0
-            ].tolist()  # find indices for all NaN-values
+            # find indices for all NaN-values
+            loc_nan = np.where(df["rain_mm"].isna())[0].tolist()
 
             temp = [loc_nan[0]]
 
             for i in loc_nan[1:]:  # loop over all NaN-indices
-                if i == temp[-1] + 1:  # check if indices are consequetive
-                    temp.append(i)
-                else:
-                    if (
-                        len(temp) > interval
-                    ):  # check if lenght of consequetive indices > interval
+                if i != temp[-1] + 1 or i == loc_nan[-1]:
+                    # check if indices are consequtive or if the final NaN-value is
+                    # reached
+                    if i == loc_nan[-1]:
+                        temp.append(i)
+                    if len(temp) > interval:
+                        # check if lenght of consequetive indices > interval
                         # NaN-values serie > interval are set to 0.00 so they will not
                         # be interpolated and will be removed from the timeseries.
                         # NaN-value series <= interval will be kept as NaN-values
                         # which allows them to be interpolated.
                         df.loc[temp, "rain_mm"] = 0.00
                     temp = [i]
+                elif i == temp[-1] + 1:  # check if indices are consequetive
+                    temp.append(i)
 
-            df["rain_mm"] = df["rain_mm"].interpolate(method="pchip")
+            if interpolate is not None:
+                df["rain_mm"] = df["rain_mm"].interpolate(method=interpolate)
 
     # remove 0
-    df = df[df["rain_mm"] != 0]
+    df = df[df["rain_mm"] > 0]
     # remove NaN
     df = df[~df["rain_mm"].isna()]
     df["rain_mm"] = df["rain_mm"].astype(np.float64)
