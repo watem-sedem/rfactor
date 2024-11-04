@@ -1,4 +1,6 @@
 import re
+
+# from datetime import datetime
 from pathlib import Path
 
 import numpy as np
@@ -113,7 +115,7 @@ def test_load_rain_file_flanders(rain_data_file_flanders):
 
     """Valid rainfall data should be parsed to rain DataFrame"""
     rainfall_data = load_rain_file(rain_data_file_flanders, load_rain_file_flanders)
-    # TODO: add kwargs
+
     assert isinstance(rainfall_data, pd.DataFrame)
 
     assert list(rainfall_data.columns) == [
@@ -123,36 +125,141 @@ def test_load_rain_file_flanders(rain_data_file_flanders):
         "year",
         "tag",
     ]
-    # TODO: normally this should be fine
-    assert list(rainfall_data["station"].unique()) == ["station_name"]
-    assert list(rainfall_data.iloc[0].values) == [
-        pd.to_datetime("2021-01-01 00:01:00"),
-        "station_name",
-        1.0,
-        2021,
-        "station_name_2021",
-    ]
-    # TODO: change this to output you expect for rain (first record)
-    assert list(rainfall_data.iloc[-1].values) == [
-        pd.to_datetime("2021-12-31 23:59:00"),
-        "station_name",
-        10.00,
-        2021,
-        "station_name_2021",
-    ]  # TODO: change this to output you expect for rain (first record)
 
-    # TODO: assert df_rain for different options of
+    assert list(rainfall_data["station"].unique()) == ["FL_Test"]
+    assert list(rainfall_data.iloc[0].values) == [
+        pd.to_datetime("2024-01-01 00:30:00"),
+        "FL_Test",
+        10.5,
+        2024,
+        "FL_Test_2024",
+    ]
+
+    assert list(rainfall_data.iloc[-1].values) == [
+        pd.to_datetime("2024-01-01 02:50:00"),
+        "FL_Test",
+        1.0,
+        2024,
+        "FL_Test_2024",
+    ]
+
+    assert rainfall_data["rain_mm"].sum() == 17.73
+    assert len(np.where(rainfall_data.isna())[0]) == 0
+    assert len(np.where(rainfall_data == 0)[0]) == 0
+
     # - interpolate=True
     #       for this you can only test True / False
+    rainfall_data = load_rain_file(
+        rain_data_file_flanders, load_rain_file_flanders, interpolate="linear"
+    )
+    assert isinstance(rainfall_data, pd.DataFrame)
+
+    assert list(rainfall_data.columns) == [
+        "datetime",
+        "station",
+        "rain_mm",
+        "year",
+        "tag",
+    ]
+    assert list(rainfall_data["station"].unique()) == ["FL_Test"]
+    assert list(rainfall_data.iloc[0].values) == [
+        pd.to_datetime("2024-01-01 00:30:00"),
+        "FL_Test",
+        10.5,
+        2024,
+        "FL_Test_2024",
+    ]
+    assert list(rainfall_data.iloc[-1].values) == [
+        pd.to_datetime("2024-01-01 02:50:00"),
+        "FL_Test",
+        1.0,
+        2024,
+        "FL_Test_2024",
+    ]
+
+    assert np.round(rainfall_data["rain_mm"].sum(), 3) == 19.255
+
+    assert len(np.where(rainfall_data.isna())[0]) == 0
+    assert len(np.where(rainfall_data == 0)[0]) == 0
+
     # - interval
-    #        for this you could test 5 and 10, check if output is correct, check if
+    #        for this you could test 1 and 3, check if output is correct, check if
     #        output rain_mm is correct
+
+    rainfall_data = load_rain_file(
+        rain_data_file_flanders,
+        load_rain_file_flanders,
+        interpolate="linear",
+        interval=1,
+    )
+    assert isinstance(rainfall_data, pd.DataFrame)
+
+    assert list(rainfall_data.columns) == [
+        "datetime",
+        "station",
+        "rain_mm",
+        "year",
+        "tag",
+    ]
+    assert list(rainfall_data["station"].unique()) == ["FL_Test"]
+    assert list(rainfall_data.iloc[0].values) == [
+        pd.to_datetime("2024-01-01 00:30:00"),
+        "FL_Test",
+        10.5,
+        2024,
+        "FL_Test_2024",
+    ]
+    assert list(rainfall_data.iloc[-1].values) == [
+        pd.to_datetime("2024-01-01 02:50:00"),
+        "FL_Test",
+        1.0,
+        2024,
+        "FL_Test_2024",
+    ]
+
+    assert np.round(rainfall_data["rain_mm"].sum(), 3) == 17.74
+    assert len(np.where(rainfall_data.isna())[0]) == 0
+    assert len(np.where(rainfall_data == 0)[0]) == 0
+
     # - limit
     #        for this you could also test two limit and None, check if output rain_mm
     #        is correct
     # Note: you can hardcode implement expected rain_mm output in this function.
     # Note2: make sure your 'rain_data_file_flanders' is not to many records as you
     #        will have to hardcode expected output.
+
+    rainfall_data = load_rain_file(
+        rain_data_file_flanders, load_rain_file_flanders, limit=10
+    )
+    assert isinstance(rainfall_data, pd.DataFrame)
+
+    assert list(rainfall_data.columns) == [
+        "datetime",
+        "station",
+        "rain_mm",
+        "year",
+        "tag",
+    ]
+
+    assert list(rainfall_data["station"].unique()) == ["FL_Test"]
+    assert list(rainfall_data.iloc[0].values) == [
+        pd.to_datetime("2024-01-01 00:40:00"),
+        "FL_Test",
+        5.20,
+        2024,
+        "FL_Test_2024",
+    ]
+    assert list(rainfall_data.iloc[-1].values) == [
+        pd.to_datetime("2024-01-01 02:50:00"),
+        "FL_Test",
+        1.0,
+        2024,
+        "FL_Test_2024",
+    ]
+
+    assert np.round(rainfall_data["rain_mm"].sum(), 3) == 7.23
+    assert len(np.where(rainfall_data.isna())[0]) == 0
+    assert len(np.where(rainfall_data == 0)[0]) == 0
 
 
 class TestCustomLoadRainFile:
