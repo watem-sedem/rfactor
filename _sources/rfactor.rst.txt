@@ -18,8 +18,8 @@ is computed, for every year. Finally, the mean is computed over all the years:
     R = \frac{1}{n}\sum_{j=1}^{n}[\sum_{k=1}^{m_j}E_k.(I_{30})_k]_j
 
 with
- - :math:`R`: rainfall erosivity factor(:math:`\frac{\text{J.mm}}{\text{m}^2.\text{h.year}}
-   or :math:`\frac{\text{MJ.mm}}{\text{ha}.\text{h.year}}`) ,
+ - :math:`R`: rainfall erosivity factor(:math:`\frac{\text{J
+   .mm}}{\text{m}^2.\text{h.year}}`),
  - :math:`n`, increment :math:`j`: number of years,
  - :math:`m_j`, increment :math:`k`: number of rain events in a year :math:`j`,
  - :math:`E`: the total kinetic energy of one single rain event
