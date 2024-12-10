@@ -1,54 +1,63 @@
 # This CITATION.cff file was generated with cffinit.
 # Visit https://bit.ly/cffinit to generate yours today!
-
-cff-version: 1.2.0
-title: rfactor
-message: >-
-  If you use this software, please cite it using the
-  metadata from this file.
-type: software
-authors:
-  - given-names: Sacha
-    family-names: Gobeyn
-    email: sacha@fluves.com
-    orcid: 'https://orcid.org/0000-0002-4615-6655'
-    affiliation: Fluves
-  - given-names: Stijn
-    family-names: Van Hoey
-    email: stijn@fluves.com
-    affiliation: Fluves
-    orcid: 'https://orcid.org/0000-0001-6413-3185'
-  - given-names: 'Johan '
-    family-names: Van de Wauw
-    email: johan@fluves.com
-    affiliation: Fluves
-  - given-names: Daan
-    family-names: Renders
-    email: Daan@fluves.com
-    affiliation: Fluves
-  - given-names: Seth
-    family-names: Callewaert
-    email: seth.callewaert@vlaanderen.be
-    affiliation: Departement Omgeving
-  - given-names: Dries
-    family-names: Luts
-    email: dries.luts@vlaanderen.be
-    affiliation: Departement Omgeving
-  - family-names: Verstraeten
-    given-names: Gert
-    orcid: https://orcid.org/0000-0002-6529-7381
-    affiliation: KU Leuven
-identifiers:
-  - type: doi
-    value: 10.5281/zenodo.7966606
-repository-code: 'https://github.com/watem-sedem/rfactor'
-url: 'https://watem-sedem.github.io/rfactor'
-abstract: >-
-  The R-factor is a measure used in erosion and (overland)
+abstract: "The R-factor is a measure used in erosion and (overland)
   sediment modelling to quantify the effect of rainfall on
   soil erosion. It is typically defined in the context of
   the RUSLE equation, in which gross erosion for an
   agricultural parcel is estimated. This Python package
   enables an interface with a number of functions to compute
-  this factor
-license: LGPL-3.0
+  this factor"
+ authors:
+  - family-names: Gobeyn
+    given-names: Sacha
+    email: sacha@fluves.com
+    orcid: https://orcid.org/0000-0002-4615-6655
+    affiliation: Fluves
+  - family-names: Van Hoey
+    given-names: Stijn
+    email: stijn@fluves.com
+    affiliation: Fluves
+    orcid: https://orcid.org/0000-0001-6413-3185
+  - family-names: Van de Wauw
+    given-names: Johan
+    email: johan@fluves.com
+    affiliation: Fluves
+    orcid: https://orcid.org/0000-0003-0150-3315
+  - family-names: Renders
+    given-names: Daan
+    email: Daan@fluves.com
+    affiliation: Fluves
+  - family-names: Callewaert
+    given-names: Seth
+    email: seth.callewaert@vlaanderen.be
+    affiliation: Departement Omgeving, Vlaamse Overheid
+  - family-names: Luts
+    given-names: Dries
+    email: dries.luts@vlaanderen.be
+    affiliation: Departement Omgeving, Vlaamse Overheid
+  - family-names: Deproost
+    given-names: Petra
+    affiliation: Departement Omgeving, Vlaamse Overheid
+  - family-names: Verstraeten
+    given-names: Gert
+    orcid: https://orcid.org/0000-0002-6529-7381
+    affiliation: KU Leuven
+cff-version: 1.2.0
+keywords:
+  - "erosion"
+  - "soil"
+  - "sediment"
+  - "sediment transport"
+  - "modelling"
+  - "rainfall"
+  - "RUSLE"
+license: "LGPL-3.0-or-later"
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+repository: 'https://github.com/watem-sedem/rfactor'
+title: "watem-sedem/rfactor"
+url: 'https://watem-sedem.github.io/rfactor'
+
+
