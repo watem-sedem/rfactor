@@ -6,15 +6,15 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application of rfactor on data det Flanders &mdash; rfactor 0.1.3.post1.dev4+ge074170 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+  <title>Application of rfactor on data det Flanders &mdash; rfactor 0.1.3.post1.dev7+gc4a3368 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=977cceed"></script>
+      <script src="../_static/documentation_options.js?v=27c75386"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -102,6 +102,34 @@
 <section id="Aim">
 <h2>Aim<a class="headerlink" href="#Aim" title="Link to this heading"></a></h2>
 <p>Implementation to compute and analyse the R-factor of the RUSLE-equation. The R-factor is a measure for the total erosivity of a number of rainfall events within a defined timeframe (year, month, number of days). The factor is computed by calculating the yearly sum of -for every rainfall event- the sum of the depth of rainfall (mm) and the kinetic energy, and taking the mean over all years.</p>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><strong>NOTE</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>This notebook does not
+include the erosivity
+computation based on the
+Royal Meteorological
+Institute of Belgium
+(RMI) rainfall data, as
+the data is not
+available as open data.
+One can contact RMI to
+obtain the rainfall
+input data.
+Alternatively, the
+results of the
+computation of the
+erosivity values based
+on the RMI data are
+provided in this
+notebook as well as
+other rainfall input
+data, so one can proceed
+with the analysis.</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="Package-imports">
 <h2>Package imports<a class="headerlink" href="#Package-imports" title="Link to this heading"></a></h2>
@@ -109,11 +137,11 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 </pre></div>
 </div>
 </div>
@@ -122,8 +150,8 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor</span> <span class="kn">import</span> <span class="n">compute_erosivity</span><span class="p">,</span> <span class="n">maximum_intensity_matlab_clone</span><span class="p">,</span> <span class="n">rain_energy_verstraeten2006</span>
-<span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">load_rain_folder</span> <span class="p">,</span> <span class="n">load_rain_file_matlab_legacy</span><span class="p">,</span> <span class="n">compute_rainfall_statistics</span><span class="p">,</span> <span class="n">get_rfactor_station_year</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rfactor</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_erosivity</span><span class="p">,</span> <span class="n">maximum_intensity_matlab_clone</span><span class="p">,</span> <span class="n">rain_energy_verstraeten2006</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rfactor.process</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_rain_folder</span> <span class="p">,</span> <span class="n">load_rain_file_matlab_legacy</span><span class="p">,</span> <span class="n">compute_rainfall_statistics</span><span class="p">,</span> <span class="n">get_rfactor_station_year</span>
 </pre></div>
 </div>
 </div>
@@ -484,7 +512,7 @@ original Matlab one:</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">subplot_montlhy_R</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">ind1</span><span class="p">,</span><span class="n">ind2</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">subplot_montlhy_R</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">ax</span><span class="p">,</span><span class="n">ind1</span><span class="p">,</span><span class="n">ind2</span><span class="p">):</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="n">ind1</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">ind2</span><span class="o">==</span><span class="mi">2</span><span class="p">):</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;erosivity&quot;</span><span class="p">],</span><span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">]</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;EI30&quot;</span><span class="p">)</span>

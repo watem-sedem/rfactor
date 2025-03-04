@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor.rfactor &mdash; rfactor 0.1.3.post1.dev4+ge074170 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+  <title>rfactor.rfactor &mdash; rfactor 0.1.3.post1.dev7+gc4a3368 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=977cceed"></script>
+      <script src="../../_static/documentation_options.js?v=27c75386"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -83,13 +83,13 @@
            <div itemprop="articleBody">
              
   <h1>Source code for rfactor.rfactor</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">multiprocessing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">joblib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parallel</span><span class="p">,</span> <span class="n">delayed</span>
 
 <span class="n">TIME_BETWEEN_EVENTS</span> <span class="o">=</span> <span class="s2">&quot;6 hours&quot;</span>
 <span class="n">MIN_CUMUL_EVENT</span> <span class="o">=</span> <span class="mf">1.27</span>
@@ -97,28 +97,28 @@
 
 <div class="viewcode-block" id="RFactorInputError">
 <a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.RFactorInputError">[docs]</a>
-<span class="k">class</span> <span class="nc">RFactorInputError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RFactorInputError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise when input data are not conform the rfactor required input format.&quot;&quot;&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="RFactorKeyError">
 <a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.RFactorKeyError">[docs]</a>
-<span class="k">class</span> <span class="nc">RFactorKeyError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RFactorKeyError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise when input data missing required column names.&quot;&quot;&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="RFactorTypeError">
 <a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.RFactorTypeError">[docs]</a>
-<span class="k">class</span> <span class="nc">RFactorTypeError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RFactorTypeError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise when input data data type of a data column is wrong.&quot;&quot;&quot;</span></div>
 
 
 
 <div class="viewcode-block" id="rain_energy_verstraeten2006">
 <a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.rain_energy_verstraeten2006">[docs]</a>
-<span class="k">def</span> <span class="nf">rain_energy_verstraeten2006</span><span class="p">(</span><span class="n">rain</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rain_energy_verstraeten2006</span><span class="p">(</span><span class="n">rain</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate rain energy per unit depth according to Salles/Verstraeten with 10</span>
 <span class="sd">    minute interval data.</span>
 
@@ -173,7 +173,7 @@
 
 <div class="viewcode-block" id="rain_energy_brown_and_foster1987">
 <a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.rain_energy_brown_and_foster1987">[docs]</a>
-<span class="k">def</span> <span class="nf">rain_energy_brown_and_foster1987</span><span class="p">(</span><span class="n">rain</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rain_energy_brown_and_foster1987</span><span class="p">(</span><span class="n">rain</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate rain energy per unit depth according to Brown and Foster.</span>
 
 <span class="sd">    Brown and Foster is applied considering a 10-minute interval input rainfall data</span>
@@ -226,7 +226,7 @@
 
 <div class="viewcode-block" id="rain_energy_mcgregor1995">
 <a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.rain_energy_mcgregor1995">[docs]</a>
-<span class="k">def</span> <span class="nf">rain_energy_mcgregor1995</span><span class="p">(</span><span class="n">rain</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rain_energy_mcgregor1995</span><span class="p">(</span><span class="n">rain</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate rain energy per unit depth according to McGregor with 10</span>
 <span class="sd">    minute interval data.</span>
 
@@ -275,7 +275,7 @@
 
 <div class="viewcode-block" id="maximum_intensity_matlab_clone">
 <a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.maximum_intensity_matlab_clone">[docs]</a>
-<span class="k">def</span> <span class="nf">maximum_intensity_matlab_clone</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">maximum_intensity_matlab_clone</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Maximum rain intensity for 30-min interval (Matlab clone).</span>
 
 <span class="sd">    The implementation is a direct Python-translation of the original Matlab</span>
@@ -342,7 +342,7 @@
 
 <div class="viewcode-block" id="maximum_intensity_interpolate">
 <a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.maximum_intensity_interpolate">[docs]</a>
-<span class="k">def</span> <span class="nf">maximum_intensity_interpolate</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">maximum_intensity_interpolate</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Maximum rain intensity for 30-min interval (Matlab clone Fix).</span>
 <span class="sd">    This implementation is a fixed version of the Python-translation of the original</span>
 <span class="sd">    Matlab implementation by [3]_.</span>
@@ -412,7 +412,7 @@
 
 <div class="viewcode-block" id="maximum_intensity">
 <a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.maximum_intensity">[docs]</a>
-<span class="k">def</span> <span class="nf">maximum_intensity</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">maximum_intensity</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Maximum rain intensity for 30-min interval (Pandas rolling) expressed as mm/hour</span>
 
 <span class="sd">    The implementation uses a rolling window of the chosen interval to derive the</span>
@@ -437,7 +437,7 @@
 
 
 
-<span class="k">def</span> <span class="nf">_compute_erosivity</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_compute_erosivity</span><span class="p">(</span>
     <span class="n">rain</span><span class="p">,</span>
     <span class="n">energy_method</span><span class="p">,</span>
     <span class="n">intensity_method</span><span class="p">,</span>
@@ -537,7 +537,7 @@
     <span class="k">return</span> <span class="n">events</span>
 
 
-<span class="k">def</span> <span class="nf">_apply_rfactor</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">energy_method</span><span class="p">,</span> <span class="n">intensity_method</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_apply_rfactor</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">energy_method</span><span class="p">,</span> <span class="n">intensity_method</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper helper function for parallel execution of erosivity on groups&quot;&quot;&quot;</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">_compute_erosivity</span><span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="n">energy_method</span><span class="p">,</span> <span class="n">intensity_method</span><span class="p">)</span>
     <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;year&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">name</span>
@@ -546,7 +546,7 @@
 
 <div class="viewcode-block" id="compute_erosivity">
 <a class="viewcode-back" href="../../api/rfactor.html#rfactor.rfactor.compute_erosivity">[docs]</a>
-<span class="k">def</span> <span class="nf">compute_erosivity</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_erosivity</span><span class="p">(</span>
     <span class="n">rain</span><span class="p">,</span>
     <span class="n">energy_method</span><span class="o">=</span><span class="n">rain_energy_verstraeten2006</span><span class="p">,</span>
     <span class="n">intensity_method</span><span class="o">=</span><span class="n">maximum_intensity</span><span class="p">,</span>

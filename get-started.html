@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Get started &mdash; rfactor 0.1.3.post1.dev4+ge074170 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+  <title>Get started &mdash; rfactor 0.1.3.post1.dev7+gc4a3368 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=977cceed"></script>
+      <script src="_static/documentation_options.js?v=27c75386"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -151,7 +151,7 @@ delete/interpolate these values beforehand.</p>
 The <code class="xref py py-func docutils literal notranslate"><span class="pre">rfactor.compute_erosivity()</span></code> function applies the algorithm to a
 DataFrame containing data for a single station/year, e.g. for the data in
 DataFrame <code class="docutils literal notranslate"><span class="pre">df_rain</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor</span> <span class="kn">import</span> <span class="n">compute_erosivity</span><span class="p">,</span> <span class="n">rain_energy_verstraeten2006</span><span class="p">,</span> <span class="n">maximum_intensity</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rfactor</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_erosivity</span><span class="p">,</span> <span class="n">rain_energy_verstraeten2006</span><span class="p">,</span> <span class="n">maximum_intensity</span>
 <span class="n">erosivity</span> <span class="o">=</span> <span class="n">compute_erosivity</span><span class="p">(</span><span class="n">df_rain</span><span class="p">,</span> <span class="n">rain_energy_verstraeten2006</span><span class="p">,</span> <span class="n">maximum_intensity</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -303,7 +303,7 @@ required:</p>
 </tr>
 </tbody>
 </table>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rfactor</span> <span class="kn">import</span> <span class="n">compute_erosivity</span><span class="p">,</span> <span class="n">maximum_intensity</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rfactor</span><span class="w"> </span><span class="kn">import</span> <span class="n">compute_erosivity</span><span class="p">,</span> <span class="n">maximum_intensity</span>
 <span class="n">erosivity</span> <span class="o">=</span> <span class="n">compute_erosivity</span><span class="p">(</span><span class="n">df_rain</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -387,8 +387,8 @@ the required data format defined in this package (see previous section).</p>
 function used to process the <code class="docutils literal notranslate"><span class="pre">Matlab</span> <span class="pre">KU-Leuven</span></code> file legacy.</p></li>
 </ul>
 <p>This file-format can be loaded with the defined processing function, i.e.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">load_rain_file</span><span class="p">,</span> <span class="n">load_rain_file_matlab_legacy</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rfactor.process</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_rain_file</span><span class="p">,</span> <span class="n">load_rain_file_matlab_legacy</span>
 
 <span class="c1"># Load a Matlab-file</span>
 <span class="n">fname</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/PATH/TO/YOUR/RAINFALL/DATA/FOLDER/P01_001_2018.txt&quot;</span><span class="p">)</span>
@@ -409,8 +409,8 @@ following definition (column name: type):</p>
 <li><p><em>value</em>: float</p></li>
 </ul>
 <p>Or a folder containing multiple files can be loaded:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">load_rain_file_matlab_legacy</span><span class="p">,</span> <span class="n">load_rain_folder</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rfactor.process</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_rain_file_matlab_legacy</span><span class="p">,</span> <span class="n">load_rain_folder</span>
 
 <span class="c1"># Load an entire set of Matlab-legacy files</span>
 <span class="n">folder</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/PATH/FOLDER/CONTAINING/MATLABFORMAT/FILES&quot;</span><span class="p">)</span>
@@ -452,7 +452,7 @@ per year with a specific datafile tag (format: <strong>SOURCE_STATION_YEAR.txt</
 <h3>Custom example<a class="headerlink" href="#custom-example" title="Link to this heading"></a></h3>
 <p>An example of a custom function is posted below, holding removal of 0 and NaN
 values and an example for interpolation:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">load_rain_file_example</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">load_rain_file_example</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Load any txt file which is formatted in the correct format.</span>
 
 <span class="sd">    The input files are defined by tab delimited files (extension: ``.txt``) that</span>
@@ -545,8 +545,8 @@ values and an example for interpolation:</p>
 <section id="output-erosivity">
 <h3>Output erosivity<a class="headerlink" href="#output-erosivity" title="Link to this heading"></a></h3>
 <p>To export the resulting DataFrame with erosivity values into the legacy output format:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">rfactor.process</span> <span class="kn">import</span> <span class="n">load_rain_folder</span><span class="p">,</span> <span class="n">load_rain_file</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rfactor.process</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_rain_folder</span><span class="p">,</span> <span class="n">load_rain_file</span>
 <span class="c1"># Works both on a single station/year as multiple station/year combinations</span>
 <span class="n">write_erosivity_data</span><span class="p">(</span><span class="n">erosivity</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/PATH/TO/YOUR/EROSIVITY/OUTPUT&quot;</span><span class="p">))</span>
 </pre></div>
