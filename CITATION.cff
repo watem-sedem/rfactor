@@ -1,3 +1,10 @@
+abstract: "The R-factor is a measure used in erosion and overland
+sediment modelling to quantify the effect of rainfall on
+soil erosion. It is typically defined in the context of
+the RUSLE equation, in which gross erosion for an
+agricultural parcel is estimated. This Python package
+enables an interface with a number of functions to compute
+this factor"
 authors:
   - family-names: Gobeyn
     given-names: Sacha
