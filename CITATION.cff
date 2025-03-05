@@ -44,8 +44,7 @@ cff-version: 1.2.0
 keywords:
   - "erosion"
   - "soil"
-  - "sediment"
-  - "sediment transport"
+  - "erosivity"
   - "modelling"
   - "rainfall"
   - "RUSLE"
