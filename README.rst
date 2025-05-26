@@ -17,6 +17,12 @@ one year. These yearly values can be used to compute an average value, the
 R-factor, presenting the rainfall erosivity for a given period. An in-depth
 explanation of the formula's is given :ref:`here <rfactor>`.
 
+The aim of this package is to provide an interface for computing the
+erosivity and R-factor (in batch). The interface allows to apply commonly used
+formulation of the R-factor (i.e. Brown and Foster, 1987 or McGregor et
+al, 1995) next to custom user-defined functions. In addition, it allows to
+apply custom user-defined input data processing functions, next to the
+standard input format.
 
 This code is developed as a function of an analysis of rainfall
 erosivity in Flanders. The results found in the example notebooks
@@ -94,3 +100,11 @@ Note
 ----
 This project has been set up using PyScaffold 3.2.3. For details and usage
 information on PyScaffold see https://pyscaffold.org/.
+
+References
+----------
+Brown, L.C., Foster, G.R., 1987. Storm erosivity using idealized intensity
+distributions. Transactions of the ASAE 30, 0379–0386.
+McGregor, K.C., Bingner, R.L., Bowie, A.J. and Foster, G.R., 1995. Erosivity
+index values for northern Mississippi. Transactions of the ASAE, 38(4),
+pp.1039-1047.
