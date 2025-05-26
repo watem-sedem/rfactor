@@ -18,12 +18,11 @@ is computed, for every year. Finally, the mean is computed over all the years:
     R = \frac{1}{n}\sum_{j=1}^{n}[\sum_{k=1}^{m_j}E_k.(I_{30})_k]_j
 
 with
- - :math:`R`: rainfall erosivity factor(:math:`\frac{\text{J
-   .mm}}{\text{m}^2.\text{h.year}}`),
+ - :math:`R`: rainfall erosivity factor(:math:`\frac{\text{MJ.mm}}{\text{ha}.\text{h.year}}`) ,
  - :math:`n`, increment :math:`j`: number of years,
  - :math:`m_j`, increment :math:`k`: number of rain events in a year :math:`j`,
  - :math:`E`: the total kinetic energy of one single rain event
-   (:math:`\frac{J}{m^2}`), and
+   (:math:`\frac{MJ}{ha}`), and
  - :math:`I_{30}` (:math:`\frac{mm}{h}`): the maximum rain intensity
    recorded within 30 consecutive minutes.
 
@@ -38,7 +37,7 @@ The latter is defined as:
 with
  - :math:`o`: the number of increments for a particular rain event,
  - :math:`e_r`: the rain energy per unit depth,
-   (:math:`\frac{\text{J}}{\text{m}^{2}.\text{mm}}`), and
+   (:math:`\frac{\text{MJ}}{\text{ha}.\text{mm}}`), and
  - :math:`\Delta V_r`: the rain depth (mm).
 
 Note these equations assume that events are predefined. Typically, the end of
