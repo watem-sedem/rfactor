@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Application of rfactor on data det Flanders &mdash; rfactor 0.1.3.post1.dev31+g6f3a1a6 documentation</title>
+  <title>Application of rfactor on data det Flanders &mdash; rfactor 0.1.3.post1.dev36+g3d1c650 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
@@ -14,7 +14,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=dbc83c64"></script>
+      <script src="../_static/documentation_options.js?v=67b7007e"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -184,7 +184,7 @@ KMI_6434_2004.txt
 </div>
 </div>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">load_rain_folder</span></code> function to read all rain data in a folder:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
@@ -192,15 +192,7 @@ KMI_6434_2004.txt
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-Processing input files: 100%|██████████████████████████████████████████████████████████| 10/10 [00:00&lt;00:00, 55.43it/s]
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
@@ -208,131 +200,8 @@ Processing input files: 100%|█████████████████
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>datetime</th>
-      <th>station</th>
-      <th>rain_mm</th>
-      <th>year</th>
-      <th>tag</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2018-01-01 02:10:00</td>
-      <td>P01_001</td>
-      <td>0.27</td>
-      <td>2018</td>
-      <td>P01_001_2018</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2018-01-01 02:20:00</td>
-      <td>P01_001</td>
-      <td>0.02</td>
-      <td>2018</td>
-      <td>P01_001_2018</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2018-01-01 03:10:00</td>
-      <td>P01_001</td>
-      <td>0.48</td>
-      <td>2018</td>
-      <td>P01_001_2018</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2018-01-01 07:40:00</td>
-      <td>P01_001</td>
-      <td>0.22</td>
-      <td>2018</td>
-      <td>P01_001_2018</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>2018-01-01 07:50:00</td>
-      <td>P01_001</td>
-      <td>0.09</td>
-      <td>2018</td>
-      <td>P01_001_2018</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>38242</th>
-      <td>2012-12-30 19:20:00</td>
-      <td>P11_024</td>
-      <td>0.09</td>
-      <td>2012</td>
-      <td>P11_024_2012</td>
-    </tr>
-    <tr>
-      <th>38243</th>
-      <td>2012-12-30 19:30:00</td>
-      <td>P11_024</td>
-      <td>0.03</td>
-      <td>2012</td>
-      <td>P11_024_2012</td>
-    </tr>
-    <tr>
-      <th>38244</th>
-      <td>2012-12-30 19:50:00</td>
-      <td>P11_024</td>
-      <td>0.04</td>
-      <td>2012</td>
-      <td>P11_024_2012</td>
-    </tr>
-    <tr>
-      <th>38245</th>
-      <td>2012-12-30 21:20:00</td>
-      <td>P11_024</td>
-      <td>0.04</td>
-      <td>2012</td>
-      <td>P11_024_2012</td>
-    </tr>
-    <tr>
-      <th>38246</th>
-      <td>2012-12-31 23:10:00</td>
-      <td>P11_024</td>
-      <td>0.04</td>
-      <td>2012</td>
-      <td>P11_024_2012</td>
-    </tr>
-  </tbody>
-</table>
-<p>38247 rows × 5 columns</p>
-</div></div>
-</div>
 <p><strong>Compute rainfall statistics</strong> (and add station metadata)</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
@@ -342,98 +211,6 @@ Processing input files: 100%|█████████████████
 <span class="n">rain_stats</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>year</th>
-      <th>station</th>
-      <th>x</th>
-      <th>y</th>
-      <th>records</th>
-      <th>min</th>
-      <th>median</th>
-      <th>max</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>[2018]</td>
-      <td>P01_001</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>2718</td>
-      <td>0.01</td>
-      <td>0.090</td>
-      <td>5.05</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>[2020]</td>
-      <td>P01_003</td>
-      <td>51907.0</td>
-      <td>191193.0</td>
-      <td>3481</td>
-      <td>0.01</td>
-      <td>0.100</td>
-      <td>4.56</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>[2012, 2016]</td>
-      <td>P01_010</td>
-      <td>45836.0</td>
-      <td>171260.0</td>
-      <td>7549</td>
-      <td>0.01</td>
-      <td>0.100</td>
-      <td>17.71</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>[2018]</td>
-      <td>P05_038</td>
-      <td>59622.0</td>
-      <td>167497.0</td>
-      <td>2866</td>
-      <td>0.01</td>
-      <td>0.105</td>
-      <td>9.03</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>[2017]</td>
-      <td>P05_039</td>
-      <td>65867.0</td>
-      <td>181510.0</td>
-      <td>3536</td>
-      <td>0.01</td>
-      <td>0.100</td>
-      <td>6.96</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
 </div>
 <p><strong>Select stations to compute erosivity for</strong></p>
 <div class="nbinput nblast docutils container">
@@ -446,7 +223,7 @@ Processing input files: 100%|█████████████████
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
@@ -454,84 +231,10 @@ Processing input files: 100%|█████████████████
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>datetime</th>
-      <th>station</th>
-      <th>rain_mm</th>
-      <th>year</th>
-      <th>tag</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>2018-01-01 02:10:00</td>
-      <td>P01_001</td>
-      <td>0.27</td>
-      <td>2018</td>
-      <td>P01_001_2018</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>2018-01-01 02:20:00</td>
-      <td>P01_001</td>
-      <td>0.02</td>
-      <td>2018</td>
-      <td>P01_001_2018</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>2018-01-01 03:10:00</td>
-      <td>P01_001</td>
-      <td>0.48</td>
-      <td>2018</td>
-      <td>P01_001_2018</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>2018-01-01 07:40:00</td>
-      <td>P01_001</td>
-      <td>0.22</td>
-      <td>2018</td>
-      <td>P01_001_2018</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>2018-01-01 07:50:00</td>
-      <td>P01_001</td>
-      <td>0.09</td>
-      <td>2018</td>
-      <td>P01_001_2018</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
-</div>
 <p><strong>Run Model</strong></p>
 <p>It needs to be decided which calculation functions are used to compute the <code class="docutils literal notranslate"><span class="pre">rain</span> <span class="pre">energy</span> <span class="pre">depth</span></code> and <code class="docutils literal notranslate"><span class="pre">maximum</span> <span class="pre">intensity</span></code>. There are a few implemented functions available in the package for which we choose the <code class="docutils literal notranslate"><span class="pre">rain_energy_verstraeten</span></code> and <code class="docutils literal notranslate"><span class="pre">maximum_intensity</span></code> by default. The <code class="docutils literal notranslate"><span class="pre">maximum_intensity</span></code> function follows a slightly different approach to the original Matlab implementation. However, one can opt to use the <code class="docutils literal notranslate"><span class="pre">matlab_clone</span></code> method as well, which is a Python implementation mimicking the
 original Matlab one:</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
@@ -539,123 +242,6 @@ original Matlab one:</p>
 <span class="n">erosivity</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>datetime</th>
-      <th>event_rain_cum</th>
-      <th>max_30min_intensity</th>
-      <th>event_energy</th>
-      <th>erosivity</th>
-      <th>all_event_rain_cum</th>
-      <th>erosivity_cum</th>
-      <th>station</th>
-      <th>year</th>
-      <th>tag</th>
-    </tr>
-    <tr>
-      <th>datetime</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2018-01-01 14:30:00</th>
-      <td>2018-01-01 14:30:00</td>
-      <td>11.29</td>
-      <td>3.28</td>
-      <td>1.530117</td>
-      <td>5.018784</td>
-      <td>1.08</td>
-      <td>5.018784</td>
-      <td>P01_001</td>
-      <td>2018</td>
-      <td>P01_001_2018</td>
-    </tr>
-    <tr>
-      <th>2018-01-02 16:30:00</th>
-      <td>2018-01-02 16:30:00</td>
-      <td>7.76</td>
-      <td>3.00</td>
-      <td>0.996561</td>
-      <td>2.989682</td>
-      <td>12.37</td>
-      <td>8.008465</td>
-      <td>P01_001</td>
-      <td>2018</td>
-      <td>P01_001_2018</td>
-    </tr>
-    <tr>
-      <th>2018-01-04 09:10:00</th>
-      <td>2018-01-04 09:10:00</td>
-      <td>2.34</td>
-      <td>1.34</td>
-      <td>0.242004</td>
-      <td>0.324285</td>
-      <td>20.13</td>
-      <td>8.332750</td>
-      <td>P01_001</td>
-      <td>2018</td>
-      <td>P01_001_2018</td>
-    </tr>
-    <tr>
-      <th>2018-01-05 02:20:00</th>
-      <td>2018-01-05 02:20:00</td>
-      <td>1.56</td>
-      <td>1.48</td>
-      <td>0.190453</td>
-      <td>0.281871</td>
-      <td>22.47</td>
-      <td>8.614621</td>
-      <td>P01_001</td>
-      <td>2018</td>
-      <td>P01_001_2018</td>
-    </tr>
-    <tr>
-      <th>2018-01-05 16:00:00</th>
-      <td>2018-01-05 16:00:00</td>
-      <td>3.33</td>
-      <td>6.16</td>
-      <td>0.681102</td>
-      <td>4.195587</td>
-      <td>24.03</td>
-      <td>12.810208</td>
-      <td>P01_001</td>
-      <td>2018</td>
-      <td>P01_001_2018</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
 </div>
 <p>Users can choose to implement their own custom function and apply it, e.g.</p>
 <p>```python def rain_energy_per_unit_depth_brown_and_foster(rain): “””Calculate rain energy per unit depth according to Brown and Foster.</p>

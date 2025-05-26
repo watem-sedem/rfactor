@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor.rfactor &mdash; rfactor 0.1.3.post1.dev31+g6f3a1a6 documentation</title>
+  <title>rfactor.rfactor &mdash; rfactor 0.1.3.post1.dev36+g3d1c650 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=dbc83c64"></script>
+      <script src="../../_static/documentation_options.js?v=67b7007e"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -575,8 +575,7 @@
 <span class="sd">        - **year** (int)</span>
 <span class="sd">        - **tag** (str): unique tag for year, station-couple.</span>
 <span class="sd">        - *event_rain_cum* (float): Cumulative rain for each event</span>
-<span class="sd">        - *all_events_cum* (float): Cumulative rain over all selected events together,</span>
-<span class="sd">          see note for interpretation.</span>
+<span class="sd">        - *all_events_cum* (float): Cumulative rain over the whole timeseries</span>
 <span class="sd">        - *max_30min_intensity* (float): Maximal 30min intensity for each event</span>
 <span class="sd">        - *event_energy* (float): Rain energy per unit depth for each event</span>
 <span class="sd">        - *erosivity* (float): Erosivity for each event</span>
@@ -585,9 +584,7 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    1. NaN- and 0-values are removed from the input timeseries.</span>
-<span class="sd">    2. The ``all_event_rain_cum```contains the sum of all selected events with a depth</span>
-<span class="sd">       above a threshold (the minimum depth needed to retain event for erosivity</span>
-<span class="sd">       computation)</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="p">{</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">,</span> <span class="s2">&quot;datetime&quot;</span><span class="p">}</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">rain</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">RFactorKeyError</span><span class="p">(</span>
