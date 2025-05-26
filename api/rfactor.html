@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor package &mdash; rfactor 0.1.3.post1.dev12+g0b37416 documentation</title>
+  <title>rfactor package &mdash; rfactor 0.1.3.post1.dev31+g6f3a1a6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=8c6469ce"></script>
+      <script src="../_static/documentation_options.js?v=dbc83c64"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -118,7 +118,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="rfactor.rfactor.compute_erosivity">
-<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">compute_erosivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_method=&lt;function</span> <span class="pre">rain_energy_verstraeten2006&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensity_method=&lt;function</span> <span class="pre">maximum_intensity&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#compute_erosivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.compute_erosivity" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">compute_erosivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_method=&lt;function</span> <span class="pre">rain_energy_verstraeten2006&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensity_method=&lt;function</span> <span class="pre">maximum_intensity&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#compute_erosivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.compute_erosivity" title="Link to this definition"></a></dt>
 <dd><p>Calculate erosivity  for each year/station combination</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -137,15 +137,16 @@
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p><strong>all_erosivity</strong> – DataFrame with erosivity output for each event.</p>
 <ul class="simple">
-<li><p><em>datetime</em> (pandas.Timestamp): Time stamp</p></li>
-<li><p><em>datetime</em> (pandas.Timestamp): Time stamp</p></li>
+<li><p><em>station*</em> (str)</p></li>
+<li><p><strong>year</strong> (int)</p></li>
+<li><p><strong>tag</strong> (str): unique tag for year, station-couple.</p></li>
 <li><p><em>event_rain_cum</em> (float): Cumulative rain for each event</p></li>
+<li><p><em>all_events_cum</em> (float): Cumulative rain over all selected events together,
+see note for interpretation.</p></li>
 <li><p><em>max_30min_intensity</em> (float): Maximal 30min intensity for each event</p></li>
 <li><p><em>event_energy</em> (float): Rain energy per unit depth for each event</p></li>
 <li><p><em>erosivity</em> (float): Erosivity for each event</p></li>
-<li><p><em>all_events_cum</em> (float): Cumulative rain over all events together</p></li>
 <li><p><em>erosivity_cum</em> (float): Cumulative erosivity over all events together</p></li>
-<li><p><em>tag</em> (str): unique tag for year, station-couple.</p></li>
 </ul>
 </p>
 </dd>
@@ -154,7 +155,12 @@
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>NaN- and 0-values are removed from the input timeseries.</p>
+<ol class="arabic simple">
+<li><p>NaN- and 0-values are removed from the input timeseries.</p></li>
+<li><p>The <a href="#id1"><span class="problematic" id="id2">``</span></a>all_event_rain_cum```contains the sum of all selected events with a depth
+above a threshold (the minimum depth needed to retain event for erosivity
+computation)</p></li>
+</ol>
 </dd></dl>
 
 <dl class="py function">
@@ -186,14 +192,14 @@ maximal intensity.</p>
 <span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">maximum_intensity_interpolate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#maximum_intensity_interpolate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.maximum_intensity_interpolate" title="Link to this definition"></a></dt>
 <dd><p>Maximum rain intensity for 30-min interval (Matlab clone Fix).
 This implementation is a fixed version of the Python-translation of the original
-Matlab implementation by <a class="footnote-reference brackets" href="#id15" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
+Matlab implementation by <a class="footnote-reference brackets" href="#id17" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
 <dl class="simple">
 <dt>Changes to the original script are:</dt><dd><ul class="simple">
 <li><p>In the if-statement ‘if timestamps[-1] - timestamps[0] &lt;= 30:’ this methode
 calculates the total amount of rain during the interval while the original
 method only looks at the first rainfall entry.</p></li>
-<li><p>In the same if-statement, the <a href="#id2"><span class="problematic" id="id3">*</span></a>2 was removed, since this is already done in
-the ‘return’ step of the model. This <a href="#id4"><span class="problematic" id="id5">*</span></a>2 causes the model to steeply over
+<li><p>In the same if-statement, the <a href="#id4"><span class="problematic" id="id5">*</span></a>2 was removed, since this is already done in
+the ‘return’ step of the model. This <a href="#id6"><span class="problematic" id="id7">*</span></a>2 causes the model to steeply over
 estimate the rainfall during short rainfall events.</p></li>
 </ul>
 </dd>
@@ -222,7 +228,7 @@ NaN-values within one event.</p>
 <span class="sig-prename descclassname"><span class="pre">rfactor.rfactor.</span></span><span class="sig-name descname"><span class="pre">maximum_intensity_matlab_clone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/rfactor.html#maximum_intensity_matlab_clone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.rfactor.maximum_intensity_matlab_clone" title="Link to this definition"></a></dt>
 <dd><p>Maximum rain intensity for 30-min interval (Matlab clone).</p>
 <p>The implementation is a direct Python-translation of the original Matlab
-implementation by Verstraeten et al. (2006) <a class="footnote-reference brackets" href="#id15" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
+implementation by Verstraeten et al. (2006) <a class="footnote-reference brackets" href="#id17" id="id8" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>df</strong> (<a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.3)"><em>pandas.DataFrame</em></a>) – DataFrame with rainfall time series. Needs to contain the following columns:
@@ -274,13 +280,13 @@ per event to compute the total energy of the event. The formula applies for a 10
 minute rainfall input data set.</p>
 <p class="rubric">References</p>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id7" role="doc-footnote">
+<aside class="footnote brackets" id="id9" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></span>
 <p>Brown, L.C., Foster, G.R., 1987. Storm erosivity using idealized intensity
 distributions. Transactions of the ASAE 30, 0379–0386.
 <a class="reference external" href="https://doi.org/10.13031/2013.31957">https://doi.org/10.13031/2013.31957</a>.</p>
 </aside>
-<aside class="footnote brackets" id="id8" role="doc-footnote">
+<aside class="footnote brackets" id="id10" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></span>
 <p>Renard, K.G., Foster, G.R., Weesies, G.A., McCool, D.K., Yoder, D.C., 1997,
 Predicting soil erosion by water: a guide to conservation planning with the
@@ -326,7 +332,7 @@ event to compute the total energy of the event. The formula applies for a 10
 minute rainfall input data set.</p>
 <p class="rubric">References</p>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id9" role="doc-footnote">
+<aside class="footnote brackets" id="id11" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></span>
 <p>McGregor, K.C., Bingner, R.L., Bowie, A.J. and Foster, G.R., 1995.
 Erosivity index values for northern Mississippi. Transactions of the ASAE,</p>
@@ -358,7 +364,7 @@ set.</p>
 <p class="rubric">Notes</p>
 <p>The rain energy per unit depth <span class="math notranslate nohighlight">\(e_r\)</span> (<span class="math notranslate nohighlight">\(\text{MJ}.\text{mm}^{-1}.
 \text{ha}^{-1}\)</span>) for an application for Flanders/Belgium is defined
-by <a class="footnote-reference brackets" href="#id13" id="id10" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> , <a class="footnote-reference brackets" href="#id14" id="id11" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> and <a class="footnote-reference brackets" href="#id15" id="id12" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>:</p>
+by <a class="footnote-reference brackets" href="#id15" id="id12" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> , <a class="footnote-reference brackets" href="#id16" id="id13" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> and <a class="footnote-reference brackets" href="#id17" id="id14" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>:</p>
 <div class="math notranslate nohighlight">
 \[e_r = 0.1112i_r^{0.31}\]</div>
 <p>with</p>
@@ -373,20 +379,20 @@ event to compute the total energy of the event. The formula applies for a 10
 minute rainfall input data set.</p>
 <p class="rubric">References</p>
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id13" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id10">1</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="id15" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id12">1</a><span class="fn-bracket">]</span></span>
 <p>Salles, C., Poesen, J., Pissart, A., 1999, Rain erosivity indices and drop
 size distribution for central Belgium. Presented at the General Assembly of
 the European Geophysical Society, The Hague, The Netherlands, p. 280.</p>
 </aside>
-<aside class="footnote brackets" id="id14" role="doc-footnote">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id11">2</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="id16" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id13">2</a><span class="fn-bracket">]</span></span>
 <p>Salles, C., Poesen, J., Sempere-Torres, D., 2002. Kinetic energy of rain and
 its functional relationship with intensity. Journal of Hydrology 257, 256–270.</p>
 </aside>
-<aside class="footnote brackets" id="id15" role="doc-footnote">
+<aside class="footnote brackets" id="id17" role="doc-footnote">
 <span class="label"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></span>
-<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id6">2</a>,<a role="doc-backlink" href="#id12">3</a>)</span>
+<span class="backrefs">(<a role="doc-backlink" href="#id3">1</a>,<a role="doc-backlink" href="#id8">2</a>,<a role="doc-backlink" href="#id14">3</a>)</span>
 <p>Verstraeten, G., Poesen, J., Demarée, G., Salles, C., 2006, Long-term
 (105 years) variability in rain erosivity as derived from 10-min rainfall
 depth data for Ukkel (Brussels, Belgium): Implications for assessing soil
@@ -557,27 +563,28 @@ string.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="rfactor.process.load_rain_file_flanders">
-<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">load_rain_file_flanders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_rain_file_flanders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_rain_file_flanders" title="Link to this definition"></a></dt>
-<dd><p>Load any txt file which is formatted in the correct format.</p>
-<p>The input files are defined by tab delimited files (extension: <code class="docutils literal notranslate"><span class="pre">.txt</span></code>) that
-hold rainfall timeseries. The data are split per monitoring station and the file
-name should be the station identifier. The file should contain two columns:</p>
-<ul class="simple">
-<li><p><em>Date/Time</em></p></li>
-<li><p><em>Value [millimeter]</em></p></li>
-</ul>
+<span class="sig-prename descclassname"><span class="pre">rfactor.process.</span></span><span class="sig-name descname"><span class="pre">load_rain_file_flanders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">inf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold_outliers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rfactor/process.html#load_rain_file_flanders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rfactor.process.load_rain_file_flanders" title="Link to this definition"></a></dt>
+<dd><p>Example load functions developed in context of Flanders.</p>
+<p>Translated the input file_path to the default input data used this package. This
+functions can be used for users an example to format functions. The file is a
+tab delimited files (extension: <code class="docutils literal notranslate"><span class="pre">.txt</span></code>), and holds the timeseries for one
+location. The name of the file is the tag that will be used.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.11/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><em>pathlib.Path</em></a>) – <p>File path (comma delimited, .CSV-extension) with rainfall data according to
-defined format:</p>
+<li><p><strong>file_path</strong> (<a class="reference external" href="https://docs.python.org/3.11/library/pathlib.html#pathlib.Path" title="(in Python v3.11)"><em>pathlib.Path</em></a>) – <p>File path (tab delimited, .txt-extension). Headerless</p>
 <ul>
-<li><p><em>datetime</em>: <code class="docutils literal notranslate"><span class="pre">%d-%m-%Y</span> <span class="pre">%H:%M:%S</span></code>-format</p></li>
-<li><p><em>Value [millimeter]</em>: str (containing floats and ‘—‘-identifier)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%d-%m-%Y</span> <span class="pre">%H:%M:%S</span></code>-format</p></li>
+<li><p>float</p></li>
 </ul>
-<p>Headers are not necessary for the columns.</p>
 </p></li>
-<li><p><strong>interpolate</strong> (<a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – Interpolate NaN yes/no</p></li>
+<li><p><strong>interpolate</strong> (<a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><em>str</em></a><em>, </em><em>default None</em>) – Interpolation method to use for NaN-Values. Possible values:
+see pandas.DataFrame.interpolate.</p></li>
+<li><p><strong>interval</strong> (<a class="reference external" href="https://docs.python.org/3.11/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default np.inf</em>) – The max interval length over which NaN values are interpolated. The value
+needs to fit the index of the timeseries. For example, a timeseries with
+resolution of 10 min will have a maximum interval length of 6 hours if the
+interval value is set to 36 (36 * 10 min = 6 hours).</p></li>
+<li><p><strong>threshold_outliers</strong> (<a class="reference external" href="https://docs.python.org/3.11/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a><em>, </em><em>default None</em>) – Set rainfall values above this threshold to NaN.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -598,21 +605,19 @@ defined format:</p>
 <ol class="arabic simple">
 <li><p>Example of a rainfall file:</p></li>
 </ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">,</span><span class="s2">&quot;0&quot;</span>
-<span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">05</span><span class="p">,</span><span class="s2">&quot;0.03&quot;</span>
-<span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="s2">&quot;0.04&quot;</span>
-<span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span><span class="s2">&quot;0&quot;</span>
-<span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span><span class="s2">&quot;0&quot;</span>
-<span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">25</span><span class="p">,</span><span class="s2">&quot;---&quot;</span>
-<span class="mi">01</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">2019</span> <span class="mi">00</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span><span class="s2">&quot;0&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">2024</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>     <span class="mf">0.0</span>
+<span class="mi">2024</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">00</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">00</span>     <span class="mf">0.0</span>
+<span class="mi">2024</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">00</span><span class="p">:</span><span class="mi">20</span><span class="p">:</span><span class="mi">00</span>     <span class="mf">0.0</span>
+<span class="mi">2024</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">00</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span>     <span class="mf">10.5</span>
+<span class="mi">2024</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">00</span><span class="p">:</span><span class="mi">40</span><span class="p">:</span><span class="mi">00</span>     <span class="mf">5.2</span>
+<span class="mi">2024</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">00</span><span class="p">:</span><span class="mi">50</span><span class="p">:</span><span class="mi">00</span>     <span class="mi">1</span>
+<span class="mi">2024</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">01</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>     <span class="mf">0.02</span>
+<span class="mi">2024</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">01</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">00</span>
 </pre></div>
 </div>
 <p class="rubric">Notes</p>
 <ol class="arabic simple">
-<li><p>Strings <code class="docutils literal notranslate"><span class="pre">---</span></code> in column <em>Value [millimeter]</em> -identifiers are converted to
-NaN-values (np.nan). Note that the values in string should be convertable to
-float (except <code class="docutils literal notranslate"><span class="pre">---</span></code>).</p></li>
-<li><p>Current function is not maintained in unit test until further notice.</p></li>
+<li><p>Current function is not maintained until further notice.</p></li>
 </ol>
 </dd></dl>
 

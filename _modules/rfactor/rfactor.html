@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor.rfactor &mdash; rfactor 0.1.3.post1.dev12+g0b37416 documentation</title>
+  <title>rfactor.rfactor &mdash; rfactor 0.1.3.post1.dev31+g6f3a1a6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=8c6469ce"></script>
+      <script src="../../_static/documentation_options.js?v=dbc83c64"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -523,9 +523,7 @@
 
     <span class="c1"># cumulative rain over all events</span>
     <span class="n">rain_events</span> <span class="o">=</span> <span class="n">rain_events</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
-        <span class="n">all_event_rain_cum</span><span class="o">=</span><span class="p">(</span>
-            <span class="n">rain_events</span><span class="p">[</span><span class="s2">&quot;event_rain_cum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
-        <span class="p">)</span>
+        <span class="n">all_event_rain_cum</span><span class="o">=</span><span class="p">(</span><span class="n">rain_events</span><span class="p">[</span><span class="s2">&quot;event_rain_cum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">())</span>
     <span class="p">)</span>
 
     <span class="c1"># remove events below threshold</span>
@@ -550,6 +548,7 @@
     <span class="n">rain</span><span class="p">,</span>
     <span class="n">energy_method</span><span class="o">=</span><span class="n">rain_energy_verstraeten2006</span><span class="p">,</span>
     <span class="n">intensity_method</span><span class="o">=</span><span class="n">maximum_intensity</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate erosivity  for each year/station combination</span>
 
@@ -572,19 +571,23 @@
 <span class="sd">    all_erosivity: pandas.DataFrame</span>
 <span class="sd">        DataFrame with erosivity output for each event.</span>
 
-<span class="sd">        - *datetime* (pandas.Timestamp): Time stamp</span>
-<span class="sd">        - *datetime* (pandas.Timestamp): Time stamp</span>
+<span class="sd">        - *station** (str)</span>
+<span class="sd">        - **year** (int)</span>
+<span class="sd">        - **tag** (str): unique tag for year, station-couple.</span>
 <span class="sd">        - *event_rain_cum* (float): Cumulative rain for each event</span>
+<span class="sd">        - *all_events_cum* (float): Cumulative rain over all selected events together,</span>
+<span class="sd">          see note for interpretation.</span>
 <span class="sd">        - *max_30min_intensity* (float): Maximal 30min intensity for each event</span>
 <span class="sd">        - *event_energy* (float): Rain energy per unit depth for each event</span>
 <span class="sd">        - *erosivity* (float): Erosivity for each event</span>
-<span class="sd">        - *all_events_cum* (float): Cumulative rain over all events together</span>
 <span class="sd">        - *erosivity_cum* (float): Cumulative erosivity over all events together</span>
-<span class="sd">        - *tag* (str): unique tag for year, station-couple.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    NaN- and 0-values are removed from the input timeseries.</span>
+<span class="sd">    1. NaN- and 0-values are removed from the input timeseries.</span>
+<span class="sd">    2. The ``all_event_rain_cum```contains the sum of all selected events with a depth</span>
+<span class="sd">       above a threshold (the minimum depth needed to retain event for erosivity</span>
+<span class="sd">       computation)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="p">{</span><span class="s2">&quot;station&quot;</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">,</span> <span class="s2">&quot;datetime&quot;</span><span class="p">}</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">rain</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">RFactorKeyError</span><span class="p">(</span>
@@ -630,7 +633,19 @@
     <span class="p">)</span>
     <span class="n">all_erosivity</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">all_erosivity</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">all_erosivity</span></div>
+    <span class="k">return</span> <span class="n">all_erosivity</span><span class="p">[</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;station&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;year&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tag&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;event_rain_cum&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;all_event_rain_cum&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;max_30min_intensity&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;event_energy&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;erosivity&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;erosivity_cum&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">]</span></div>
 
 </pre></div>
 

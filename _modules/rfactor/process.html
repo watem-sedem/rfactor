@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor.process &mdash; rfactor 0.1.3.post1.dev12+g0b37416 documentation</title>
+  <title>rfactor.process &mdash; rfactor 0.1.3.post1.dev31+g6f3a1a6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=8c6469ce"></script>
+      <script src="../../_static/documentation_options.js?v=dbc83c64"></script>
       <script src="../../_static/doctools.js?v=9bcbadda"></script>
       <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -244,29 +244,37 @@
 
 <div class="viewcode-block" id="load_rain_file_flanders">
 <a class="viewcode-back" href="../../api/rfactor.html#rfactor.process.load_rain_file_flanders">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">load_rain_file_flanders</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load any txt file which is formatted in the correct format.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_rain_file_flanders</span><span class="p">(</span>
+    <span class="n">file_path</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">threshold_outliers</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Example load functions developed in context of Flanders.</span>
 
-<span class="sd">    The input files are defined by tab delimited files (extension: ``.txt``) that</span>
-<span class="sd">    hold rainfall timeseries. The data are split per monitoring station and the file</span>
-<span class="sd">    name should be the station identifier. The file should contain two columns:</span>
-
-<span class="sd">    - *Date/Time*</span>
-<span class="sd">    - *Value [millimeter]*</span>
+<span class="sd">    Translated the input file_path to the default input data used this package. This</span>
+<span class="sd">    functions can be used for users an example to format functions. The file is a</span>
+<span class="sd">    tab delimited files (extension: ``.txt``), and holds the timeseries for one</span>
+<span class="sd">    location. The name of the file is the tag that will be used.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    file_path : pathlib.Path</span>
-<span class="sd">        File path (comma delimited, .CSV-extension) with rainfall data according to</span>
-<span class="sd">        defined format:</span>
+<span class="sd">    file_path: pathlib.Path</span>
+<span class="sd">        File path (tab delimited, .txt-extension). Headerless</span>
 
-<span class="sd">        - *datetime*: ``%d-%m-%Y %H:%M:%S``-format</span>
-<span class="sd">        - *Value [millimeter]*: str (containing floats and &#39;---&#39;-identifier)</span>
+<span class="sd">        - ``%d-%m-%Y %H:%M:%S``-format</span>
+<span class="sd">        - float</span>
 
-<span class="sd">        Headers are not necessary for the columns.</span>
+<span class="sd">    interpolate: str, default None</span>
+<span class="sd">        Interpolation method to use for NaN-Values. Possible values:</span>
+<span class="sd">        see pandas.DataFrame.interpolate.</span>
 
-<span class="sd">    interpolate: bool</span>
-<span class="sd">        Interpolate NaN yes/no</span>
+<span class="sd">    interval: int, default np.inf</span>
+<span class="sd">        The max interval length over which NaN values are interpolated. The value</span>
+<span class="sd">        needs to fit the index of the timeseries. For example, a timeseries with</span>
+<span class="sd">        resolution of 10 min will have a maximum interval length of 6 hours if the</span>
+<span class="sd">        interval value is set to 36 (36 * 10 min = 6 hours).</span>
+
+<span class="sd">    threshold_outliers: int, default None</span>
+<span class="sd">        Set rainfall values above this threshold to NaN.</span>
+
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -284,20 +292,18 @@
 
 <span class="sd">    ::</span>
 
-<span class="sd">        01-01-2019 00:00,&quot;0&quot;</span>
-<span class="sd">        01-01-2019 00:05,&quot;0.03&quot;</span>
-<span class="sd">        01-01-2019 00:10,&quot;0.04&quot;</span>
-<span class="sd">        01-01-2019 00:15,&quot;0&quot;</span>
-<span class="sd">        01-01-2019 00:20,&quot;0&quot;</span>
-<span class="sd">        01-01-2019 00:25,&quot;---&quot;</span>
-<span class="sd">        01-01-2019 00:30,&quot;0&quot;</span>
+<span class="sd">        2024-01-01 00:00:00	0.0</span>
+<span class="sd">        2024-01-01 00:10:00	0.0</span>
+<span class="sd">        2024-01-01 00:20:00	0.0</span>
+<span class="sd">        2024-01-01 00:30:00	10.5</span>
+<span class="sd">        2024-01-01 00:40:00	5.2</span>
+<span class="sd">        2024-01-01 00:50:00	1</span>
+<span class="sd">        2024-01-01 01:00:00	0.02</span>
+<span class="sd">        2024-01-01 01:10:00</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    1. Strings ``---`` in column *Value [millimeter]* -identifiers are converted to</span>
-<span class="sd">       NaN-values (np.nan). Note that the values in string should be convertable to</span>
-<span class="sd">       float (except ``---``).</span>
-<span class="sd">    2. Current function is not maintained in unit test until further notice.</span>
+<span class="sd">    1. Current function is not maintained until further notice.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">])</span>
 
@@ -310,20 +316,49 @@
 
     <span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">])</span>
     <span class="n">df</span><span class="p">[</span><span class="s2">&quot;start_year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
-        <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;01-01-</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2"> 00:00:00&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">]</span>
+        <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;01-01-</span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2"> 00 : 00 : 00&quot;</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">],</span>
     <span class="p">)</span>
     <span class="n">station</span><span class="p">,</span> <span class="n">year</span> <span class="o">=</span> <span class="n">_extract_metadata_from_file_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
     <span class="n">df</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">station</span>
 
+    <span class="c1"># todo: not mentioned in docs? necessary?</span>
     <span class="n">nan</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;---&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
     <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">nan</span><span class="p">),</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
 
-    <span class="k">if</span> <span class="n">interpolate</span><span class="p">:</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">threshold_outliers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">threshold_outliers</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+    <span class="c1"># todo: search pandas alternative for forward filling</span>
+    <span class="k">if</span> <span class="n">interpolate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="c1"># find indices for all NaN-values</span>
+            <span class="n">loc_nan</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+            <span class="n">temp</span> <span class="o">=</span> <span class="p">[</span><span class="n">loc_nan</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">loc_nan</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>  <span class="c1"># loop over all NaN-indices</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">temp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="n">loc_nan</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="c1"># check if indices are consequtive or if the final NaN-value is</span>
+                    <span class="c1"># reached</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">loc_nan</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                        <span class="n">temp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">interval</span><span class="p">:</span>
+                        <span class="c1"># check if lenght of consequetive indices &gt; interval</span>
+                        <span class="c1"># NaN-values serie &gt; interval are set to 0.00 so they will not</span>
+                        <span class="c1"># be interpolated and will be removed from the timeseries.</span>
+                        <span class="c1"># NaN-value series &lt;= interval will be kept as NaN-values</span>
+                        <span class="c1"># which allows them to be interpolated.</span>
+                        <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">temp</span><span class="p">,</span> <span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.00</span>
+                    <span class="n">temp</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="n">temp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># check if indices are consequetive</span>
+                    <span class="n">temp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">interpolate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">interpolate</span><span class="p">)</span>
 
     <span class="c1"># remove 0</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
     <span class="c1"># remove NaN</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()]</span>
     <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
