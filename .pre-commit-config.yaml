@@ -30,7 +30,7 @@ repos:
     language_version: python3
 
 - repo: https://github.com/pycqa/flake8
-  rev: 5.0.4
+  rev: 6.1.0
   hooks:
   - id: flake8
   ## You can add flake8 plugins via `additional_dependencies`:

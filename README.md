@@ -1,4 +1,7 @@
-[![image](https://zenodo.org/badge/364504726.svg)](https://zenodo.org/badge/latestdoi/364504726)
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14264876.svg)](https://doi.org/10.5281/zenodo.14264876)
+
+
 
 R-factor
 ========
