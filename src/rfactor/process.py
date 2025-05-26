@@ -74,8 +74,8 @@ def _check_path(file_path):
     if not isinstance(file_path, Path):
         if isinstance(file_path, str):
             raise TypeError(
-                f"`file_path` should be a `pathlib.Path` object, use "
-                f"`Path({file_path})` to convert string file_path to valid `Path`."
+                f"'file_path' should be a 'pathlib.Path' object, use "
+                f"'Path({file_path})' to convert string file_path to valid 'Path'."
             )
         else:
             raise TypeError("`file_path` should be a pathlib.Path object")
@@ -151,46 +151,36 @@ def load_rain_file(file_path, load_fun, **kwargs):
     return rain
 
 
-def load_rain_file_flanders(file_path, interpolate=True, interval=36, limit=None):
-    """Load any txt file which is formatted in the correct format.
+def load_rain_file_flanders(
+    file_path, interpolate=None, interval=np.inf, threshold_outliers=None
+):
+    """Example load functions developed in context of Flanders.
 
-    The input files are defined by tab delimited files (extension: ``.txt``) that
-    hold rainfall timeseries. The data are split per monitoring station and the file
-    name should be the station identifier. The file should contain two columns:
-
-    - *Date/Time*
-    - *Value [millimeter]*
+    Translated the input file_path to the default input data used this package. This
+    functions can be used for users an example to format functions. The file is a
+    tab delimited files (extension: ``.txt``), and holds the timeseries for one
+    location. The name of the file is the tag that will be used.
 
     Parameters
     ----------
-    file_path : pathlib.Path
-        File path (comma delimited, .CSV-extension) with rainfall data according to
-        defined format:
+    file_path: pathlib.Path
+        File path (tab delimited, .txt-extension). Headerless
 
-        - *datetime*: ``%d-%m-%Y %H:%M:%S``-format
-        - *Value [millimeter]*: str (containing floats and '---'-identifier)
+        - ``%d-%m-%Y %H:%M:%S``-format
+        - float
 
-        Headers are not necessary for the columns.
+    interpolate: str, default None
+        Interpolation method to use for NaN-Values. Possible values:
+        see pandas.DataFrame.interpolate.
 
-    interpolate: bool
-        Interpolate NaN yes/no. This option can be used to fill timeserie gaps
-        based on the surrounding measurements. The interpolation will only take
-        into account data gaps of less than 6 hours (36*10 min intervals) which is
-        the chosen minimal period between two rainfall events.
-        The method for interpolating NaN values is 'pchip' which uses the surrounding
-        data to estimate an accurate function of the rainfall data.
-        Default: True
+    interval: int, default np.inf
+        The max interval length over which NaN values are interpolated. The value
+        needs to fit the index of the timeseries. For example, a timeseries with
+        resolution of 10 min will have a maximum interval length of 6 hours if the
+        interval value is set to 36 (36 * 10 min = 6 hours).
 
-    interval : int
-        Gives the max interval length over which NaN values are interpolated.
-        Default: 36
-
-    limit: int
-        value indicating the amount of maximum rainfall amount that should be taken
-        into account. This can be used if exceptionally high values of rainfall are
-        detected in the data sets, and can be considered as errorous measurements.
-        Rainfall values greater than the limit value will be converted to NaN-values.
-        Default: None
+    threshold_outliers: int, default None
+        Set rainfall values above this threshold to NaN.
 
 
     Returns
@@ -209,20 +199,18 @@ def load_rain_file_flanders(file_path, interpolate=True, interval=36, limit=None
 
     ::
 
-        01-01-2019 00:00,"0"
-        01-01-2019 00:05,"0.03"
-        01-01-2019 00:10,"0.04"
-        01-01-2019 00:15,"0"
-        01-01-2019 00:20,"0"
-        01-01-2019 00:25,"---"
-        01-01-2019 00:30,"0"
+        2024-01-01 00:00:00	0.0
+        2024-01-01 00:10:00	0.0
+        2024-01-01 00:20:00	0.0
+        2024-01-01 00:30:00	10.5
+        2024-01-01 00:40:00	5.2
+        2024-01-01 00:50:00	1
+        2024-01-01 01:00:00	0.02
+        2024-01-01 01:10:00
 
     Notes
     -----
-    1. Strings ``---`` in column *Value [millimeter]* -identifiers are converted to
-       NaN-values (np.nan). Note that the values in string should be convertable to
-       float (except ``---``).
-    2. Current function is not maintained in unit test until further notice.
+    1. Current function is not maintained until further notice.
     """
     df = pd.read_csv(file_path, sep="\t", header=None, names=["datetime", "rain_mm"])
 
@@ -235,44 +223,49 @@ def load_rain_file_flanders(file_path, interpolate=True, interval=36, limit=None
 
     df["datetime"] = pd.to_datetime(df["datetime"])
     df["start_year"] = pd.to_datetime(
-        [f"01-01-{x} 00:00:00" for x in df["datetime"].dt.year],
+        [f"01-01-{x} 00 : 00 : 00" for x in df["datetime"].dt.year],
     )
     station, year = _extract_metadata_from_file_path(file_path)
     df["station"] = station
 
+    # todo: not mentioned in docs? necessary?
     nan = ["---", ""]
     df.loc[df["rain_mm"].isin(nan), "rain_mm"] = np.nan
     df.loc[df["rain_mm"] < 0, "rain_mm"] = np.nan
 
-    if limit is not None:
-        df.loc[df["rain_mm"] > limit, "rain_mm"] = np.nan
+    if threshold_outliers is not None:
+        df.loc[df["rain_mm"] > threshold_outliers, "rain_mm"] = np.nan
 
-    if interpolate:
+    # todo: search pandas alternative for forward filling
+    if interpolate is not None:
         if df["rain_mm"].isna().any():
-            loc_nan = np.where(df["rain_mm"].isna())[
-                0
-            ].tolist()  # find indices for all NaN-values
+            # find indices for all NaN-values
+            loc_nan = np.where(df["rain_mm"].isna())[0].tolist()
 
             temp = [loc_nan[0]]
 
             for i in loc_nan[1:]:  # loop over all NaN-indices
-                if i == temp[-1] + 1:  # check if indices are consequetive
-                    temp.append(i)
-                else:
-                    if (
-                        len(temp) > interval
-                    ):  # check if lenght of consequetive indices > interval
+                if i != temp[-1] + 1 or i == loc_nan[-1]:
+                    # check if indices are consequtive or if the final NaN-value is
+                    # reached
+                    if i == loc_nan[-1]:
+                        temp.append(i)
+                    if len(temp) > interval:
+                        # check if lenght of consequetive indices > interval
                         # NaN-values serie > interval are set to 0.00 so they will not
                         # be interpolated and will be removed from the timeseries.
                         # NaN-value series <= interval will be kept as NaN-values
                         # which allows them to be interpolated.
                         df.loc[temp, "rain_mm"] = 0.00
                     temp = [i]
+                elif i == temp[-1] + 1:  # check if indices are consequetive
+                    temp.append(i)
 
-            df["rain_mm"] = df["rain_mm"].interpolate(method="pchip")
+            if interpolate is not None:
+                df["rain_mm"] = df["rain_mm"].interpolate(method=interpolate)
 
     # remove 0
-    df = df[df["rain_mm"] != 0]
+    df = df[df["rain_mm"] > 0]
     # remove NaN
     df = df[~df["rain_mm"].isna()]
     df["rain_mm"] = df["rain_mm"].astype(np.float64)
