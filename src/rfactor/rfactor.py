@@ -411,9 +411,7 @@ def _compute_erosivity(
 
     # cumulative rain over all events
     rain_events = rain_events.assign(
-        all_event_rain_cum=(
-            rain_events["event_rain_cum"].shift(1, fill_value=0.0).cumsum()
-        )
+        all_event_rain_cum=(rain_events["event_rain_cum"].cumsum())
     )
 
     # remove events below threshold
@@ -459,19 +457,20 @@ def compute_erosivity(
     all_erosivity: pandas.DataFrame
         DataFrame with erosivity output for each event.
 
-        - *datetime* (pandas.Timestamp): Time stamp
-        - *datetime* (pandas.Timestamp): Time stamp
+        - *station** (str)
+        - **year** (int)
+        - **tag** (str): unique tag for year, station-couple.
         - *event_rain_cum* (float): Cumulative rain for each event
+        - *all_events_cum* (float): Cumulative rain over the whole timeseries
         - *max_30min_intensity* (float): Maximal 30min intensity for each event
         - *event_energy* (float): Rain energy per unit depth for each event
         - *erosivity* (float): Erosivity for each event
-        - *all_events_cum* (float): Cumulative rain over all events together
         - *erosivity_cum* (float): Cumulative erosivity over all events together
-        - *tag* (str): unique tag for year, station-couple.
 
     Notes
     -----
-    NaN- and 0-values are removed from the input timeseries.
+    1. NaN- and 0-values are removed from the input timeseries.
+
     """
     if not {"station", "rain_mm", "datetime"}.issubset(rain.columns):
         raise RFactorKeyError(
@@ -517,4 +516,16 @@ def compute_erosivity(
     )
     all_erosivity.index = all_erosivity["datetime"]
 
-    return all_erosivity
+    return all_erosivity[
+        [
+            "station",
+            "year",
+            "tag",
+            "event_rain_cum",
+            "all_event_rain_cum",
+            "max_30min_intensity",
+            "event_energy",
+            "erosivity",
+            "erosivity_cum",
+        ]
+    ]

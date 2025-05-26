@@ -6,7 +6,7 @@ from rfactor.valid import valid_column, valid_const_freq, valid_freq
 
 def test_valid_rainfall_timeseries():
     """Test subfunctionalities of valid_rainfall_timeseries decorator"""
-    idx = pd.date_range("2018-01-01 03:30", periods=2, freq="1S")
+    idx = pd.date_range("2018-01-01 03:30", periods=2, freq="1s")
     val = [0.06, 0.08]
 
     df = pd.DataFrame(columns=["datetime", "rain_mm"])
@@ -23,7 +23,7 @@ def test_valid_rainfall_timeseries():
         valid_freq(freq)
     assert "Please define a frequency for your input timeseries" in str(excinfo.value)
 
-    df.index.freq = "1S"
+    df.index.freq = "1s"
     freq = df.index.freq
 
     with pytest.raises(IOError) as excinfo:
