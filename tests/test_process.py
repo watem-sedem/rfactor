@@ -21,7 +21,7 @@ from rfactor.process import (
 def test_days_since_last_year_float():
     """Moment of the day is translated as decimal number."""
     ts_series = pd.Series(
-        pd.date_range("2021-01-01 00:00", "2021-01-02 00:00", freq="6H")
+        pd.date_range("2021-01-01 00:00", "2021-01-02 00:00", freq="6h")
     )
     np.testing.assert_allclose(
         _days_since_start_year(ts_series).values, np.array([0.0, 0.25, 0.5, 0.75, 1.0])
@@ -31,7 +31,7 @@ def test_days_since_last_year_float():
 def test_days_since_last_year_single_year():
     """Data should all be from the same year."""
     ts_series = pd.Series(
-        pd.date_range("2020-12-31 00:00", "2021-01-02 00:00", freq="6H")
+        pd.date_range("2020-12-31 00:00", "2021-01-02 00:00", freq="6h")
     )
     with pytest.raises(Exception):
         _days_since_start_year(ts_series)

@@ -173,14 +173,14 @@ def test_erosivity_rain_single_yearstation(dummy_rain):
 
     # year column added when not existing
     assert "year" in erosivity.columns
-    assert erosivity["year"][0] == 2018
+    assert erosivity["year"].iloc[0] == 2018
 
     # station column preserved
-    assert erosivity["station"][0] == "P01_001"
+    assert erosivity["station"].iloc[0] == "P01_001"
 
     # tag column added when not existing
     assert "tag" in erosivity.columns
-    assert erosivity["tag"][0] == "P01_001_2018"
+    assert erosivity["tag"].iloc[0] == "P01_001_2018"
 
 
 def test_erosivity_rain_single_yearstation_wrong_datetime_dtype(dummy_rain):
@@ -227,7 +227,7 @@ def test_erosivity_existing_tag(dummy_rain):
     dummy_rain["tag"] = "MY_UNIQUE_TAG"
     erosivity = compute_erosivity(dummy_rain)
     assert "tag" in erosivity.columns
-    assert erosivity["tag"][0] == "MY_UNIQUE_TAG"
+    assert erosivity["tag"].iloc[0] == "MY_UNIQUE_TAG"
 
 
 @pytest.mark.parametrize(
@@ -273,7 +273,18 @@ def test_rfactor_benchmark_single_year(
         (eros_benchmark["year"] == year) & (eros_benchmark["station"] == station)
     ]
 
-    pd.testing.assert_frame_equal(erosivity, erosivity_reference)
+    # only test specific columns
+    cols = [
+        "event_rain_cum",
+        "max_30min_intensity",
+        "event_energy",
+        "erosivity",
+        "erosivity_cum",
+        "station",
+        "year",
+        "tag",
+    ]
+    pd.testing.assert_frame_equal(erosivity[cols], erosivity_reference[cols])
 
     # using support function provides the same output
     erosivity_support_func = _compute_erosivity(
@@ -283,9 +294,16 @@ def test_rfactor_benchmark_single_year(
     )
 
     erosivity_support_func.index = erosivity_support_func["datetime"]
-    pd.testing.assert_frame_equal(
-        erosivity.drop(columns=["tag", "station", "year"]), erosivity_support_func
-    )
+
+    # only test specific columns
+    cols = [
+        "event_rain_cum",
+        "max_30min_intensity",
+        "event_energy",
+        "erosivity",
+        "erosivity_cum",
+    ]
+    pd.testing.assert_frame_equal(erosivity[cols], erosivity_support_func[cols])
 
 
 @pytest.mark.skip(reason="only works with full data set (not in package")

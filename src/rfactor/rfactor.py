@@ -461,8 +461,7 @@ def compute_erosivity(
         - **year** (int)
         - **tag** (str): unique tag for year, station-couple.
         - *event_rain_cum* (float): Cumulative rain for each event
-        - *all_events_cum* (float): Cumulative rain over all selected events together,
-          see note for interpretation.
+        - *all_events_cum* (float): Cumulative rain over the whole timeseries
         - *max_30min_intensity* (float): Maximal 30min intensity for each event
         - *event_energy* (float): Rain energy per unit depth for each event
         - *erosivity* (float): Erosivity for each event
@@ -471,9 +470,7 @@ def compute_erosivity(
     Notes
     -----
     1. NaN- and 0-values are removed from the input timeseries.
-    2. The ``all_event_rain_cum```contains the sum of all selected events with a depth
-       above a threshold (the minimum depth needed to retain event for erosivity
-       computation)
+
     """
     if not {"station", "rain_mm", "datetime"}.issubset(rain.columns):
         raise RFactorKeyError(
