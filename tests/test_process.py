@@ -14,7 +14,6 @@ from rfactor.process import (
     compute_rainfall_statistics,
     get_rfactor_station_year,
     load_rain_file,
-    load_rain_file_flanders,
     load_rain_file_matlab_legacy,
     load_rain_folder,
     write_erosivity_data,
@@ -109,63 +108,6 @@ def test_load_rain_file(rain_data_file):
         2021,
         "station_name_2021",
     ]
-
-
-def test_load_rain_file_flanders(rain_data_file_flanders):
-    """Valid rainfall data should be parsed to rain DataFrame"""
-    rainfall_data = load_rain_file(rain_data_file_flanders, load_rain_file_flanders)
-
-    assert rainfall_data.iloc[0]["rain_mm"] == 10.5
-    assert rainfall_data.iloc[-1].values == 1.0
-
-    assert rainfall_data["rain_mm"].sum() == 17.73
-    # assert len(np.where(rainfall_data.isna())[0]) == 0
-    # assert len(np.where(rainfall_data == 0)[0]) == 0
-
-    # - interpolate=True
-    #       for this you can only test True / False
-    rainfall_data = load_rain_file(
-        rain_data_file_flanders, load_rain_file_flanders, interpolate="linear"
-    )
-
-    assert rainfall_data.iloc[0]["rain_mm"] == 10.5
-    assert rainfall_data.iloc[-1]["rain_mm"] == 1.0
-
-    assert np.round(rainfall_data["rain_mm"].sum(), 3) == 19.255
-
-    # assert len(np.where(rainfall_data.isna())[0]) == 0
-    # assert len(np.where(rainfall_data == 0)[0]) == 0
-
-    # - interval
-    #        for this you could test 1 and 3, check if output is correct,
-    #        check if output rain_mm is correct
-
-    rainfall_data = load_rain_file(
-        rain_data_file_flanders,
-        load_rain_file_flanders,
-        interpolate="linear",
-        interval=1,
-    )
-
-    assert rainfall_data.iloc[0]["rain_mm"] == 10.5
-    assert rainfall_data.iloc[-1]["rain_mm"] == 1.0
-
-    assert np.round(rainfall_data["rain_mm"].sum(), 3) == 17.74
-    # assert len(np.where(rainfall_data.isna())[0]) == 0
-    # assert len(np.where(rainfall_data == 0)[0]) == 0
-
-    # - limit
-
-    rainfall_data = load_rain_file(
-        rain_data_file_flanders, load_rain_file_flanders, limit=10
-    )
-
-    assert rainfall_data.iloc[0]["rain_mm"] == 5.20
-    assert rainfall_data.iloc[-1]["rain_mm"] == 1.0
-
-    assert np.round(rainfall_data["rain_mm"].sum(), 3) == 7.23
-    # assert len(np.where(rainfall_data.isna())[0]) == 0
-    # assert len(np.where(rainfall_data == 0)[0]) == 0
 
 
 class TestCustomLoadRainFile:
