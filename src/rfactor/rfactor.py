@@ -285,7 +285,7 @@ def maximum_intensity_interpolate(df):
 
     maxprecip_30min = 0.0
 
-    if timestamps[-1] - timestamps[0] <= 30:
+    if timestamps[-1] - timestamps[0] < 30:
         maxprecip_30min = np.sum(rain)
 
     for idx in range(len(df)):
