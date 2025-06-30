@@ -223,7 +223,7 @@ def load_rain_file_flanders(
 
     df["datetime"] = pd.to_datetime(df["datetime"])
     df["start_year"] = pd.to_datetime(
-        [f"01-01-{x} 00 : 00 : 00" for x in df["datetime"].dt.year],
+        [f"01-01-{x} 00:00:00" for x in df["datetime"].dt.year],
     )
     station, year = _extract_metadata_from_file_path(file_path)
     df["station"] = station
