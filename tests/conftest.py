@@ -5,11 +5,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from rfactor.process import (
-    load_rain_file,
-    load_rain_file_matlab_legacy,
-    load_rain_folder,
-)
+from rfactor.rain import load_rain_file, load_rain_file_matlab_legacy, load_rain_folder
 from rfactor.rfactor import (
     maximum_intensity,
     maximum_intensity_matlab_clone,
@@ -117,7 +113,7 @@ def erosivity_benchmark_matlab_clone_data():
 
 
 @pytest.fixture()
-def rain_data_file(tmp_path):
+def rain_data_file_matlab(tmp_path):
     """Example rainfall data file"""
     example_rain_path = tmp_path / "station_name_2021.txt"
     example_rain_data = """\
@@ -131,7 +127,7 @@ def rain_data_file(tmp_path):
 
 
 @pytest.fixture()
-def rain_data_folder(tmp_path):
+def rain_data_folder_matlab(tmp_path):
     """Example rainfall data file"""
     example_rain_path = tmp_path / "rain"
     example_rain_path.mkdir()
