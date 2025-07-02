@@ -279,10 +279,9 @@ def load_rain_file_flanders(
 
     Example
     -------
-    1. Example of a rainfall file:
+    Example of a rainfall file:
 
     ::
-
         2024-01-01 00:00:00	0.0
         2024-01-01 00:10:00	0.0
         2024-01-01 00:20:00	0.0
@@ -292,9 +291,6 @@ def load_rain_file_flanders(
         2024-01-01 01:00:00	0.02
         2024-01-01 01:10:00
 
-    Notes
-    -----
-    1. Current function is not maintained until further notice.
     """
     df = pd.read_csv(file_path, sep="\t", header=None, names=["datetime", "rain_mm"])
 
@@ -307,7 +303,7 @@ def load_rain_file_flanders(
 
     df["datetime"] = pd.to_datetime(df["datetime"])
     df["start_year"] = pd.to_datetime(
-        [f"01-01-{x} 00 : 00 : 00" for x in df["datetime"].dt.year],
+        [f"01-01-{x} 00:00:00" for x in df["datetime"].dt.year],
     )
     station, year = _extract_metadata_from_file_path(file_path)
     df["station"] = station
@@ -315,6 +311,7 @@ def load_rain_file_flanders(
     # todo: not mentioned in docs? necessary?
     nan = ["---", ""]
     df.loc[df["rain_mm"].isin(nan), "rain_mm"] = np.nan
+    df["rain_mm"] = df["rain_mm"].astype(float)
     df.loc[df["rain_mm"] < 0, "rain_mm"] = np.nan
 
     if threshold_outliers is not None:
@@ -352,6 +349,6 @@ def load_rain_file_flanders(
     df = df[df["rain_mm"] > 0]
     # remove NaN
     df = df[~df["rain_mm"].isna()]
-    df["rain_mm"] = df["rain_mm"].astype(np.float64)
+    # df["rain_mm"] = df["rain_mm"].astype(np.float64)  # moved to top
 
     return df[["datetime", "station", "rain_mm"]]
