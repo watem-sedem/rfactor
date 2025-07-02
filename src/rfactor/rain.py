@@ -292,63 +292,45 @@ def load_rain_file_flanders(
         2024-01-01 01:10:00
 
     """
-    df = pd.read_csv(file_path, sep="\t", header=None, names=["datetime", "rain_mm"])
+    df = pd.read_csv(
+        file_path,
+        sep="\t",
+        header=None,
+        names=["datetime", "rain_mm"],
+        na_values=["---", ""],
+        parse_dates=[0],
+    )
 
     if not {"datetime", "rain_mm"}.issubset(df.columns):
         msg = (
             f"File '{file_path}' should should contain columns 'datetime' and "
-            f"'Value [millimeter]'"
+            f"'Value [millimeter]'."
         )
         raise KeyError(msg)
 
-    df["datetime"] = pd.to_datetime(df["datetime"])
-    df["start_year"] = pd.to_datetime(
-        [f"01-01-{x} 00:00:00" for x in df["datetime"].dt.year],
-    )
     station, year = _extract_metadata_from_file_path(file_path)
     df["station"] = station
 
-    # todo: not mentioned in docs? necessary?
-    nan = ["---", ""]
-    df.loc[df["rain_mm"].isin(nan), "rain_mm"] = np.nan
-    df["rain_mm"] = df["rain_mm"].astype(float)
+    # Sanitize rain outliers (negative values and values beyond threshold)
     df.loc[df["rain_mm"] < 0, "rain_mm"] = np.nan
-
-    if threshold_outliers is not None:
+    if threshold_outliers:
         df.loc[df["rain_mm"] > threshold_outliers, "rain_mm"] = np.nan
 
-    # todo: search pandas alternative for forward filling
-    if interpolate is not None:
-        if df["rain_mm"].isna().any():
-            # find indices for all NaN-values
-            loc_nan = np.where(df["rain_mm"].isna())[0].tolist()
+    # Short-period Nan values are interpolated
+    if interpolate:
+        # Remove consecutive NaN-values that are longer than the interval
+        is_nan = df["rain_mm"].isna()
+        group = (is_nan != is_nan.shift()).cumsum()
+        df_temp = df[is_nan].groupby(group[is_nan]).transform("size") > interval
+        indices_to_remove = df_temp[df_temp].index
+        df = df.drop(index=indices_to_remove)
+        # Interpolate the remaining NaN-values
+        df["rain_mm"] = df["rain_mm"].interpolate(method=interpolate)
 
-            temp = [loc_nan[0]]
-
-            for i in loc_nan[1:]:  # loop over all NaN-indices
-                if i != temp[-1] + 1 or i == loc_nan[-1]:
-                    # check if indices are consequtive or if the final NaN-value is
-                    # reached
-                    if i == loc_nan[-1]:
-                        temp.append(i)
-                    if len(temp) > interval:
-                        # check if lenght of consequetive indices > interval
-                        # NaN-values serie > interval are set to 0.00 so they will not
-                        # be interpolated and will be removed from the timeseries.
-                        # NaN-value series <= interval will be kept as NaN-values
-                        # which allows them to be interpolated.
-                        df.loc[temp, "rain_mm"] = 0.00
-                    temp = [i]
-                elif i == temp[-1] + 1:  # check if indices are consequetive
-                    temp.append(i)
-
-            if interpolate is not None:
-                df["rain_mm"] = df["rain_mm"].interpolate(method=interpolate)
-
-    # remove 0
+    # remove 0 values
     df = df[df["rain_mm"] > 0]
-    # remove NaN
-    df = df[~df["rain_mm"].isna()]
-    # df["rain_mm"] = df["rain_mm"].astype(np.float64)  # moved to top
+    # remove NaN-values
+    df = df.dropna(subset=["rain_mm"])
+    df["rain_mm"] = df["rain_mm"].astype(np.float64)
 
     return df[["datetime", "station", "rain_mm"]]
