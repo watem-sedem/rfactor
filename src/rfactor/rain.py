@@ -298,7 +298,6 @@ def load_rain_file_flanders(
         header=None,
         names=["datetime", "rain_mm"],
         na_values=["---", ""],
-        parse_dates=[0],
     )
 
     if not {"datetime", "rain_mm"}.issubset(df.columns):
@@ -308,6 +307,7 @@ def load_rain_file_flanders(
         )
         raise KeyError(msg)
 
+    df["datetime"] = pd.to_datetime(df["datetime"])
     station, year = _extract_metadata_from_file_path(file_path)
     df["station"] = station
 
