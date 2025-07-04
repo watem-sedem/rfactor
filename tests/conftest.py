@@ -5,11 +5,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from rfactor.process import (
-    load_rain_file,
-    load_rain_file_matlab_legacy,
-    load_rain_folder,
-)
+from rfactor.rain import load_rain_file, load_rain_file_matlab_legacy, load_rain_folder
 from rfactor.rfactor import (
     maximum_intensity,
     maximum_intensity_matlab_clone,
@@ -117,7 +113,7 @@ def erosivity_benchmark_matlab_clone_data():
 
 
 @pytest.fixture()
-def rain_data_file(tmp_path):
+def rain_data_file_matlab(tmp_path):
     """Example rainfall data file"""
     example_rain_path = tmp_path / "station_name_2021.txt"
     example_rain_data = """\
@@ -131,7 +127,28 @@ def rain_data_file(tmp_path):
 
 
 @pytest.fixture()
-def rain_data_folder(tmp_path):
+def rain_data_file_flanders(tmp_path):
+    """Example rainfall data file"""
+    example_rain_path = tmp_path / "station_name_2021.txt"
+    example_rain_data = """\
+        2021-01-01 00:00:00\t0.0
+        2021-01-01 00:01:00\t1.0
+        2021-01-01 00:10:00\t0.0
+        2021-01-01 00:20:00\t0.0
+        2021-01-01 00:30:00\t10.5
+        2021-01-01 00:40:00\t5.2
+        2021-01-01 00:50:00\t1
+        2021-01-01 01:00:00\t0.02
+        2021-01-01 01:10:00\t
+        2021-12-31 23:59:00\t10.
+        """
+    with open(example_rain_path, "w") as rain:
+        rain.write(textwrap.dedent(example_rain_data))
+    return example_rain_path
+
+
+@pytest.fixture()
+def rain_data_folder_matlab(tmp_path):
     """Example rainfall data file"""
     example_rain_path = tmp_path / "rain"
     example_rain_path.mkdir()
