@@ -325,8 +325,9 @@ def load_rain_file_flanders(
         indices_to_remove = df_temp[df_temp].index
         df = df.drop(index=indices_to_remove)
         # Interpolate the remaining NaN-values
-        df["rain_mm"] = df["rain_mm"].interpolate(method=interpolate, 
-                                                 limit_area='inside')
+        df["rain_mm"] = df["rain_mm"].interpolate(
+            method=interpolate, limit_area='inside'
+        )
 
     # remove 0 values
     df = df[df["rain_mm"] > 0]
