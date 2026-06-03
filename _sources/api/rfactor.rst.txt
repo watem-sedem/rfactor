@@ -24,3 +24,11 @@ rfactor.valid module
    :members:
    :undoc-members:
    :show-inheritance:
+
+rfactor.rain module
+-------------------
+
+.. automodule:: rfactor.rain
+   :members:
+   :undoc-members:
+   :show-inheritance:
