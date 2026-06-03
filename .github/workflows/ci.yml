@@ -39,7 +39,7 @@ jobs:
         pytest
     - name: Test with tox (except full benchmark)
       run: |
-        tox -- -m "not slow"
+        tox -e py$(echo "${{ matrix.python-version }}" | tr -d '.') -- -m "not slow"
     - name: Check docstring coverage
       run: |
         tox -e interrogate
