@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>rfactor.rain &mdash; rfactor 0.1.4.post1.dev3+g559e5627c documentation</title>
+  <title>rfactor.rain &mdash; rfactor 0.1.4.post1.dev7+g2c5f95315 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=39197072"></script>
+      <script src="../../_static/documentation_options.js?v=fa3eacdb"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -161,22 +161,22 @@
             <span class="sa">f</span><span class="s2">&quot;&#39;station&#39; and &#39;rain_mm&#39;.&quot;</span>
         <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">RainfallFilesIOMsg</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">is_datetime64_ns_dtype</span><span class="p">(</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">is_datetime64_dtype</span><span class="p">(</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Load function &#39;</span><span class="si">{</span><span class="n">load_fun</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; must return datetime64[ns] type for &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;column &#39;datetime&#39;.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Load function &#39;</span><span class="si">{</span><span class="n">load_fun</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; must return datetime64 type for &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;column &#39;datetime&#39;, not &#39;</span><span class="si">{</span><span class="n">rain</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
         <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">RainfallFilesIOMsg</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">is_object_dtype</span><span class="p">(</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">is_string_dtype</span><span class="p">(</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;station&quot;</span><span class="p">]):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Load function &#39;</span><span class="si">{</span><span class="n">load_fun</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; must return object (str) type for &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;column &#39;station&#39;.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;column &#39;station&#39;, not &#39;</span><span class="si">{</span><span class="n">rain</span><span class="p">[</span><span class="s1">&#39;station&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
         <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">RainfallFilesIOMsg</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">pd</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">types</span><span class="o">.</span><span class="n">is_float_dtype</span><span class="p">(</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]):</span>
         <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;Load function &#39;</span><span class="si">{</span><span class="n">load_fun</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; must return float for column &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;&#39;rain_mm&#39;.&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;&#39;rain_mm&#39;, not &#39;</span><span class="si">{</span><span class="n">rain</span><span class="p">[</span><span class="s1">&#39;rain_mm&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
         <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">RainfallFilesIOMsg</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span>
     <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rain</span><span class="p">[</span><span class="s2">&quot;datetime&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span>
@@ -322,9 +322,12 @@
             <span class="s2">&quot;1.00</span><span class="se">\n</span><span class="s2">9470 0.20</span><span class="se">\n</span><span class="s2">9480 0.50</span><span class="se">\n</span><span class="s2">... ...&quot;</span>
         <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="n">RainfallFilesIOMsg</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span>
+
     <span class="n">rain</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
-        <span class="n">datetime</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">-01-01&quot;</span><span class="p">)</span>
-        <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;minutes_since&quot;</span><span class="p">]),</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;min&quot;</span><span class="p">)</span>
+        <span class="n">datetime</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span>
+            <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">year</span><span class="si">}</span><span class="s2">-01-01&quot;</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_timedelta</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">rain</span><span class="p">[</span><span class="s2">&quot;minutes_since&quot;</span><span class="p">]),</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;min&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
     <span class="p">)</span>
 
     <span class="n">rain</span> <span class="o">=</span> <span class="n">rain</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">station</span><span class="o">=</span><span class="n">station</span><span class="p">)</span>
@@ -424,7 +427,12 @@
         <span class="n">indices_to_remove</span> <span class="o">=</span> <span class="n">df_temp</span><span class="p">[</span><span class="n">df_temp</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">indices_to_remove</span><span class="p">)</span>
         <span class="c1"># Interpolate the remaining NaN-values</span>
-        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">interpolate</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">interpolate</span> <span class="o">==</span> <span class="s2">&quot;pad&quot;</span><span class="p">:</span>
+            <span class="c1"># interpolation method &#39;pad&#39; was removed from version pandas &gt;3.0.0 but</span>
+            <span class="c1"># behaviour of &#39;pad&#39; is the same as pandas.DataFrame.ffill</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">ffill</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="n">interpolate</span><span class="p">)</span>
 
     <span class="c1"># remove 0 values</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;rain_mm&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
