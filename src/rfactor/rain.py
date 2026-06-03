@@ -226,9 +226,12 @@ def load_rain_file_matlab_legacy(file_path):
             "1.00\n9470 0.20\n9480 0.50\n... ..."
         )
         raise IOError(RainfallFilesIOMsg(msg))
+
     rain = rain.assign(
-        datetime=pd.Timestamp(f"{year}-01-01")
-        + pd.to_timedelta(pd.to_numeric(rain["minutes_since"]), unit="min")
+        datetime=pd.to_datetime(
+            pd.Timestamp(f"{year}-01-01")
+            + pd.to_timedelta(pd.to_numeric(rain["minutes_since"]), unit="min")
+        )
     )
 
     rain = rain.assign(station=station)
