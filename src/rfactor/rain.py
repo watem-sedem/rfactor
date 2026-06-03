@@ -328,7 +328,12 @@ def load_rain_file_flanders(
         indices_to_remove = df_temp[df_temp].index
         df = df.drop(index=indices_to_remove)
         # Interpolate the remaining NaN-values
-        df["rain_mm"] = df["rain_mm"].interpolate(method=interpolate)
+        if interpolate == "pad":
+            # interpolation method 'pad' was removed from version pandas >3.0.0 but
+            # behaviour of 'pad' is the same as pandas.DataFrame.ffill
+            df["rain_mm"] = df["rain_mm"].ffill()
+        else:
+            df["rain_mm"] = df["rain_mm"].interpolate(method=interpolate)
 
     # remove 0 values
     df = df[df["rain_mm"] > 0]
