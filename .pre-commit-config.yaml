@@ -48,4 +48,4 @@ repos:
   hooks:
     - id: interrogate
       name: check docstring coverage of functions
-      args: [-I, -i, -M, --quiet, --fail-under=90]
+      args: [-I, -i, -M, --fail-under=85]

@@ -71,22 +71,22 @@ def load_rain_file(file_path, load_fun, **kwargs):
             f"'station' and 'rain_mm'."
         )
         raise IOError(RainfallFilesIOMsg(msg))
-    if not pd.api.types.is_datetime64_ns_dtype(rain["datetime"]):
+    if not pd.api.types.is_datetime64_dtype(rain["datetime"]):
         msg = (
-            f"Load function '{load_fun.__name__}' must return datetime64[ns] type for "
-            f"column 'datetime'."
+            f"Load function '{load_fun.__name__}' must return datetime64 type for "
+            f"column 'datetime', not '{rain['datetime'].dtype}'."
         )
         raise IOError(RainfallFilesIOMsg(msg))
-    if not pd.api.types.is_object_dtype(rain["station"]):
+    if not pd.api.types.is_string_dtype(rain["station"]):
         msg = (
             f"Load function '{load_fun.__name__}' must return object (str) type for "
-            f"column 'station'."
+            f"column 'station', not '{rain['station'].dtype}'"
         )
         raise IOError(RainfallFilesIOMsg(msg))
     if not pd.api.types.is_float_dtype(rain["rain_mm"]):
         msg = (
             f"Load function '{load_fun.__name__}' must return float for column "
-            f"'rain_mm'."
+            f"'rain_mm', not '{rain['rain_mm'].dtype}'"
         )
         raise IOError(RainfallFilesIOMsg(msg))
     rain["year"] = rain["datetime"].dt.year
