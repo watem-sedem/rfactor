@@ -71,22 +71,22 @@ def load_rain_file(file_path, load_fun, **kwargs):
             f"'station' and 'rain_mm'."
         )
         raise IOError(RainfallFilesIOMsg(msg))
-    if not pd.api.types.is_datetime64_ns_dtype(rain["datetime"]):
+    if not pd.api.types.is_datetime64_dtype(rain["datetime"]):
         msg = (
-            f"Load function '{load_fun.__name__}' must return datetime64[ns] type for "
-            f"column 'datetime'."
+            f"Load function '{load_fun.__name__}' must return datetime64 type for "
+            f"column 'datetime', not '{rain['datetime'].dtype}'."
         )
         raise IOError(RainfallFilesIOMsg(msg))
-    if not pd.api.types.is_object_dtype(rain["station"]):
+    if not pd.api.types.is_string_dtype(rain["station"]):
         msg = (
             f"Load function '{load_fun.__name__}' must return object (str) type for "
-            f"column 'station'."
+            f"column 'station', not '{rain['station'].dtype}'"
         )
         raise IOError(RainfallFilesIOMsg(msg))
     if not pd.api.types.is_float_dtype(rain["rain_mm"]):
         msg = (
             f"Load function '{load_fun.__name__}' must return float for column "
-            f"'rain_mm'."
+            f"'rain_mm', not '{rain['rain_mm'].dtype}'"
         )
         raise IOError(RainfallFilesIOMsg(msg))
     rain["year"] = rain["datetime"].dt.year
@@ -226,9 +226,12 @@ def load_rain_file_matlab_legacy(file_path):
             "1.00\n9470 0.20\n9480 0.50\n... ..."
         )
         raise IOError(RainfallFilesIOMsg(msg))
+
     rain = rain.assign(
-        datetime=pd.Timestamp(f"{year}-01-01")
-        + pd.to_timedelta(pd.to_numeric(rain["minutes_since"]), unit="min")
+        datetime=pd.to_datetime(
+            pd.Timestamp(f"{year}-01-01")
+            + pd.to_timedelta(pd.to_numeric(rain["minutes_since"]), unit="min")
+        )
     )
 
     rain = rain.assign(station=station)
@@ -325,9 +328,13 @@ def load_rain_file_flanders(
         indices_to_remove = df_temp[df_temp].index
         df = df.drop(index=indices_to_remove)
         # Interpolate the remaining NaN-values
-        df["rain_mm"] = df["rain_mm"].interpolate(
-            method=interpolate, limit_area='inside'
-        )
+        if interpolate == "pad":
+            # interpolation method 'pad' was removed from version pandas >3.0.0 but
+            # behaviour of 'pad' is the same as pandas.DataFrame.ffill
+            df["rain_mm"] = df["rain_mm"].ffill()
+        else:
+            df["rain_mm"] = df["rain_mm"].interpolate(method=interpolate, 
+                                                      limit_area='inside')
 
     # remove 0 values
     df = df[df["rain_mm"] > 0]
