@@ -333,7 +333,9 @@ def load_rain_file_flanders(
             # behaviour of 'pad' is the same as pandas.DataFrame.ffill
             df["rain_mm"] = df["rain_mm"].ffill()
         else:
-            df["rain_mm"] = df["rain_mm"].interpolate(method=interpolate)
+            df["rain_mm"] = df["rain_mm"].interpolate(
+                method=interpolate, limit_area="inside"
+            )
 
     # remove 0 values
     df = df[df["rain_mm"] > 0]
