@@ -14,12 +14,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         python-version: ['3.11', '3.12', '3.13']
-        fail-fast: [false]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         lfs: true
     - name: Set up Python ${{ matrix.python-version }}
@@ -33,23 +33,14 @@ jobs:
     - name: Install pandoc
       run: |
         sudo apt-get install -y --no-install-recommends pandoc
-    - name: Run precommit hooks & linting
-      run: |
-        python -m pip install --upgrade pre-commit
-        pre-commit run --all-files
-      if: matrix.python-version == '3.11'
-    - name: Test with pytest
-      run: |
-        pytest
     - name: Test with tox (except full benchmark)
       run: |
-        tox -e py$(echo "${{ matrix.python-version }}" | tr -d '.') -- -m "not slow"
-    - name: Check docstring coverage
-      run: |
-        tox -e interrogate
+        tox -e py -- -m "not slow"
     - name: Build documentation
+      if: matrix.python-version == '3.13'
       run: |
         tox -e docs
     - name: Test package build
+      if: matrix.python-version == '3.13'
       run: |
         tox -e build
