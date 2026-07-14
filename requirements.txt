@@ -12,7 +12,7 @@ cycler==0.12.1
     # via matplotlib
 fonttools==4.63.0
     # via matplotlib
-importlib-metadata==4.2.0
+importlib-metadata==9.0.0
     # via rfactor (setup.py)
 joblib==1.5.3
     # via rfactor (setup.py)
