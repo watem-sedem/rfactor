@@ -240,8 +240,3 @@ environments:
 - an environment with pinned versions of the dependencies (as defined in 'requirements.txt')
 - environments with the latest versions of the dependencies and different python
 versions
-
-A pull request can be merged when the unit tests and documentation build pass on the
-pinned environment. If the unit tests and documentation build fail on the latest
-versions of the dependencies, we will create a new issue to update the code to be
-compatible with the latest versions of the dependencies.
