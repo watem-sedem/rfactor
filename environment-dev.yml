@@ -1,0 +1,12 @@
+name: rfactor-dev
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.13
+  - numpy=2.5.1
+  - matplotlib=3.11.0
+  - pandas=3.0.3
+  - tqdm=4.68.4
+  - python-dotenv=1.2.2
+  - joblib=1.5.3

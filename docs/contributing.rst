@@ -217,3 +217,26 @@ To make a new release:
 
 .. _releasepage: https://github.com/watem-sedem/rfactor/releases
 .. _setuptoolsscm: https://www.python.org/dev/peps/pep-0008/#naming-conventions
+
+Dependencies
+============
+
+the rfactor package depends on a number of external packages. The main dependencies are:
+- :ref:`pandas <https://pandas.pydata.org/>`
+- :ref:`numpy <https://numpy.org/>`
+
+To keep rfactor up to date with the latest versions of the python dependencies, we
+use following workflow:
+
+- Dependabot on github will do a weekly check on the dependencies and create a pull
+request with the adjusted 'requirements.txt' when a new version is available.
+- Github actions will run the unit tests and documentation build on the pull request.
+If all tests pass, we can adjust the versions in 'environment-dev.yml' and then the pull
+request can be merged. For now, 'environment-dev.yml' must be adjusted manually,
+but in the future we will automate this as well.
+
+For every other pull request, we run the unit tests and documentation build on several
+environments:
+- an environment with pinned versions of the dependencies (as defined in 'requirements.txt')
+- environments with the latest versions of the dependencies and different python
+versions
