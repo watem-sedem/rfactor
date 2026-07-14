@@ -44,7 +44,7 @@ six==1.17.0
     # via python-dateutil
 tqdm==4.68.4
     # via rfactor (setup.py)
-tzdata==2026.2
+tzdata==2026.3
     # via pandas
 zipp==4.1.0
     # via importlib-metadata
