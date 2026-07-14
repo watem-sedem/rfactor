@@ -16,7 +16,7 @@ jobs:
         ref: ${{ github.event.pull_request.head.sha }}
 
     - name: comment on PR with Binder link
-      uses: actions/github-script@v1
+      uses: actions/github-script@v9
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
