@@ -42,7 +42,7 @@ python-dotenv==1.2.2
     # via rfactor (setup.py)
 six==1.17.0
     # via python-dateutil
-tqdm==4.68.4
+tqdm==4.69.0
     # via rfactor (setup.py)
 tzdata==2026.3
     # via pandas
