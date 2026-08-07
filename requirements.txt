@@ -18,7 +18,7 @@ joblib==1.5.3
     # via rfactor (setup.py)
 kiwisolver==1.5.0
     # via matplotlib
-matplotlib==3.11.0
+matplotlib==3.11.1
     # via rfactor (setup.py)
 numpy==2.5.1
     # via
