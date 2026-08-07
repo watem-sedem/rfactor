@@ -28,7 +28,7 @@ numpy==2.5.1
     #   rfactor (setup.py)
 packaging==26.2
     # via matplotlib
-pandas==3.0.3
+pandas==3.0.5
     # via rfactor (setup.py)
 pillow==12.3.0
     # via matplotlib
