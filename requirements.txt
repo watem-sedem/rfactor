@@ -26,7 +26,7 @@ numpy==2.5.1
     #   matplotlib
     #   pandas
     #   rfactor (setup.py)
-packaging==26.2
+packaging==26.3
     # via matplotlib
 pandas==3.0.3
     # via rfactor (setup.py)
