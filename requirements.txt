@@ -38,7 +38,7 @@ python-dateutil==2.9.0.post0
     # via
     #   matplotlib
     #   pandas
-python-dotenv==1.2.2
+python-dotenv==1.2.3
     # via rfactor (setup.py)
 six==1.17.0
     # via python-dateutil
